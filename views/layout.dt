@@ -1,0 +1,16 @@
+doctype html
+html
+    head
+        title SnippetMyst
+        link(rel="stylesheet", type="text/css", href="style/normalize.css")
+        link(rel="stylesheet", type="text/css", href="style/skeleton.css")
+        link(rel="stylesheet", type="text/css", href="style/index.css")
+    body
+        div.container
+            block body
+
+        link(rel="stylesheet", href="style/materialdark.css")
+        script(src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/highlight.min.js")
+        script.
+            hljs.initHighlightingOnLoad();
+        block scripts

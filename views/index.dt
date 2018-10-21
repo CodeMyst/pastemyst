@@ -1,0 +1,46 @@
+extends layout
+
+block body
+    nav.navigation
+        ul
+            li
+                a(href="/") Home
+            li
+                a(href="/about") About
+            li
+                a(href="https://github.com/codemyst/snippetmyst") GitHub
+            li
+                a(href="/api") API
+
+    h1 SnippetMyst
+
+    p.subtitle A service for posting code snippets.
+
+    div(id="textEditor")
+
+    form(method="POST", action="snippet")
+        input(type="hidden", name="code")
+
+    a(class="button button-primary") Create a snippet
+
+block scripts
+    script(src="vs/loader.js")
+    script.
+        require.config({ paths: { 'vs': 'vs' }});
+        require(['vs/editor/editor.main'], function() {
+            var editor = monaco.editor.create(document.getElementById('textEditor'), {
+                value: '',
+                language: ''
+            });
+
+            monaco.editor.setTheme ('vs-dark');
+
+            document.getElementsByClassName ("button") [0].onclick = function () { createSnippet (); };
+
+            function createSnippet ()
+            {
+                var form = document.getElementsByTagName ("form") [0];
+                form.querySelectorAll ("input[type=hidden]") [0].value = editor.getValue ();
+                form.submit ();
+            }
+        });

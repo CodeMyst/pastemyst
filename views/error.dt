@@ -1,0 +1,5 @@
+extends layout
+
+block body
+	p An error has occured. We are really sorry about that!
+	p Error description: #{error.message}

@@ -1,21 +1,52 @@
 extends layout
 
 block body
+    pre
+        code
+            h1 SnippetMyst
+
     nav.navigation
-        ul
-            li
-                a(href="/") Home
-            li
-                a(href="/about") About
-            li
-                a(href="https://github.com/codemyst/snippetmyst") GitHub
-            li
-                a(href="/api") API
+        pre
+            code(class="hljs cpp") class snippetMyst &#13;{&#13;    string #[a(href="/") home] = "/";&#13;    string #[a(href="https://github.com/codemyst/snippetmyst") github] = "https://github.com/codemyst/snippetmyst";&#13;    string #[a(href="/api-docs") api] = "/api-docs";&#13;    string description = "A very lightweight and simple website for posting code snippets.";&#13;}
 
-    h1 SnippetMyst
-
-    p.subtitle A service for posting code snippets.
-
+    pre(class="createSnippetText")
+        code(class="hljs text") Create a new snippet:
+    select
+        option(value="plaintext") Plain text
+        option(value="bat") Batch
+        option(value="c") C
+        option(value="csharp") C#
+        option(value="cpp") C++
+        option(value="css") CSS
+        option(value="clojure") Clojure
+        option(value="coffeescript") CoffeeScript
+        option(value="dockerfile") Dockerfile
+        option(value="fsharp") F#
+        option(value="go") Go
+        option(value="html") HTML
+        option(value="handlebars") Handlebars
+        option(value="ini") Ini
+        option(value="json") JSON
+        option(value="java") JAVA
+        option(value="javascript") JavaScript
+        option(value="lua") Lua
+        option(value="markdown") Markdown
+        option(value="objective-c") Objective-C
+        option(value="php") PHP
+        option(value="perl") Perl
+        option(value="powershell") PowerShell
+        option(value="python") Python
+        option(value="r") R
+        option(value="razor") Razor
+        option(value="ruby") Ruby
+        option(value="rust") Rust
+        option(value="sql") SQL
+        option(value="swift") Swift
+        option(value="typescript") TypeScript
+        option(value="vb") Visual Basic
+        option(value="xml") XML
+        option(value="yaml") YAML
+    div(class="clear")
     div(id="textEditor")
 
     form(method="POST", action="snippet")
@@ -25,22 +56,4 @@ block body
 
 block scripts
     script(src="vs/loader.js")
-    script.
-        require.config({ paths: { 'vs': 'vs' }});
-        require(['vs/editor/editor.main'], function() {
-            var editor = monaco.editor.create(document.getElementById('textEditor'), {
-                value: '',
-                language: ''
-            });
-
-            monaco.editor.setTheme ('vs-dark');
-
-            document.getElementsByClassName ("button") [0].onclick = function () { createSnippet (); };
-
-            function createSnippet ()
-            {
-                var form = document.getElementsByTagName ("form") [0];
-                form.querySelectorAll ("input[type=hidden]") [0].value = editor.getValue ();
-                form.submit ();
-            }
-        });
+    script(src="scripts/main.js")

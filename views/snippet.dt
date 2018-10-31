@@ -4,7 +4,7 @@ block body
     h1 Snippet
     p.snippetId
         |= id
-    a(class="button button-primary", href="/home") Create a new snippet
+    a(class="button button-primary", href="/") Create a new snippet
     p Created at: 
         |= createdAt
     pre

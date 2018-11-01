@@ -10,7 +10,9 @@ html
             block body
 
         link(rel="stylesheet", href="style/materialdark.css")
-        script(src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.13.1/build/highlight.min.js")
+        script(src="highlightjs/highlight.pack.js")
+        script(src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.5.0/highlightjs-line-numbers.min.js")
         script.
             hljs.initHighlightingOnLoad();
+            hljs.initLineNumbersOnLoad();
         block scripts

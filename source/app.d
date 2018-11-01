@@ -9,6 +9,7 @@ import vibe.http.fileserver;
 import std.conv;
 import etc.c.sqlite3;
 import ddbc.drivers.sqliteddbc;
+import std.uri;
 
 const string connectionString = "sqlite:pastemysts.sqlite";
 SQLITEConnection connection;
@@ -35,7 +36,7 @@ final class PasteMyst
 		immutable long createdAt = Clock.currTime.toUnixTime;
 
 		stmt.executeUpdate("INSERT INTO PasteMysts (createdAt, code) VALUES
-							(" ~ to!string (createdAt) ~ ", '" ~ code ~ "')");
+							(" ~ to!string (createdAt) ~ ", \"" ~ code ~ "\")");
 
 		sqlite3_int64 id = sqlite3_last_insert_rowid (connection.getConnection ());
 
@@ -56,10 +57,10 @@ final class PasteMyst
 		while (rs.next)
 		{
 			unixTime = to!long (rs.getLong (2));
-			code = to!string (rs.getString (3));
+			code = decode (to!string (rs.getString (3)));
 		}
 
-		immutable string createdAt = SysTime.fromUnixTime (unixTime, UTC ()).toLocalTime.toString;
+		immutable string createdAt = SysTime.fromUnixTime (unixTime, UTC ()).toUTC.toString [0..$-1];
 
 		render!("paste.dt", id, createdAt, code);
 	}

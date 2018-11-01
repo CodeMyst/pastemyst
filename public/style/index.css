@@ -13,16 +13,17 @@ code {
 
 nav {
   margin-top: 20px; }
-  nav a {
-    font-weight: bold;
-    letter-spacing: 0.1rem;
-    color: #ee720d; }
+
+code a {
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  color: #ee720d; }
 
 .button.button-primary {
   background-color: #2B2B2D;
   border-radius: 0.3rem;
   border: none; }
-  .button.button-primary:hover {
+  .button.button-primary:hover, .button.button-primary:focus, .button.button-primary:active {
     background-color: #2B2B2D; }
 
 h1 {
@@ -51,5 +52,31 @@ select {
 
 .clear {
   clear: both; }
+
+td.hljs-ln-numbers {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-align: center;
+  color: #58585b;
+  vertical-align: top; }
+
+.hljs-ln td {
+  padding-right: 10px !important; }
+
+table,
+table td {
+  border: none !important;
+  margin: 0; }
+
+.description code {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word; }
 
 /*# sourceMappingURL=index.css.map */

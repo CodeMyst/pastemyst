@@ -1,12 +1,13 @@
 extends layout
 
 block body
-    h1 PasteMyst
-    p.pasteId
-        |= id
+    pre
+        code(class="hljs plaintext")
+            h1 PasteMyst
+
+    pre
+        code(class="hljs cpp") public class PasteInfo&#13;{&#13;    long #[a id] = #[b= id];&#13;    DateTime #[a createdAt] = new DateTime ("#[b= createdAt] UTC");&#13;}
     a(class="button button-primary", href="/") Create a new PasteMyst
-    p Created at: 
-        |= createdAt
     pre
         code
             |= code

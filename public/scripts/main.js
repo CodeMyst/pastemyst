@@ -22,7 +22,8 @@ require.config({ paths: { 'vs': 'vs' }});
             function createSnippet ()
             {
                 var form = document.getElementsByTagName ("form") [0];
-                form.querySelectorAll ("input[type=hidden]") [0].value = editor.getValue ();
+                form.querySelectorAll ("input[type=hidden]") [0].value = encodeURI (editor.getValue ());
+                console.log (encodeURI (editor.getValue ()));
                 form.submit ();
             }
         });

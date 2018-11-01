@@ -7,7 +7,7 @@ block body
 
     nav.navigation
         pre
-            code(class="hljs cpp") class snippetMyst &#13;{&#13;    string #[a(href="/") home] = "/";&#13;    string #[a(href="https://github.com/codemyst/snippetmyst") github] = "https://github.com/codemyst/snippetmyst";&#13;    string #[a(href="/api-docs") api] = "/api-docs";&#13;    string description = "A very lightweight and simple website for posting code snippets.";&#13;}
+            code(class="hljs cpp") class snippetMyst &#13;{&#13;    string #[a(href="/") home] = "/";&#13;    string #[a(href="https://github.com/codemyst/snippetmyst", target="_blank") github] = "https://github.com/codemyst/snippetmyst";&#13;    string #[a(href="/api-docs") api] = "/api-docs";&#13;    string #[a description] = "A very lightweight and simple website for posting code snippets.";&#13;}
 
     pre(class="createSnippetText")
         code(class="hljs text") Create a new snippet:

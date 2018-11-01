@@ -2,12 +2,12 @@
 docs.json
 __dummy.html
 docs/
-snippetmyst.so
-snippetmyst.dylib
-snippetmyst.dll
-snippetmyst.a
-snippetmyst.lib
-snippetmyst-test-*
+pastemyst.so
+pastemyst.dylib
+pastemyst.dll
+pastemyst.a
+pastemyst.lib
+pastemyst-test-*
 *.exe
 *.o
 *.obj
@@ -15,4 +15,4 @@ snippetmyst-test-*
 *.sqlite
 .sass-cache
 *.css.map
-snippetmyst
+pastemyst

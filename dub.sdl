@@ -1,5 +1,5 @@
-name "snippetmyst"
-description "Website for posting code snippets."
+name "pastemyst"
+description "A lightweight and simple website for pasting text, mainly code snippets."
 authors "codemyst"
 copyright "Copyright © 2018, codemyst"
 license "MPL-2.0"

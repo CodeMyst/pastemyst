@@ -1,10 +1,10 @@
 extends layout
 
 block body
-    h1 Snippet
-    p.snippetId
+    h1 PasteMyst
+    p.pasteId
         |= id
-    a(class="button button-primary", href="/") Create a new snippet
+    a(class="button button-primary", href="/") Create a new PasteMyst
     p Created at: 
         |= createdAt
     pre

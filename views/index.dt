@@ -3,14 +3,14 @@ extends layout
 block body
     pre
         code
-            h1 SnippetMyst
+            h1 PasteMyst
 
     nav.navigation
         pre
-            code(class="hljs cpp") class snippetMyst &#13;{&#13;    string #[a(href="/") home] = "/";&#13;    string #[a(href="https://github.com/codemyst/snippetmyst", target="_blank") github] = "https://github.com/codemyst/snippetmyst";&#13;    string #[a(href="/api-docs") api] = "/api-docs";&#13;    string #[a description] = "A very lightweight and simple website for posting code snippets.";&#13;}
+            code(class="hljs cpp") class PasteMyst &#13;{&#13;    string #[a(href="/") home] = "/";&#13;    string #[a(href="https://github.com/codemyst/pastemyst", target="_blank") github] = "https://github.com/codemyst/pastemyst";&#13;    string #[a(href="/api-docs") api] = "/api-docs";&#13;    string #[a description] = "A lightweight and simple website for pasting text, mainly code snippets.";&#13;}
 
-    pre(class="createSnippetText")
-        code(class="hljs text") Create a new snippet:
+    pre(class="createPasteText")
+        code(class="hljs text") Create a new PasteMyst:
     select
         option(value="plaintext") Plain text
         option(value="bat") Batch
@@ -49,10 +49,10 @@ block body
     div(class="clear")
     div(id="textEditor")
 
-    form(method="POST", action="snippet")
+    form(method="POST", action="paste")
         input(type="hidden", name="code")
 
-    a(class="button button-primary") Create a snippet
+    a(class="button button-primary") Create a PasteMyst
 
 block scripts
     script(src="vs/loader.js")

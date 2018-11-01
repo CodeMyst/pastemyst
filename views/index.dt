@@ -1,10 +1,6 @@
 extends layout
 
 block body
-    pre
-        code(class="hljs plaintext")
-            h1 PasteMyst
-
     nav.navigation
         pre(class="description")
             code(class="hljs cpp") class PasteMyst &#13;{&#13;    string #[a(href="/") home] = "/";&#13;    string #[a(href="https://github.com/codemyst/pastemyst", target="_blank") github] = "https://github.com/codemyst/pastemyst";&#13;    string #[a(href="/api-docs") api] = "/api-docs";&#13;    string #[a description] = "A lightweight and simple website for pasting text, mainly code snippets.";&#13;}
@@ -48,6 +44,7 @@ block body
         option(value="yaml") YAML
     div(class="clear")
     div(id="textEditor")
+    p(class="note") NOTE: Don't paste any sensitive content.
 
     form(method="POST", action="paste")
         input(type="hidden", name="code")

@@ -7,9 +7,11 @@ import vibe.http.router;
 import vibe.http.server;
 import vibe.http.fileserver;
 import std.conv;
+import etc.c.sqlite3;
+import ddbc.drivers.sqliteddbc;
 
 const string connectionString = "sqlite:snippets.sqlite";
-Connection connection;
+SQLITEConnection connection;
 
 void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
 {
@@ -27,29 +29,26 @@ final class SnippetMyst
 	// POST /snippet
 	void postSnippet (string code)
 	{
-		import std.uuid : sha1UUID, UUID;
-
-		UUID uuid = sha1UUID (code);
-		string id = uuid.toString;
-
 		auto stmt = connection.createStatement();
 		scope(exit) stmt.close();
 
-		long createdAt = Clock.currTime.toUnixTime;
+		immutable long createdAt = Clock.currTime.toUnixTime;
 
-		stmt.executeUpdate("INSERT INTO Snippets (id, createdAt, code) VALUES
-							('" ~ id ~ "', " ~ to!string (createdAt) ~ ", '" ~ code ~ "')");
+		stmt.executeUpdate("INSERT INTO Snippets (createdAt, code) VALUES
+							(" ~ to!string (createdAt) ~ ", '" ~ code ~ "')");
 
-		redirect ("snippet?id=" ~ id.urlEncode);
+		sqlite3_int64 id = sqlite3_last_insert_rowid (connection.getConnection ());
+
+		redirect ("snippet?id=" ~ to!string (id));
 	}
 
 	// GET /snippet
-	void getSnippet (string id)
+	void getSnippet (long id)
 	{
 		auto stmt = connection.createStatement ();
 		scope(exit) stmt.close ();
 
-		auto rs = stmt.executeQuery("SELECT id, createdAt, code FROM Snippets WHERE id='" ~ id ~ "'");
+		auto rs = stmt.executeQuery("SELECT id, createdAt, code FROM Snippets WHERE id='" ~ to!string (id) ~ "'");
 
 		long unixTime;
 		string code;
@@ -60,7 +59,7 @@ final class SnippetMyst
 			code = to!string (rs.getString (3));
 		}
 
-		string createdAt = SysTime.fromUnixTime (unixTime, UTC ()).toLocalTime.toString;
+		immutable string createdAt = SysTime.fromUnixTime (unixTime, UTC ()).toLocalTime.toString;
 
 		render!("snippet.dt", id, createdAt, code);
 	}
@@ -74,16 +73,16 @@ void main ()
 
 	auto settings = new HTTPServerSettings;
 	settings.bindAddresses = ["127.0.0.1", "::1"];
-	settings.port = 8080;
+	settings.port = 5000;
 
-    connection = createConnection(connectionString);
+    connection = cast(SQLITEConnection) createConnection(connectionString);
     scope(exit) connection.close();
 
     auto stmt = connection.createStatement();
     scope(exit) stmt.close();
 
     stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Snippets 
-                    (id text not null primary key,
+                    (id integer primary key,
                      createdAt integer,
 					 code text)");
 

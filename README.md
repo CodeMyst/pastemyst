@@ -1,2 +1,3 @@
-# SnippetMyst
-A service for posting code snippets
+# PasteMyst
+
+A lightweight and simple website for pasting text, mainly code snippets.

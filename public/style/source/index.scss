@@ -12,6 +12,7 @@ body
 code
 {
     border-radius: 0.3rem;
+    background-color: $color-nanolight !important;
     border: none;
 }
 
@@ -24,8 +25,6 @@ code
 nav
 {
     margin-top: 20px;
-
-    
 }
 
 code
@@ -34,8 +33,14 @@ code
     {
         font-weight: bold;
         letter-spacing: 0.1rem;
-        color: #ee720d;
+        text-decoration: underline;
     }
+}
+
+a
+{
+    color: #ee720d;
+    text-decoration: none;
 }
 
 .button.button-primary
@@ -111,6 +116,7 @@ table td
 {
     border: none !important;
     margin: 0;
+    background-color: $color-nanolight;
 }
 
 .description code
@@ -130,4 +136,88 @@ table td
     margin-bottom: 10px;
     font-style: italic;
     color: #58585b;
+}
+
+span.http-method
+{
+    font-size: 20px;
+    color: #ee720d;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+    margin-right: 10px;
+}
+
+span.http-url
+{
+    font-size: 18px;
+}
+
+p
+{
+    margin-top: 10px;
+}
+
+h4
+{
+    margin-bottom: 5px;
+
+    .anchor-link
+    {
+        display: none;
+        font-size: 12px;
+        position: relative;
+        top: -5px;
+        margin-left: 10px;
+    }
+
+    &:hover > .anchor-link
+    {
+        display: initial;
+    }
+}
+
+h6
+{
+    background-color: $color-nanolight;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+    padding: 10px 20px;
+    font-size: 18px;
+    margin-bottom: 0;
+    margin-top: 30px;
+}
+
+table.http-body
+{
+    border-left: 4px solid $color-nanolight !important;
+    width: 100%;
+    margin-bottom: 30px;
+    border-bottom-left-radius: 0.3rem;
+    border-bottom-right-radius: 0.3rem;
+    border-collapse: separate;
+
+    th, td
+    {
+        padding-left: 20px !important;
+        border-bottom: 2px solid $color-nanolight !important;
+        border-right: 2px solid $color-nanolight !important;
+    }
+
+    th
+    {
+        letter-spacing: 0.1rem;
+    }
+}
+
+.api-code
+{
+    margin-top: 0;
+
+    code
+    {
+        margin: 0;
+        background: $color-nanolight;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
 }

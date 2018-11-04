@@ -13,9 +13,11 @@ import etc.c.sqlite3;
 import ddbc.drivers.sqliteddbc;
 import std.uri;
 import std.base64;
+import hashids;
 
 const string connectionString = "sqlite:pastemysts.sqlite";
 SQLITEConnection connection;
+Hashids hasher;
 
 void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
 {
@@ -53,6 +55,13 @@ class PasteMyst
 	void get ()
 	{
 		render!"index.dt";
+	}
+
+	// GET /api-docs
+	@path ("/api-docs")
+	void getApiDocs ()
+	{
+		render!"api-docs.dt";
 	}
 
 	// POST /paste
@@ -134,7 +143,7 @@ void main ()
     scope (exit) stmt.close ();
 
     stmt.executeUpdate ("CREATE TABLE IF NOT EXISTS PasteMysts 
-                       (id integer primary key,
+                       (id string primary key,
                         createdAt integer,
 					    code text)");
 

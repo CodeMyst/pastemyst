@@ -1,0 +1,70 @@
+extends layout
+
+block body
+    pre
+        code(class="hljs plaintext")
+            h1 PasteMyst
+
+    nav.navigation
+        pre(class="description")
+            code(class="hljs cpp") class PasteMyst &#13;{&#13;    string #[a(href="/") home] = "/";&#13;    string #[a(href="https://github.com/codemyst/pastemyst", target="_blank") github] = "https://github.com/codemyst/pastemyst";&#13;    string #[a(href="/api-docs") api] = "/api-docs";&#13;    string #[a description] = "A lightweight and simple website for pasting text, mainly code snippets.";&#13;}
+
+    h3 API
+
+    p The base endpoint for the api is #[a(href="https://paste.codemy.st/api") https://paste.codemy.st/api]
+
+    h4#create-pastemyst Create a PasteMyst #[a(href="#create-pastemyst", class="anchor-link") 🔗]
+    span.http-method POST
+    span.http-url /paste
+
+    p Create a new PasteMyst. Returns a #[a(href="#pastemyst-info-object") PasteMystInfo] object on success.
+
+    h6 PasteMyst JSON parameters
+    table.http-body
+        thead
+            tr
+                th Field
+                th Type
+                th Description
+        tbody
+            tr
+                td code
+                td string
+                td The contents of the paste encoded as a base64 string (without splitting).
+
+    h6 Example PasteMyst POST request
+    pre.api-code
+        code(class="hljs json") {&#13;    "code": "QHJvb3RQYXRoRnJvbU5hbWUKY2xhc3MgQXBpIDogSVJlc3QKewoJSnNvbiBwb3N0UGFzdGUgKHN0cmluZyBjb2RlKSBAdHJ1c3RlZAoJewoJCXJldHVybiBjcmVhdGVQYXN0ZSAoY29kZSkuc2VyaWFsaXplVG9Kc29uOwoJfQoKCUpzb24gZ2V0UGFzdGUgKGxvbmcgaWQpIEB0cnVzdGVkCgl7CgkJcmV0dXJuIHBhc3RlbXlzdC5nZXRQYXN0ZSAoaWQpLnNlcmlhbGl6ZVRvSnNvbjsKCX0KfQ=="&#13;}
+
+    h4#get-pastemyst Get a PasteMyst #[a(href="#get-pastemyst", class="anchor-link") 🔗]
+    span.http-method GET
+    span.http-url /paste?id=#[a(href="#pastemyst-info-object") {PasteMystInfo.id}]
+
+    p Returns a #[a(href="#pastemyst-info-object") PasteMystInfo] object for a given PasteMyst ID.
+
+    h4#pastemyst-info-object PasteMystInfo Object #[a(href="#pastemyst-info-object", class="anchor-link") 🔗]
+
+    h6 PasteMystInfo Structure
+    table.http-body
+        thead
+            tr
+                th Field
+                th Type
+                th Description
+        tbody
+            tr
+                td id
+                td long
+                td PasteMyst's ID
+            tr
+                td createdAt
+                td long
+                td When the PasteMyst was created. In unix time.
+            tr
+                td code
+                td string
+                td The contents of the paste encoded as a base64 string (without splitting).
+
+    h6 Example PasteMystInfo Object
+    pre.api-code
+        code(class="hljs json api-code") {&#13;    "id": "kj74as82bf",&#13;    "createdAt": 1541188042,&#13;    "code": "QHJvb3RQYXRoRnJvbU5hbWUKY2xhc3MgQXBpIDogSVJlc3QKewoJSnNvbiBwb3N0UGFzdGUgKHN0cmluZyBjb2RlKSBAdHJ1c3RlZAoJewoJCXJldHVybiBjcmVhdGVQYXN0ZSAoY29kZSkuc2VyaWFsaXplVG9Kc29uOwoJfQoKCUpzb24gZ2V0UGFzdGUgKGxvbmcgaWQpIEB0cnVzdGVkCgl7CgkJcmV0dXJuIHBhc3RlbXlzdC5nZXRQYXN0ZSAoaWQpLnNlcmlhbGl6ZVRvSnNvbjsKCX0KfQ=="&#13;}

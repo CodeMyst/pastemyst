@@ -1,37 +1,52 @@
 body {
   background-color: #141414;
   color: #ffffff;
-  margin-top: 20px; }
+  margin-top: 20px;
+}
 
 code {
   border-radius: 0.3rem;
-  border: none; }
+  background-color: #222222 !important;
+  border: none;
+}
 
 #textEditor {
   width: 100%;
-  height: 43vh; }
+  height: 43vh;
+}
 
 nav {
-  margin-top: 20px; }
+  margin-top: 20px;
+}
 
 code a {
   font-weight: bold;
   letter-spacing: 0.1rem;
-  color: #ee720d; }
+  text-decoration: underline;
+}
+
+a {
+  color: #ee720d;
+  text-decoration: none;
+}
 
 .button.button-primary {
   background-color: #2B2B2D;
   border-radius: 0.3rem;
-  border: none; }
-  .button.button-primary:hover, .button.button-primary:focus, .button.button-primary:active {
-    background-color: #2B2B2D; }
+  border: none;
+}
+.button.button-primary:hover, .button.button-primary:focus, .button.button-primary:active {
+  background-color: #2B2B2D;
+}
 
 h1 {
-  margin: 0; }
+  margin: 0;
+}
 
 .createPasteText {
   float: left;
-  width: 75%; }
+  width: 75%;
+}
 
 select {
   background-color: #2B2B2D;
@@ -45,13 +60,16 @@ select {
   height: auto;
   margin-bottom: 2.5rem;
   margin: 1em 0px;
-  width: 20%; }
-  select:focus {
-    outline: none;
-    border: none; }
+  width: 20%;
+}
+select:focus {
+  outline: none;
+  border: none;
+}
 
 .clear {
-  clear: both; }
+  clear: both;
+}
 
 td.hljs-ln-numbers {
   -webkit-touch-callout: none;
@@ -62,22 +80,27 @@ td.hljs-ln-numbers {
   user-select: none;
   text-align: center;
   color: #58585b;
-  vertical-align: top; }
+  vertical-align: top;
+}
 
 .hljs-ln td {
-  padding-right: 10px !important; }
+  padding-right: 10px !important;
+}
 
 table,
 table td {
   border: none !important;
-  margin: 0; }
+  margin: 0;
+  background-color: #222222;
+}
 
 .description code {
   white-space: pre-wrap;
   white-space: -moz-pre-wrap;
   white-space: -pre-wrap;
   white-space: -o-pre-wrap;
-  word-wrap: break-word; }
+  word-wrap: break-word;
+}
 
 .note {
   border-left: 5px solid #0FA0CE;
@@ -85,6 +108,74 @@ table td {
   margin-top: 10px;
   margin-bottom: 10px;
   font-style: italic;
-  color: #58585b; }
+  color: #58585b;
+}
+
+span.http-method {
+  font-size: 20px;
+  color: #ee720d;
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  margin-right: 10px;
+}
+
+span.http-url {
+  font-size: 18px;
+}
+
+p {
+  margin-top: 10px;
+}
+
+h4 {
+  margin-bottom: 5px;
+}
+h4 .anchor-link {
+  display: none;
+  font-size: 12px;
+  position: relative;
+  top: -5px;
+  margin-left: 10px;
+}
+h4:hover > .anchor-link {
+  display: initial;
+}
+
+h6 {
+  background-color: #222222;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+  padding: 10px 20px;
+  font-size: 18px;
+  margin-bottom: 0;
+  margin-top: 30px;
+}
+
+table.http-body {
+  border-left: 4px solid #222222 !important;
+  width: 100%;
+  margin-bottom: 30px;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+  border-collapse: separate;
+}
+table.http-body th, table.http-body td {
+  padding-left: 20px !important;
+  border-bottom: 2px solid #222222 !important;
+  border-right: 2px solid #222222 !important;
+}
+table.http-body th {
+  letter-spacing: 0.1rem;
+}
+
+.api-code {
+  margin-top: 0;
+}
+.api-code code {
+  margin: 0;
+  background: #222222;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
 
 /*# sourceMappingURL=index.css.map */

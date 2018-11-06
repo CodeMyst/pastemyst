@@ -30,7 +30,7 @@ block body
             tr
                 td code
                 td string
-                td The contents of the paste encoded as a base64 string (without splitting).
+                td The contents of the paste uri component encoded (encodeURIComponent).
 
     h6 Example PasteMyst POST request
     pre.api-code
@@ -55,7 +55,7 @@ block body
             tr
                 td id
                 td long
-                td PasteMyst's ID
+                td PasteMyst's ID.
             tr
                 td createdAt
                 td long
@@ -63,7 +63,7 @@ block body
             tr
                 td code
                 td string
-                td The contents of the paste encoded as a base64 string (without splitting).
+                td The contents of the paste uri component encoded (encodeURIComponent).
 
     h6 Example PasteMystInfo Object
     pre.api-code

@@ -78,7 +78,7 @@ class PasteMyst
 		PasteMystInfo info = pastemyst.getPaste (id);
 
 		immutable string createdAt = SysTime.fromUnixTime (info.createdAt, UTC ()).toUTC.toString [0..$-1];
-		immutable string code = cast (string) Base64.decode (info.code);
+		immutable string code = decodeComponent (info.code);
 
 		render!("paste.dt", id, createdAt, code);
 	}
@@ -135,7 +135,7 @@ void main ()
     connection.execute ("create table if not exists PasteMysts (
 							id bigint auto_increment primary key,
 							createdAt integer,
-							code varchar(255)
+							code longtext
 						) engine=InnoDB default charset latin1;");
 
 	listenHTTP (settings, router);

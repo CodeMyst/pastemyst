@@ -47,7 +47,12 @@ class Api : IRest
 
 	Json getPaste (string id) @trusted
 	{
-		return pastemyst.getPaste (id).serializeToJson;
+		PasteMystInfo info = pastemyst.getPaste (id);
+		
+		if (info.id is null)
+			throw new HTTPStatusException (404);
+		
+		return info.serializeToJson;
 	}
 }
 
@@ -78,6 +83,9 @@ class PasteMyst
 	void getPaste (string id)
 	{
 		PasteMystInfo info = pastemyst.getPaste (id);
+
+		if (info.id is null)
+			throw new HTTPStatusException (404);
 
 		immutable string createdAt = SysTime.fromUnixTime (info.createdAt, UTC ()).toUTC.toString [0..$-1];
 		immutable string code = decodeComponent (info.code);
@@ -129,6 +137,7 @@ void main ()
 	auto settings = new HTTPServerSettings;
 	settings.bindAddresses = ["127.0.0.1", "::1"];
 	settings.port = 5000;
+	settings.errorPageHandler = toDelegate (&showError);
 
 	string jsonContent = readText ("appsettings.json");
 	Json appsettings = jsonContent.parseJsonString ();

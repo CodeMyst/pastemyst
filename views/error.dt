@@ -1,5 +1,9 @@
 extends layout
 
 block body
-	p An error has occured. We are really sorry about that!
-	p Error description: #{error.message}
+	pre
+		code(class="hljs markdown not-found")
+			h1 # #{error.code}
+			br
+			p #{error.message}
+			p You can go back to the #[a(href="/") home] page.

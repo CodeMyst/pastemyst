@@ -16,3 +16,4 @@ pastemyst-test-*
 .sass-cache
 *.css.map
 pastemyst
+appsettings.json

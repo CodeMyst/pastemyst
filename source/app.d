@@ -1,6 +1,6 @@
 module pastemyst;
 
-import ddbc;
+import mysql;
 import std.stdio;
 import vibe.vibe;
 import std.string;
@@ -9,15 +9,15 @@ import vibe.http.router;
 import vibe.http.server;
 import vibe.http.fileserver;
 import std.conv;
-import etc.c.sqlite3;
-import ddbc.drivers.sqliteddbc;
 import std.uri;
 import std.base64;
 import hashids;
+import std.file;
+import vibe.core.connectionpool;
 
-const string connectionString = "sqlite:pastemysts.sqlite";
-SQLITEConnection connection;
-Hashids hasher;
+MySQLClient mysqlClient;
+// TODO: Figure out how to not use this long type
+LockedConnection!(Connection!(VibeSocket, cast (ConnectionOptions) 0)*) connection;
 
 void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
 {
@@ -86,34 +86,24 @@ class PasteMyst
 
 PasteMystInfo createPaste (string code)
 {
-	auto stmt = connection.createStatement ();
-	scope (exit) stmt.close ();
-
 	immutable long createdAt = Clock.currTime.toUnixTime;
 
-	stmt.executeUpdate ("INSERT INTO PasteMysts (createdAt, code) VALUES
-						(" ~ to!string (createdAt) ~ ", \"" ~ code ~ "\")");
+	connection.execute ("insert into PasteMysts (createdAt, code) values
+						 (" ~ to!string (createdAt) ~ ", \"" ~ code ~ "\")");
 
-	sqlite3_int64 id = sqlite3_last_insert_rowid (connection.getConnection ());
+	const long id = connection.insertID;
 
 	return PasteMystInfo (id, createdAt, code);
 }
 
 PasteMystInfo getPaste (long id)
 {
-	auto stmt = connection.createStatement ();
-	scope(exit) stmt.close ();
-
-	auto rs = stmt.executeQuery("SELECT id, createdAt, code FROM PasteMysts WHERE id='" ~ to!string (id) ~ "'");
-
 	PasteMystInfo info;
-	info.id = id;
-
-	while (rs.next)
+	
+	connection.execute ("select id, createdAt, code from PasteMysts where id='" ~ to!string (id) ~ "'", (MySQLRow row)
 	{
-		info.createdAt = to!long (rs.getLong (2));
-		info.code = to!string (rs.getString (3));
-	}
+		info = row.toStruct!PasteMystInfo;
+	});
 
 	return info;
 }
@@ -136,16 +126,17 @@ void main ()
 	settings.bindAddresses = ["127.0.0.1", "::1"];
 	settings.port = 5000;
 
-    connection = cast (SQLITEConnection) createConnection (connectionString);
-    scope (exit) connection.close();
+	string jsonContent = readText ("appsettings.json");
+	Json appsettings = jsonContent.parseJsonString ();
 
-    auto stmt = connection.createStatement ();
-    scope (exit) stmt.close ();
+	mysqlClient = new MySQLClient (appsettings ["dbConnection"].get!string);
+	connection = mysqlClient.lockConnection;
 
-    stmt.executeUpdate ("CREATE TABLE IF NOT EXISTS PasteMysts 
-                       (id string primary key,
-                        createdAt integer,
-					    code text)");
+    connection.execute ("create table if not exists PasteMysts (
+							id bigint auto_increment primary key,
+							createdAt integer,
+							code varchar(255)
+						) engine=InnoDB default charset latin1;");
 
 	listenHTTP (settings, router);
 	runApplication ();

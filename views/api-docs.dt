@@ -54,7 +54,7 @@ block body
         tbody
             tr
                 td id
-                td long
+                td string
                 td PasteMyst's ID.
             tr
                 td createdAt
@@ -67,4 +67,4 @@ block body
 
     h6 Example PasteMystInfo Object
     pre.api-code
-        code(class="hljs json api-code") {&#13;    "id": "kj74as82bf",&#13;    "createdAt": 1541188042,&#13;    "code": "QHJvb3RQYXRoRnJvbU5hbWUKY2xhc3MgQXBpIDogSVJlc3QKewoJSnNvbiBwb3N0UGFzdGUgKHN0cmluZyBjb2RlKSBAdHJ1c3RlZAoJewoJCXJldHVybiBjcmVhdGVQYXN0ZSAoY29kZSkuc2VyaWFsaXplVG9Kc29uOwoJfQoKCUpzb24gZ2V0UGFzdGUgKGxvbmcgaWQpIEB0cnVzdGVkCgl7CgkJcmV0dXJuIHBhc3RlbXlzdC5nZXRQYXN0ZSAoaWQpLnNlcmlhbGl6ZVRvSnNvbjsKCX0KfQ=="&#13;}
+        code(class="hljs json api-code") {&#13;    "id": "br6WorZSdNf6zR",&#13;    "createdAt": 1541188042,&#13;    "code": "QHJvb3RQYXRoRnJvbU5hbWUKY2xhc3MgQXBpIDogSVJlc3QKewoJSnNvbiBwb3N0UGFzdGUgKHN0cmluZyBjb2RlKSBAdHJ1c3RlZAoJewoJCXJldHVybiBjcmVhdGVQYXN0ZSAoY29kZSkuc2VyaWFsaXplVG9Kc29uOwoJfQoKCUpzb24gZ2V0UGFzdGUgKGxvbmcgaWQpIEB0cnVzdGVkCgl7CgkJcmV0dXJuIHBhc3RlbXlzdC5nZXRQYXN0ZSAoaWQpLnNlcmlhbGl6ZVRvSnNvbjsKCX0KfQ=="&#13;}

@@ -19,6 +19,8 @@ MySQLClient mysqlClient;
 // TODO: Figure out how to not use this long type
 LockedConnection!(Connection!(VibeSocket, cast (ConnectionOptions) 0)*) connection;
 
+Hashids hasher;
+
 void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
 {
 	res.render!("error.dt", req, error);
@@ -32,7 +34,7 @@ interface IRest
 	Json postPaste (string code) @safe;
 
 	@queryParam ("id", "id")
-	Json getPaste (long id) @safe;
+	Json getPaste (string id) @safe;
 }
 
 @rootPathFromName
@@ -43,7 +45,7 @@ class Api : IRest
 		return createPaste (code).serializeToJson;
 	}
 
-	Json getPaste (long id) @trusted
+	Json getPaste (string id) @trusted
 	{
 		return pastemyst.getPaste (id).serializeToJson;
 	}
@@ -69,11 +71,11 @@ class PasteMyst
 	{
 		PasteMystInfo info = createPaste (code);
 
-		redirect ("paste?id=" ~ to!string (info.id));
+		redirect ("paste?id=" ~ info.id);
 	}
 
 	// GET /paste
-	void getPaste (long id)
+	void getPaste (string id)
 	{
 		PasteMystInfo info = pastemyst.getPaste (id);
 
@@ -86,21 +88,23 @@ class PasteMyst
 
 PasteMystInfo createPaste (string code)
 {
+	import std.random : uniform;
+
 	immutable long createdAt = Clock.currTime.toUnixTime;
 
-	connection.execute ("insert into PasteMysts (createdAt, code) values
-						 (" ~ to!string (createdAt) ~ ", \"" ~ code ~ "\")");
+	string id = hasher.encode (createdAt, code.length, uniform (0, 10_000));
 
-	const long id = connection.insertID;
+	connection.execute ("insert into PasteMysts (id, createdAt, code) values
+						 (\"" ~ id ~ "\", " ~ to!string (createdAt) ~ ", \"" ~ code ~ "\")");
 
 	return PasteMystInfo (id, createdAt, code);
 }
 
-PasteMystInfo getPaste (long id)
+PasteMystInfo getPaste (string id)
 {
 	PasteMystInfo info;
 	
-	connection.execute ("select id, createdAt, code from PasteMysts where id='" ~ to!string (id) ~ "'", (MySQLRow row)
+	connection.execute ("select id, createdAt, code from PasteMysts where id='" ~ id ~ "'", (MySQLRow row)
 	{
 		info = row.toStruct!PasteMystInfo;
 	});
@@ -110,7 +114,7 @@ PasteMystInfo getPaste (long id)
 
 struct PasteMystInfo
 {
-	long id;
+	string id;
 	long createdAt;
 	string code;
 }
@@ -133,10 +137,12 @@ void main ()
 	connection = mysqlClient.lockConnection;
 
     connection.execute ("create table if not exists PasteMysts (
-							id bigint auto_increment primary key,
+							id varchar(50) primary key,
 							createdAt integer,
 							code longtext
 						) engine=InnoDB default charset latin1;");
+
+	hasher = new Hashids (appsettings ["hashidsSalt"].get!string);
 
 	listenHTTP (settings, router);
 	runApplication ();

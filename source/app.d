@@ -102,8 +102,7 @@ PasteMystInfo createPaste (string code)
 
 	string id = hasher.encode (createdAt, code.length, uniform (0, 10_000));
 
-	connection.execute ("insert into PasteMysts (id, createdAt, code) values
-						 (\"" ~ id ~ "\", " ~ to!string (createdAt) ~ ", \"" ~ code ~ "\")");
+	connection.execute ("insert into PasteMysts (id, createdAt, code) values (?, ?, ?)", id, to!string (createdAt), code);
 
 	return PasteMystInfo (id, createdAt, code);
 }
@@ -112,7 +111,7 @@ PasteMystInfo getPaste (string id)
 {
 	PasteMystInfo info;
 	
-	connection.execute ("select id, createdAt, code from PasteMysts where id='" ~ id ~ "'", (MySQLRow row)
+	connection.execute ("select id, createdAt, code from PasteMysts where id='?'", id, (MySQLRow row)
 	{
 		info = row.toStruct!PasteMystInfo;
 	});

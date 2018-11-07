@@ -23,7 +23,9 @@ Hashids hasher;
 
 void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
 {
-	res.render!("error.dt", req, error);
+	string errorDebug = "";
+	debug errorDebug = error.debugMessage;
+	res.render!("error.dt", req, error, errorDebug);
 }
 
 interface IRest
@@ -111,7 +113,7 @@ PasteMystInfo getPaste (string id)
 {
 	PasteMystInfo info;
 	
-	connection.execute ("select id, createdAt, code from PasteMysts where id='?'", id, (MySQLRow row)
+	connection.execute ("select id, createdAt, code from PasteMysts where id = ?", id, (MySQLRow row)
 	{
 		info = row.toStruct!PasteMystInfo;
 	});

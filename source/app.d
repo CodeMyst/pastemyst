@@ -128,21 +128,10 @@ struct PasteMystInfo
 	string code;
 }
 
-void handleApiRequest (HTTPServerRequest req, HTTPServerResponse res)
-{
-	// foreach (header; req.headers)
-	// 	writeln (header);
-
-	// foreach (c; req.context)
-	// 	writeln (c);
-}
-
 void main ()
 {
 	auto router = new URLRouter;
 	router.registerWebInterface (new PasteMyst);
-	router.get ("/api/*", &handleApiRequest);
-	router.post ("/api/*", &handleApiRequest);
 	router.registerRestInterface (new Api);
 	router.get ("*", serveStaticFiles ("public"));
 
@@ -157,7 +146,7 @@ void main ()
 	mysqlClient = new MySQLClient (appsettings ["dbConnection"].get!string);
 	connection = mysqlClient.lockConnection;
 
-    connection.execute ("create table if not exists PasteMysts (
+	connection.execute ("create table if not exists PasteMysts (
 							id varchar(50) primary key,
 							createdAt integer,
 							code longtext

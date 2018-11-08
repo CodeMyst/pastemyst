@@ -1,5 +1,8 @@
 extends layout
 
+block head
+    script(src="https://www.google.com/recaptcha/api.js", async, defer)
+
 block body
     nav.navigation
         pre(class="description")
@@ -50,6 +53,7 @@ block body
         input(type="hidden", name="code")
 
     a(class="button button-primary") Create a PasteMyst
+    div(class="g-recaptcha", data-sitekey="6Ld_hnkUAAAAAKub6CXAefiv7NYDlXfVMO_EElPQ", data-callback="onCreate", data-size="invisible")
 
 block scripts
     script(src="vs/loader.js")

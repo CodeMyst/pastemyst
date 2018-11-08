@@ -5,6 +5,8 @@ html
         link(rel="stylesheet", type="text/css", href="style/normalize.css")
         link(rel="stylesheet", type="text/css", href="style/skeleton.css")
         link(rel="stylesheet", type="text/css", href="style/index.css")
+
+        block head
     body
         div.container
             block body

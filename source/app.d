@@ -128,10 +128,21 @@ struct PasteMystInfo
 	string code;
 }
 
+void handleApiRequest (HTTPServerRequest req, HTTPServerResponse res)
+{
+	// foreach (header; req.headers)
+	// 	writeln (header);
+
+	// foreach (c; req.context)
+	// 	writeln (c);
+}
+
 void main ()
 {
 	auto router = new URLRouter;
 	router.registerWebInterface (new PasteMyst);
+	router.get ("/api/*", &handleApiRequest);
+	router.post ("/api/*", &handleApiRequest);
 	router.registerRestInterface (new Api);
 	router.get ("*", serveStaticFiles ("public"));
 

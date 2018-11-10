@@ -14,12 +14,13 @@ import std.base64;
 import hashids;
 import std.file;
 import vibe.core.connectionpool;
+import core.thread;
 
-MySQLClient mysqlClient;
-// TODO: Figure out how to not use this long type
-LockedConnection!(Connection!(VibeSocket, cast (ConnectionOptions) 0)*) connection;
+Connection connection;
 
 Hashids hasher;
+
+shared string dbConnectionString;
 
 void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
 {
@@ -31,9 +32,10 @@ void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorIn
 interface IRest
 {
 	@bodyParam ("code", "code")
+	@bodyParam ("expiresIn", "expiresIn")
 	@method (HTTPMethod.POST)
 	@path ("/api/paste")
-	Json postPaste (string code) @safe;
+	Json postPaste (string code, string expiresIn) @safe;
 
 	@queryParam ("id", "id")
 	Json getPaste (string id) @safe;
@@ -42,9 +44,9 @@ interface IRest
 @rootPathFromName
 class Api : IRest
 {
-	Json postPaste (string code) @trusted
+	Json postPaste (string code, string expiresIn) @trusted
 	{
-		return createPaste (code).serializeToJson;
+		return createPaste (code, expiresIn).serializeToJson;
 	}
 
 	Json getPaste (string id) @trusted
@@ -74,9 +76,9 @@ class PasteMyst
 	}
 
 	// POST /paste
-	void postPaste (string code)
+	void postPaste (string code, string expiresIn)
 	{
-		PasteMystInfo info = createPaste (code);
+		PasteMystInfo info = createPaste (code, expiresIn);
 
 		redirect ("paste?id=" ~ info.id);
 	}
@@ -96,7 +98,7 @@ class PasteMyst
 	}
 }
 
-PasteMystInfo createPaste (string code)
+PasteMystInfo createPaste (string code, string expiresIn)
 {
 	import std.random : uniform;
 
@@ -104,28 +106,133 @@ PasteMystInfo createPaste (string code)
 
 	string id = hasher.encode (createdAt, code.length, uniform (0, 10_000));
 
-	connection.execute ("insert into PasteMysts (id, createdAt, code) values (?, ?, ?)", id, to!string (createdAt), code);
+	if (checkValidExpiryTime (expiresIn) == false)
+		throw new HTTPStatusException (400, "Invalid \"expiresIn\" value. Expected: never, 1h, 2h, 10h, 1d, 2d or 1w.");
 
-	return PasteMystInfo (id, createdAt, code);
+	Prepared prepared = connection.prepare ("insert into PasteMysts (id, createdAt, expiresIn, code) values (?, ?, ?, ?)");
+	prepared.setArgs (id, to!string (createdAt), expiresIn, code);
+
+	connection.exec (prepared);
+
+	return PasteMystInfo (id, createdAt, expiresIn, code);
 }
 
 PasteMystInfo getPaste (string id)
 {
-	PasteMystInfo info;
-	
-	connection.execute ("select id, createdAt, code from PasteMysts where id = ?", id, (MySQLRow row)
-	{
-		info = row.toStruct!PasteMystInfo;
-	});
+	Prepared prepared = connection.prepare ("select id, createdAt, expiresIn, code from PasteMysts where id = ?");
+	prepared.setArgs (id);
 
-	return info;
+	ResultRange result = connection.query (prepared);
+
+	if (result.empty)
+		return PasteMystInfo ();
+
+	Row row = result.front;
+
+	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string);
+}
+
+bool checkValidExpiryTime (string expiresIn)
+{
+	if (expiresIn == "never" ||
+		expiresIn == "1h" ||
+		expiresIn == "2h" ||
+		expiresIn == "10h" ||
+		expiresIn == "1d" ||
+		expiresIn == "2d" ||
+		expiresIn == "1w")
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 struct PasteMystInfo
 {
 	string id;
 	long createdAt;
+	string expiresIn;
 	string code;
+}
+
+shared bool stopDeletingEntries;
+
+void deleteExpiredEntries ()
+{
+	while (!stopDeletingEntries)
+	{
+		Thread.sleep (dur!("minutes") (10));
+
+		del ();
+	}
+}
+
+void del ()
+{
+	import std.array : join;
+
+	try
+	{
+		string [] pasteMystsToDelete;
+
+		Connection con = new Connection (dbConnectionString);
+		scope (exit) con.close ();
+
+		Prepared prepared = con.prepare ("select id, createdAt, expiresIn, code from PasteMysts where not expiresIn = 'never'");
+
+		ResultRange result = con.query (prepared);
+
+		while (!result.empty)
+		{
+			string id = result.front [0].get!string;
+			long createdAt = result.front [1].get!long;
+			string expiresIn = result.front [2].get!string;
+			string code = result.front [3].get!string;
+
+			long expiresInUnixTime = createdAt;
+
+			switch (expiresIn)
+			{
+				case "1h":
+					expiresInUnixTime += 3600;
+					break;
+				case "2h":
+					expiresInUnixTime += 2 * 3600;
+					break;
+				case "10h":
+					expiresInUnixTime += 10 * 3600;
+					break;
+				case "1d":
+					expiresInUnixTime += 24 * 3600;
+					break;
+				case "2d":
+					expiresInUnixTime += 48 * 3600;
+					break;
+				case "1w":
+					expiresInUnixTime += 168 * 3600;
+					break;
+				default: break;
+			}
+
+			if (Clock.currTime.toUnixTime > expiresInUnixTime)
+			{
+				pasteMystsToDelete ~= id;
+			}
+
+			result.popFront ();
+		}
+
+		Prepared preparedDelete = con.prepare ("delete from PasteMysts where id in (?)");
+		preparedDelete.setArgs (join (pasteMystsToDelete, ","));
+		con.exec (preparedDelete);
+	}
+	catch (Exception e)
+	{
+		writeln (e.toString);
+	}
 }
 
 void main ()
@@ -142,17 +249,24 @@ void main ()
 
 	string jsonContent = readText ("appsettings.json");
 	Json appsettings = jsonContent.parseJsonString ();
+	dbConnectionString = appsettings ["dbConnection"].get!string;
 
-	mysqlClient = new MySQLClient (appsettings ["dbConnection"].get!string);
-	connection = mysqlClient.lockConnection;
+	connection = new Connection (appsettings ["dbConnection"].get!string);
+	scope (exit) connection.close ();
 
-	connection.execute ("create table if not exists PasteMysts (
+	connection.exec ("create table if not exists PasteMysts (
 							id varchar(50) primary key,
 							createdAt integer,
+							expiresIn text,
 							code longtext
 						) engine=InnoDB default charset latin1;");
 
 	hasher = new Hashids (appsettings ["hashidsSalt"].get!string);
+
+	auto threadId = spawn (&deleteExpiredEntries);
+	scope (exit) stopDeletingEntries = true;
+
+	// del ();
 
 	listenHTTP (settings, router);
 	runApplication ();

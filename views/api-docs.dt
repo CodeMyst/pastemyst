@@ -11,7 +11,11 @@ block body
 
     h3 API
 
-    p The base endpoint for the api is #[a(href="https://paste.codemy.st/api") https://paste.codemy.st/api]
+    p The base endpoint for the api is #[a(href="https://paste.codemy.st/api") http://paste.codemyst.tk/api]
+
+    h4#rate-limit Rate Limit #[a(href="#rate-limit", class="anchor-link") 🔗]
+
+    p The API is rate limited to 5 requests a second (a request every 200 milliseconds). After exceeding that limit you will get a #[code 429 (Too Many Requests)] satus code.
 
     h4#create-pastemyst Create a PasteMyst #[a(href="#create-pastemyst", class="anchor-link") 🔗]
     span.http-method POST
@@ -31,10 +35,15 @@ block body
                 td code
                 td string
                 td The contents of the paste uri component encoded (encodeURIComponent).
+        tbody
+            tr
+                td expiresIn
+                td string
+                td When the PasteMyst expires. Valid values are: never, 1h, 2h, 10h, 1d, 2d or 1w.
 
     h6 Example PasteMyst POST request
     pre.api-code
-        code(class="hljs json") {&#13;    "code": "QHJvb3RQYXRoRnJvbU5hbWUKY2xhc3MgQXBpIDogSVJlc3QKewoJSnNvbiBwb3N0UGFzdGUgKHN0cmluZyBjb2RlKSBAdHJ1c3RlZAoJewoJCXJldHVybiBjcmVhdGVQYXN0ZSAoY29kZSkuc2VyaWFsaXplVG9Kc29uOwoJfQoKCUpzb24gZ2V0UGFzdGUgKGxvbmcgaWQpIEB0cnVzdGVkCgl7CgkJcmV0dXJuIHBhc3RlbXlzdC5nZXRQYXN0ZSAoaWQpLnNlcmlhbGl6ZVRvSnNvbjsKCX0KfQ=="&#13;}
+        code(class="hljs json") {&#13;    "code": "public%20class%20I%0A%7B%0A%20%20%20%20public%20string%20Dont%3B%0A%20%20%20%20public%20string%20Know%3B%0A%20%20%20%20public%20string%20Of%3B%0A%20%20%20%20public%20string%20Anything%3B%0A%20%20%20%20public%20string%20Clever%3B%0A%20%20%20%20public%20string%20To%3B%0A%20%20%20%20public%20string%20Put%3B%0A%20%20%20%20public%20string%20Here%3B%0A%7D",&#13;    "expiresIn": "never"&#13;}
 
     h4#get-pastemyst Get a PasteMyst #[a(href="#get-pastemyst", class="anchor-link") 🔗]
     span.http-method GET
@@ -64,7 +73,11 @@ block body
                 td code
                 td string
                 td The contents of the paste uri component encoded (encodeURIComponent).
+            tr
+                td expiresIn
+                td string
+                td When the PasteMyst expires. Valid values are: never, 1h, 2h, 10h, 1d, 2d or 1w.
 
     h6 Example PasteMystInfo Object
     pre.api-code
-        code(class="hljs json api-code") {&#13;    "id": "br6WorZSdNf6zR",&#13;    "createdAt": 1541188042,&#13;    "code": "QHJvb3RQYXRoRnJvbU5hbWUKY2xhc3MgQXBpIDogSVJlc3QKewoJSnNvbiBwb3N0UGFzdGUgKHN0cmluZyBjb2RlKSBAdHJ1c3RlZAoJewoJCXJldHVybiBjcmVhdGVQYXN0ZSAoY29kZSkuc2VyaWFsaXplVG9Kc29uOwoJfQoKCUpzb24gZ2V0UGFzdGUgKGxvbmcgaWQpIEB0cnVzdGVkCgl7CgkJcmV0dXJuIHBhc3RlbXlzdC5nZXRQYXN0ZSAoaWQpLnNlcmlhbGl6ZVRvSnNvbjsKCX0KfQ=="&#13;}
+        code(class="hljs json api-code") {&#13;    "id": "br6WorZSdNf6zR",&#13;    "createdAt": 1541188042,&#13;    "code": "public%20class%20I%0A%7B%0A%20%20%20%20public%20string%20Dont%3B%0A%20%20%20%20public%20string%20Know%3B%0A%20%20%20%20public%20string%20Of%3B%0A%20%20%20%20public%20string%20Anything%3B%0A%20%20%20%20public%20string%20Clever%3B%0A%20%20%20%20public%20string%20To%3B%0A%20%20%20%20public%20string%20Put%3B%0A%20%20%20%20public%20string%20Here%3B%0A%7D",&#13;    "expiresIn": "never"&#13;}

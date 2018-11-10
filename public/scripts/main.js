@@ -31,7 +31,9 @@ function createSnippet ()
 function onCreate ()
 {
     var form = document.getElementsByTagName ("form") [0];
-    form.querySelectorAll ("input[type=hidden]") [0].value = encodeURIComponent (window.editor.getValue ());
+    form.querySelectorAll ("input[name=code]") [0].value = encodeURIComponent (window.editor.getValue ());
+    var expiresInSelect = document.getElementsByClassName ("expires") [0];
+    form.querySelectorAll ("input[name=expiresIn]") [0].value = expiresInSelect.options [expiresInSelect.selectedIndex].value;
     form.submit ();
 }
 

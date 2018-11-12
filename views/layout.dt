@@ -43,6 +43,10 @@ html(lang="en")
             
             block body
 
+            footer
+                pre.codeblock-text
+                    code.hljs.plaintext Copyright &#169; #[a(href="https://github.com/codemyst") CodeMyst] 2018
+
         block scripts
         link(rel="stylesheet", href="style/materialdark.css")
         script(src="highlightjs/highlight.pack.js")

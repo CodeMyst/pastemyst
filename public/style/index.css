@@ -108,3 +108,6 @@ table.http-body {
   table.http-body th, table.http-body td {
     padding-left: 1rem;
     border: none; }
+
+footer {
+  margin: 3rem 0; }

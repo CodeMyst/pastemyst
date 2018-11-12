@@ -1,7 +1,16 @@
 doctype html
-html
+html(lang="en")
     head
         title PasteMyst
+        // TODO: Remove this when publishing to a real page
+        meta(name="robots", content="noindex")
+        meta(name="description", content="A simple website for pasting text, mainly code snippets.")
+        meta(name="author", content="CodeMyst")
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        link(rel="stylesheet", type="text/css", href="https://fonts.googleapis.com/css?family=Raleway:300,400,600")
+        link(rel="stylesheet", type="text/css", href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext")
         link(rel="stylesheet", type="text/css", href="style/normalize.css")
         link(rel="stylesheet", type="text/css", href="style/skeleton.css")
         link(rel="stylesheet", type="text/css", href="style/index.css")
@@ -9,12 +18,23 @@ html
         block head
     body
         div.container
+            pre.codeblock-text
+                code.hljs.plaintext
+                    h1 PasteMyst
+
+            pre.codeblock-text
+                code.hljs.d.
+                    string #[a(href="/") home] => "/";
+                    string #[a(href="https://github.com/codemyst/pastemyst", target="_blank") github] => "github.com/codemyst/pastemyst";
+                    string #[a(href="/api-docs") api-docs] => "/api-docs";
+                    string #[a description] => "A simple website for pasting text, mainly code snippets.";
+            
             block body
 
+        block scripts
         link(rel="stylesheet", href="style/materialdark.css")
         script(src="highlightjs/highlight.pack.js")
         script(src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.5.0/highlightjs-line-numbers.min.js")
         script.
             hljs.initHighlightingOnLoad();
             hljs.initLineNumbersOnLoad();
-        block scripts

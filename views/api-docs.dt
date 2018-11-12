@@ -1,23 +1,15 @@
 extends layout
 
 block body
-    pre
-        code(class="hljs plaintext")
-            h1 PasteMyst
-
-    nav.navigation
-        pre(class="description")
-            code(class="hljs cpp") class PasteMyst &#13;{&#13;    string #[a(href="/") home] = "/";&#13;    string #[a(href="https://github.com/codemyst/pastemyst", target="_blank") github] = "https://github.com/codemyst/pastemyst";&#13;    string #[a(href="/api-docs") api] = "/api-docs";&#13;    string #[a description] = "A lightweight and simple website for pasting text, mainly code snippets.";&#13;}
-
-    h3 API
+    h2 API
 
     p The base endpoint for the api is #[a(href="https://paste.codemy.st/api") http://paste.codemyst.tk/api]
 
-    h4#rate-limit Rate Limit #[a(href="#rate-limit", class="anchor-link") 🔗]
+    h3#rate-limit Rate Limit #[a(href="#rate-limit", class="anchor-link") 🔗]
 
     p The API is rate limited to 5 requests a second (a request every 200 milliseconds). After exceeding that limit you will get a #[code 429 (Too Many Requests)] satus code.
 
-    h4#create-pastemyst Create a PasteMyst #[a(href="#create-pastemyst", class="anchor-link") 🔗]
+    h3#create-pastemyst Create a PasteMyst #[a(href="#create-pastemyst", class="anchor-link") 🔗]
     span.http-method POST
     span.http-url /paste
 
@@ -45,15 +37,14 @@ block body
     pre.api-code
         code(class="hljs json") {&#13;    "code": "public%20class%20I%0A%7B%0A%20%20%20%20public%20string%20Dont%3B%0A%20%20%20%20public%20string%20Know%3B%0A%20%20%20%20public%20string%20Of%3B%0A%20%20%20%20public%20string%20Anything%3B%0A%20%20%20%20public%20string%20Clever%3B%0A%20%20%20%20public%20string%20To%3B%0A%20%20%20%20public%20string%20Put%3B%0A%20%20%20%20public%20string%20Here%3B%0A%7D",&#13;    "expiresIn": "never"&#13;}
 
-    h4#get-pastemyst Get a PasteMyst #[a(href="#get-pastemyst", class="anchor-link") 🔗]
+    h3#get-pastemyst Get a PasteMyst #[a(href="#get-pastemyst", class="anchor-link") 🔗]
     span.http-method GET
     span.http-url /paste?id=#[a(href="#pastemyst-info-object") {PasteMystInfo.id}]
 
     p Returns a #[a(href="#pastemyst-info-object") PasteMystInfo] object for a given PasteMyst ID.
 
-    h4#pastemyst-info-object PasteMystInfo Object #[a(href="#pastemyst-info-object", class="anchor-link") 🔗]
+    h3#pastemyst-info-object PasteMystInfo Object #[a(href="#pastemyst-info-object", class="anchor-link") 🔗]
 
-    h6 PasteMystInfo Structure
     table.http-body
         thead
             tr

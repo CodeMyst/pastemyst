@@ -1,9 +1,11 @@
 extends layout
 
 block body
-    pre
-        code(class="hljs cpp") public class PasteInfo&#13;{&#13;    string #[a id] = "#[b= id]";&#13;    DateTime #[a createdAt] = new DateTime ("#[b= createdAt] UTC");&#13;}
-    a(class="button button-primary", href="/") Create a new PasteMyst
+    pre.codeblock-text
+        code.hljs.d.
+            string #[a id] => "#[b= id]";
+            DateTime #[a createdAt] => new DateTime ("#[b= createdAt] UTC");
+    
     pre
         code
             |= code

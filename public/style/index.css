@@ -1,66 +1,55 @@
 body {
   background-color: #141414;
-  color: #ffffff;
-  margin-top: 20px; }
-
-code {
-  border-radius: 0.3rem;
-  background-color: #222222 !important;
-  border: none; }
-
-#textEditor {
-  width: 100%;
-  height: 43vh; }
-
-nav {
-  margin-top: 20px; }
-
-code a {
-  font-weight: bold;
-  letter-spacing: 0.1rem;
-  text-decoration: underline; }
+  color: #ffffff; }
 
 a {
   color: #ee720d;
   text-decoration: none; }
 
-.button.button-primary {
-  background-color: #2B2B2D;
-  border-radius: 0.3rem;
-  border: none; }
-  .button.button-primary:hover, .button.button-primary:focus, .button.button-primary:active {
-    background-color: #2B2B2D; }
-
-h1 {
-  margin: 0; }
-
-.createPasteText {
-  float: left;
-  margin-right: 5rem;
-  width: 50%; }
-
-.expires {
-  float: left; }
+code {
+  border: none;
+  background-color: #222222;
+  font-family: "Ubuntu Mono", monospace; }
 
 select {
   background-color: #222222;
   color: #ffffff;
-  float: right;
-  border: none;
-  border-radius: 0.3rem;
-  padding: 1.2em;
-  font-size: 1em;
-  margin: 0;
-  height: auto;
-  margin-bottom: 2.5rem;
-  margin: 1em 0px;
-  width: 20%; }
-  select:focus {
-    outline: none;
-    border: none; }
+  border: none; }
+  select:hover, select:focus {
+    border: none;
+    outline: none; }
 
-.clear {
-  clear: both; }
+.editor-language {
+  float: right; }
+
+.container {
+  width: 90%; }
+
+.codeblock-text code {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word; }
+  .codeblock-text code a {
+    text-decoration: underline;
+    font-weight: bold;
+    letter-spacing: 0.1rem; }
+
+.codeblock-text h1 {
+  display: inline;
+  font-weight: bold;
+  letter-spacing: 0.2rem; }
+
+code.hljs {
+  background-color: #222222;
+  font-family: "Ubuntu Mono", monospace; }
+
+.hljs table {
+  margin-bottom: 0; }
+
+.hljs td {
+  border: none; }
 
 td.hljs-ln-numbers {
   -webkit-touch-callout: none;
@@ -76,80 +65,46 @@ td.hljs-ln-numbers {
 .hljs-ln td {
   padding-right: 10px !important; }
 
-table,
-table td {
-  border: none !important;
-  margin: 0;
-  background-color: #222222; }
-
-.description code {
-  white-space: pre-wrap;
-  white-space: -moz-pre-wrap;
-  white-space: -pre-wrap;
-  white-space: -o-pre-wrap;
-  word-wrap: break-word; }
+#text-editor {
+  height: 75vh;
+  margin-bottom: 2rem; }
 
 .note {
-  border-left: 5px solid #0FA0CE;
-  padding-left: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-style: italic;
-  color: #58585b; }
+  border-left: 5px solid #1EAEDB;
+  padding-left: 2rem;
+  color: #ffffff;
+  font-style: italic; }
 
-span.http-method {
-  font-size: 20px;
+.button.button-primary {
+  background-color: #222222;
+  border: none; }
+  .button.button-primary:hover, .button.button-primary:focus {
+    border: none;
+    background-color: #222222; }
+
+h3 .anchor-link {
+  font-size: 1.5rem;
+  margin-left: 2rem;
+  float: right;
+  margin-top: 7px; }
+
+.http-method {
   color: #ee720d;
+  font-size: 2rem;
+  margin-right: 1rem;
   font-weight: bold;
   letter-spacing: 0.1rem;
-  margin-right: 10px; }
+  display: inline-block;
+  margin-bottom: 2rem; }
 
-span.http-url {
-  font-size: 18px; }
-
-p {
-  margin-top: 10px; }
-
-h4 {
-  margin-bottom: 5px; }
-  h4 .anchor-link {
-    display: none;
-    font-size: 12px;
-    position: relative;
-    top: -5px;
-    margin-left: 10px; }
-  h4:hover > .anchor-link {
-    display: initial; }
-
-h6 {
-  background-color: #222222;
-  border-top-left-radius: 0.3rem;
-  border-top-right-radius: 0.3rem;
-  padding: 10px 20px;
-  font-size: 18px;
-  margin-bottom: 0;
-  margin-top: 30px; }
+.http-url {
+  font-size: 2rem; }
 
 table.http-body {
-  border-left: 4px solid #222222 !important;
-  width: 100%;
-  margin-bottom: 30px;
-  border-bottom-left-radius: 0.3rem;
-  border-bottom-right-radius: 0.3rem;
-  border-collapse: separate; }
+  background-color: #222222;
+  border-radius: 0.3rem;
+  border-color: #141414;
+  width: 100%; }
   table.http-body th, table.http-body td {
-    padding-left: 20px !important;
-    border-bottom: 2px solid #222222 !important;
-    border-right: 2px solid #222222 !important; }
-  table.http-body th {
-    letter-spacing: 0.1rem; }
-
-.api-code {
-  margin-top: 0; }
-  .api-code code {
-    margin: 0;
-    background: #222222;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0; }
-
-/*# sourceMappingURL=index.css.map */
+    padding-left: 1rem;
+    border: none; }

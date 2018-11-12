@@ -1,102 +1,104 @@
 $color-nano: #141414;
 $color-nanolight: #222222;
+$color-nanolightlight: #777777;
+$color-range: #ee720d;
 $color-white: #ffffff;
+$color-ellow: #f2bc0c;
+$color-ellowdark: #a58621;
+$color-lue: #1EAEDB;
+
+$font-stack: 'Raleway', sans-serif;
+$font-stack-mono: 'Ubuntu Mono', monospace;
+
+$break-small: 400px;
+$break-large: 600px;
+$break-larger: 1200px;
 
 body
 {
     background-color: $color-nano;
     color: $color-white;
-    margin-top: 20px;
-}
-
-code
-{
-    border-radius: 0.3rem;
-    background-color: $color-nanolight !important;
-    border: none;
-}
-
-#textEditor
-{
-    width: 100%;
-    height: 43vh;
-}
-
-nav
-{
-    margin-top: 20px;
-}
-
-code
-{
-    a
-    {
-        font-weight: bold;
-        letter-spacing: 0.1rem;
-        text-decoration: underline;
-    }
 }
 
 a
 {
-    color: #ee720d;
+    color: $color-range;
     text-decoration: none;
 }
 
-.button.button-primary
+code
 {
-    background-color: #2B2B2D;
-    border-radius: 0.3rem;
     border: none;
-
-    &:hover, &:focus, &:active
-    {
-        background-color: #2B2B2D;
-    }
-}
-
-h1
-{
-    margin: 0;
-}
-
-.createPasteText
-{
-    float: left;
-    margin-right: 5rem;
-    width: 50%;
-}
-
-.expires
-{
-    float: left;
+    background-color: $color-nanolight;
+    font-family: $font-stack-mono;
 }
 
 select
 {
     background-color: $color-nanolight;
     color: $color-white;
-    float: right;
     border: none;
-    border-radius: 0.3rem;
-    padding: 1.2em;
-    font-size: 1em;
-    margin: 0;
-    height: auto;
-    margin-bottom: 2.5rem;
-    margin: 1em 0px;
-    width: 20%;
 
-    &:focus
+    &:hover, &:focus
     {
-        outline: none;
         border: none;
+        outline: none;
     }
 }
 
-.clear
+.editor-language
 {
-    clear: both;
+    float: right;
+}
+
+.container
+{
+    width: 90%;
+}
+
+.codeblock-text
+{
+    code
+    {
+        white-space: pre-wrap;
+        white-space: -moz-pre-wrap;
+        white-space: -pre-wrap;
+        white-space: -o-pre-wrap;
+        word-wrap: break-word;
+
+        a
+        {
+            text-decoration: underline;
+            font-weight: bold;
+            letter-spacing: 0.1rem;
+        }
+    }
+
+    h1
+    {
+        display: inline;
+        font-weight: bold;
+        letter-spacing: 0.2rem;
+    }
+}
+
+code.hljs
+{
+    background-color: $color-nanolight;
+    font-family: $font-stack-mono;
+}
+
+.hljs
+{
+    table
+    {
+        margin-bottom: 0;
+    }
+
+    td
+    {
+        border: none;
+    }
 }
 
 td.hljs-ln-numbers
@@ -117,113 +119,69 @@ td.hljs-ln-numbers
     padding-right: 10px !important;
 }
 
-table,
-table td
+#text-editor
 {
-    border: none !important;
-    margin: 0;
-    background-color: $color-nanolight;
-}
-
-.description code
-{
-    white-space: pre-wrap;
-    white-space: -moz-pre-wrap;
-    white-space: -pre-wrap;
-    white-space: -o-pre-wrap;
-    word-wrap: break-word;
+    height: 75vh;
+    margin-bottom: 2rem;
 }
 
 .note
 {
-    border-left: 5px solid #0FA0CE;
-    padding-left: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    border-left: 5px solid $color-lue;
+    padding-left: 2rem;
+    color: $color-white;
     font-style: italic;
-    color: #58585b;
 }
 
-span.http-method
-{
-    font-size: 20px;
-    color: #ee720d;
-    font-weight: bold;
-    letter-spacing: 0.1rem;
-    margin-right: 10px;
-}
-
-span.http-url
-{
-    font-size: 18px;
-}
-
-p
-{
-    margin-top: 10px;
-}
-
-h4
-{
-    margin-bottom: 5px;
-
-    .anchor-link
-    {
-        display: none;
-        font-size: 12px;
-        position: relative;
-        top: -5px;
-        margin-left: 10px;
-    }
-
-    &:hover > .anchor-link
-    {
-        display: initial;
-    }
-}
-
-h6
+.button.button-primary
 {
     background-color: $color-nanolight;
-    border-top-left-radius: 0.3rem;
-    border-top-right-radius: 0.3rem;
-    padding: 10px 20px;
-    font-size: 18px;
-    margin-bottom: 0;
-    margin-top: 30px;
+    border: none;
+
+    &:hover, &:focus
+    {
+        border: none;
+        background-color: $color-nanolight;
+    }
+}
+
+h3
+{
+    .anchor-link
+    {
+        font-size: 1.5rem;
+        margin-left: 2rem;
+        float: right;
+        margin-top: 7px;
+    }
+}
+
+.http-method
+{
+    color: $color-range;
+    font-size: 2rem;
+    margin-right: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+    display: inline-block;
+    margin-bottom: 2rem;
+}
+
+.http-url
+{
+    font-size: 2rem;
 }
 
 table.http-body
 {
-    border-left: 4px solid $color-nanolight !important;
+    background-color: $color-nanolight;
+    border-radius: 0.3rem;
+    border-color: $color-nano;
     width: 100%;
-    margin-bottom: 30px;
-    border-bottom-left-radius: 0.3rem;
-    border-bottom-right-radius: 0.3rem;
-    border-collapse: separate;
 
     th, td
     {
-        padding-left: 20px !important;
-        border-bottom: 2px solid $color-nanolight !important;
-        border-right: 2px solid $color-nanolight !important;
-    }
-
-    th
-    {
-        letter-spacing: 0.1rem;
-    }
-}
-
-.api-code
-{
-    margin-top: 0;
-
-    code
-    {
-        margin: 0;
-        background: $color-nanolight;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
+        padding-left: 1rem;
+        border: none;
     }
 }

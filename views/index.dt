@@ -4,13 +4,10 @@ block head
     script(src="https://www.google.com/recaptcha/api.js", async, defer)
 
 block body
-    nav.navigation
-        pre(class="description")
-            code(class="hljs cpp") class PasteMyst &#13;{&#13;    string #[a(href="/") home] = "/";&#13;    string #[a(href="https://github.com/codemyst/pastemyst", target="_blank") github] = "https://github.com/codemyst/pastemyst";&#13;    string #[a(href="/api-docs") api] = "/api-docs";&#13;    string #[a description] = "A lightweight and simple website for pasting text, mainly code snippets.";&#13;}
+    pre.codeblock-text
+        code.hljs.plaintext Create a new PasteMyst:
 
-    pre(class="createPasteText")
-        code(class="hljs plaintext") Create a new PasteMyst:
-    select(class="expires")
+    select.expires-in
         option(value="never") Never expires
         option(value="1h") Expires in 1 hour
         option(value="2h") Expires in 2 hours
@@ -18,7 +15,7 @@ block body
         option(value="1d") Expires in 1 day
         option(value="2d") Expires in 2 days
         option(value="1w") Expires in 1 week
-    select
+    select.editor-language
         option(value="plaintext") Plain text
         option(value="bat") Batch
         option(value="c") C
@@ -53,8 +50,8 @@ block body
         option(value="vb") Visual Basic
         option(value="xml") XML
         option(value="yaml") YAML
-    div(class="clear")
-    div(id="textEditor")
+
+    div(id="text-editor")
     p(class="note") NOTE: Don't paste any sensitive content.
 
     form(method="POST", action="paste")

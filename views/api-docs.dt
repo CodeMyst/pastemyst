@@ -1,5 +1,9 @@
 extends layout
 
+block head
+    meta(name="twitter:title", content="PasteMyst API Docs")
+    meta(property="og:title", content="PasteMyst API Docs")
+
 block body
     h2 API
 

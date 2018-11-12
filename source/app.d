@@ -158,19 +158,7 @@ struct PasteMystInfo
 	string code;
 }
 
-shared bool stopDeletingEntries;
-
-void deleteExpiredEntries ()
-{
-	while (!stopDeletingEntries)
-	{
-		Thread.sleep (dur!("minutes") (10));
-
-		del ();
-	}
-}
-
-void del ()
+void deleteExpiredPasteMysts ()
 {
 	import std.array : join;
 
@@ -228,12 +216,17 @@ void del ()
 		Prepared preparedDelete = con.prepare ("delete from PasteMysts where id in (?)");
 		preparedDelete.setArgs (join (pasteMystsToDelete, ","));
 		con.exec (preparedDelete);
+
+		logInfo ("Deleted %s PasteMysts", pasteMystsToDelete.length);
+		logInfo (join (pasteMystsToDelete, ","));
 	}
 	catch (Exception e)
 	{
-		writeln (e.toString);
+		logTrace (e.toString);
 	}
 }
+
+shared bool stopDeleting;
 
 void main ()
 {
@@ -263,10 +256,23 @@ void main ()
 
 	hasher = new Hashids (appsettings ["hashidsSalt"].get!string);
 
-	auto threadId = spawn (&deleteExpiredEntries);
-	scope (exit) stopDeletingEntries = true;
+	scope (exit) stopDeleting = true;
+	// TODO: Use setTimer (10.minutes, toDelegate (&deleteExpiredPasteMysts), true); if it gets fixed
+	// https://github.com/vibe-d/vibe-core/issues/104
+	spawn (function ()
+	{
+		while (!stopDeleting)
+		{
+			foreach (i; 0..600)
+			{
+				if (stopDeleting)
+					return;
+				Thread.sleep (1.seconds);
+			}
 
-	// del ();
+			deleteExpiredPasteMysts ();
+		}
+	});
 
 	listenHTTP (settings, router);
 	runApplication ();

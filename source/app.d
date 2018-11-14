@@ -161,6 +161,7 @@ struct PasteMystInfo
 void deleteExpiredPasteMysts ()
 {
 	import std.array : join;
+	import std.format : format;
 
 	try
 	{
@@ -213,12 +214,19 @@ void deleteExpiredPasteMysts ()
 			result.popFront ();
 		}
 
-		Prepared preparedDelete = con.prepare ("delete from PasteMysts where id in (?)");
-		preparedDelete.setArgs (join (pasteMystsToDelete, ","));
-		con.exec (preparedDelete);
+		if (pasteMystsToDelete.length == 0) return;
 
-		logInfo ("Deleted %s PasteMysts", pasteMystsToDelete.length);
-		logInfo (join (pasteMystsToDelete, ","));
+		string toDelete;
+		for (int i; i < pasteMystsToDelete.length; i++)
+		{
+			toDelete ~= ("'" ~ pasteMystsToDelete [i] ~ "'");
+			if (i != pasteMystsToDelete.length - 1) // stfu
+				toDelete ~= ",";
+		}
+		string deleteQuery = format ("delete from PasteMysts where id in (%s)", toDelete);
+		con.exec (deleteQuery);
+
+		logInfo ("Deleted %s PasteMysts: %s", pasteMystsToDelete.length, toDelete);
 	}
 	catch (Exception e)
 	{

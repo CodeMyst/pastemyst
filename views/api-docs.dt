@@ -7,7 +7,7 @@ block head
 block body
     h2 API
 
-    p The base endpoint for the api is #[a(href="https://paste.codemy.st/api") http://paste.codemyst.tk/api]
+    p The base endpoint for the api is #[a(href="https://paste.myst.rs/api") https://paste.myst.rs/api]. It only supports #[b HTTPS].
 
     h3#rate-limit Rate Limit #[a(href="#rate-limit", class="anchor-link") 🔗]
 

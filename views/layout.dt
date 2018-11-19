@@ -30,7 +30,7 @@ html(lang="en")
         div.container
             pre.codeblock-text
                 code.hljs.plaintext
-                    h1 PasteMyst
+                    h1 #[a(href="/") PasteMyst]
 
             pre.codeblock-text
                 code.hljs.d.

@@ -3,8 +3,6 @@ html(lang="en")
     head
         title PasteMyst
 
-        // TODO: Remove this when publishing to a real page
-        meta(name="robots", content="noindex")
         meta(name="description", content="A simple website for pasting text, mainly code snippets.")
         meta(name="author", content="CodeMyst")
         meta(charset="UTF-8")

@@ -189,4 +189,15 @@ table.http-body
 footer
 {
     margin: 3rem 0;
+
+    p
+    {
+        margin: 0;
+        display: inline;
+    }
+
+    .number-of-pastes
+    {
+        float: right;
+    }
 }

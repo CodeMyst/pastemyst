@@ -111,3 +111,8 @@ table.http-body {
 
 footer {
   margin: 3rem 0; }
+  footer p {
+    margin: 0;
+    display: inline; }
+  footer .number-of-pastes {
+    float: right; }

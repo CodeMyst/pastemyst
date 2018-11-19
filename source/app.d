@@ -26,7 +26,8 @@ void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorIn
 {
 	string errorDebug = "";
 	debug errorDebug = error.debugMessage;
-	res.render!("error.dt", req, error, errorDebug);
+	long numberOfPastes = getNumberOfPastes ();
+	res.render!("error.dt", req, error, errorDebug, numberOfPastes);
 }
 
 interface IRest
@@ -65,14 +66,16 @@ class PasteMyst
 	// GET /
 	void get ()
 	{
-		render!"index.dt";
+		long numberOfPastes = getNumberOfPastes ();
+		render!("index.dt", numberOfPastes);
 	}
 
 	// GET /api-docs
 	@path ("/api-docs")
 	void getApiDocs ()
 	{
-		render!"api-docs.dt";
+		long numberOfPastes = getNumberOfPastes ();
+		render!("api-docs.dt", numberOfPastes);
 	}
 
 	// POST /paste
@@ -94,7 +97,9 @@ class PasteMyst
 		immutable string createdAt = SysTime.fromUnixTime (info.createdAt, UTC ()).toUTC.toString [0..$-1];
 		immutable string code = decodeComponent (info.code);
 
-		render!("paste.dt", id, createdAt, code);
+		long numberOfPastes = getNumberOfPastes ();
+
+		render!("paste.dt", id, createdAt, code, numberOfPastes);
 	}
 }
 
@@ -130,6 +135,13 @@ PasteMystInfo getPaste (string id)
 	Row row = result.front;
 
 	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string);
+}
+
+long getNumberOfPastes ()
+{
+	ResultRange result = connection.query ("select count(*) from PasteMysts");
+
+	return result.front [0].get!long;
 }
 
 bool checkValidExpiryTime (string expiresIn)

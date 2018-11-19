@@ -1,11 +1,11 @@
 extends layout
 
 block body
+    pre.pastemyst-content
+        code
+            |= code
+
     pre.codeblock-text
         code.hljs.d.
             string #[a id] => "#[b= id]";
             DateTime #[a createdAt] => new DateTime ("#[b= createdAt] UTC");
-    
-    pre
-        code
-            |= code

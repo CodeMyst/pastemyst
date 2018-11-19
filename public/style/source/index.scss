@@ -82,6 +82,25 @@ select
     }
 }
 
+.page-title
+{
+    background-color: #222222;
+    display: block;
+    border-radius: 0.3rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin: 0 .2rem;
+    padding-left: 3.2rem;
+    padding-top: 1rem;
+    text-decoration: underline;
+}
+
+.page-nav
+{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
 code.hljs
 {
     background-color: $color-nanolight;
@@ -183,6 +202,18 @@ table.http-body
     {
         padding-left: 1rem;
         border: none;
+    }
+}
+
+.pastemyst-content
+{
+    margin-top: 6rem;
+    margin-bottom: 6rem;
+
+    code
+    {
+        border: 2px solid $color-range;
+        box-sizing: border-box;
     }
 }
 

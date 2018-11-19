@@ -29,11 +29,9 @@ html(lang="en")
     body
         div.container
             pre.codeblock-text
-                code.hljs.plaintext
-                    h1 #[a(href="/") PasteMyst]
-
-            pre.codeblock-text
-                code.hljs.d.
+                a(href="/", class="page-title") #[h1 PasteMyst]
+                
+                code.hljs.d.page-nav.
                     string #[a(href="/") home] => "/";
                     string #[a(href="https://github.com/codemyst/pastemyst", target="_blank") github] => "github.com/codemyst/pastemyst";
                     string #[a(href="/api-docs") api-docs] => "/api-docs";

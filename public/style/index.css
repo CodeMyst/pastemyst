@@ -116,3 +116,5 @@ footer {
     display: inline; }
   footer .number-of-pastes {
     float: right; }
+  footer .copyright-symbol {
+    font-family: "Raleway", sans-serif; }

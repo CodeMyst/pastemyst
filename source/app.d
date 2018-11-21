@@ -179,12 +179,9 @@ void deleteExpiredPasteMysts ()
 	{
 		string [] pasteMystsToDelete;
 
-		Connection con = new Connection (dbConnectionString);
-		scope (exit) con.close ();
+		Prepared prepared = connection.prepare ("select id, createdAt, expiresIn, code from PasteMysts where not expiresIn = 'never'");
 
-		Prepared prepared = con.prepare ("select id, createdAt, expiresIn, code from PasteMysts where not expiresIn = 'never'");
-
-		ResultRange result = con.query (prepared);
+		ResultRange result = connection.query (prepared);
 
 		while (!result.empty)
 		{
@@ -236,7 +233,7 @@ void deleteExpiredPasteMysts ()
 				toDelete ~= ",";
 		}
 		string deleteQuery = format ("delete from PasteMysts where id in (%s)", toDelete);
-		con.exec (deleteQuery);
+		connection.exec (deleteQuery);
 
 		logInfo ("Deleted %s PasteMysts: %s", pasteMystsToDelete.length, toDelete);
 	}
@@ -264,7 +261,7 @@ void main ()
 	Json appsettings = jsonContent.parseJsonString ();
 	dbConnectionString = appsettings ["dbConnection"].get!string;
 
-	connection = new Connection (appsettings ["dbConnection"].get!string);
+	connection = new Connection (dbConnectionString);
 	scope (exit) connection.close ();
 
 	connection.exec ("create table if not exists PasteMysts (

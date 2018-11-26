@@ -25,15 +25,9 @@ document.getElementsByClassName ("button") [0].onclick = function () { createSni
 
 function createSnippet ()
 {
-    grecaptcha.execute ();
-}
-
-function onCreate ()
-{
     var form = document.getElementsByTagName ("form") [0];
     form.querySelectorAll ("input[name=code]") [0].value = encodeURIComponent (window.editor.getValue ());
     var expiresInSelect = document.getElementsByClassName ("expires-in") [0];
     form.querySelectorAll ("input[name=expiresIn]") [0].value = expiresInSelect.options [expiresInSelect.selectedIndex].value;
     form.submit ();
 }
-

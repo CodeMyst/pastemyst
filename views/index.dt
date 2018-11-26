@@ -1,8 +1,5 @@
 extends layout
 
-block head
-    script(src="https://www.google.com/recaptcha/api.js", async, defer)
-
 block body
     pre.codeblock-text
         code.hljs.plaintext Create a new PasteMyst:
@@ -59,7 +56,6 @@ block body
         input(type="hidden", name="expiresIn")
 
     a(class="button button-primary") Create a PasteMyst
-    div(class="g-recaptcha", data-sitekey="6Ld_hnkUAAAAAKub6CXAefiv7NYDlXfVMO_EElPQ", data-callback="onCreate", data-size="invisible")
 
 block scripts
     script(src="vs/loader.js")

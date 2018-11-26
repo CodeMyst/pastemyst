@@ -12,11 +12,11 @@ import std.uri;
 import std.base64;
 import hashids;
 import std.file;
-import vibe.core.connectionpool;
 import core.thread;
 import mysql;
+import mysql.pool;
 
-Connection connection;
+ConnectionPool connectionPool;
 
 Hashids hasher;
 
@@ -114,13 +114,19 @@ PasteMystInfo createPaste (string code, string expiresIn)
 	if (checkValidExpiryTime (expiresIn) == false)
 		throw new HTTPStatusException (400, "Invalid \"expiresIn\" value. Expected: never, 1h, 2h, 10h, 1d, 2d or 1w.");
 
+	Connection connection = connectionPool.getConnection ();
+
 	connection.execute ("insert into PasteMysts (id, createdAt, expiresIn, code) values (?, ?, ?, ?)", id, to!string (createdAt), expiresIn, code);
+
+	connectionPool.releaseConnection (connection);
 
 	return PasteMystInfo (id, createdAt, expiresIn, code);
 }
 
 PasteMystInfo getPaste (string id)
 {
+	Connection connection = connectionPool.getConnection ();
+
 	MySQLRow [] rows;
 	connection.execute ("select id, createdAt, expiresIn, code from PasteMysts where id = ?", id, (MySQLRow row)
 	{
@@ -132,16 +138,21 @@ PasteMystInfo getPaste (string id)
 
 	MySQLRow row = rows [0];
 
+	connectionPool.releaseConnection (connection);
+
 	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string);
 }
 
 long getNumberOfPastes ()
 {
+	Connection connection = connectionPool.getConnection ();
 	MySQLRow countRow;
 	connection.execute ("select count(*) from PasteMysts", (MySQLRow row)
 	{
 		countRow = row;
 	});
+
+	connectionPool.releaseConnection (connection);
 
 	return countRow [0].get!long;
 }
@@ -180,6 +191,8 @@ void deleteExpiredPasteMysts ()
 	try
 	{
 		string [] pasteMystsToDelete;
+
+		Connection connection = connectionPool.getConnection ();
 
 		MySQLRow [] rows;
 		connection.execute ("select id, createdAt, expiresIn, code from PasteMysts where not expiresIn = 'never'", (MySQLRow row)
@@ -235,14 +248,14 @@ void deleteExpiredPasteMysts ()
 		connection.execute ("delete from PasteMysts where id in (?)", toDelete);
 
 		logInfo ("Deleted %s PasteMysts: %s", pasteMystsToDelete.length, toDelete);
+
+		connectionPool.releaseConnection (connection);
 	}
 	catch (Exception e)
 	{
 		logTrace (e.toString);
 	}
 }
-
-shared bool stopDeleting;
 
 void main ()
 {
@@ -258,9 +271,15 @@ void main ()
 
 	string jsonContent = readText ("appsettings.json");
 	Json appsettings = jsonContent.parseJsonString ();
-	dbConnectionString = appsettings ["mysql"].get!string;
+	Json mysql = appsettings ["mysql"];
 
-	connection = new Connection (dbConnectionString);
+	string host = mysql ["host"].get!string;
+	string user = mysql ["user"].get!string;
+	string db = mysql ["db"].get!string;
+
+	connectionPool = ConnectionPool.getInstance (host, user, "", db);
+
+	Connection connection = connectionPool.getConnection ();
 
 	connection.execute ("create table if not exists PasteMysts (
 							id varchar(50) primary key,
@@ -269,17 +288,12 @@ void main ()
 							code longtext
 						) engine=InnoDB default charset latin1;");
 
+	connectionPool.releaseConnection (connection);
+
 	hasher = new Hashids (appsettings ["hashidsSalt"].get!string);
 
-	scope (exit) stopDeleting = true;
 	setTimer (10.minutes, toDelegate (&deleteExpiredPasteMysts), true);
 
 	listenHTTP (settings, router);
 	runApplication ();
-}
-
-void test ()
-{
-	long pastes = getNumberOfPastes ();
-	logInfo (to!string (pastes));
 }

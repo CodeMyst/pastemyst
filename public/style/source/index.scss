@@ -237,3 +237,20 @@ footer
         font-family: $font-stack;
     }
 }
+
+@media all and (max-width: 620px)
+{
+    footer
+    {
+        p
+        {
+            display: block;
+        }
+
+        .number-of-pastes
+        {
+            float: none;
+            margin-bottom: 2rem;
+        }
+    }
+}

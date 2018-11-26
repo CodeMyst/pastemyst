@@ -140,3 +140,10 @@ footer {
     float: right; }
   footer .copyright-symbol {
     font-family: "Raleway", sans-serif; }
+
+@media all and (max-width: 620px) {
+  footer p {
+    display: block; }
+  footer .number-of-pastes {
+    float: none;
+    margin-bottom: 2rem; } }

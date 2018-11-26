@@ -1,6 +1,5 @@
 module pastemyst;
 
-import mysql;
 import std.stdio;
 import vibe.vibe;
 import std.string;
@@ -15,6 +14,7 @@ import hashids;
 import std.file;
 import vibe.core.connectionpool;
 import core.thread;
+import mysql;
 
 Connection connection;
 
@@ -114,34 +114,36 @@ PasteMystInfo createPaste (string code, string expiresIn)
 	if (checkValidExpiryTime (expiresIn) == false)
 		throw new HTTPStatusException (400, "Invalid \"expiresIn\" value. Expected: never, 1h, 2h, 10h, 1d, 2d or 1w.");
 
-	Prepared prepared = connection.prepare ("insert into PasteMysts (id, createdAt, expiresIn, code) values (?, ?, ?, ?)");
-	prepared.setArgs (id, to!string (createdAt), expiresIn, code);
-
-	connection.exec (prepared);
+	connection.execute ("insert into PasteMysts (id, createdAt, expiresIn, code) values (?, ?, ?, ?)", id, to!string (createdAt), expiresIn, code);
 
 	return PasteMystInfo (id, createdAt, expiresIn, code);
 }
 
 PasteMystInfo getPaste (string id)
 {
-	Prepared prepared = connection.prepare ("select id, createdAt, expiresIn, code from PasteMysts where id = ?");
-	prepared.setArgs (id);
+	MySQLRow [] rows;
+	connection.execute ("select id, createdAt, expiresIn, code from PasteMysts where id = ?", id, (MySQLRow row)
+	{
+		rows ~= row;
+	});
 
-	ResultRange result = connection.query (prepared);
-
-	if (result.empty)
+	if (rows.length == 0)
 		return PasteMystInfo ();
 
-	Row row = result.front;
+	MySQLRow row = rows [0];
 
 	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string);
 }
 
 long getNumberOfPastes ()
 {
-	ResultRange result = connection.query ("select count(*) from PasteMysts");
+	MySQLRow countRow;
+	connection.execute ("select count(*) from PasteMysts", (MySQLRow row)
+	{
+		countRow = row;
+	});
 
-	return result.front [0].get!long;
+	return countRow [0].get!long;
 }
 
 bool checkValidExpiryTime (string expiresIn)
@@ -179,19 +181,18 @@ void deleteExpiredPasteMysts ()
 	{
 		string [] pasteMystsToDelete;
 
-		Connection con = new Connection (dbConnectionString);
-		scope (exit) con.close ();
-
-		Prepared prepared = con.prepare ("select id, createdAt, expiresIn, code from PasteMysts where not expiresIn = 'never'");
-
-		ResultRange result = con.query (prepared);
-
-		while (!result.empty)
+		MySQLRow [] rows;
+		connection.execute ("select id, createdAt, expiresIn, code from PasteMysts where not expiresIn = 'never'", (MySQLRow row)
 		{
-			string id = result.front [0].get!string;
-			long createdAt = result.front [1].get!long;
-			string expiresIn = result.front [2].get!string;
-			string code = result.front [3].get!string;
+			rows ~= row;
+		});
+
+		foreach (row; rows)
+		{
+			string id = row [0].get!string;
+			long createdAt = row [1].get!long;
+			string expiresIn = row [2].get!string;
+			string code = row [3].get!string;
 
 			long expiresInUnixTime = createdAt;
 
@@ -219,11 +220,7 @@ void deleteExpiredPasteMysts ()
 			}
 
 			if (Clock.currTime.toUnixTime > expiresInUnixTime)
-			{
 				pasteMystsToDelete ~= id;
-			}
-
-			result.popFront ();
 		}
 
 		if (pasteMystsToDelete.length == 0) return;
@@ -235,8 +232,7 @@ void deleteExpiredPasteMysts ()
 			if (i != pasteMystsToDelete.length - 1) // stfu
 				toDelete ~= ",";
 		}
-		string deleteQuery = format ("delete from PasteMysts where id in (%s)", toDelete);
-		con.exec (deleteQuery);
+		connection.execute ("delete from PasteMysts where id in (?)", toDelete);
 
 		logInfo ("Deleted %s PasteMysts: %s", pasteMystsToDelete.length, toDelete);
 	}
@@ -262,12 +258,11 @@ void main ()
 
 	string jsonContent = readText ("appsettings.json");
 	Json appsettings = jsonContent.parseJsonString ();
-	dbConnectionString = appsettings ["dbConnection"].get!string;
+	dbConnectionString = appsettings ["mysql"].get!string;
 
-	connection = new Connection (appsettings ["dbConnection"].get!string);
-	scope (exit) connection.close ();
+	connection = new Connection (dbConnectionString);
 
-	connection.exec ("create table if not exists PasteMysts (
+	connection.execute ("create table if not exists PasteMysts (
 							id varchar(50) primary key,
 							createdAt integer,
 							expiresIn text,
@@ -277,23 +272,14 @@ void main ()
 	hasher = new Hashids (appsettings ["hashidsSalt"].get!string);
 
 	scope (exit) stopDeleting = true;
-	// TODO: Use setTimer (10.minutes, toDelegate (&deleteExpiredPasteMysts), true); if it gets fixed
-	// https://github.com/vibe-d/vibe-core/issues/104
-	spawn (function ()
-	{
-		while (!stopDeleting)
-		{
-			foreach (i; 0..600)
-			{
-				if (stopDeleting)
-					return;
-				Thread.sleep (1.seconds);
-			}
-
-			deleteExpiredPasteMysts ();
-		}
-	});
+	setTimer (10.minutes, toDelegate (&deleteExpiredPasteMysts), true);
 
 	listenHTTP (settings, router);
 	runApplication ();
+}
+
+void test ()
+{
+	long pastes = getNumberOfPastes ();
+	logInfo (to!string (pastes));
 }

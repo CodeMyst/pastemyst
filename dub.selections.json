@@ -1,9 +1,10 @@
 {
 	"fileVersion": 1,
 	"versions": {
+		"arsd-official": "2.1.2",
 		"botan": "1.12.10",
 		"botan-math": "1.0.3",
-		"dbc": "1.1.6",
+		"dbc": "~master",
 		"ddbc": "0.3.9",
 		"derelict-pq": "2.2.0",
 		"derelict-util": "2.0.6",
@@ -20,7 +21,7 @@
 		"stdx-allocator": "2.77.4",
 		"taggedalgebraic": "0.10.12",
 		"unit-threaded": "0.7.52",
-		"vibe-core": "1.4.4",
+		"vibe-core": "1.4.5",
 		"vibe-d": "0.8.4"
 	}
 }

@@ -165,7 +165,8 @@ bool checkValidExpiryTime (string expiresIn)
 		expiresIn == "10h" ||
 		expiresIn == "1d" ||
 		expiresIn == "2d" ||
-		expiresIn == "1w")
+		expiresIn == "1w" ||
+		expiresIn == "1m")
 	{
 		return true;
 	}
@@ -194,18 +195,11 @@ void deleteExpiredPasteMysts ()
 
 		Connection connection = connectionPool.getConnection ();
 
-		MySQLRow [] rows;
-		connection.execute ("select id, createdAt, expiresIn, code from PasteMysts where not expiresIn = 'never'", (MySQLRow row)
-		{
-			rows ~= row;
-		});
-
-		foreach (row; rows)
+		connection.execute ("select id, createdAt, expiresIn from PasteMysts where not expiresIn = 'never'", (MySQLRow row)
 		{
 			string id = row [0].get!string;
 			long createdAt = row [1].get!long;
 			string expiresIn = row [2].get!string;
-			string code = row [3].get!string;
 
 			long expiresInUnixTime = createdAt;
 
@@ -229,12 +223,15 @@ void deleteExpiredPasteMysts ()
 				case "1w":
 					expiresInUnixTime += 168 * 3600;
 					break;
+				case "1m":
+					expiresInUnixTime += 60;
+					break;
 				default: break;
 			}
 
 			if (Clock.currTime.toUnixTime > expiresInUnixTime)
 				pasteMystsToDelete ~= id;
-		}
+		});
 
 		if (pasteMystsToDelete.length == 0) return;
 
@@ -242,10 +239,11 @@ void deleteExpiredPasteMysts ()
 		for (int i; i < pasteMystsToDelete.length; i++)
 		{
 			toDelete ~= ("'" ~ pasteMystsToDelete [i] ~ "'");
-			if (i != pasteMystsToDelete.length - 1) // stfu
+			if (i + 1 < pasteMystsToDelete.length)
 				toDelete ~= ",";
 		}
-		connection.execute ("delete from PasteMysts where id in (?)", toDelete);
+		string deleteQuery = format ("delete from PasteMysts where id in (%s)", toDelete);
+		connection.execute (deleteQuery);
 
 		logInfo ("Deleted %s PasteMysts: %s", pasteMystsToDelete.length, toDelete);
 
@@ -292,7 +290,7 @@ void main ()
 
 	hasher = new Hashids (appsettings ["hashidsSalt"].get!string);
 
-	setTimer (10.minutes, toDelegate (&deleteExpiredPasteMysts), true);
+	setTimer (1.seconds, toDelegate (&deleteExpiredPasteMysts), true);
 
 	listenHTTP (settings, router);
 	runApplication ();

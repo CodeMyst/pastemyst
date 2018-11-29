@@ -165,8 +165,7 @@ bool checkValidExpiryTime (string expiresIn)
 		expiresIn == "10h" ||
 		expiresIn == "1d" ||
 		expiresIn == "2d" ||
-		expiresIn == "1w" ||
-		expiresIn == "1m")
+		expiresIn == "1w")
 	{
 		return true;
 	}
@@ -222,9 +221,6 @@ void deleteExpiredPasteMysts ()
 					break;
 				case "1w":
 					expiresInUnixTime += 168 * 3600;
-					break;
-				case "1m":
-					expiresInUnixTime += 60;
 					break;
 				default: break;
 			}
@@ -290,7 +286,7 @@ void main ()
 
 	hasher = new Hashids (appsettings ["hashidsSalt"].get!string);
 
-	setTimer (1.seconds, toDelegate (&deleteExpiredPasteMysts), true);
+	setTimer (10.minutes, toDelegate (&deleteExpiredPasteMysts), true);
 
 	listenHTTP (settings, router);
 	runApplication ();

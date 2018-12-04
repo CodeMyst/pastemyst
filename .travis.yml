@@ -5,3 +5,9 @@ addons:
 
 before_install:
   - mysql -e 'create database if not exists PasteMyst;'
+
+script:
+  - dub test -b unittest-cov --compiler=${DC}
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

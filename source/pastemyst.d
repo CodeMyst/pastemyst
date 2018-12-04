@@ -6,6 +6,11 @@ import mysql.pool;
 private Hashids hasher;
 private ConnectionPool connectionPool;
 
+version (unittest)
+	private const string tableName = "Test";
+else
+	private const string tableName = "PasteMysts";
+
 /++
     Structure that contains all info about a PasteMyst
 +/
@@ -40,6 +45,7 @@ interface IRestApiInterface
 	@bodyParam ("code", "code")
 	@bodyParam ("expiresIn", "expiresIn")
 	@method (HTTPMethod.POST)
+	@path ("/api/paste")
 	Json postPaste (string code, string expiresIn) @safe;
 
     /++
@@ -47,6 +53,7 @@ interface IRestApiInterface
     +/
 	@queryParam ("id", "id")
     @method (HTTPMethod.GET)
+	@path ("/api/paste")
 	Json getPaste (string id) @safe;
 }
 
@@ -63,6 +70,7 @@ interface IWebInterface
     /++
         GET /api-docs
     +/
+	@path ("/api-docs")
     void getApiDocs ();
 
     /++
@@ -79,9 +87,9 @@ interface IWebInterface
 /++
     REST API Implementation
 +/
-@rootPathFromName
 class RestApiInterface : IRestApiInterface
 {
+override:
     /++
         POST /api/paste
     +/
@@ -104,11 +112,40 @@ class RestApiInterface : IRestApiInterface
 	}
 }
 
+unittest
+{
+	URLRouter router = new URLRouter;
+	registerRestInterface (router, new RestApiInterface);
+	auto routes = router.getAllRoutes ();
+
+	assert (routes [0].method == HTTPMethod.POST && routes [0].pattern == "/api/paste");
+	assert (routes [1].method == HTTPMethod.GET && routes [1].pattern == "/:id/api/paste");
+
+	auto settings = new HTTPServerSettings;
+	settings.port = 5000;
+	settings.bindAddresses = ["127.0.0.1", "::1"];
+	immutable serverAddr = listenHTTP (settings, router).bindAddresses [0];
+
+	auto api = new RestInterfaceClient!IRestApiInterface ("http://" ~ serverAddr.toString);
+
+	initialize ();
+
+	const PasteMystInfo info1 = deserializeJson!PasteMystInfo (api.postPaste ("void%20main%20()%0A%7B%0A%7D", "never"));
+	assert (info1.code == "void%20main%20()%0A%7B%0A%7D" && info1.expiresIn == "never");
+
+	const PasteMystInfo info2 = deserializeJson!PasteMystInfo (api.getPaste (info1.id));
+	assert (info2.code == "void%20main%20()%0A%7B%0A%7D" && info2.expiresIn == "never" &&
+			info2.id == info1.id && info2.createdAt == info1.createdAt);
+
+	deleteDbTable ();
+}
+
 /++
     Web Interface Implementation
 +/
 class WebInterface : IWebInterface
 {
+override:
     /++
         GET /
     +/
@@ -121,7 +158,7 @@ class WebInterface : IWebInterface
     /++
         GET /api-docs
 	+/
-    @path ("/api-docs")
+	@path ("/api-docs")
     void getApiDocs ()
 	{
 		const long numberOfPastes = getNumberOfPastes ();
@@ -182,7 +219,7 @@ PasteMystInfo createPaste (string code, string expiresIn)
 
 	Connection connection = connectionPool.getConnection ();
 
-	connection.execute ("insert into PasteMysts (id, createdAt, expiresIn, code) values (?, ?, ?, ?)",
+	connection.execute ("insert into " ~ tableName ~ " (id, createdAt, expiresIn, code) values (?, ?, ?, ?)",
                          id, to!string (createdAt), expiresIn, code);
 
 	connectionPool.releaseConnection (connection);
@@ -201,7 +238,7 @@ PasteMystInfo getPaste (string id)
 	Connection connection = connectionPool.getConnection ();
 
 	MySQLRow [] rows;
-	connection.execute ("select id, createdAt, expiresIn, code from PasteMysts where id = ?", id, (MySQLRow row)
+	connection.execute ("select id, createdAt, expiresIn, code from " ~ tableName ~ " where id = ?", id, (MySQLRow row)
 	{
 		rows ~= row;
 	});
@@ -230,7 +267,8 @@ void deleteExpiredPasteMysts ()
 
 		Connection connection = connectionPool.getConnection ();
 
-		connection.execute ("select id, createdAt, expiresIn from PasteMysts where not expiresIn = 'never'", (MySQLRow row)
+		connection.execute ("select id, createdAt, expiresIn from " ~ tableName ~ " where not expiresIn = 'never'",
+		(MySQLRow row)
 		{
 			const string id = row [0].get!string;
 			const long createdAt = row [1].get!long;
@@ -274,7 +312,7 @@ void deleteExpiredPasteMysts ()
 			if (i + 1 < pasteMystsToDelete.length)
 				toDelete ~= ",";
 		}
-		string deleteQuery = format ("delete from PasteMysts where id in (%s)", toDelete);
+		string deleteQuery = format ("delete from %s where id in (%s)", tableName, toDelete);
 		connection.execute (deleteQuery);
 
 		logInfo ("Deleted %s PasteMysts: %s", pasteMystsToDelete.length, toDelete);
@@ -294,7 +332,7 @@ long getNumberOfPastes ()
 {
 	Connection connection = connectionPool.getConnection ();
 	MySQLRow countRow;
-	connection.execute ("select count(*) from PasteMysts", (MySQLRow row)
+	connection.execute ("select count(*) from " ~ tableName, (MySQLRow row)
 	{
 		countRow = row;
 	});
@@ -318,6 +356,22 @@ bool checkValidExpiryTime (string expiresIn)
 		    expiresIn == "1d"    ||
 		    expiresIn == "2d"    ||
 		    expiresIn == "1w");
+}
+
+unittest
+{
+	assert (checkValidExpiryTime ("never") == true);
+	assert (checkValidExpiryTime ("1h") == true);
+	assert (checkValidExpiryTime ("2h") == true);
+	assert (checkValidExpiryTime ("10h") == true);
+	assert (checkValidExpiryTime ("1d") == true);
+	assert (checkValidExpiryTime ("2d") == true);
+	assert (checkValidExpiryTime ("1w") == true);
+	assert (checkValidExpiryTime ("2d") == true);
+	assert (checkValidExpiryTime ("isjadiojsad") == false);
+	assert (checkValidExpiryTime ("3h") == false);
+	assert (checkValidExpiryTime ("213j98") == false);
+	assert (checkValidExpiryTime ("adsj98sdaj") == false);
 }
 
 /++
@@ -364,12 +418,24 @@ private void createDbTable ()
 {
 	Connection connection = connectionPool.getConnection ();
 
-	connection.execute ("create table if not exists PasteMysts (
+	connection.execute ("create table if not exists " ~ tableName ~ " (
 							id varchar(50) primary key,
 							createdAt integer,
 							expiresIn text,
 							code longtext
 						) engine=InnoDB default charset latin1;");
+
+	connectionPool.releaseConnection (connection);
+}
+
+/++
+	Deletes the DB Table. Only called for tests
++/
+private void deleteDbTable ()
+{
+	Connection connection = connectionPool.getConnection ();
+
+	connection.execute ("drop table " ~ tableName);
 
 	connectionPool.releaseConnection (connection);
 }

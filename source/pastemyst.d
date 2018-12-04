@@ -379,7 +379,24 @@ unittest
 +/
 Json getAppsettings (string name)
 {
-	import std.file : readText;
+	import std.file : readText, exists;
+	import std.process : environment;
+
+	// If appsettings.json doesn't exist the use environment variables
+	if (!exists (name))
+	{
+		string host = environment.get ("MYSQL_HOST");
+		string user = environment.get ("MYSQL_USER");
+		string db = environment.get ("MYSQL_DB");
+		string pwd = environment.get ("MYSQL_PWD", "");
+		string hashidsSalt = environment.get ("HASHIDS_SALT");
+
+		Json res = Json.emptyObject;
+		res ["mysql"] = Json (["host": Json (host), "user": Json (user), "db": Json (db), "pwd": Json (pwd)]);
+		res ["hashidsSalt"] = Json (hashidsSalt);
+
+		return res;
+	}
 
 	return readText (name).parseJsonString ();
 }

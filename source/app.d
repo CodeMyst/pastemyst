@@ -24,7 +24,7 @@ void main ()
 	router.get ("*", serveStaticFiles ("public"));
 
 	auto settings = new HTTPServerSettings;
-	settings.bindAddresses = ["127.0.0.1", "::1"];
+	settings.bindAddresses = ["127.0.0.1"];
 	settings.port = 5000;
 	settings.errorPageHandler = toDelegate (&showError);
 

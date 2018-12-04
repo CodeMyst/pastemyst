@@ -1,0 +1,7 @@
+language: d
+
+addons:
+  mariadb: '10.3'
+
+before_install:
+  - mysql -e 'create database if not exists PasteMyst;'

@@ -123,7 +123,7 @@ unittest
 
 	auto settings = new HTTPServerSettings;
 	settings.port = 5000;
-	settings.bindAddresses = ["127.0.0.1", "::1"];
+	settings.bindAddresses = ["127.0.0.1"];
 	immutable serverAddr = listenHTTP (settings, router).bindAddresses [0];
 
 	auto api = new RestInterfaceClient!IRestApiInterface ("http://" ~ serverAddr.toString);

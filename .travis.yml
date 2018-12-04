@@ -4,4 +4,4 @@ addons:
   mariadb: '10.3'
 
 before_install:
-  - mariadb -e 'create database if not exists PasteMyst;'
+  - mysql -e 'create database if not exists PasteMyst;'

@@ -64,5 +64,5 @@ block body
     a(class="button button-primary") Create a PasteMyst
 
 block scripts
-    script(src="vs/loader.js")
-    script(src="scripts/main.js")
+    script(src="/vs/loader.js")
+    script(src="/scripts/main.js")

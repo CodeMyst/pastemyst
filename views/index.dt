@@ -53,7 +53,7 @@ block body
 
     form
         input(type="checkbox", name="use-plaintext", id="plaintext-checkbox")
-        label(for="plaintext-checkbox") Use the plain text editor
+        label(for="plaintext-checkbox") Use the plain text editor (default on phones)
 
     p(class="note") NOTE: Don't paste any sensitive content.
 

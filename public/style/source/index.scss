@@ -46,6 +46,12 @@ select
     }
 }
 
+label
+{
+    display: initial;
+    font-weight: normal;
+}
+
 .editor-language
 {
     float: right;
@@ -142,6 +148,23 @@ td.hljs-ln-numbers
 {
     height: 75vh;
     margin-bottom: 2rem;
+}
+
+.hidden
+{
+    display: none;
+}
+
+#plaintext-editor
+{
+    height: 75vh;
+    width: 100%;
+    margin-bottom: 2rem;
+    background-color: $color-nanolight;
+    border: none;
+    font-family: $font-stack-mono;
+    font-size: 1.75rem;
+    line-height: 2rem;
 }
 
 .note

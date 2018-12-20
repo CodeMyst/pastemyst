@@ -48,10 +48,16 @@ block body
         option(value="xml") XML
         option(value="yaml") YAML
 
+    textarea(id="plaintext-editor", class="hidden", autocomplete="off", autocorrect="off", autocapitalize="off", spellcheck="false")
     div(id="text-editor")
+
+    form
+        input(type="checkbox", name="use-plaintext", id="plaintext-checkbox")
+        label(for="plaintext-checkbox") Use the plain text editor
+
     p(class="note") NOTE: Don't paste any sensitive content.
 
-    form(method="POST", action="paste")
+    form(method="POST", action="paste", id="create-paste-form")
         input(type="hidden", name="code")
         input(type="hidden", name="expiresIn")
 

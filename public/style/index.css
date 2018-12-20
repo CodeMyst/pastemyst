@@ -129,7 +129,8 @@ table.http-body {
   margin-bottom: 6rem; }
   .pastemyst-content code {
     border: 2px solid #ee720d;
-    box-sizing: border-box; }
+    box-sizing: border-box;
+    white-space: pre-wrap; }
 
 footer {
   margin: 3rem 0; }

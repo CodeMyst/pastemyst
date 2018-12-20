@@ -20,10 +20,10 @@ html(lang="en")
 
         link(rel="stylesheet", type="text/css", href="https://fonts.googleapis.com/css?family=Raleway:300,400,600")
         link(rel="stylesheet", type="text/css", href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext")
-        link(rel="stylesheet", type="text/css", href="style/normalize.css")
-        link(rel="stylesheet", type="text/css", href="style/skeleton.css")
-        link(rel="stylesheet", type="text/css", href="style/index.css")
-        link(rel="icon", type="image/png", href="favicon.ico")
+        link(rel="stylesheet", type="text/css", href="/style/normalize.css")
+        link(rel="stylesheet", type="text/css", href="/style/skeleton.css")
+        link(rel="stylesheet", type="text/css", href="/style/index.css")
+        link(rel="icon", type="image/png", href="/favicon.ico")
 
         block head
     body
@@ -46,8 +46,8 @@ html(lang="en")
                         p Copyright #[span.copyright-symbol &#169;] #[a(href="https://github.com/codemyst") CodeMyst] 2018
 
         block scripts
-        link(rel="stylesheet", href="style/materialdark.css")
-        script(src="highlightjs/highlight.pack.js")
+        link(rel="stylesheet", href="/style/materialdark.css")
+        script(src="/highlightjs/highlight.pack.js")
         script(src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.5.0/highlightjs-line-numbers.min.js")
         script.
             hljs.initHighlightingOnLoad();

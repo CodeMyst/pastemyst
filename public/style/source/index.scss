@@ -214,6 +214,7 @@ table.http-body
     {
         border: 2px solid $color-range;
         box-sizing: border-box;
+        white-space: pre-wrap;
     }
 }
 

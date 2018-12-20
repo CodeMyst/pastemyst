@@ -15,8 +15,6 @@ html(lang="en")
         meta(name="twitter:image", content="https://avatars2.githubusercontent.com/u/7966628?s=460&v=4")
         meta(property="og:image", content="https://avatars2.githubusercontent.com/u/7966628?s=460&v=4")
         meta(property="og:description", content="A simple website for pasting text, mainly code snippets.")
-        meta(name="twitter:title", content="PasteMyst")
-        meta(property="og:title", content="PasteMyst")
 
         link(rel="stylesheet", type="text/css", href="https://fonts.googleapis.com/css?family=Raleway:300,400,600")
         link(rel="stylesheet", type="text/css", href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext")

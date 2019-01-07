@@ -1,15 +1,15 @@
 import vibe.vibe;
-import hashids;
 import mysql;
 import mysql.pool;
 
-private Hashids hasher;
 private ConnectionPool connectionPool;
 
 version (unittest)
 	private const string tableName = "Test";
 else
 	private const string tableName = "PasteMysts";
+
+private const string base36Chars = "0123456789abcdefghijklmnopqrstuvwxyz";
 
 /++
     Structure that contains all info about a PasteMyst
@@ -208,16 +208,32 @@ override:
 +/
 PasteMystInfo createPaste (string code, string expiresIn)
 {
-	import std.random : uniform;
+	import std.stdio : writeln;
 
 	immutable long createdAt = Clock.currTime.toUnixTime;
-
-	string id = hasher.encode (createdAt, code.length, uniform (0, 10_000));
 
 	if (checkValidExpiryTime (expiresIn) == false)
 		throw new HTTPStatusException (400, "Invalid \"expiresIn\" value. Expected: never, 1h, 2h, 10h, 1d, 2d or 1w.");
 
 	Connection connection = connectionPool.getConnection ();
+
+	string id;
+
+	int count;
+	
+	do
+	{
+		id = createId ();
+		
+		count = 0;
+		// Do this check in case there is already a paste with the same id
+		connection.execute ("select id from " ~ tableName ~ " where id = ?", id, (MySQLRow row)
+		{
+			count++;
+		});
+
+		if (count > 0) writeln ("duplicate");
+	} while (count != 0);
 
 	connection.execute ("insert into " ~ tableName ~ " (id, createdAt, expiresIn, code) values (?, ?, ?, ?)",
                          id, to!string (createdAt), expiresIn, code);
@@ -389,11 +405,9 @@ Json getAppsettings (string name)
 		string user = environment.get ("MYSQL_USER");
 		string db = environment.get ("MYSQL_DB");
 		string pwd = environment.get ("MYSQL_PWD", "");
-		string hashidsSalt = environment.get ("HASHIDS_SALT");
 
 		Json res = Json.emptyObject;
 		res ["mysql"] = Json (["host": Json (host), "user": Json (user), "db": Json (db), "pwd": Json (pwd)]);
-		res ["hashidsSalt"] = Json (hashidsSalt);
 
 		return res;
 	}
@@ -409,8 +423,6 @@ void initialize ()
 	initializeDbConnection ();
 
 	createDbTable ();
-
-	createHasher ();
 }
 
 /++
@@ -458,10 +470,46 @@ private void deleteDbTable ()
 }
 
 /++
-	Creates a new hasher that generates unique IDs
+	Encodes a long number into base36. Input has to be >= 0
 +/
-private void createHasher ()
+private string encodeBase36 (long input)
+							in (input >= 0, "Input has to be >= 0")
 {
-	Json appsettings = getAppsettings ("appsettings.json");
-	hasher = new Hashids (appsettings ["hashidsSalt"].get!string);
+	import std.algorithm.mutation : reverse;
+
+	char [] result;
+	while (input != 0)
+	{
+		result ~= base36Chars [input % 36];
+		input /= 36;
+	}
+
+	return cast (string) result.reverse;
+}
+
+unittest
+{
+	assert (encodeBase36 (500) == "dw");
+	assert (encodeBase36 (1000) == "rs");
+	assert (encodeBase36 (986_835) == "l5g3");
+	assert (encodeBase36 (938_756_938) == "fiwthm");
+}
+
+private string createId ()
+{
+	import std.random : uniform;
+
+	// The number is between 1296 and 46_655 so it will always have 3 characters
+	// 1296 is the smallest 3 character base 36 string (100)
+	// 46_655 is the largest 3 character base 36 string (zzz)
+	return encodeBase36 (uniform (1296, 46_655));
+}
+
+unittest
+{
+	assert (createId ().length == 3);
+	assert (createId ().length == 3);
+	assert (createId ().length == 3);
+	assert (createId ().length == 3);
+	assert (createId ().length == 3);
 }

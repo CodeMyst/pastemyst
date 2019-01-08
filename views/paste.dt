@@ -13,3 +13,4 @@ block body
         code.hljs.d.
             string #[a id] => "#[b= id]";
             DateTime #[a createdAt] => new DateTime ("#[b= createdAt] UTC");
+            #[- if (expiresAt != "never") #[span DateTime #[a expiresAt] => new DateTime ("#[b= expiresAt] UTC");]]

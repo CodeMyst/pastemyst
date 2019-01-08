@@ -43,6 +43,9 @@ block body
 
     h3#get-pastemyst Get a PasteMyst #[a(href="#get-pastemyst", class="anchor-link") 🔗]
     span.http-method GET
+    span.http-url /#[a(href="#pastemyst-info-object") {PasteMystInfo.id}]
+    br
+    span.http-method GET
     span.http-url /paste?id=#[a(href="#pastemyst-info-object") {PasteMystInfo.id}]
 
     p Returns a #[a(href="#pastemyst-info-object") PasteMystInfo] object for a given PasteMyst ID.
@@ -75,4 +78,4 @@ block body
 
     h6 Example PasteMystInfo Object
     pre.api-code
-        code(class="hljs json api-code") {&#13;    "id": "br6WorZSdNf6zR",&#13;    "createdAt": 1541188042,&#13;    "code": "public%20class%20I%0A%7B%0A%20%20%20%20public%20string%20Dont%3B%0A%20%20%20%20public%20string%20Know%3B%0A%20%20%20%20public%20string%20Of%3B%0A%20%20%20%20public%20string%20Anything%3B%0A%20%20%20%20public%20string%20Clever%3B%0A%20%20%20%20public%20string%20To%3B%0A%20%20%20%20public%20string%20Put%3B%0A%20%20%20%20public%20string%20Here%3B%0A%7D",&#13;    "expiresIn": "never"&#13;}
+        code(class="hljs json api-code") {&#13;    "id": "br6",&#13;    "createdAt": 1541188042,&#13;    "code": "public%20class%20I%0A%7B%0A%20%20%20%20public%20string%20Dont%3B%0A%20%20%20%20public%20string%20Know%3B%0A%20%20%20%20public%20string%20Of%3B%0A%20%20%20%20public%20string%20Anything%3B%0A%20%20%20%20public%20string%20Clever%3B%0A%20%20%20%20public%20string%20To%3B%0A%20%20%20%20public%20string%20Put%3B%0A%20%20%20%20public%20string%20Here%3B%0A%7D",&#13;    "expiresIn": "never"&#13;}

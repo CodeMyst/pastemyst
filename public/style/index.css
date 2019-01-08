@@ -99,7 +99,8 @@ td.hljs-ln-numbers {
   border: none;
   font-family: "Ubuntu Mono", monospace;
   font-size: 1.75rem;
-  line-height: 2rem; }
+  line-height: 2rem;
+  resize: none; }
 
 .note {
   border-left: 5px solid #1EAEDB;

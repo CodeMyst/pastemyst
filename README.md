@@ -1,4 +1,4 @@
-# PasteMyst [![Build Status](https://travis-ci.com/CodeMyst/PasteMyst.svg?branch=master)](https://travis-ci.com/CodeMyst/PasteMyst) [![codecov](https://codecov.io/gh/CodeMyst/PasteMyst/branch/master/graph/badge.svg)](https://codecov.io/gh/CodeMyst/PasteMyst)
+# PasteMyst [![Build Status](https://travis-ci.com/CodeMyst/PasteMyst.svg?branch=master)](https://travis-ci.com/CodeMyst/PasteMyst)
 
 A lightweight and simple website for pasting text, mainly code snippets.
 

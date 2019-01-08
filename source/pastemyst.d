@@ -82,6 +82,15 @@ interface IWebInterface
         GET /paste?id={id}
     +/
     void getPaste (string id);
+
+	/++
+		GET /:id
+
+		This function has to be later than getPaste (string)!
+	+/
+	@path("/:id")
+	@method (HTTPMethod.GET)
+	void getPaste (HTTPServerRequest req, HTTPServerResponse);
 }
 
 /++
@@ -145,11 +154,10 @@ unittest
 +/
 class WebInterface : IWebInterface
 {
-override:
     /++
         GET /
     +/
-	void get ()
+	override void get ()
 	{
 		const long numberOfPastes = getNumberOfPastes ();
 		render!("index.dt", numberOfPastes);
@@ -159,7 +167,7 @@ override:
         GET /api-docs
 	+/
 	@path ("/api-docs")
-    void getApiDocs ()
+    override void getApiDocs ()
 	{
 		const long numberOfPastes = getNumberOfPastes ();
 		render!("api-docs.dt", numberOfPastes);
@@ -168,17 +176,19 @@ override:
     /++
         POST /paste
 	+/
-    void postPaste (string code, string expiresIn)
+    override void postPaste (string code, string expiresIn)
 	{
 		PasteMystInfo info = createPaste (code, expiresIn);
 
-		redirect ("paste?id=" ~ info.id);
+		redirect ("/" ~ info.id);
 	}
 
     /++
         GET /paste?id={id}
+
+		NOTE: This is kept for backwards compatibility, you should get the paste with /:id
 	+/
-    void getPaste (string id)
+    override void getPaste (string id)
 	{
 		import std.uri : decodeComponent;
 
@@ -193,6 +203,19 @@ override:
 		const long numberOfPastes = getNumberOfPastes ();
 
 		render!("paste.dt", id, createdAt, code, numberOfPastes);
+	}
+
+	/++
+		GET /:id
+
+		This function has to be later than getPaste (string)!
+	+/
+	@path("/:id")
+	override void getPaste (HTTPServerRequest req, HTTPServerResponse)
+	{
+		string id = req.params ["id"];
+
+		return getPaste (id);
 	}
 }
 

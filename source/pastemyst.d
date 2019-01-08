@@ -198,11 +198,23 @@ class WebInterface : IWebInterface
 			throw new HTTPStatusException (404);
 
 		immutable string createdAt = SysTime.fromUnixTime (info.createdAt, UTC ()).toUTC.toString [0..$-1];
+		
+		string expiresAt;
+		if (info.expiresIn == "never")
+		{
+			expiresAt = "never";
+		}
+		else
+		{
+			expiresAt = SysTime.fromUnixTime (expiresInToUnixTime (info.createdAt, info.expiresIn), UTC ())
+						.toUTC.toString [0..$-1];
+		}
+
 		immutable string code = decodeComponent (info.code);
 
 		const long numberOfPastes = getNumberOfPastes ();
 
-		render!("paste.dt", id, createdAt, code, numberOfPastes);
+		render!("paste.dt", id, createdAt, code, numberOfPastes, expiresAt);
 	}
 
 	/++
@@ -313,30 +325,7 @@ void deleteExpiredPasteMysts ()
 			const long createdAt = row [1].get!long;
 			const string expiresIn = row [2].get!string;
 
-			long expiresInUnixTime = createdAt;
-
-			switch (expiresIn)
-			{
-				case "1h":
-					expiresInUnixTime += 3600;
-					break;
-				case "2h":
-					expiresInUnixTime += 2 * 3600;
-					break;
-				case "10h":
-					expiresInUnixTime += 10 * 3600;
-					break;
-				case "1d":
-					expiresInUnixTime += 24 * 3600;
-					break;
-				case "2d":
-					expiresInUnixTime += 48 * 3600;
-					break;
-				case "1w":
-					expiresInUnixTime += 168 * 3600;
-					break;
-				default: break;
-			}
+			long expiresInUnixTime = expiresInToUnixTime (createdAt, expiresIn);
 
 			if (Clock.currTime.toUnixTime > expiresInUnixTime)
 				pasteMystsToDelete ~= id;
@@ -362,6 +351,39 @@ void deleteExpiredPasteMysts ()
 	{
 		logTrace (e.toString);
 	}
+}
+
+long expiresInToUnixTime (long createdAt, string expiresIn)
+{
+	long expiresInUnixTime = createdAt;
+
+	switch (expiresIn)
+	{
+		case "1h":
+			expiresInUnixTime += 3600;
+			break;
+		case "2h":
+			expiresInUnixTime += 2 * 3600;
+			break;
+		case "10h":
+			expiresInUnixTime += 10 * 3600;
+			break;
+		case "1d":
+			expiresInUnixTime += 24 * 3600;
+			break;
+		case "2d":
+			expiresInUnixTime += 48 * 3600;
+			break;
+		case "1w":
+			expiresInUnixTime += 168 * 3600;
+			break;
+		case "never":
+			expiresInUnixTime = 0;
+			break;
+		default: break;
+	}
+
+	return expiresInUnixTime;
 }
 
 /++

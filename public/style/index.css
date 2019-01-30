@@ -1,3 +1,7 @@
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000; }
+
 body {
   background-color: #141414;
   color: #ffffff; }
@@ -39,7 +43,6 @@ label {
     text-decoration: underline;
     font-weight: bold;
     letter-spacing: 0.1rem; }
-
 .codeblock-text h1 {
   display: inline;
   font-weight: bold;
@@ -66,7 +69,6 @@ code.hljs {
 
 .hljs table {
   margin-bottom: 0; }
-
 .hljs td {
   border: none; }
 
@@ -166,3 +168,5 @@ footer {
   footer .number-of-pastes {
     float: none;
     margin-bottom: 2rem; } }
+
+/*# sourceMappingURL=index.css.map */

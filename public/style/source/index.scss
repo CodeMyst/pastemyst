@@ -14,6 +14,12 @@ $break-small: 400px;
 $break-large: 600px;
 $break-larger: 1200px;
 
+select:-moz-focusring
+{
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+}
+
 body
 {
     background-color: $color-nano;

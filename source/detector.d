@@ -18,6 +18,9 @@ string detectLanguage (string code)
 
     remove (filePath);
 
+    if (shamanProcess.output == "")
+        return "plaintext";
+
     return convertLanguage (shamanProcess.output [0..shamanProcess.output.indexOf (':')]);
 }
 

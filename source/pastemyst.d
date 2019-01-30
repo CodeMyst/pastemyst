@@ -308,13 +308,11 @@ PasteMystInfo getPaste (string id)
 
 	connectionPool.releaseConnection (connection);
 
-	string language;
+	string language = "";
 
 	// If it's null that means this is an older paste (backwards compatibility).
 	// If the language is empty then hljs will automatically detect the language.
-	if (row [4].isNull)
-		language = "";
-	else
+	if (!row [4].isNull)
 		language = row [4].get!string;
 
 	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string, language);

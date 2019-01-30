@@ -39,7 +39,10 @@ label {
     text-decoration: underline;
     font-weight: bold;
     letter-spacing: 0.1rem; }
-
+    .codeblock-text code a span.hljs-keyword {
+      color: #ee720d; }
+    .codeblock-text code a:hover span.hljs-keyword {
+      color: #1EAEDB; }
 .codeblock-text h1 {
   display: inline;
   font-weight: bold;
@@ -66,7 +69,6 @@ code.hljs {
 
 .hljs table {
   margin-bottom: 0; }
-
 .hljs td {
   border: none; }
 
@@ -166,3 +168,5 @@ footer {
   footer .number-of-pastes {
     float: none;
     margin-bottom: 2rem; } }
+
+/*# sourceMappingURL=index.css.map */

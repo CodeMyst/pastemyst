@@ -17,3 +17,4 @@ pastemyst-test-*
 *.css.map
 pastemyst
 appsettings.json
+tmp/

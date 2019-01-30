@@ -9,8 +9,6 @@ version (unittest)
 else
 	private const string tableName = "PasteMysts";
 
-private const string base36Chars = "0123456789abcdefghijklmnopqrstuvwxyz";
-
 /++
     Structure that contains all info about a PasteMyst
 +/
@@ -32,6 +30,11 @@ struct PasteMystInfo
         Contents of the PasteMyst
     +/
 	string code;
+	/++
+		The automatically detected language of the PasteMyst.
+		It is detected when the paste is created.
+	+/
+	string language;
 }
 
 /++
@@ -214,7 +217,9 @@ class WebInterface : IWebInterface
 
 		const long numberOfPastes = getNumberOfPastes ();
 
-		render!("paste.dt", id, createdAt, code, numberOfPastes, expiresAt);
+		const string language = info.language;
+
+		render!("paste.dt", id, createdAt, code, numberOfPastes, expiresAt, language);
 	}
 
 	/++
@@ -243,7 +248,9 @@ class WebInterface : IWebInterface
 +/
 PasteMystInfo createPaste (string code, string expiresIn)
 {
-	import std.stdio : writeln;
+	import id : createId;
+	import std.uri : decodeComponent;
+	import detector : detectLanguage;
 
 	immutable long createdAt = Clock.currTime.toUnixTime;
 
@@ -266,16 +273,16 @@ PasteMystInfo createPaste (string code, string expiresIn)
 		{
 			count++;
 		});
-
-		if (count > 0) writeln ("duplicate");
 	} while (count != 0);
 
-	connection.execute ("insert into " ~ tableName ~ " (id, createdAt, expiresIn, code) values (?, ?, ?, ?)",
-                         id, to!string (createdAt), expiresIn, code);
+	string language = detectLanguage (decodeComponent (code));
+
+	connection.execute ("insert into " ~ tableName ~ " (id, createdAt, expiresIn, code, language) values (?, ?, ?, ?, ?)",
+                         id, to!string (createdAt), expiresIn, code, language);
 
 	connectionPool.releaseConnection (connection);
 
-	return PasteMystInfo (id, createdAt, expiresIn, code);
+	return PasteMystInfo (id, createdAt, expiresIn, code, language);
 }
 
 /++
@@ -289,7 +296,7 @@ PasteMystInfo getPaste (string id)
 	Connection connection = connectionPool.getConnection ();
 
 	MySQLRow [] rows;
-	connection.execute ("select id, createdAt, expiresIn, code from " ~ tableName ~ " where id = ?", id, (MySQLRow row)
+	connection.execute ("select id, createdAt, expiresIn, code, language from " ~ tableName ~ " where id = ?", id, (MySQLRow row)
 	{
 		rows ~= row;
 	});
@@ -301,7 +308,16 @@ PasteMystInfo getPaste (string id)
 
 	connectionPool.releaseConnection (connection);
 
-	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string);
+	string language;
+
+	// If it's null that means this is an older paste (backwards compatibility).
+	// If the language is empty then hljs will automatically detect the language.
+	if (row [4].isNull)
+		language = "";
+	else
+		language = row [4].get!string;
+
+	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string, language);
 }
 
 /++
@@ -496,7 +512,8 @@ private void createDbTable ()
 							id varchar(50) primary key,
 							createdAt integer,
 							expiresIn text,
-							code longtext
+							code longtext,
+							language text
 						) engine=InnoDB default charset latin1;");
 
 	connectionPool.releaseConnection (connection);
@@ -512,49 +529,4 @@ private void deleteDbTable ()
 	connection.execute ("drop table " ~ tableName);
 
 	connectionPool.releaseConnection (connection);
-}
-
-/++
-	Encodes a long number into base36. Input has to be >= 0
-+/
-private string encodeBase36 (long input)
-							in (input >= 0, "Input has to be >= 0")
-{
-	import std.algorithm.mutation : reverse;
-
-	char [] result;
-	while (input != 0)
-	{
-		result ~= base36Chars [input % 36];
-		input /= 36;
-	}
-
-	return cast (string) result.reverse;
-}
-
-unittest
-{
-	assert (encodeBase36 (500) == "dw");
-	assert (encodeBase36 (1000) == "rs");
-	assert (encodeBase36 (986_835) == "l5g3");
-	assert (encodeBase36 (938_756_938) == "fiwthm");
-}
-
-private string createId ()
-{
-	import std.random : uniform;
-
-	// The number is between 1296 and 46_655 so it will always have 3 characters
-	// 1296 is the smallest 3 character base 36 string (100)
-	// 46_655 is the largest 3 character base 36 string (zzz)
-	return encodeBase36 (uniform (1296, 46_655));
-}
-
-unittest
-{
-	assert (createId ().length == 3);
-	assert (createId ().length == 3);
-	assert (createId ().length == 3);
-	assert (createId ().length == 3);
-	assert (createId ().length == 3);
 }

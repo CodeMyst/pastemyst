@@ -8,49 +8,56 @@ block body
     pre.codeblock-text
         code.hljs.plaintext Create a new PasteMyst:
 
-    select.expires-in
-        option(value="never") Never expires
-        option(value="1h") Expires in 1 hour
-        option(value="2h") Expires in 2 hours
-        option(value="10h") Expires in 10 hours
-        option(value="1d") Expires in 1 day
-        option(value="2d") Expires in 2 days
-        option(value="1w") Expires in 1 week
-    select.editor-language
-        option(value="plaintext") Plain text
-        option(value="bat") Batch
-        option(value="c") C
-        option(value="csharp") C#
-        option(value="cpp") C++
-        option(value="css") CSS
-        option(value="clojure") Clojure
-        option(value="coffeescript") CoffeeScript
-        option(value="dockerfile") Dockerfile
-        option(value="fsharp") F#
-        option(value="go") Go
-        option(value="html") HTML
-        option(value="handlebars") Handlebars
-        option(value="ini") Ini
-        option(value="json") JSON
-        option(value="java") JAVA
-        option(value="javascript") JavaScript
-        option(value="lua") Lua
-        option(value="markdown") Markdown
-        option(value="objective-c") Objective-C
-        option(value="php") PHP
-        option(value="perl") Perl
-        option(value="powershell") PowerShell
-        option(value="python") Python
-        option(value="r") R
-        option(value="razor") Razor
-        option(value="ruby") Ruby
-        option(value="rust") Rust
-        option(value="sql") SQL
-        option(value="swift") Swift
-        option(value="typescript") TypeScript
-        option(value="vb") Visual Basic
-        option(value="xml") XML
-        option(value="yaml") YAML
+    div.expires-in
+        span.select-label Expires in:
+        select
+            option(value="never") Never
+            option(value="1h") 1 hour
+            option(value="2h") 2 hours
+            option(value="10h") 10 hours
+            option(value="1d") 1 day
+            option(value="2d") 2 days
+            option(value="1w") 1 week
+
+    div.language
+        span.select-label Language:
+        select
+            option(value="autodetect") Autodetect
+            option(value="plaintext") Plain text
+            option(value="bat") Batch
+            option(value="c") C
+            option(value="csharp") C#
+            option(value="cpp") C++
+            option(value="css") CSS
+            option(value="clojure") Clojure
+            option(value="coffeescript") CoffeeScript
+            option(value="d") D
+            option(value="dockerfile") Dockerfile
+            option(value="fsharp") F#
+            option(value="go") Go
+            option(value="html") HTML
+            option(value="handlebars") Handlebars
+            option(value="ini") Ini
+            option(value="json") JSON
+            option(value="java") JAVA
+            option(value="javascript") JavaScript
+            option(value="lua") Lua
+            option(value="markdown") Markdown
+            option(value="objective-c") Objective-C
+            option(value="php") PHP
+            option(value="perl") Perl
+            option(value="powershell") PowerShell
+            option(value="python") Python
+            option(value="r") R
+            option(value="razor") Razor
+            option(value="ruby") Ruby
+            option(value="rust") Rust
+            option(value="sql") SQL
+            option(value="swift") Swift
+            option(value="typescript") TypeScript
+            option(value="vb") Visual Basic
+            option(value="xml") XML
+            option(value="yaml") YAML
 
     textarea(id="plaintext-editor", class="hidden", autocomplete="off", autocorrect="off", autocapitalize="off", spellcheck="false")
     div(id="text-editor")
@@ -64,6 +71,7 @@ block body
     form(method="POST", action="paste", id="create-paste-form")
         input(type="hidden", name="code")
         input(type="hidden", name="expiresIn")
+        input(type="hidden", name="language")
 
     a(class="button button-primary") Create a PasteMyst
 

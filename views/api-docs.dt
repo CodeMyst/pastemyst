@@ -43,9 +43,6 @@ block body
 
     h3#get-pastemyst Get a PasteMyst #[a(href="#get-pastemyst", class="anchor-link") 🔗]
     span.http-method GET
-    span.http-url /#[a(href="#pastemyst-info-object") {PasteMystInfo.id}]
-    br
-    span.http-method GET
     span.http-url /paste?id=#[a(href="#pastemyst-info-object") {PasteMystInfo.id}]
 
     p Returns a #[a(href="#pastemyst-info-object") PasteMystInfo] object for a given PasteMyst ID.

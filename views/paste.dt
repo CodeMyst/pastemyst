@@ -6,7 +6,7 @@ block head
 
 block body
     pre.pastemyst-content
-        code
+        code(class="hljs " ~ language)
             |= code
 
     pre.codeblock-text

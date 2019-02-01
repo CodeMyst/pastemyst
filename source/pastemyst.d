@@ -9,8 +9,6 @@ version (unittest)
 else
 	private const string tableName = "PasteMysts";
 
-private const string base36Chars = "0123456789abcdefghijklmnopqrstuvwxyz";
-
 /++
     Structure that contains all info about a PasteMyst
 +/
@@ -32,6 +30,11 @@ struct PasteMystInfo
         Contents of the PasteMyst
     +/
 	string code;
+	/++
+		The automatically detected language of the PasteMyst.
+		It is detected when the paste is created.
+	+/
+	string language;
 }
 
 /++
@@ -44,16 +47,16 @@ interface IRestApiInterface
     +/
 	@bodyParam ("code", "code")
 	@bodyParam ("expiresIn", "expiresIn")
+	@bodyParam ("language", "language")
 	@method (HTTPMethod.POST)
 	@path ("/api/paste")
-	Json postPaste (string code, string expiresIn) @safe;
+	Json postPaste (string code, string expiresIn, string language = "autodetect") @safe;
 
     /++
         GET /api/paste?id={id}
     +/
 	@queryParam ("id", "id")
     @method (HTTPMethod.GET)
-	@path ("/api/paste")
 	Json getPaste (string id) @safe;
 }
 
@@ -76,7 +79,7 @@ interface IWebInterface
     /++
         POST /paste
     +/
-    void postPaste (string code, string expiresIn);
+    void postPaste (string code, string expiresIn, string language);
 
     /++
         GET /paste?id={id}
@@ -96,19 +99,20 @@ interface IWebInterface
 /++
     REST API Implementation
 +/
+@rootPathFromName
 class RestApiInterface : IRestApiInterface
 {
 override:
     /++
         POST /api/paste
     +/
-	Json postPaste (string code, string expiresIn) @trusted
+	Json postPaste (string code, string expiresIn, string language) @trusted
 	{
-		return createPaste (code, expiresIn).serializeToJson;
+		return createPaste (code, expiresIn, language).serializeToJson;
 	}
 
     /++
-        GET /api/paste
+        GET /api/paste?id={id}
     +/
 	Json getPaste (string id) @trusted
 	{
@@ -128,7 +132,7 @@ unittest
 	auto routes = router.getAllRoutes ();
 
 	assert (routes [0].method == HTTPMethod.POST && routes [0].pattern == "/api/paste");
-	assert (routes [1].method == HTTPMethod.GET && routes [1].pattern == "/:id/api/paste");
+	assert (routes [1].method == HTTPMethod.GET && routes [1].pattern == "/:id/paste");
 
 	auto settings = new HTTPServerSettings;
 	settings.port = 5000;
@@ -139,12 +143,12 @@ unittest
 
 	initialize ();
 
-	const PasteMystInfo info1 = deserializeJson!PasteMystInfo (api.postPaste ("void%20main%20()%0A%7B%0A%7D", "never"));
-	assert (info1.code == "void%20main%20()%0A%7B%0A%7D" && info1.expiresIn == "never");
+	const PasteMystInfo info1 = deserializeJson!PasteMystInfo (api.postPaste ("void%20main%20()%0A%7B%0A%7D", "never", "d"));
+	assert (info1.code == "void%20main%20()%0A%7B%0A%7D" && info1.expiresIn == "never" && info1.language == "d");
 
 	const PasteMystInfo info2 = deserializeJson!PasteMystInfo (api.getPaste (info1.id));
 	assert (info2.code == "void%20main%20()%0A%7B%0A%7D" && info2.expiresIn == "never" &&
-			info2.id == info1.id && info2.createdAt == info1.createdAt);
+			info2.id == info1.id && info2.createdAt == info1.createdAt && info2.language == "d");
 
 	deleteDbTable ();
 }
@@ -176,9 +180,9 @@ class WebInterface : IWebInterface
     /++
         POST /paste
 	+/
-    override void postPaste (string code, string expiresIn)
+    override void postPaste (string code, string expiresIn, string language)
 	{
-		PasteMystInfo info = createPaste (code, expiresIn);
+		PasteMystInfo info = createPaste (code, expiresIn, language);
 
 		redirect ("/" ~ info.id);
 	}
@@ -214,7 +218,9 @@ class WebInterface : IWebInterface
 
 		const long numberOfPastes = getNumberOfPastes ();
 
-		render!("paste.dt", id, createdAt, code, numberOfPastes, expiresAt);
+		const string language = info.language;
+
+		render!("paste.dt", id, createdAt, code, numberOfPastes, expiresAt, language);
 	}
 
 	/++
@@ -237,13 +243,16 @@ class WebInterface : IWebInterface
     Params:
         code - the contents encoded as a uri component
         expiresIn - when the PasteMyst expires
+		language - the language of the paste used by syntax highlighting. possible to be also set to "autodetect" (or "" / null) or "plaintext"
 
     Returns:
         Structure containing all the info about the created PasteMyst.
 +/
-PasteMystInfo createPaste (string code, string expiresIn)
+PasteMystInfo createPaste (string code, string expiresIn, string language)
 {
-	import std.stdio : writeln;
+	import id : createId;
+	import std.uri : decodeComponent;
+	import detector : detectLanguage;
 
 	immutable long createdAt = Clock.currTime.toUnixTime;
 
@@ -266,16 +275,17 @@ PasteMystInfo createPaste (string code, string expiresIn)
 		{
 			count++;
 		});
-
-		if (count > 0) writeln ("duplicate");
 	} while (count != 0);
 
-	connection.execute ("insert into " ~ tableName ~ " (id, createdAt, expiresIn, code) values (?, ?, ?, ?)",
-                         id, to!string (createdAt), expiresIn, code);
+	if (language == "autodetect" || language == "" || language == null)
+		language = detectLanguage (decodeComponent (code));
+
+	connection.execute ("insert into " ~ tableName ~ " (id, createdAt, expiresIn, code, language) values (?, ?, ?, ?, ?)",
+                         id, to!string (createdAt), expiresIn, code, language);
 
 	connectionPool.releaseConnection (connection);
 
-	return PasteMystInfo (id, createdAt, expiresIn, code);
+	return PasteMystInfo (id, createdAt, expiresIn, code, language);
 }
 
 /++
@@ -289,7 +299,7 @@ PasteMystInfo getPaste (string id)
 	Connection connection = connectionPool.getConnection ();
 
 	MySQLRow [] rows;
-	connection.execute ("select id, createdAt, expiresIn, code from " ~ tableName ~ " where id = ?", id, (MySQLRow row)
+	connection.execute ("select id, createdAt, expiresIn, code, language from " ~ tableName ~ " where id = ?", id, (MySQLRow row)
 	{
 		rows ~= row;
 	});
@@ -301,7 +311,14 @@ PasteMystInfo getPaste (string id)
 
 	connectionPool.releaseConnection (connection);
 
-	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string);
+	string language = "";
+
+	// If it's null that means this is an older paste (backwards compatibility).
+	// If the language is empty then hljs will automatically detect the language.
+	if (!row [4].isNull)
+		language = row [4].get!string;
+
+	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string, language);
 }
 
 /++
@@ -496,7 +513,8 @@ private void createDbTable ()
 							id varchar(50) primary key,
 							createdAt integer,
 							expiresIn text,
-							code longtext
+							code longtext,
+							language text
 						) engine=InnoDB default charset latin1;");
 
 	connectionPool.releaseConnection (connection);
@@ -512,49 +530,4 @@ private void deleteDbTable ()
 	connection.execute ("drop table " ~ tableName);
 
 	connectionPool.releaseConnection (connection);
-}
-
-/++
-	Encodes a long number into base36. Input has to be >= 0
-+/
-private string encodeBase36 (long input)
-							in (input >= 0, "Input has to be >= 0")
-{
-	import std.algorithm.mutation : reverse;
-
-	char [] result;
-	while (input != 0)
-	{
-		result ~= base36Chars [input % 36];
-		input /= 36;
-	}
-
-	return cast (string) result.reverse;
-}
-
-unittest
-{
-	assert (encodeBase36 (500) == "dw");
-	assert (encodeBase36 (1000) == "rs");
-	assert (encodeBase36 (986_835) == "l5g3");
-	assert (encodeBase36 (938_756_938) == "fiwthm");
-}
-
-private string createId ()
-{
-	import std.random : uniform;
-
-	// The number is between 1296 and 46_655 so it will always have 3 characters
-	// 1296 is the smallest 3 character base 36 string (100)
-	// 46_655 is the largest 3 character base 36 string (zzz)
-	return encodeBase36 (uniform (1296, 46_655));
-}
-
-unittest
-{
-	assert (createId ().length == 3);
-	assert (createId ().length == 3);
-	assert (createId ().length == 3);
-	assert (createId ().length == 3);
-	assert (createId ().length == 3);
 }

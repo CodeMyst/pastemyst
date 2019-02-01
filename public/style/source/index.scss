@@ -107,6 +107,19 @@ label
             text-decoration: underline;
             font-weight: bold;
             letter-spacing: 0.1rem;
+        
+            span.hljs-keyword
+            {
+                color: $color-range;
+            }
+
+            &:hover
+            {
+                span.hljs-keyword
+                {
+                    color: $color-lue;
+                }
+            }
         }
     }
 

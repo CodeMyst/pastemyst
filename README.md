@@ -7,6 +7,7 @@ A lightweight and simple website for pasting text, mainly code snippets.
 Dependencies:
 
 * mariadb-server
+* [shaman - programming language detector](https://github.com/Prev/shaman) (you need to be able to execute `shaman-tester` commands)
 
 You'll need to have an `appsettings.json` file in the root of the project which will contain:
 

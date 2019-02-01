@@ -1,10 +1,15 @@
 language: d
 
+python: 2.7
+
 addons:
   mariadb: '10.3'
 
 before_install:
   - mysql -e 'create database if not exists PasteMyst;'
+
+install:
+  - pip install shamanld
 
 script:
   - dub test --compiler=${DC}

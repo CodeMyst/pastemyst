@@ -6,9 +6,5 @@ addons:
 before_install:
   - mysql -e 'create database if not exists PasteMyst;'
 
-install:
-  - sudo apt install python-pip
-  - pip install shamanld
-
 script:
   - dub test --compiler=${DC}

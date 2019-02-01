@@ -47,16 +47,16 @@ interface IRestApiInterface
     +/
 	@bodyParam ("code", "code")
 	@bodyParam ("expiresIn", "expiresIn")
+	@bodyParam ("language", "language")
 	@method (HTTPMethod.POST)
 	@path ("/api/paste")
-	Json postPaste (string code, string expiresIn) @safe;
+	Json postPaste (string code, string expiresIn, string language = "autodetect") @safe;
 
     /++
         GET /api/paste?id={id}
     +/
 	@queryParam ("id", "id")
     @method (HTTPMethod.GET)
-	@path ("/api/paste")
 	Json getPaste (string id) @safe;
 }
 
@@ -79,7 +79,7 @@ interface IWebInterface
     /++
         POST /paste
     +/
-    void postPaste (string code, string expiresIn);
+    void postPaste (string code, string expiresIn, string language);
 
     /++
         GET /paste?id={id}
@@ -99,19 +99,20 @@ interface IWebInterface
 /++
     REST API Implementation
 +/
+@rootPathFromName
 class RestApiInterface : IRestApiInterface
 {
 override:
     /++
         POST /api/paste
     +/
-	Json postPaste (string code, string expiresIn) @trusted
+	Json postPaste (string code, string expiresIn, string language) @trusted
 	{
-		return createPaste (code, expiresIn).serializeToJson;
+		return createPaste (code, expiresIn, language).serializeToJson;
 	}
 
     /++
-        GET /api/paste
+        GET /api/paste?id={id}
     +/
 	Json getPaste (string id) @trusted
 	{
@@ -131,7 +132,7 @@ unittest
 	auto routes = router.getAllRoutes ();
 
 	assert (routes [0].method == HTTPMethod.POST && routes [0].pattern == "/api/paste");
-	assert (routes [1].method == HTTPMethod.GET && routes [1].pattern == "/:id/api/paste");
+	assert (routes [1].method == HTTPMethod.GET && routes [1].pattern == "/:id/paste");
 
 	auto settings = new HTTPServerSettings;
 	settings.port = 5000;
@@ -142,12 +143,12 @@ unittest
 
 	initialize ();
 
-	const PasteMystInfo info1 = deserializeJson!PasteMystInfo (api.postPaste ("void%20main%20()%0A%7B%0A%7D", "never"));
-	assert (info1.code == "void%20main%20()%0A%7B%0A%7D" && info1.expiresIn == "never");
+	const PasteMystInfo info1 = deserializeJson!PasteMystInfo (api.postPaste ("void%20main%20()%0A%7B%0A%7D", "never", "d"));
+	assert (info1.code == "void%20main%20()%0A%7B%0A%7D" && info1.expiresIn == "never" && info1.language == "d");
 
 	const PasteMystInfo info2 = deserializeJson!PasteMystInfo (api.getPaste (info1.id));
 	assert (info2.code == "void%20main%20()%0A%7B%0A%7D" && info2.expiresIn == "never" &&
-			info2.id == info1.id && info2.createdAt == info1.createdAt);
+			info2.id == info1.id && info2.createdAt == info1.createdAt && info2.language == "d");
 
 	deleteDbTable ();
 }
@@ -179,9 +180,9 @@ class WebInterface : IWebInterface
     /++
         POST /paste
 	+/
-    override void postPaste (string code, string expiresIn)
+    override void postPaste (string code, string expiresIn, string language)
 	{
-		PasteMystInfo info = createPaste (code, expiresIn);
+		PasteMystInfo info = createPaste (code, expiresIn, language);
 
 		redirect ("/" ~ info.id);
 	}
@@ -242,11 +243,12 @@ class WebInterface : IWebInterface
     Params:
         code - the contents encoded as a uri component
         expiresIn - when the PasteMyst expires
+		language - the language of the paste used by syntax highlighting. possible to be also set to "autodetect" (or "" / null) or "plaintext"
 
     Returns:
         Structure containing all the info about the created PasteMyst.
 +/
-PasteMystInfo createPaste (string code, string expiresIn)
+PasteMystInfo createPaste (string code, string expiresIn, string language)
 {
 	import id : createId;
 	import std.uri : decodeComponent;
@@ -275,7 +277,8 @@ PasteMystInfo createPaste (string code, string expiresIn)
 		});
 	} while (count != 0);
 
-	string language = detectLanguage (decodeComponent (code));
+	if (language == "autodetect" || language == "" || language == null)
+		language = detectLanguage (decodeComponent (code));
 
 	connection.execute ("insert into " ~ tableName ~ " (id, createdAt, expiresIn, code, language) values (?, ?, ?, ?, ?)",
                          id, to!string (createdAt), expiresIn, code, language);

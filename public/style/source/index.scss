@@ -49,6 +49,7 @@ select
     {
         border: none;
         outline: none;
+        color: $color-white;
     }
 }
 
@@ -58,7 +59,30 @@ label
     font-weight: normal;
 }
 
-.editor-language
+.expires-in, .language
+{
+    display: inline-block;
+
+    .select-label
+    {
+        background-color: $color-nanolight;
+        border-top-left-radius: 0.3rem;
+        border-bottom-left-radius: 0.3rem;
+        padding: 0px 10px;
+        height: 38px;
+        line-height: 38px;
+        display: inline-block;
+        margin-right: -10px;
+    }
+
+    select
+    {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}
+
+.language
 {
     float: right;
 }

@@ -6,11 +6,20 @@ require.config ({ paths: { 'vs': 'vs' }});
                 createMonacoEditor ('', '');
             }
 
-            document.getElementsByClassName ('editor-language') [0].onchange = () =>
+            document.getElementsByClassName ('language') [0].getElementsByTagName ('select') [0].onchange = () =>
             {
-                let select = document.getElementsByClassName ('editor-language') [0];
+                if (!isUsingMonaco ()) return;
 
-                createMonacoEditor (window.editor.getValue (), select.options [select.selectedIndex].value);
+                let select = document.getElementsByClassName ('language') [0].getElementsByTagName ('select') [0];
+
+                let language = select.options [select.selectedIndex].value;
+
+                if (language === 'autodetect' || language === 'plaintext')
+                {
+                    language = '';
+                }
+
+                createMonacoEditor (window.editor.getValue (), language);
 
                 deleteMonacoEditor ();
             };            
@@ -27,8 +36,6 @@ enableTextareaTab ();
 if (isMobileBrowser ())
 {
     document.getElementById ('text-editor').classList.add ('hidden');
-    let select = document.getElementsByClassName ('editor-language') [0];
-    select.classList.add ('hidden');
     let plaintextEditor = document.getElementById ('plaintext-editor');
     plaintextEditor.classList.remove ('hidden');
     document.getElementById ('plaintext-checkbox').checked = true;
@@ -45,8 +52,10 @@ function createSnippet ()
         content = document.getElementById ('plaintext-editor').value;
 
     form.querySelectorAll ('input[name=code]') [0].value = encodeURIComponent (content);
-    let expiresInSelect = document.getElementsByClassName ('expires-in') [0];
+    let expiresInSelect = document.getElementsByClassName ('expires-in') [0].getElementsByTagName ('select') [0];
     form.querySelectorAll ('input[name=expiresIn]') [0].value = expiresInSelect.options [expiresInSelect.selectedIndex].value;
+    let languageSelect = document.getElementsByClassName ('language') [0].getElementsByTagName ('select') [0];
+    form.querySelectorAll ('input[name=language]') [0].value = languageSelect.options [languageSelect.selectedIndex].value;
     form.submit ();
 }
 
@@ -59,7 +68,7 @@ function isUsingMonaco ()
 function toggleEditor ()
 {
     let plaintextEditor = document.getElementById ('plaintext-editor');
-    let select = document.getElementsByClassName ('editor-language') [0];
+    let select = document.getElementsByClassName ('language') [0].getElementsByTagName ('select') [0];
 
     if (plaintextEditor.classList.contains ('hidden'))
         plaintextEditor.classList.remove ('hidden');
@@ -71,13 +80,19 @@ function toggleEditor ()
         plaintextEditor.value = window.editor.getValue ();
         deleteMonacoEditor ();
         document.getElementById ('text-editor').classList.add ('hidden');
-        select.classList.add ('hidden');
     }
     else
     {
         document.getElementById ('text-editor').classList.remove ('hidden');
-        createMonacoEditor (plaintextEditor.value, select.options [select.selectedIndex].value);
-        select.classList.remove ('hidden');
+
+        let language = select.options [select.selectedIndex].value;
+
+        if (language === 'autodetect' && language === 'plaintext')
+        {
+            language = '';
+        }
+
+        createMonacoEditor (plaintextEditor.value, language);
     }
 }
 

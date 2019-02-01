@@ -1,6 +1,6 @@
 language: d
 
-python: 2.7
+python: 3.6
 
 addons:
   mariadb: '10.3'

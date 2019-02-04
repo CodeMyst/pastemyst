@@ -9,6 +9,8 @@ Dependencies:
 * mariadb-server
 * [shaman - programming language detector](https://github.com/Prev/shaman) (you need to be able to execute `shaman-tester` commands)
 
+> **NOTE:** If you are hosting an instance of PasteMyst and you are on version 1.5 or below you need to install shaman language detector (and add it to your path so you can run the `shaman-tester` command) and you also need to add a new column to the database. The new column should be called `language` of type `longtext` and should be after the `code` column.
+
 You'll need to have an `appsettings.json` file in the root of the project which will contain:
 
 ```json

@@ -34,7 +34,7 @@ html(lang="en")
                     string #[a(href="https://github.com/codemyst/pastemyst", target="_blank") github] => "github.com/codemyst/pastemyst";
                     string #[a(href="/api-docs") api-docs] => "/api-docs";
                     string #[a description] => "A simple website for pasting text, mainly code snippets.";
-                    string #[a version] => "1.6"; // #[a(href="https://github.com/CodeMyst/PasteMyst/releases", target="_blank") changelog]
+                    string #[a version] => "1.6.1"; // #[a(href="https://github.com/CodeMyst/PasteMyst/releases", target="_blank") changelog]
             
             block body
 

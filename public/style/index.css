@@ -30,6 +30,9 @@ label {
 
 .expires-in, .language {
   display: inline-block; }
+  @media all and (max-width: 640px) {
+    .expires-in, .language {
+      display: block; } }
   .expires-in .select-label, .language .select-label {
     background-color: #222222;
     border-top-left-radius: 0.3rem;
@@ -45,6 +48,9 @@ label {
 
 .language {
   float: right; }
+  @media all and (max-width: 640px) {
+    .language {
+      float: left; } }
 
 .container {
   width: 90%; }
@@ -109,6 +115,9 @@ td.hljs-ln-numbers {
 #text-editor {
   height: 75vh;
   margin-bottom: 2rem; }
+  @media all and (max-width: 640px) {
+    #text-editor {
+      margin-top: 7rem; } }
 
 .hidden {
   display: none; }

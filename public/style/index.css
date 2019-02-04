@@ -114,8 +114,10 @@ td.hljs-ln-numbers {
 
 #text-editor {
   height: 75vh;
-  margin-bottom: 2rem;
-  margin-top: 7rem; }
+  margin-bottom: 2rem; }
+  @media all and (max-width: 640px) {
+    #text-editor {
+      margin-top: 7rem; } }
 
 .hidden {
   display: none; }

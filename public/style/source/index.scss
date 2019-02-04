@@ -201,7 +201,11 @@ td.hljs-ln-numbers
 {
     height: 75vh;
     margin-bottom: 2rem;
-    margin-top: 7rem;
+
+    @media all and (max-width: 640px)
+    {
+        margin-top: 7rem;
+    }
 }
 
 .hidden

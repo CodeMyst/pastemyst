@@ -176,6 +176,9 @@ table.http-body {
 .pastemyst-content {
   margin-top: 6rem;
   margin-bottom: 6rem; }
+  @media all and (max-width: 640px) {
+    .pastemyst-content {
+      font-size: 0.7em; } }
   .pastemyst-content code {
     border: 2px solid #ee720d;
     box-sizing: border-box;

@@ -292,6 +292,11 @@ table.http-body
     margin-top: 6rem;
     margin-bottom: 6rem;
 
+    @media all and (max-width: 640px)
+    {
+        font-size: 0.7em;
+    }
+
     code
     {
         border: 2px solid $color-range;

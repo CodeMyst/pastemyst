@@ -11,7 +11,8 @@ void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorIn
 	string errorDebug = "";
 	debug errorDebug = error.debugMessage;
 	const long numberOfPastes = getNumberOfPastes ();
-	res.render!("error.dt", req, error, errorDebug, numberOfPastes);
+	const bool loggedIn = false;
+	res.render!("error.dt", req, error, errorDebug, numberOfPastes, loggedIn);
 }
 
 void main ()

@@ -29,13 +29,17 @@ html(lang="en")
             pre.codeblock-text
                 a(href="/", class="page-title") #[h1 PasteMyst]
                 
-                code.hljs.d.page-nav.
-                    string #[a(href="/") home] => "/";
-                    string #[a(href="https://github.com/codemyst/pastemyst", target="_blank") github] => "github.com/codemyst/pastemyst";
-                    string #[a(href="/api-docs") api-docs] => "/api-docs";
-                    string #[a description] => "A simple website for pasting text, mainly code snippets.";
-                    string #[a version] => "1.6.1"; // #[a(href="https://github.com/CodeMyst/PasteMyst/releases", target="_blank") changelog]
-            
+                code.hljs.d.page-nav
+                    | string #[a(href="/") home] => "/";
+                    - if (loggedIn)
+                        | string #[a(href="/me") profile] => "/me";
+                    - else
+                        | string #[a(href="/login") github login] => "/login";
+                    | string #[a(href="https://github.com/codemyst/pastemyst", target="_blank") github] => "github.com/codemyst/pastemyst";
+                    | string #[a(href="/api-docs") api-docs] => "/api-docs";
+                    | string #[a description] => "A simple website for pasting text, mainly code snippets.";
+                    | string #[a version] => "1.6.1"; // #[a(href="https://github.com/CodeMyst/PasteMyst/releases", target="_blank") changelog]
+
             block body
 
             footer

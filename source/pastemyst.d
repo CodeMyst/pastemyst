@@ -68,13 +68,24 @@ interface IWebInterface
     /++
         GET /
     +/
-    void get ();
+    void get (HTTPServerRequest req, HTTPServerResponse);
 
     /++
         GET /api-docs
     +/
 	@path ("/api-docs")
     void getApiDocs ();
+
+	/++
+		GET /login
+	+/
+	void getLogin ();
+
+	/++
+		GET /login/github?code=
+	+/
+	@path ("/login/github")
+	void getGithubCode (HTTPServerRequest req, HTTPServerResponse res);
 
     /++
         POST /paste
@@ -161,10 +172,15 @@ class WebInterface : IWebInterface
     /++
         GET /
     +/
-	override void get ()
+	override void get (HTTPServerRequest req, HTTPServerResponse)
 	{
+		import github : isLoggedIn;
+
 		const long numberOfPastes = getNumberOfPastes ();
-		render!("index.dt", numberOfPastes);
+
+		const bool loggedIn = isLoggedIn (req);
+
+		render!("index.dt", numberOfPastes, loggedIn);
 	}
 
     /++
@@ -174,7 +190,43 @@ class WebInterface : IWebInterface
     override void getApiDocs ()
 	{
 		const long numberOfPastes = getNumberOfPastes ();
-		render!("api-docs.dt", numberOfPastes);
+		const bool loggedIn = false;
+		render!("api-docs.dt", numberOfPastes, loggedIn);
+	}
+
+	/++
+		GET /login
+	+/
+	override void getLogin ()
+	{
+		import github : authorize;
+
+		const long numberOfPastes = getNumberOfPastes ();
+
+		authorize ();
+	}
+
+	/++
+		GET /login/github?code=
+	+/
+	@path ("/login/github")
+	override void getGithubCode (HTTPServerRequest req, HTTPServerResponse res)
+	{
+		import github : getAccessToken;
+		import vibe.http.common : Cookie;
+		import vibe.core.log : logInfo;
+
+		string code = req.query.get ("code");
+
+		string accessToken = getAccessToken (code);
+
+		Cookie c = new Cookie;
+		c.path = "/";
+		c.value = accessToken;
+
+		res.cookies ["github"] = c;
+
+		redirect ("/");
 	}
 
     /++
@@ -220,7 +272,9 @@ class WebInterface : IWebInterface
 
 		const string language = info.language;
 
-		render!("paste.dt", id, createdAt, code, numberOfPastes, expiresAt, language);
+		const bool loggedIn = false;
+
+		render!("paste.dt", id, createdAt, code, numberOfPastes, expiresAt, language, loggedIn);
 	}
 
 	/++
@@ -453,31 +507,6 @@ unittest
 }
 
 /++
-	Returns the appsettings.json
-+/
-Json getAppsettings (string name)
-{
-	import std.file : readText, exists;
-	import std.process : environment;
-
-	// If appsettings.json doesn't exist the use environment variables
-	if (!exists (name))
-	{
-		string host = environment.get ("MYSQL_HOST");
-		string user = environment.get ("MYSQL_USER");
-		string db = environment.get ("MYSQL_DB");
-		string pwd = environment.get ("MYSQL_PWD", "");
-
-		Json res = Json.emptyObject;
-		res ["mysql"] = Json (["host": Json (host), "user": Json (user), "db": Json (db), "pwd": Json (pwd)]);
-
-		return res;
-	}
-
-	return readText (name).parseJsonString ();
-}
-
-/++
 	Sets up everything needed to run the app
 +/
 void initialize ()
@@ -492,14 +521,11 @@ void initialize ()
 +/
 private void initializeDbConnection ()
 {
-	Json appsettings = getAppsettings ("appsettings.json");
-	Json mysql = appsettings ["mysql"];
+	import appsettings : MySQLSettings, getMySQLSettings;
 
-	string host = mysql ["host"].get!string;
-	string user = mysql ["user"].get!string;
-	string db = mysql ["db"].get!string;
+	auto settings = getMySQLSettings ();
 
-	connectionPool = ConnectionPool.getInstance (host, user, "", db);
+	connectionPool = ConnectionPool.getInstance (settings.host, settings.user, settings.pwd, settings.db);
 }
 
 /++

@@ -22,9 +22,14 @@ void main ()
 	import pastemyst : initialize, deleteExpiredPasteMysts;
 	import api : RestApiInterface;
 	import web : WebInterface;
+	import profile : ProfileInterface;
+	// import vibe.core.log : setLogLevel, LogLevel;
+
+	// setLogLevel (LogLevel.verbose2);
 
 	auto router = new URLRouter;
 	router.get ("*", serveStaticFiles ("public"));
+	router.registerWebInterface (new ProfileInterface);
 	router.registerWebInterface (new WebInterface);
 	router.registerRestInterface (new RestApiInterface);
 

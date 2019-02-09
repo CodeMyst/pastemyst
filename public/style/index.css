@@ -10,6 +10,9 @@ a {
   color: #ee720d;
   text-decoration: none; }
 
+p {
+  margin: 0; }
+
 code {
   border: none;
   background-color: #222222;

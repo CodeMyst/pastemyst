@@ -18,7 +18,6 @@ string getAccessToken (string code)
     import vibe.http.common : HTTPMethod;
     import vibe.stream.operations : readAllUTF8;
     import vibe.data.json : parseJsonString;
-    import vibe.core.log : logInfo;
     import appsettings : GitHubSettings, getGitHubSettings;
 
     auto settings = getGitHubSettings ();
@@ -42,4 +41,33 @@ string getAccessToken (string code)
 bool isLoggedIn (HTTPServerRequest req)
 {
     return req.cookies.get ("github") !is null;
+}
+
+User getCurrentUser (HTTPServerRequest req)
+{
+    import vibe.http.client : requestHTTP;
+    import vibe.data.json : parseJsonString, Json;
+    import vibe.stream.operations : readAllUTF8;
+
+    User user;
+
+    string accessToken = req.cookies.get ("github");
+
+    requestHTTP ("https://api.github.com/user",
+        (scope req)
+        {
+            req.headers.addField ("Authorization", "token " ~ accessToken);
+        },
+        (scope res)
+        {
+            Json json = parseJsonString (res.bodyReader.readAllUTF8);
+            user.name = json ["login"].get!string;
+        });
+
+    return user;
+}
+
+struct User
+{
+    string name;
 }

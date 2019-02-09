@@ -8,6 +8,11 @@ interface IProfileInterface
         GET /me
     +/
     void getMe (HTTPServerRequest req, HTTPServerResponse);
+
+    /++
+        GET /logout
+    +/
+    void getLogout (HTTPServerRequest req, HTTPServerResponse);
 }
 
 class ProfileInterface : IProfileInterface
@@ -26,5 +31,15 @@ class ProfileInterface : IProfileInterface
         const User user = getCurrentUser (req);
 
         render!("profile.dt", webInfo, user);
+    }
+
+    /++
+        GET /logout
+    +/
+    void getLogout (HTTPServerRequest, HTTPServerResponse res)
+    {
+        import github : logout;
+
+        logout (res);
     }
 }

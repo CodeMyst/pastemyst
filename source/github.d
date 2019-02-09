@@ -1,6 +1,6 @@
 module github;
 
-import vibe.http.server : HTTPServerRequest;
+import vibe.http.server : HTTPServerRequest, HTTPServerResponse;
 
 void authorize ()
 {
@@ -38,9 +38,23 @@ string getAccessToken (string code)
     return accessToken;
 }
 
+void logout (HTTPServerResponse res)
+{
+    import vibe.web.web : redirect;
+    import vibe.http.common : Cookie;
+
+    Cookie c = new Cookie;
+    c.path = "/";
+    c.value = "";
+
+    res.cookies ["github"] = c;
+
+    redirect ("/");
+}
+
 bool isLoggedIn (HTTPServerRequest req)
 {
-    return req.cookies.get ("github") !is null;
+    return req.cookies.get ("github") !is null && req.cookies.get ("github") != "";
 }
 
 User getCurrentUser (HTTPServerRequest req)

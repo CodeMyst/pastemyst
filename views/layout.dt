@@ -31,7 +31,7 @@ html(lang="en")
                 
                 code.hljs.d.page-nav
                     | string #[a(href="/") home] => "/";
-                    - if (loggedIn)
+                    - if (webInfo.isLoggedIn)
                         | string #[a(href="/me") profile] => "/me";
                     - else
                         | string #[a(href="/login") github login] => "/login";
@@ -45,7 +45,7 @@ html(lang="en")
             footer
                 pre.codeblock-text
                     code.hljs.plaintext
-                        p.number-of-pastes #[b= numberOfPastes] currently active PasteMysts
+                        p.number-of-pastes #[b= webInfo.numberOfPastes] currently active PasteMysts
                         p Copyright #[span.copyright-symbol &#169;] #[a(href="https://github.com/codemyst") CodeMyst] 2019
 
         block scripts

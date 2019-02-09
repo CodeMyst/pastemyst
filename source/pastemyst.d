@@ -1,6 +1,6 @@
-import vibe.vibe;
-import mysql;
-import mysql.pool;
+module pastemyst;
+
+import mysql.pool : ConnectionPool;
 
 private ConnectionPool connectionPool;
 
@@ -38,260 +38,6 @@ struct PasteMystInfo
 }
 
 /++
-    Interface for the REST API
-+/
-interface IRestApiInterface
-{
-    /++
-        POST /api/paste
-    +/
-	@bodyParam ("code", "code")
-	@bodyParam ("expiresIn", "expiresIn")
-	@bodyParam ("language", "language")
-	@method (HTTPMethod.POST)
-	@path ("/api/paste")
-	Json postPaste (string code, string expiresIn, string language = "autodetect") @safe;
-
-    /++
-        GET /api/paste?id={id}
-    +/
-	@queryParam ("id", "id")
-    @method (HTTPMethod.GET)
-	Json getPaste (string id) @safe;
-}
-
-/++
-    Interface for the website
-+/
-interface IWebInterface
-{
-    /++
-        GET /
-    +/
-    void get (HTTPServerRequest req, HTTPServerResponse);
-
-    /++
-        GET /api-docs
-    +/
-	@path ("/api-docs")
-    void getApiDocs ();
-
-	/++
-		GET /login
-	+/
-	void getLogin ();
-
-	/++
-		GET /login/github?code=
-	+/
-	@path ("/login/github")
-	void getGithubCode (HTTPServerRequest req, HTTPServerResponse res);
-
-    /++
-        POST /paste
-    +/
-    void postPaste (string code, string expiresIn, string language);
-
-    /++
-        GET /paste?id={id}
-    +/
-    void getPaste (string id);
-
-	/++
-		GET /:id
-
-		This function has to be later than getPaste (string)!
-	+/
-	@path("/:id")
-	@method (HTTPMethod.GET)
-	void getPaste (HTTPServerRequest req, HTTPServerResponse);
-}
-
-/++
-    REST API Implementation
-+/
-@rootPathFromName
-class RestApiInterface : IRestApiInterface
-{
-override:
-    /++
-        POST /api/paste
-    +/
-	Json postPaste (string code, string expiresIn, string language) @trusted
-	{
-		return createPaste (code, expiresIn, language).serializeToJson;
-	}
-
-    /++
-        GET /api/paste?id={id}
-    +/
-	Json getPaste (string id) @trusted
-	{
-		PasteMystInfo info = pastemyst.getPaste (id);
-		
-		if (info.id is null)
-			throw new HTTPStatusException (404);
-		
-		return info.serializeToJson;
-	}
-}
-
-unittest
-{
-	URLRouter router = new URLRouter;
-	registerRestInterface (router, new RestApiInterface);
-	auto routes = router.getAllRoutes ();
-
-	assert (routes [0].method == HTTPMethod.POST && routes [0].pattern == "/api/paste");
-	assert (routes [1].method == HTTPMethod.GET && routes [1].pattern == "/:id/paste");
-
-	auto settings = new HTTPServerSettings;
-	settings.port = 5000;
-	settings.bindAddresses = ["127.0.0.1"];
-	immutable serverAddr = listenHTTP (settings, router).bindAddresses [0];
-
-	auto api = new RestInterfaceClient!IRestApiInterface ("http://" ~ serverAddr.toString);
-
-	initialize ();
-
-	const PasteMystInfo info1 = deserializeJson!PasteMystInfo (api.postPaste ("void%20main%20()%0A%7B%0A%7D", "never", "d"));
-	assert (info1.code == "void%20main%20()%0A%7B%0A%7D" && info1.expiresIn == "never" && info1.language == "d");
-
-	const PasteMystInfo info2 = deserializeJson!PasteMystInfo (api.getPaste (info1.id));
-	assert (info2.code == "void%20main%20()%0A%7B%0A%7D" && info2.expiresIn == "never" &&
-			info2.id == info1.id && info2.createdAt == info1.createdAt && info2.language == "d");
-
-	deleteDbTable ();
-}
-
-/++
-    Web Interface Implementation
-+/
-class WebInterface : IWebInterface
-{
-    /++
-        GET /
-    +/
-	override void get (HTTPServerRequest req, HTTPServerResponse)
-	{
-		import github : isLoggedIn;
-
-		const long numberOfPastes = getNumberOfPastes ();
-
-		const bool loggedIn = isLoggedIn (req);
-
-		render!("index.dt", numberOfPastes, loggedIn);
-	}
-
-    /++
-        GET /api-docs
-	+/
-	@path ("/api-docs")
-    override void getApiDocs ()
-	{
-		const long numberOfPastes = getNumberOfPastes ();
-		const bool loggedIn = false;
-		render!("api-docs.dt", numberOfPastes, loggedIn);
-	}
-
-	/++
-		GET /login
-	+/
-	override void getLogin ()
-	{
-		import github : authorize;
-
-		const long numberOfPastes = getNumberOfPastes ();
-
-		authorize ();
-	}
-
-	/++
-		GET /login/github?code=
-	+/
-	@path ("/login/github")
-	override void getGithubCode (HTTPServerRequest req, HTTPServerResponse res)
-	{
-		import github : getAccessToken;
-		import vibe.http.common : Cookie;
-		import vibe.core.log : logInfo;
-
-		string code = req.query.get ("code");
-
-		string accessToken = getAccessToken (code);
-
-		Cookie c = new Cookie;
-		c.path = "/";
-		c.value = accessToken;
-
-		res.cookies ["github"] = c;
-
-		redirect ("/");
-	}
-
-    /++
-        POST /paste
-	+/
-    override void postPaste (string code, string expiresIn, string language)
-	{
-		PasteMystInfo info = createPaste (code, expiresIn, language);
-
-		redirect ("/" ~ info.id);
-	}
-
-    /++
-        GET /paste?id={id}
-
-		NOTE: This is kept for backwards compatibility, you should get the paste with /:id
-	+/
-    override void getPaste (string id)
-	{
-		import std.uri : decodeComponent;
-
-		PasteMystInfo info = pastemyst.getPaste (id);
-
-		if (info.id is null)
-			throw new HTTPStatusException (404);
-
-		immutable string createdAt = SysTime.fromUnixTime (info.createdAt, UTC ()).toUTC.toString [0..$-1];
-		
-		string expiresAt;
-		if (info.expiresIn == "never")
-		{
-			expiresAt = "never";
-		}
-		else
-		{
-			expiresAt = SysTime.fromUnixTime (expiresInToUnixTime (info.createdAt, info.expiresIn), UTC ())
-						.toUTC.toString [0..$-1];
-		}
-
-		immutable string code = decodeComponent (info.code);
-
-		const long numberOfPastes = getNumberOfPastes ();
-
-		const string language = info.language;
-
-		const bool loggedIn = false;
-
-		render!("paste.dt", id, createdAt, code, numberOfPastes, expiresAt, language, loggedIn);
-	}
-
-	/++
-		GET /:id
-
-		This function has to be later than getPaste (string)!
-	+/
-	@path("/:id")
-	override void getPaste (HTTPServerRequest req, HTTPServerResponse)
-	{
-		string id = req.params ["id"];
-
-		return getPaste (id);
-	}
-}
-
-/++
     Creates a new PasteMyst
 
     Params:
@@ -307,6 +53,10 @@ PasteMystInfo createPaste (string code, string expiresIn, string language)
 	import id : createId;
 	import std.uri : decodeComponent;
 	import detector : detectLanguage;
+	import std.datetime.systime : Clock;
+	import vibe.http.common : HTTPStatusException;
+	import mysql : Connection, MySQLRow;
+	import std.conv : to;
 
 	immutable long createdAt = Clock.currTime.toUnixTime;
 
@@ -350,6 +100,8 @@ PasteMystInfo createPaste (string code, string expiresIn, string language)
 +/
 PasteMystInfo getPaste (string id)
 {
+	import mysql : Connection, MySQLRow;
+
 	Connection connection = connectionPool.getConnection ();
 
 	MySQLRow [] rows;
@@ -382,6 +134,9 @@ void deleteExpiredPasteMysts ()
 {
 	import std.array : join;
 	import std.format : format;
+	import mysql : Connection, MySQLRow;
+	import std.datetime.systime : Clock;
+	import vibe.core.log : logInfo, logTrace;
 
 	try
 	{
@@ -462,6 +217,8 @@ long expiresInToUnixTime (long createdAt, string expiresIn)
 +/
 long getNumberOfPastes ()
 {
+	import mysql : Connection, MySQLRow;
+
 	Connection connection = connectionPool.getConnection ();
 	MySQLRow countRow;
 	connection.execute ("select count(*) from " ~ tableName, (MySQLRow row)
@@ -519,7 +276,7 @@ void initialize ()
 /++
 	Creates a new DB Connection Pool
 +/
-private void initializeDbConnection ()
+void initializeDbConnection ()
 {
 	import appsettings : MySQLSettings, getMySQLSettings;
 
@@ -531,8 +288,10 @@ private void initializeDbConnection ()
 /++
 	Creates a new DB Table if it doesn't exist
 +/
-private void createDbTable ()
+void createDbTable ()
 {
+	import mysql : Connection;
+
 	Connection connection = connectionPool.getConnection ();
 
 	connection.execute ("create table if not exists " ~ tableName ~ " (
@@ -549,8 +308,10 @@ private void createDbTable ()
 /++
 	Deletes the DB Table. Only called for tests
 +/
-private void deleteDbTable ()
+void deleteDbTable ()
 {
+	import mysql : Connection;
+
 	Connection connection = connectionPool.getConnection ();
 
 	connection.execute ("drop table " ~ tableName);

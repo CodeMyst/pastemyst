@@ -6,18 +6,22 @@ import vibe.vibe;
 void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
 {
 	import pastemyst : getNumberOfPastes;
+	import web : WebInfo, getWebInfo;
 
 	// String with debug info
 	string errorDebug = "";
 	debug errorDebug = error.debugMessage;
-	const long numberOfPastes = getNumberOfPastes ();
-	const bool loggedIn = false;
-	res.render!("error.dt", req, error, errorDebug, numberOfPastes, loggedIn);
+
+	WebInfo webInfo = getWebInfo (req);
+
+	res.render!("error.dt", req, error, errorDebug, webInfo);
 }
 
 void main ()
 {
-	import pastemyst : WebInterface, RestApiInterface, initialize, deleteExpiredPasteMysts;
+	import pastemyst : initialize, deleteExpiredPasteMysts;
+	import api : RestApiInterface;
+	import web : WebInterface;
 
 	auto router = new URLRouter;
 	router.get ("*", serveStaticFiles ("public"));

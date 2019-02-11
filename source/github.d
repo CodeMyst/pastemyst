@@ -57,15 +57,48 @@ public bool isLoggedIn (HTTPServerRequest req)
     return req.cookies.get ("github") !is null && req.cookies.get ("github") != "";
 }
 
-public User getCurrentUser (HTTPServerRequest req)
+public bool isRegistered (string accessToken)
+{
+    import db : getConnection, releaseConnection;
+    import mysql : Connection, MySQLRow;
+    import vibe.core.log : logInfo;
+
+    Connection connection = getConnection ();
+
+    User user = getCurrentUser (accessToken);
+
+	MySQLRow countRow;
+    connection.execute ("select count(*) from Users where login = ?", user.login, (MySQLRow row)
+    {
+        countRow = row;
+    });
+
+    connection.releaseConnection ();
+
+    return countRow [0].get!long != 0;
+}
+
+public void register (string accessToken)
+{
+    import db : getConnection, releaseConnection;
+    import mysql : Connection;
+
+    User user = getCurrentUser (accessToken);
+
+    Connection connection = getConnection ();
+
+    connection.execute ("insert into Users (id, login, email) values (?, ?, ?)", user.id, user.login, user.email);
+
+    connection.releaseConnection ();
+}
+
+public User getCurrentUser (string accessToken)
 {
     import vibe.http.client : requestHTTP;
     import vibe.data.json : parseJsonString, Json;
     import vibe.stream.operations : readAllUTF8;
 
     User user;
-
-    string accessToken = req.cookies.get ("github");
 
     requestHTTP ("https://api.github.com/user",
         (scope req)
@@ -75,13 +108,23 @@ public User getCurrentUser (HTTPServerRequest req)
         (scope res)
         {
             Json json = parseJsonString (res.bodyReader.readAllUTF8);
-            user.name = json ["login"].get!string;
+
+            user.id = json ["id"].get!int;
+            user.login = json ["login"].get!string;
+            user.email = json ["email"].get!string;
         });
 
     return user;
 }
 
+public User getCurrentUser (HTTPServerRequest req)
+{
+    return getCurrentUser (req.cookies.get ("github"));
+}
+
 public struct User
 {
-    string name;
+    int id;
+    string login;
+    string email;
 }

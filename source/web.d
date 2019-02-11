@@ -97,7 +97,7 @@ class WebInterface : IWebInterface
 	@path ("/login/github")
 	public override void getGithubCode (HTTPServerRequest req, HTTPServerResponse res)
 	{
-		import github : getAccessToken;
+		import github : getAccessToken, isRegistered, register;
 		import vibe.http.common : Cookie;
         import vibe.web.web : redirect;
 
@@ -110,6 +110,9 @@ class WebInterface : IWebInterface
 		c.value = accessToken;
 
 		res.cookies ["github"] = c;
+
+		if (!isRegistered (accessToken))
+			register (accessToken);
 
 		redirect ("/");
 	}

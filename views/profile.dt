@@ -7,5 +7,5 @@ block head
 block body
     pre.codeblock-text
         code.hljs.plaintext
-            p #{user.name} 
+            p #{user.login} 
                 a(href="/logout") (logout)

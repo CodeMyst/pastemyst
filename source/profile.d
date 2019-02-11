@@ -15,7 +15,7 @@ public interface IProfileInterface
     public void getLogout (HTTPServerRequest req, HTTPServerResponse);
 }
 
-class ProfileInterface : IProfileInterface
+public class ProfileInterface : IProfileInterface
 {
     /++
         GET /me

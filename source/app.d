@@ -19,7 +19,9 @@ void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorIn
 
 void main ()
 {
-	import pastemyst : initialize, deleteExpiredPasteMysts;
+	import pastemyst : deleteExpiredPasteMysts;
+	import appsettings : getMySQLSettings;
+	import db : initializeDb, createDbTables;
 	import api : RestApiInterface;
 	import web : WebInterface;
 	import profile : ProfileInterface;
@@ -38,7 +40,8 @@ void main ()
 	settings.port = 5000;
 	settings.errorPageHandler = toDelegate (&showError);
 
-	initialize ();
+	initializeDb (getMySQLSettings ());
+	createDbTables ();
 
 	setTimer (10.minutes, toDelegate (&deleteExpiredPasteMysts), true);
 

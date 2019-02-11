@@ -1,14 +1,5 @@
 module pastemyst;
 
-import mysql.pool : ConnectionPool;
-
-private ConnectionPool connectionPool;
-
-version (unittest)
-	private const string tableName = "Test";
-else
-	private const string tableName = "PasteMysts";
-
 /++
     Structure that contains all info about a PasteMyst
 +/
@@ -57,13 +48,14 @@ PasteMystInfo createPaste (string code, string expiresIn, string language)
 	import vibe.http.common : HTTPStatusException;
 	import mysql : Connection, MySQLRow;
 	import std.conv : to;
+	import db : getConnection, releaseConnection;
 
 	immutable long createdAt = Clock.currTime.toUnixTime;
 
 	if (checkValidExpiryTime (expiresIn) == false)
 		throw new HTTPStatusException (400, "Invalid \"expiresIn\" value. Expected: never, 1h, 2h, 10h, 1d, 2d or 1w.");
 
-	Connection connection = connectionPool.getConnection ();
+	Connection connection = getConnection ();
 
 	string id;
 
@@ -75,7 +67,7 @@ PasteMystInfo createPaste (string code, string expiresIn, string language)
 		
 		count = 0;
 		// Do this check in case there is already a paste with the same id
-		connection.execute ("select id from " ~ tableName ~ " where id = ?", id, (MySQLRow row)
+		connection.execute ("select id from PasteMysts where id = ?", id, (MySQLRow row)
 		{
 			count++;
 		});
@@ -84,10 +76,10 @@ PasteMystInfo createPaste (string code, string expiresIn, string language)
 	if (language == "autodetect" || language == "" || language == null)
 		language = detectLanguage (decodeComponent (code));
 
-	connection.execute ("insert into " ~ tableName ~ " (id, createdAt, expiresIn, code, language) values (?, ?, ?, ?, ?)",
+	connection.execute ("insert into PasteMysts (id, createdAt, expiresIn, code, language) values (?, ?, ?, ?, ?)",
                          id, to!string (createdAt), expiresIn, code, language);
 
-	connectionPool.releaseConnection (connection);
+	connection.releaseConnection ();
 
 	return PasteMystInfo (id, createdAt, expiresIn, code, language);
 }
@@ -101,11 +93,12 @@ PasteMystInfo createPaste (string code, string expiresIn, string language)
 PasteMystInfo getPaste (string id)
 {
 	import mysql : Connection, MySQLRow;
+	import db : getConnection, releaseConnection;
 
-	Connection connection = connectionPool.getConnection ();
+	Connection connection = getConnection ();
 
 	MySQLRow [] rows;
-	connection.execute ("select id, createdAt, expiresIn, code, language from " ~ tableName ~ " where id = ?", id, (MySQLRow row)
+	connection.execute ("select id, createdAt, expiresIn, code, language from PasteMysts where id = ?", id, (MySQLRow row)
 	{
 		rows ~= row;
 	});
@@ -115,7 +108,7 @@ PasteMystInfo getPaste (string id)
 
 	MySQLRow row = rows [0];
 
-	connectionPool.releaseConnection (connection);
+	connection.releaseConnection ();
 
 	string language = "";
 
@@ -137,14 +130,15 @@ void deleteExpiredPasteMysts ()
 	import mysql : Connection, MySQLRow;
 	import std.datetime.systime : Clock;
 	import vibe.core.log : logInfo, logTrace;
+	import db : getConnection, releaseConnection;
 
 	try
 	{
 		string [] pasteMystsToDelete;
 
-		Connection connection = connectionPool.getConnection ();
+		Connection connection = getConnection ();
 
-		connection.execute ("select id, createdAt, expiresIn from " ~ tableName ~ " where not expiresIn = 'never'",
+		connection.execute ("select id, createdAt, expiresIn from PasteMysts where not expiresIn = 'never'",
 		(MySQLRow row)
 		{
 			const string id = row [0].get!string;
@@ -166,12 +160,12 @@ void deleteExpiredPasteMysts ()
 			if (i + 1 < pasteMystsToDelete.length)
 				toDelete ~= ",";
 		}
-		string deleteQuery = format ("delete from %s where id in (%s)", tableName, toDelete);
+		string deleteQuery = format ("delete from PasteMysts where id in (%s)", toDelete);
 		connection.execute (deleteQuery);
 
 		logInfo ("Deleted %s PasteMysts: %s", pasteMystsToDelete.length, toDelete);
 
-		connectionPool.releaseConnection (connection);
+		connection.releaseConnection ();
 	}
 	catch (Exception e)
 	{
@@ -218,15 +212,16 @@ long expiresInToUnixTime (long createdAt, string expiresIn)
 long getNumberOfPastes ()
 {
 	import mysql : Connection, MySQLRow;
+	import db : getConnection, releaseConnection;
 
-	Connection connection = connectionPool.getConnection ();
+	Connection connection = getConnection ();
 	MySQLRow countRow;
-	connection.execute ("select count(*) from " ~ tableName, (MySQLRow row)
+	connection.execute ("select count(*) from PasteMysts", (MySQLRow row)
 	{
 		countRow = row;
 	});
 
-	connectionPool.releaseConnection (connection);
+	connection.releaseConnection ();
 
 	return countRow [0].get!long;
 }
@@ -261,91 +256,4 @@ unittest
 	assert (checkValidExpiryTime ("3h") == false);
 	assert (checkValidExpiryTime ("213j98") == false);
 	assert (checkValidExpiryTime ("adsj98sdaj") == false);
-}
-
-/++
-	Sets up everything needed to run the app
-+/
-void initialize ()
-{
-	initializeDbConnection ();
-
-	createDbTable ();
-}
-
-/++
-	Creates a new DB Connection Pool
-+/
-void initializeDbConnection ()
-{
-	import appsettings : MySQLSettings, getMySQLSettings;
-
-	auto settings = getMySQLSettings ();
-
-	connectionPool = ConnectionPool.getInstance (settings.host, settings.user, settings.pwd, settings.db);
-}
-
-/++
-	Creates a new DB Table if it doesn't exist
-+/
-void createDbTable ()
-{
-	import mysql : Connection;
-
-	Connection connection = connectionPool.getConnection ();
-
-	connection.execute ("create table if not exists Users (
-							id varchar (255) not null primary key,
-							login varchar (255) not null,
-							email varchar (255) not null
-						) engine=InnoDB default charset utf8;");
-
-	connection.execute ("create table if not exists " ~ tableName ~ " (
-							id varchar (255) not null primary key,
-							createdAt integer unsigned not null,
-							expiresIn varchar (255) not null,
-							title varchar (255),
-							code longtext not null,
-							language varchar (255) not null default 'autodetect',
-							labels text,
-							ownerId varchar (255),
-							isPrivate tinyint (1) not null default 0,
-							isEdited tinyint (1) not null default 0,
-							constraint `fkOwnerId`
-								foreign key (ownerId) references Users (id)
-								on delete cascade
-								on update cascade
-						) engine=InnoDB default charset utf8;");
-
-	connection.execute ("create table if not exists Edits (
-							id varchar (255) not null primary key,
-							pasteId varchar (255) not null,
-							previousEditId varchar (255),
-							diff longtext not null,
-							date integer unsigned not null,
-							constraint `fkPasteId`
-								foreign key (pasteId) references PasteMysts (id)
-								on delete cascade
-								on update cascade,
-							constraint `fkPreviousEditId`
-								foreign key (previousEditId) references Edits (id)
-								on delete cascade
-								on update cascade
-						) engine=InnoDB default charset utf8;");
-
-	connectionPool.releaseConnection (connection);
-}
-
-/++
-	Deletes the DB Table. Only called for tests
-+/
-void deleteDbTable ()
-{
-	import mysql : Connection;
-
-	Connection connection = connectionPool.getConnection ();
-
-	connection.execute ("drop table " ~ tableName);
-
-	connectionPool.releaseConnection (connection);
 }

@@ -2,17 +2,17 @@ module profile;
 
 import vibe.http.server : HTTPServerRequest, HTTPServerResponse;
 
-interface IProfileInterface
+public interface IProfileInterface
 {
     /++
         GET /me
     +/
-    void getMe (HTTPServerRequest req, HTTPServerResponse);
+    public void getMe (HTTPServerRequest req, HTTPServerResponse);
 
     /++
         GET /logout
     +/
-    void getLogout (HTTPServerRequest req, HTTPServerResponse);
+    public void getLogout (HTTPServerRequest req, HTTPServerResponse);
 }
 
 class ProfileInterface : IProfileInterface
@@ -20,7 +20,7 @@ class ProfileInterface : IProfileInterface
     /++
         GET /me
     +/
-    void getMe (HTTPServerRequest req, HTTPServerResponse)
+    public override void getMe (HTTPServerRequest req, HTTPServerResponse)
     {
         import vibe.web.web : render;
         import web : getWebInfo, WebInfo;
@@ -36,7 +36,7 @@ class ProfileInterface : IProfileInterface
     /++
         GET /logout
     +/
-    void getLogout (HTTPServerRequest, HTTPServerResponse res)
+    public override void getLogout (HTTPServerRequest, HTTPServerResponse res)
     {
         import github : logout;
 

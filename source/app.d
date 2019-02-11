@@ -3,7 +3,7 @@ import vibe.vibe;
 /++
 	Displays the error page.
 +/
-void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
+private void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
 {
 	import pastemyst : getNumberOfPastes;
 	import web : WebInfo, getWebInfo;
@@ -17,7 +17,7 @@ void showError (HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorIn
 	res.render!("error.dt", req, error, errorDebug, webInfo);
 }
 
-void main ()
+public void main ()
 {
 	import pastemyst : deleteExpiredPasteMysts;
 	import appsettings : getMySQLSettings;

@@ -5,7 +5,7 @@ import vibe.data.json;
 
 private const string appsettingsPath = "appsettings.json";
 
-struct MySQLSettings
+public struct MySQLSettings
 {
     string host;
     string user;
@@ -14,7 +14,7 @@ struct MySQLSettings
     string pwd;
 }
 
-struct GitHubSettings
+public struct GitHubSettings
 {
     string clientId;
     string clientSecret;
@@ -23,7 +23,7 @@ struct GitHubSettings
 /++
 	Returns MySQL settings
 +/
-MySQLSettings getMySQLSettings ()
+public MySQLSettings getMySQLSettings ()
 {
 	import std.file : readText, exists;
 	import std.process : environment;
@@ -43,7 +43,7 @@ MySQLSettings getMySQLSettings ()
     return deserializeJson!MySQLSettings (json ["mysql"]);
 }
 
-GitHubSettings getGitHubSettings ()
+public GitHubSettings getGitHubSettings ()
 {
     import std.file : readText;
 

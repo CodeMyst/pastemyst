@@ -7,39 +7,39 @@ import vibe.http.common : HTTPMethod;
 /++
     Interface for the website
 +/
-interface IWebInterface
+public interface IWebInterface
 {
     /++
         GET /
     +/
-    void get (HTTPServerRequest req, HTTPServerResponse);
+    public void get (HTTPServerRequest req, HTTPServerResponse);
 
     /++
         GET /api-docs
     +/
 	@path ("/api-docs")
-    void getApiDocs (HTTPServerRequest req, HTTPServerResponse);
+    public void getApiDocs (HTTPServerRequest req, HTTPServerResponse);
 
 	/++
 		GET /login
 	+/
-	void getLogin ();
+	public void getLogin ();
 
 	/++
 		GET /login/github?code=
 	+/
 	@path ("/login/github")
-	void getGithubCode (HTTPServerRequest req, HTTPServerResponse res);
+	public void getGithubCode (HTTPServerRequest req, HTTPServerResponse res);
 
     /++
         POST /paste
     +/
-    void postPaste (string code, string expiresIn, string language);
+    public void postPaste (string code, string expiresIn, string language);
 
     /++
         GET /paste?id={id}
     +/
-    void getPaste (string id, HTTPServerRequest req, HTTPServerResponse res);
+    public void getPaste (string id, HTTPServerRequest req, HTTPServerResponse res);
 
 	/++
 		GET /:id
@@ -48,7 +48,7 @@ interface IWebInterface
 	+/
 	@path("/:id")
 	@method (HTTPMethod.GET)
-	void getPaste (HTTPServerRequest req, HTTPServerResponse);
+	public void getPaste (HTTPServerRequest req, HTTPServerResponse);
 }
 
 /++
@@ -59,7 +59,7 @@ class WebInterface : IWebInterface
     /++
         GET /
     +/
-	override void get (HTTPServerRequest req, HTTPServerResponse)
+	public override void get (HTTPServerRequest req, HTTPServerResponse)
 	{
 		import vibe.web.web : render;
        
@@ -72,7 +72,7 @@ class WebInterface : IWebInterface
         GET /api-docs
 	+/
 	@path ("/api-docs")
-    override void getApiDocs (HTTPServerRequest req, HTTPServerResponse)
+    public override void getApiDocs (HTTPServerRequest req, HTTPServerResponse)
 	{
 		import vibe.web.web : render;
 
@@ -84,7 +84,7 @@ class WebInterface : IWebInterface
 	/++
 		GET /login
 	+/
-	override void getLogin ()
+	public override void getLogin ()
 	{
 		import github : authorize;
 
@@ -95,7 +95,7 @@ class WebInterface : IWebInterface
 		GET /login/github?code=
 	+/
 	@path ("/login/github")
-	override void getGithubCode (HTTPServerRequest req, HTTPServerResponse res)
+	public override void getGithubCode (HTTPServerRequest req, HTTPServerResponse res)
 	{
 		import github : getAccessToken;
 		import vibe.http.common : Cookie;
@@ -117,7 +117,7 @@ class WebInterface : IWebInterface
     /++
         POST /paste
 	+/
-    override void postPaste (string code, string expiresIn, string language)
+    public override void postPaste (string code, string expiresIn, string language)
 	{
         import pastemyst : PasteMystInfo, createPaste;
         import vibe.web.web : redirect;
@@ -132,7 +132,7 @@ class WebInterface : IWebInterface
 
 		NOTE: This is kept for backwards compatibility, you should get the paste with /:id
 	+/
-    override void getPaste (string id, HTTPServerRequest req, HTTPServerResponse)
+    public override void getPaste (string id, HTTPServerRequest req, HTTPServerResponse)
 	{
 		import std.uri : decodeComponent;
         import pastemyst : PasteMystInfo, getPaste, expiresInToUnixTime;
@@ -174,7 +174,7 @@ class WebInterface : IWebInterface
 		This function has to be later than getPaste (string)!
 	+/
 	@path("/:id")
-	override void getPaste (HTTPServerRequest req, HTTPServerResponse res)
+	public override void getPaste (HTTPServerRequest req, HTTPServerResponse res)
 	{
 		string id = req.params ["id"];
 
@@ -182,13 +182,13 @@ class WebInterface : IWebInterface
 	}
 }
 
-struct WebInfo
+public struct WebInfo
 {
     long numberOfPastes;
     bool isLoggedIn;
 }
 
-WebInfo getWebInfo (HTTPServerRequest req)
+public WebInfo getWebInfo (HTTPServerRequest req)
 {
     import github : isLoggedIn;
     import pastemyst : getNumberOfPastes;

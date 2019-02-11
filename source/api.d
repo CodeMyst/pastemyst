@@ -7,7 +7,7 @@ import vibe.data.json : Json;
 /++
     Interface for the REST API
 +/
-interface IRestApiInterface
+public interface IRestApiInterface
 {
     /++
         POST /api/paste
@@ -17,27 +17,26 @@ interface IRestApiInterface
 	@bodyParam ("language", "language")
 	@method (HTTPMethod.POST)
 	@path ("/api/paste")
-	Json postPaste (string code, string expiresIn, string language = "autodetect") @safe;
+	public Json postPaste (string code, string expiresIn, string language = "autodetect") @safe;
 
     /++
         GET /api/paste?id={id}
     +/
 	@queryParam ("id", "id")
     @method (HTTPMethod.GET)
-	Json getPaste (string id) @safe;
+	public Json getPaste (string id) @safe;
 }
 
 /++
     REST API Implementation
 +/
 @rootPathFromName
-class RestApiInterface : IRestApiInterface
+public class RestApiInterface : IRestApiInterface
 {
-override:
     /++
         POST /api/paste
     +/
-	Json postPaste (string code, string expiresIn, string language) @trusted
+	public override Json postPaste (string code, string expiresIn, string language) @trusted
 	{
         import pastemyst : createPaste;
         import vibe.data.json : serializeToJson;
@@ -48,7 +47,7 @@ override:
     /++
         GET /api/paste?id={id}
     +/
-	Json getPaste (string id) @trusted
+	public override Json getPaste (string id) @trusted
 	{
         import pastemyst : getPaste, PasteMystInfo;
         import vibe.http.common : HTTPStatusException;

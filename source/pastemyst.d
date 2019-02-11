@@ -3,29 +3,29 @@ module pastemyst;
 /++
     Structure that contains all info about a PasteMyst
 +/
-struct PasteMystInfo
+public struct PasteMystInfo
 {
     /++
         ID of the PasteMyst
     +/
-	string id;
+	public string id;
     /++
         When the PasteMyst is created, in UNIX time
     +/
-	long createdAt;
+	public long createdAt;
     /++
         When the PasteMyst expires. Valid values are: never, 1h, 2h, 10h, 1d, 2d or 1w
     +/
-	string expiresIn;
+	public string expiresIn;
     /++
         Contents of the PasteMyst
     +/
-	string code;
+	public string code;
 	/++
 		The automatically detected language of the PasteMyst.
 		It is detected when the paste is created.
 	+/
-	string language;
+	public string language;
 }
 
 /++
@@ -39,7 +39,7 @@ struct PasteMystInfo
     Returns:
         Structure containing all the info about the created PasteMyst.
 +/
-PasteMystInfo createPaste (string code, string expiresIn, string language)
+public PasteMystInfo createPaste (string code, string expiresIn, string language)
 {
 	import id : createId;
 	import std.uri : decodeComponent;
@@ -90,7 +90,7 @@ PasteMystInfo createPaste (string code, string expiresIn, string language)
     Returns:
         Structure with all the info about the retrieved PasteMyst. Returns an empty PasteMystInfo struct if the PasteMyst isn't found.
 +/
-PasteMystInfo getPaste (string id)
+public PasteMystInfo getPaste (string id)
 {
 	import mysql : Connection, MySQLRow;
 	import db : getConnection, releaseConnection;
@@ -123,7 +123,7 @@ PasteMystInfo getPaste (string id)
 /++
     Deletes all PasteMyst which have expired.
 +/
-void deleteExpiredPasteMysts ()
+public void deleteExpiredPasteMysts ()
 {
 	import std.array : join;
 	import std.format : format;
@@ -173,7 +173,7 @@ void deleteExpiredPasteMysts ()
 	}
 }
 
-long expiresInToUnixTime (long createdAt, string expiresIn)
+public long expiresInToUnixTime (long createdAt, string expiresIn)
 {
 	long expiresInUnixTime = createdAt;
 
@@ -209,7 +209,7 @@ long expiresInToUnixTime (long createdAt, string expiresIn)
 /++
     Gets the number of currently active PasteMysts 
 +/
-long getNumberOfPastes ()
+public long getNumberOfPastes ()
 {
 	import mysql : Connection, MySQLRow;
 	import db : getConnection, releaseConnection;
@@ -231,7 +231,7 @@ long getNumberOfPastes ()
 
     Valid values are: never, 1h, 2h, 10h, 1d, 2d or 1w.
 +/
-bool checkValidExpiryTime (string expiresIn)
+public bool checkValidExpiryTime (string expiresIn)
 {
 	return (expiresIn == "never" ||
 		    expiresIn == "1h"    ||

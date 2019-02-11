@@ -5,7 +5,7 @@ private const string base36Chars = "0123456789abcdefghijklmnopqrstuvwxyz";
 /++
 	Encodes a long number into base36. Input has to be >= 0
 +/
-string encodeBase36 (long input)
+public string encodeBase36 (long input)
 							in (input >= 0, "Input has to be >= 0")
 {
 	import std.algorithm.mutation : reverse;
@@ -28,7 +28,7 @@ unittest
 	assert (encodeBase36 (938_756_938) == "fiwthm");
 }
 
-string createId ()
+public string createId ()
 {
 	import std.random : uniform;
 

@@ -2,7 +2,7 @@ module github;
 
 import vibe.http.server : HTTPServerRequest, HTTPServerResponse;
 
-void authorize ()
+public void authorize ()
 {
     import vibe.web.web : redirect;
     import appsettings : GitHubSettings, getGitHubSettings;
@@ -12,7 +12,7 @@ void authorize ()
     redirect ("https://github.com/login/oauth/authorize?client_id=" ~ settings.clientId ~ "&scope=read:user%20user:email");
 }
 
-string getAccessToken (string code)
+public string getAccessToken (string code)
 {
     import vibe.http.client : requestHTTP;
     import vibe.http.common : HTTPMethod;
@@ -38,7 +38,7 @@ string getAccessToken (string code)
     return accessToken;
 }
 
-void logout (HTTPServerResponse res)
+public void logout (HTTPServerResponse res)
 {
     import vibe.web.web : redirect;
     import vibe.http.common : Cookie;
@@ -52,12 +52,12 @@ void logout (HTTPServerResponse res)
     redirect ("/");
 }
 
-bool isLoggedIn (HTTPServerRequest req)
+public bool isLoggedIn (HTTPServerRequest req)
 {
     return req.cookies.get ("github") !is null && req.cookies.get ("github") != "";
 }
 
-User getCurrentUser (HTTPServerRequest req)
+public User getCurrentUser (HTTPServerRequest req)
 {
     import vibe.http.client : requestHTTP;
     import vibe.data.json : parseJsonString, Json;
@@ -81,7 +81,7 @@ User getCurrentUser (HTTPServerRequest req)
     return user;
 }
 
-struct User
+public struct User
 {
     string name;
 }

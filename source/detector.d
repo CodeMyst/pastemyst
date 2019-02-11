@@ -2,7 +2,7 @@ module detector;
 
 private const string tempPath = "tmp";
 
-string detectLanguage (string code)
+public string detectLanguage (string code)
 {
     import std.file : mkdir, exists, getcwd, remove;
     import std.stdio : writeln;

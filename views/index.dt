@@ -59,6 +59,8 @@ block body
             option(value="xml") XML
             option(value="yaml") YAML
 
+    input(type="text", placeholder="Title (optional)", class="title-input")
+
     textarea(id="plaintext-editor", class="hidden", autocomplete="off", autocorrect="off", autocapitalize="off", spellcheck="false")
     div(id="text-editor")
 

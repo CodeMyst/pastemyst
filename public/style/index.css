@@ -55,6 +55,14 @@ label {
     .language {
       float: left; } }
 
+input[type="text"].title-input {
+  display: block;
+  width: 100%;
+  background-color: #222222;
+  border: none;
+  border-radius: 0.3rem;
+  font-family: "Ubuntu Mono", monospace; }
+
 .container {
   width: 90%; }
 

@@ -5,12 +5,16 @@ block head
     meta(property="og:title", content="PasteMyst")
 
 block body
+    - if (title != "")
+        pre.codeblock-text.title
+            code.hljs.plaintext #{title}
+
     pre.pastemyst-content
-        code(class="hljs " ~ language)
-            |= code
+        code(class="hljs " ~ language) #{code}
 
     pre.codeblock-text
-        code.hljs.d.
-            string #[a id] => "#[b= id]";
-            DateTime #[a createdAt] => new DateTime ("#[b= createdAt] UTC");
-            #[- if (expiresAt != "never") #[span DateTime #[a expiresAt] => new DateTime ("#[b= expiresAt] UTC");]]
+        code.hljs.d
+            | string #[a id] => "#[b= id]";
+            | DateTime #[a createdAt] => new DateTime ("#[b= createdAt] UTC");
+            - if (expiresAt != "never")
+                | span DateTime #[a expiresAt] => new DateTime ("#{expiresAt} UTC");

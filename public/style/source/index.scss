@@ -102,6 +102,16 @@ label
     }
 }
 
+input[type="text"].title-input
+{
+    display: block;
+    width: 100%;
+    background-color: $color-nanolight;
+    border: none;
+    border-radius: 0.3rem;
+    font-family: $font-stack-mono;
+}
+
 .container
 {
     width: 90%;

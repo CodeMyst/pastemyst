@@ -104,7 +104,7 @@ public PasteMystInfo getPaste (string id)
 	Connection connection = getConnection ();
 
 	MySQLRow [] rows;
-	connection.execute ("select id, createdAt, expiresIn, code, language from PasteMysts where id = ?", id, (MySQLRow row)
+	connection.execute ("select id, createdAt, expiresIn, title, code, language from PasteMysts where id = ?", id, (MySQLRow row)
 	{
 		rows ~= row;
 	});
@@ -120,10 +120,10 @@ public PasteMystInfo getPaste (string id)
 
 	// If it's null that means this is an older paste (backwards compatibility).
 	// If the language is empty then hljs will automatically detect the language.
-	if (!row [4].isNull)
-		language = row [4].get!string;
+	if (!row [5].isNull)
+		language = row [5].get!string;
 
-	return PasteMystInfo (id, row [1].get!long, row [2].get!string, "", row [3].get!string, language, null, Nullable!int.init, false, false);
+	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string, row [4].get!string, language, null, Nullable!int.init, false, false);
 }
 
 /++

@@ -176,13 +176,15 @@ class WebInterface : IWebInterface
 						.toUTC.toString [0..$-1];
 		}
 
+		immutable string title = info.title;
+
 		immutable string code = info.code;
 
-		const string language = info.language;
+		immutable string language = info.language;
 
         WebInfo webInfo = getWebInfo (req);
 
-		render!("paste.dt", id, createdAt, code, expiresAt, language, webInfo);
+		render!("paste.dt", id, createdAt, title, code, expiresAt, language, webInfo);
 	}
 
 	/++

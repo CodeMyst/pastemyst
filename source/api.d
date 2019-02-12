@@ -1,65 +1,65 @@
 module api;
 
-import vibe.web.common : path, bodyParam, method, queryParam, rootPathFromName;
-import vibe.http.common : HTTPMethod;
-import vibe.data.json : Json;
+// import vibe.web.common : path, bodyParam, method, queryParam, rootPathFromName;
+// import vibe.http.common : HTTPMethod;
+// import vibe.data.json : Json;
 
 /++
     Interface for the REST API
 +/
 public interface IRestApiInterface
 {
-    /++
-        POST /api/paste
-    +/
-	@bodyParam ("code", "code")
-	@bodyParam ("expiresIn", "expiresIn")
-	@bodyParam ("language", "language")
-	@method (HTTPMethod.POST)
-	@path ("/api/paste")
-	public Json postPaste (string code, string expiresIn, string language = "autodetect") @safe;
+    // /++
+    //     POST /api/paste
+    // +/
+	// @bodyParam ("code", "code")
+	// @bodyParam ("expiresIn", "expiresIn")
+	// @bodyParam ("language", "language")
+	// @method (HTTPMethod.POST)
+	// @path ("/api/paste")
+	// public Json postPaste (string code, string expiresIn, string language = "autodetect") @safe;
 
-    /++
-        GET /api/paste?id={id}
-    +/
-	@queryParam ("id", "id")
-    @method (HTTPMethod.GET)
-	public Json getPaste (string id) @safe;
+    // /++
+    //     GET /api/paste?id={id}
+    // +/
+	// @queryParam ("id", "id")
+    // @method (HTTPMethod.GET)
+	// public Json getPaste (string id) @safe;
 }
 
 /++
     REST API Implementation
 +/
-@rootPathFromName
+// @rootPathFromName
 public class RestApiInterface : IRestApiInterface
 {
-    /++
-        POST /api/paste
-    +/
-	public override Json postPaste (string code, string expiresIn, string language) @trusted
-	{
-        import pastemyst : createPaste;
-        import vibe.data.json : serializeToJson;
+    // /++
+    //     POST /api/paste
+    // +/
+	// public override Json postPaste (string code, string expiresIn, string language) @trusted
+	// {
+    //     import pastemyst : createPaste;
+    //     import vibe.data.json : serializeToJson;
 
-		return createPaste (code, expiresIn, language).serializeToJson;
-	}
+	// 	return createPaste (code, expiresIn, language).serializeToJson;
+	// }
 
-    /++
-        GET /api/paste?id={id}
-    +/
-	public override Json getPaste (string id) @trusted
-	{
-        import pastemyst : getPaste, PasteMystInfo;
-        import vibe.http.common : HTTPStatusException;
-        import vibe.data.json : serializeToJson;
+    // /++
+    //     GET /api/paste?id={id}
+    // +/
+	// public override Json getPaste (string id) @trusted
+	// {
+    //     import pastemyst : getPaste, PasteMystInfo;
+    //     import vibe.http.common : HTTPStatusException;
+    //     import vibe.data.json : serializeToJson;
 
-		PasteMystInfo info = getPaste (id);
+	// 	PasteMystInfo info = getPaste (id);
 		
-		if (info.id is null)
-			throw new HTTPStatusException (404);
+	// 	if (info.id is null)
+	// 		throw new HTTPStatusException (404);
 		
-		return info.serializeToJson;
-	}
+	// 	return info.serializeToJson;
+	// }
 }
 
 // TODO: Re add unit tests

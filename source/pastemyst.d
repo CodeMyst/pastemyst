@@ -1,87 +1,93 @@
 module pastemyst;
 
-/++
-    Structure that contains all info about a PasteMyst
-+/
+import std.typecons : Nullable;
+
 public struct PasteMystInfo
 {
-    /++
-        ID of the PasteMyst
-    +/
 	public string id;
-    /++
-        When the PasteMyst is created, in UNIX time
-    +/
 	public long createdAt;
-    /++
-        When the PasteMyst expires. Valid values are: never, 1h, 2h, 10h, 1d, 2d or 1w
-    +/
 	public string expiresIn;
-    /++
-        Contents of the PasteMyst
-    +/
+	public string title;
 	public string code;
-	/++
-		The automatically detected language of the PasteMyst.
-		It is detected when the paste is created.
-	+/
 	public string language;
+	public string [] labels;
+	public Nullable!int ownerId;
+	public bool isPrivate;
+	public bool isEdited;
 }
 
-/++
-    Creates a new PasteMyst
+public struct PasteMystCreateInfo
+{
+	public string expiresIn;
+	public string title;
+	public string code;
+	public string language;
+	public string [] labels;
+	public Nullable!int ownerId;
+	public bool isPrivate;
+}
 
-    Params:
-        code - the contents encoded as a uri component
-        expiresIn - when the PasteMyst expires
-		language - the language of the paste used by syntax highlighting. possible to be also set to "autodetect" (or "" / null) or "plaintext"
-
-    Returns:
-        Structure containing all the info about the created PasteMyst.
-+/
-public PasteMystInfo createPaste (string code, string expiresIn, string language)
+public PasteMystInfo createPaste (PasteMystCreateInfo createInfo)
 {
 	import id : createId;
-	import std.uri : decodeComponent;
 	import detector : detectLanguage;
 	import std.datetime.systime : Clock;
 	import vibe.http.common : HTTPStatusException;
 	import mysql : Connection, MySQLRow;
 	import std.conv : to;
 	import db : getConnection, releaseConnection;
+	import std.array : join;
 
 	immutable long createdAt = Clock.currTime.toUnixTime;
 
-	if (checkValidExpiryTime (expiresIn) == false)
+	if (checkValidExpiryTime (createInfo.expiresIn) == false)
 		throw new HTTPStatusException (400, "Invalid \"expiresIn\" value. Expected: never, 1h, 2h, 10h, 1d, 2d or 1w.");
 
 	Connection connection = getConnection ();
 
 	string id;
 
-	int count;
+	bool foundDuplicate;
 	
 	do
 	{
 		id = createId ();
 		
-		count = 0;
 		// Do this check in case there is already a paste with the same id
 		connection.execute ("select id from PasteMysts where id = ?", id, (MySQLRow row)
 		{
-			count++;
+			foundDuplicate = true;
 		});
-	} while (count != 0);
+	} while (foundDuplicate);
 
-	if (language == "autodetect" || language == "" || language == null)
-		language = detectLanguage (decodeComponent (code));
+	if (createInfo.language == "autodetect" || createInfo.language == "" || createInfo.language == null)
+		createInfo.language = detectLanguage (createInfo.code);
 
-	connection.execute ("insert into PasteMysts (id, createdAt, expiresIn, code, language) values (?, ?, ?, ?, ?)",
-                         id, to!string (createdAt), expiresIn, code, language);
+	connection.execute ("insert into PasteMysts
+							(id,
+							createdAt,
+							expiresIn,
+							title,
+							code,
+							language,
+							labels,
+							ownerId,
+							isPrivate,
+							isEdited) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                         id,
+						 to!string (createdAt),
+						 createInfo.expiresIn,
+						 createInfo.title,
+						 createInfo.code,
+						 createInfo.language,
+						 join (createInfo.labels, ","),
+						 null,
+						 createInfo.isPrivate,
+						 false);
 
 	connection.releaseConnection ();
 
-	return PasteMystInfo (id, createdAt, expiresIn, code, language);
+	return PasteMystInfo (id, createdAt, createInfo.expiresIn, createInfo.title, createInfo.code, createInfo.language, createInfo.labels, createInfo.ownerId, createInfo.isPrivate, false);
 }
 
 /++
@@ -117,7 +123,7 @@ public PasteMystInfo getPaste (string id)
 	if (!row [4].isNull)
 		language = row [4].get!string;
 
-	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string, language);
+	return PasteMystInfo (id, row [1].get!long, row [2].get!string, "", row [3].get!string, language, null, Nullable!int.init, false, false);
 }
 
 /++

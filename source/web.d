@@ -34,7 +34,10 @@ public interface IWebInterface
     /++
         POST /paste
     +/
-    public void postPaste (string code, string expiresIn, string language);
+    public void postPaste (string expiresIn,
+							string title,
+							string code,
+							string language);
 
     /++
         GET /paste?id={id}
@@ -120,12 +123,24 @@ class WebInterface : IWebInterface
     /++
         POST /paste
 	+/
-    public override void postPaste (string code, string expiresIn, string language)
+    public override void postPaste (string expiresIn,
+									string title,
+									string code,
+									string language)
 	{
-        import pastemyst : PasteMystInfo, createPaste;
+        import pastemyst : PasteMystCreateInfo, PasteMystInfo, createPaste;
         import vibe.web.web : redirect;
+		import std.typecons : Nullable;
 
-		PasteMystInfo info = createPaste (code, expiresIn, language);
+		PasteMystCreateInfo createInfo = PasteMystCreateInfo (expiresIn,
+															  title,
+															  code,
+															  language,
+															  null,
+															  Nullable!int.init,
+															  false);
+
+		PasteMystInfo info = createPaste (createInfo);
 
 		redirect ("/" ~ info.id);
 	}
@@ -137,7 +152,6 @@ class WebInterface : IWebInterface
 	+/
     public override void getPaste (string id, HTTPServerRequest req, HTTPServerResponse)
 	{
-		import std.uri : decodeComponent;
         import pastemyst : PasteMystInfo, getPaste, expiresInToUnixTime;
         import vibe.http.common : HTTPStatusException;
 		import vibe.web.web : render;
@@ -162,7 +176,7 @@ class WebInterface : IWebInterface
 						.toUTC.toString [0..$-1];
 		}
 
-		immutable string code = decodeComponent (info.code);
+		immutable string code = info.code;
 
 		const string language = info.language;
 

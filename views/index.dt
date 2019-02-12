@@ -69,8 +69,9 @@ block body
     p(class="note") NOTE: Don't paste any sensitive content.
 
     form(method="POST", action="paste", id="create-paste-form")
-        input(type="hidden", name="code")
         input(type="hidden", name="expiresIn")
+        input(type="hidden", name="title")
+        input(type="hidden", name="code")
         input(type="hidden", name="language")
 
     a(class="button button-primary") Create a PasteMyst

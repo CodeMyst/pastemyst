@@ -51,10 +51,12 @@ function createSnippet ()
     else
         content = document.getElementById ('plaintext-editor').value;
 
-    form.querySelectorAll ('input[name=code]') [0].value = encodeURIComponent (content);
-    let expiresInSelect = document.getElementsByClassName ('expires-in') [0].getElementsByTagName ('select') [0];
-    form.querySelectorAll ('input[name=expiresIn]') [0].value = expiresInSelect.options [expiresInSelect.selectedIndex].value;
-    let languageSelect = document.getElementsByClassName ('language') [0].getElementsByTagName ('select') [0];
+        let expiresInSelect = document.getElementsByClassName ('expires-in') [0].getElementsByTagName ('select') [0];
+        let languageSelect = document.getElementsByClassName ('language') [0].getElementsByTagName ('select') [0];
+        
+        form.querySelectorAll ('input[name=expiresIn]') [0].value = expiresInSelect.options [expiresInSelect.selectedIndex].value;
+        form.querySelectorAll ('input[name=title]') [0].value = '';
+        form.querySelectorAll ('input[name=code]') [0].value = content;
     form.querySelectorAll ('input[name=language]') [0].value = languageSelect.options [languageSelect.selectedIndex].value;
     form.submit ();
 }

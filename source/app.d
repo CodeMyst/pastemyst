@@ -27,7 +27,7 @@ public void main ()
 	import profile : ProfileInterface;
 	// import vibe.core.log : setLogLevel, LogLevel;
 
-	// setLogLevel (LogLevel.verbose2);
+	// setLogLevel (LogLevel.verbose4);
 
 	auto router = new URLRouter;
 	router.get ("*", serveStaticFiles ("public"));

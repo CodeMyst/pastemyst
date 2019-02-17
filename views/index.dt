@@ -68,6 +68,14 @@ block body
         input(type="checkbox", name="use-plaintext", id="plaintext-checkbox")
         label(for="plaintext-checkbox") Use the plain text editor (default on phones)
 
+    form
+        input(type="checkbox", name="account-paste", id="account-paste", disabled=webInfo.isLoggedIn ? null : "")
+        label(for="account-paste", class=webInfo.isLoggedIn ? "" : "disabled") Account paste
+
+    form
+        input(type="checkbox", name="private-paste", id="private-paste", disabled=webInfo.isLoggedIn ? null : "")
+        label(for="private-paste", class=webInfo.isLoggedIn ? "" : "disabled") Private paste
+
     p(class="note") NOTE: Don't paste any sensitive content.
 
     form(method="POST", action="paste", id="create-paste-form")
@@ -75,6 +83,7 @@ block body
         input(type="hidden", name="title")
         input(type="hidden", name="code")
         input(type="hidden", name="language")
+        input(type="hidden", name="isAccountPaste")
 
     a(class="button button-primary") Create a PasteMyst
 

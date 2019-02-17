@@ -112,6 +112,11 @@ input[type="text"].title-input
     font-family: $font-stack-mono;
 }
 
+label.disabled
+{
+    opacity: 0.5;
+}
+
 .container
 {
     width: 90%;

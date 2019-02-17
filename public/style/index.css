@@ -63,6 +63,9 @@ input[type="text"].title-input {
   border-radius: 0.3rem;
   font-family: "Ubuntu Mono", monospace; }
 
+label.disabled {
+  opacity: 0.5; }
+
 .container {
   width: 90%; }
 

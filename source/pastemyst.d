@@ -1,7 +1,5 @@
 module pastemyst;
 
-import std.typecons : Nullable;
-
 public struct PasteMystInfo
 {
 	public string id;
@@ -11,7 +9,7 @@ public struct PasteMystInfo
 	public string code;
 	public string language;
 	public string [] labels;
-	public Nullable!int ownerId;
+	public int ownerId;
 	public bool isPrivate;
 	public bool isEdited;
 }
@@ -23,7 +21,7 @@ public struct PasteMystCreateInfo
 	public string code;
 	public string language;
 	public string [] labels;
-	public Nullable!int ownerId;
+	public int ownerId;
 	public bool isPrivate;
 }
 
@@ -81,7 +79,7 @@ public PasteMystInfo createPaste (PasteMystCreateInfo createInfo)
 						 createInfo.code,
 						 createInfo.language,
 						 join (createInfo.labels, ","),
-						 null,
+						 createInfo.ownerId,
 						 createInfo.isPrivate,
 						 false);
 
@@ -123,7 +121,7 @@ public PasteMystInfo getPaste (string id)
 	if (!row [5].isNull)
 		language = row [5].get!string;
 
-	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string, row [4].get!string, language, null, Nullable!int.init, false, false);
+	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string, row [4].get!string, language, null, -1, false, false);
 }
 
 /++

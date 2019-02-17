@@ -32,6 +32,14 @@ a
     text-decoration: none;
 }
 
+pre
+{
+    tab-size: 4;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    -webkit-tab-size: 4;
+}
+
 code
 {
     border: none;

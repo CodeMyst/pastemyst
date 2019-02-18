@@ -6,5 +6,6 @@ block body
 			h1 # #{error.code}
 			br
 			p #{error.message}
+			br
 			p You can go back to the #[a(href="/") home] page.
 			p #{errorDebug}

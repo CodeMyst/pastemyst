@@ -1,6 +1,28 @@
 module profile;
 
 import vibe.http.server : HTTPServerRequest, HTTPServerResponse;
+import pastemyst : PasteMystInfo;
+
+private PasteMystInfo [] getCurrentUserPastes (HTTPServerRequest req)
+{
+    import github : getCurrentUser;
+    import db : getConnection, releaseConnection;
+    import mysql : Connection, MySQLRow;
+
+    int id = getCurrentUser (req).id;
+
+    Connection connection = getConnection ();
+
+    PasteMystInfo [] res;
+    connection.execute ("select * from PasteMysts where ownerId = ? order by createdAt desc;", id, (MySQLRow row)
+    {
+        res ~= row.toStruct!PasteMystInfo;
+    });
+
+    connection.releaseConnection ();
+
+    return res;
+}
 
 public interface IProfileInterface
 {
@@ -30,7 +52,9 @@ public class ProfileInterface : IProfileInterface
 
         const User user = getCurrentUser (req);
 
-        render!("profile.dt", webInfo, user);
+        PasteMystInfo [] pastes = getCurrentUserPastes (req);
+
+        render!("profile.dt", webInfo, user, pastes);
     }
 
     /++

@@ -37,7 +37,9 @@ public interface IWebInterface
     public void postPaste (string expiresIn,
 							string title,
 							string code,
-							string language);
+							string language,
+							string isAccountPaste,
+							HTTPServerRequest req, HTTPServerResponse);
 
     /++
         GET /paste?id={id}
@@ -126,18 +128,30 @@ class WebInterface : IWebInterface
     public override void postPaste (string expiresIn,
 									string title,
 									string code,
-									string language)
+									string language,
+									string isAccountPaste,
+									HTTPServerRequest req, HTTPServerResponse)
 	{
         import pastemyst : PasteMystCreateInfo, PasteMystInfo, createPaste;
+		import github : isLoggedIn, getCurrentUser;
         import vibe.web.web : redirect;
-		import std.typecons : Nullable;
+		import vibe.http.common : HTTPStatusException;
+		import std.conv : to;
+
+		if (isAccountPaste.to!bool && !isLoggedIn (req))
+			throw new HTTPStatusException (401, "You have to be logged in to create an account paste.");
+		
+		int ownerId = -1;
+
+		if (isAccountPaste.to!bool)
+			ownerId = getCurrentUser (req).id;
 
 		PasteMystCreateInfo createInfo = PasteMystCreateInfo (expiresIn,
 															  title,
 															  code,
 															  language,
 															  null,
-															  Nullable!int.init,
+															  ownerId,
 															  false);
 
 		PasteMystInfo info = createPaste (createInfo);

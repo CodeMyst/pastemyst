@@ -54,11 +54,13 @@ function createSnippet ()
     let expiresInSelect = document.getElementsByClassName ('expires-in') [0].getElementsByTagName ('select') [0];
     let languageSelect = document.getElementsByClassName ('language') [0].getElementsByTagName ('select') [0];
     let titleInput = document.getElementsByClassName ('title-input') [0];
+    let isAccountPasteInput = document.getElementById ('account-paste');
     
     form.querySelectorAll ('input[name=expiresIn]') [0].value = expiresInSelect.options [expiresInSelect.selectedIndex].value;
     form.querySelectorAll ('input[name=title]') [0].value = titleInput.value;
     form.querySelectorAll ('input[name=code]') [0].value = content;
     form.querySelectorAll ('input[name=language]') [0].value = languageSelect.options [languageSelect.selectedIndex].value;
+    form.querySelectorAll ('input[name=isAccountPaste]') [0].value = isAccountPasteInput.checked;
     form.submit ();
 }
 

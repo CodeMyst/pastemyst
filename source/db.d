@@ -26,10 +26,13 @@ public void createDbTables ()
 	Connection connection = getConnection ();
 
 	connection.execute ("create table if not exists Users (
-							id integer unsigned not null primary key,
+							id integer not null primary key,
 							login varchar (255) not null,
 							email varchar (255) not null
 						) engine=InnoDB default charset utf8;");
+
+	// Insert a "null" user
+	connection.execute ("insert into Users values (-1, ' ', ' ') on duplicate key update id = -1;");
 
 	connection.execute ("create table if not exists PasteMysts (
 							id varchar (255) not null primary key,
@@ -39,7 +42,7 @@ public void createDbTables ()
 							code longtext not null,
 							language varchar (255) not null default 'autodetect',
 							labels text,
-							ownerId integer unsigned,
+							ownerId integer,
 							isPrivate tinyint (1) not null default 0,
 							isEdited tinyint (1) not null default 0,
 							constraint `fkOwnerId`

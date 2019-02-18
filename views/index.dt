@@ -69,7 +69,7 @@ block body
         label(for="plaintext-checkbox") Use the plain text editor (default on phones)
 
     form
-        input(type="checkbox", name="account-paste", id="account-paste", disabled=webInfo.isLoggedIn ? null : "")
+        input(type="checkbox", name="account-paste", id="account-paste", disabled=webInfo.isLoggedIn ? null : "", checked=webInfo.isLoggedIn ? "" : null)
         label(for="account-paste", class=webInfo.isLoggedIn ? "" : "disabled") Account paste
 
     form

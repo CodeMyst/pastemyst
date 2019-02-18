@@ -9,3 +9,16 @@ block body
         code.hljs.plaintext
             p #{user.login} 
                 a(href="/logout") (logout)
+
+    - foreach (p; pastes)
+        a.user-paste(href="/" ~ p.id)
+            p.title
+                - if (p.title == null)
+                    | No title
+                - else
+                    | #{p.title}
+            p.createdAt Created at: 
+                span #{p.createdAt}
+
+block scripts
+    script(src="/scripts/profile.js")

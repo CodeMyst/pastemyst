@@ -32,7 +32,7 @@ public void createDbTables ()
 						) engine=InnoDB default charset utf8;");
 
 	// Insert a "null" user
-	connection.execute ("insert into Users values (-1, ' ', ' ');");
+	connection.execute ("insert into Users values (-1, ' ', ' ') on duplicate key update id = -1;");
 
 	connection.execute ("create table if not exists PasteMysts (
 							id varchar (255) not null primary key,

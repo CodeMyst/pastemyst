@@ -235,5 +235,9 @@ footer {
   .user-paste .title {
     font-size: 2rem;
     color: #ee720d; }
+  .user-paste .pasteInfo {
+    font-size: 1.25rem; }
+    .user-paste .pasteInfo .createdAt {
+      margin-right: 1rem; }
 
 /*# sourceMappingURL=index.css.map */

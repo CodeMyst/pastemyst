@@ -391,4 +391,14 @@ footer
         font-size: 2rem;
         color: $color-range;
     }
+
+    .pasteInfo
+    {
+        font-size: 1.25rem;
+
+        .createdAt
+        {
+            margin-right: 1rem;
+        }
+    }
 }

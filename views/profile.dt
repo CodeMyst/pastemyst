@@ -17,8 +17,13 @@ block body
                     | No title
                 - else
                     | #{p.title}
-            p.createdAt Created at: 
-                span #{p.createdAt}
+            p.pasteInfo
+                span.createdAt #{p.createdAt}
+                - if (p.expiresIn != "never")
+                    span | 
+                    span Expires in: 
+                    span.expiresIn #{p.expiresIn}
+            
 
 block scripts
     script(src="/scripts/profile.js")

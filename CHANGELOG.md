@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - [2.0] Split REST and web interfaces into separate modules.
 - [2.0] Moved DB stuff into its own module.
 - [2.0] Using explicit access modifiers.
+- [2.0] Traditional styled navigation bar.
 
 ### Fixed
 

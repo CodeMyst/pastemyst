@@ -26,19 +26,29 @@ html(lang="en")
         block head
     body
         div.container
-            pre.codeblock-text
-                a(href="/", class="page-title") #[h1 PasteMyst]
-                
-                code.hljs.d.page-nav
-                    | string #[a(href="/") home] => "/";
-                    - if (webInfo.isLoggedIn)
-                        | string #[a(href="/me") profile] => "/me";
-                    - else
-                        | string #[a(href="/login") github login] => "/login";
-                    | string #[a(href="https://github.com/codemyst/pastemyst", target="_blank") github] => "github.com/codemyst/pastemyst";
-                    | string #[a(href="/api-docs") api-docs] => "/api-docs";
-                    | string #[a description] => "A simple website for pasting text, mainly code snippets.";
-                    | string #[a version] => "1.6.1"; // #[a(href="https://github.com/CodeMyst/PasteMyst/releases", target="_blank") changelog]
+            h1
+                a(href="/") PasteMyst
+
+            p.description
+                | A simple website for storing and sharing code snippets.
+                | Version 1.6.1 (#[a(href="https://github.com/CodeMyst/PasteMyst/blob/develop/CHANGELOG.md", target="_blank") changelog]).
+
+            nav
+                ul
+                    li
+                        a(href="/") home
+                        |  - 
+                    li
+                        - if (webInfo.isLoggedIn)
+                            a(href="/me") profile
+                        - else
+                            a(href="/login") login
+                        |  - 
+                    li
+                        a(href="https://github.com/codemyst/pastemyst", target="_blank") github
+                        |  - 
+                    li
+                        a(href="/api-docs") api docs
 
             block body
 

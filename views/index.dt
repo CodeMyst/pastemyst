@@ -5,9 +5,6 @@ block head
     meta(property="og:title", content="PasteMyst")
 
 block body
-    pre.codeblock-text
-        code.hljs.plaintext Create a new PasteMyst:
-
     div.expires-in
         span.select-label Expires in:
         select

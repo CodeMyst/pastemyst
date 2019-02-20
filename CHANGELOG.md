@@ -32,6 +32,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Removed
 
 - [2.0] Unit tests (will be back).
+- [2.0] Removed "Create a new PasteMyst" text.
 
 ## [1.6.1] - 2019-02-04
 

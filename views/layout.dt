@@ -53,10 +53,9 @@ html(lang="en")
             block body
 
             footer
-                pre.codeblock-text
-                    code.hljs.plaintext
-                        p.number-of-pastes #[b= webInfo.numberOfPastes] currently active PasteMysts
-                        p Copyright #[span.copyright-symbol &#169;] #[a(href="https://github.com/codemyst") CodeMyst] 2019
+                div.content-block
+                    p.number-of-pastes #[b= webInfo.numberOfPastes] currently active PasteMysts
+                    p Copyright #[span.copyright-symbol &#169;] #[a(href="https://github.com/codemyst") CodeMyst] 2019
 
         block scripts
         link(rel="stylesheet", href="/style/materialdark.css")
@@ -64,4 +63,6 @@ html(lang="en")
         script(src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.5.0/highlightjs-line-numbers.min.js")
         script.
             hljs.initHighlightingOnLoad();
-            hljs.initLineNumbersOnLoad();
+            hljs.initLineNumbersOnLoad({
+                singleLine: true
+            });

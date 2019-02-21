@@ -31,6 +31,13 @@ label {
   display: initial;
   font-weight: normal; }
 
+.content-block {
+  box-sizing: border-box;
+  background-color: #222222;
+  border-radius: 0.3rem;
+  font-family: "Ubuntu Mono", monospace;
+  padding: 1em; }
+
 .expires-in, .language {
   display: inline-block; }
   @media all and (max-width: 640px) {
@@ -68,21 +75,6 @@ label.disabled {
 
 .container {
   width: 90%; }
-
-.codeblock-text code {
-  white-space: pre-wrap;
-  white-space: -moz-pre-wrap;
-  white-space: -pre-wrap;
-  white-space: -o-pre-wrap;
-  word-wrap: break-word; }
-  .codeblock-text code a {
-    text-decoration: underline;
-    font-weight: bold;
-    letter-spacing: 0.1rem; }
-    .codeblock-text code a span.hljs-keyword {
-      color: #ee720d; }
-    .codeblock-text code a:hover span.hljs-keyword {
-      color: #1EAEDB; }
 
 h1 {
   font-family: "Ubuntu Mono", monospace;
@@ -190,15 +182,35 @@ table.http-body {
     padding-left: 1rem;
     border: none; }
 
+.content-block.title {
+  margin-bottom: 0;
+  margin-top: 6rem;
+  font-size: 2rem;
+  padding: 0.5em;
+  padding-left: 35px;
+  background-color: #1c1c1c;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top: 2px solid #ee720d;
+  border-left: 2px solid #ee720d;
+  border-right: 2px solid #ee720d; }
+
+.pastemyst-content.has-title {
+  margin-top: 0;
+  border-top: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0; }
+
 .pastemyst-content {
   margin-top: 6rem;
-  margin-bottom: 6rem; }
+  margin-bottom: 6rem;
+  border: 2px solid #ee720d;
+  background-color: #222222;
+  border-radius: 0.3rem; }
   @media all and (max-width: 640px) {
     .pastemyst-content {
       font-size: 0.7em; } }
   .pastemyst-content code {
-    border: 2px solid #ee720d;
-    box-sizing: border-box;
     white-space: pre-wrap; }
 
 footer {
@@ -219,7 +231,7 @@ footer {
     margin-bottom: 2rem; } }
 .user-paste {
   background-color: #222222;
-  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
   border-radius: 0.3rem;
   padding: 1em;
   box-sizing: content-box;

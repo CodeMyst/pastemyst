@@ -5,10 +5,9 @@ block head
     meta(property="og:title", content="PasteMyst")
 
 block body
-    pre.codeblock-text
-        code.hljs.plaintext
-            p #{user.login} 
-                a(href="/logout") (logout)
+    div.content-block
+        p #{user.login} 
+            a(href="/logout") (logout)
 
     - foreach (p; pastes)
         a.user-paste(href="/" ~ p.id)

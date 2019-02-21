@@ -1,4 +1,5 @@
 $color-nano: #141414;
+$color-nanonotsolight: #1c1c1c;
 $color-nanolight: #222222;
 $color-nanolightlight: #777777;
 $color-range: #ee720d;
@@ -64,6 +65,15 @@ label
     font-weight: normal;
 }
 
+.content-block
+{
+    box-sizing: border-box;
+    background-color: $color-nanolight;
+    border-radius: 0.3rem;
+    font-family: $font-stack-mono;
+    padding: 1em;
+}
+
 .expires-in, .language
 {
     display: inline-block;
@@ -120,38 +130,6 @@ label.disabled
 .container
 {
     width: 90%;
-}
-
-.codeblock-text
-{
-    code
-    {
-        white-space: pre-wrap;
-        white-space: -moz-pre-wrap;
-        white-space: -pre-wrap;
-        white-space: -o-pre-wrap;
-        word-wrap: break-word;
-
-        a
-        {
-            text-decoration: underline;
-            font-weight: bold;
-            letter-spacing: 0.1rem;
-        
-            span.hljs-keyword
-            {
-                color: $color-range;
-            }
-
-            &:hover
-            {
-                span.hljs-keyword
-                {
-                    color: $color-lue;
-                }
-            }
-        }
-    }
 }
 
 h1
@@ -318,20 +296,44 @@ table.http-body
     }
 }
 
+.content-block.title
+{
+    margin-bottom: 0;
+    margin-top: 6rem;
+    font-size: 2rem;
+    padding: 0.5em;
+    padding-left: 35px;
+    background-color: $color-nanonotsolight;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top: 2px solid $color-range;
+    border-left: 2px solid $color-range;
+    border-right: 2px solid $color-range;
+}
+
+.pastemyst-content.has-title
+{
+    margin-top: 0;
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
 .pastemyst-content
 {
     margin-top: 6rem;
     margin-bottom: 6rem;
-
+    border: 2px solid $color-range;
+    background-color: $color-nanolight;
+    border-radius: 0.3rem;
+    
     @media all and (max-width: 640px)
     {
         font-size: 0.7em;
     }
-
+    
     code
     {
-        border: 2px solid $color-range;
-        box-sizing: border-box;
         white-space: pre-wrap;
     }
 }
@@ -377,7 +379,7 @@ footer
 .user-paste
 {
     background-color: $color-nanolight;
-    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
     border-radius: 0.3rem;
     padding: 1em;
     box-sizing: content-box;

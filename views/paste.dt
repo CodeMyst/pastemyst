@@ -5,11 +5,12 @@ block head
     meta(property="og:title", content="PasteMyst")
 
 block body
-    - if (title != "")
-        pre.codeblock-text.title
-            code.hljs.plaintext #{title}
+    - bool hasTitle = title != "";
+    - if (hasTitle)
+        div.content-block.title
+            p #{title}
 
-    pre.pastemyst-content
+    pre.pastemyst-content(class=hasTitle ? "has-title" : "")
         code(class="hljs " ~ language) #{code}
 
     pre.codeblock-text

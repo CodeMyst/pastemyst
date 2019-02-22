@@ -54,6 +54,15 @@ public interface IWebInterface
 	@path("/:id")
 	@method (HTTPMethod.GET)
 	public void getPaste (HTTPServerRequest req, HTTPServerResponse);
+
+	/++
+		GET /:id/raw
+
+		Gets the raw paste contents.
+	+/
+	@path("/:id/raw")
+	@method (HTTPMethod.GET)
+	public void getRawPaste (HTTPServerRequest req, HTTPServerResponse res);
 }
 
 /++
@@ -212,6 +221,21 @@ class WebInterface : IWebInterface
 		string id = req.params ["id"];
 
 		return getPaste (id, req, res);
+	}
+
+	/++
+		GET /:id/raw
+
+		Gets the raw paste contents.
+	+/
+	@path("/:id/raw")
+	public override  void getRawPaste (HTTPServerRequest req, HTTPServerResponse res)
+	{
+		import pastemyst : getPaste;
+
+		string id = req.params ["id"];
+
+		res.writeBody (getPaste (id).code);
 	}
 }
 

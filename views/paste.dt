@@ -6,11 +6,14 @@ block head
 
 block body
     - bool hasTitle = title != "";
-    - if (hasTitle)
-        div.content-block.title
-            p #{title}
+    div.content-block.paste-header
+        - if (hasTitle)
+            p.title #{title}
+        - else
+            p.title No title
+        a.raw(href="/" ~ id ~ "/raw") raw
 
-    pre.pastemyst-content(class=hasTitle ? "has-title" : "")
+    pre.pastemyst-content
         code(class="hljs " ~ language) #{code}
 
     pre.codeblock-text

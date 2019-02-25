@@ -141,7 +141,7 @@ private string getEmail (string accessToken)
 
             foreach (e; json.byValue)
             {
-                if (e ["verified"].get!bool == true)
+                if (e ["primary"].get!bool && e ["verified"].get!bool == true)
                 {
                     email = e ["email"].get!string;
                     break;

@@ -111,7 +111,7 @@ public User getCurrentUser (string accessToken)
 
             user.id = json ["id"].get!int;
             user.login = json ["login"].get!string;
-            user.email = json ["email"].get!string;
+            user.email = getEmail (accessToken);
         });
 
     return user;
@@ -120,6 +120,36 @@ public User getCurrentUser (string accessToken)
 public User getCurrentUser (HTTPServerRequest req)
 {
     return getCurrentUser (req.cookies.get ("github"));
+}
+
+private string getEmail (string accessToken)
+{
+    import vibe.http.client : requestHTTP;
+    import vibe.data.json : parseJsonString, Json;
+    import vibe.stream.operations : readAllUTF8;
+
+    string email;
+
+    requestHTTP ("https://api.github.com/user/emails",
+        (scope req)
+        {
+            req.headers.addField ("Authorization", "token " ~ accessToken);
+        },
+        (scope res)
+        {
+            Json json = parseJsonString (res.bodyReader.readAllUTF8);
+
+            foreach (e; json.byValue)
+            {
+                if (e ["verified"].get!bool == true)
+                {
+                    email = e ["email"].get!string;
+                    break;
+                }
+            }
+        });
+
+    return email;
 }
 
 public struct User

@@ -1,0 +1,16 @@
+body
+{
+    background-color: $color-nano;
+    color: $color-white;
+}
+
+a
+{
+    color: $color-mystge;
+    text-decoration: none;
+
+    &:hover
+    {
+        color: $color-mystlu;
+    }
+}

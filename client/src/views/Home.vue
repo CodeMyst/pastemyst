@@ -17,7 +17,27 @@
             option(value="autodetect") autodetect
 
     input(type="text", placeholder="title (optional)", class="title-input")
+
+    textarea.editor
 </template>
+
+<script lang="ts">
+import Vue, { VNode } from 'vue';
+import * as cm from 'codemirror';
+import 'codemirror/mode/pug/pug';
+
+export default Vue.extend
+({
+    mounted () : void
+    {
+        this.$nextTick (function ()
+        {
+            const textArea: HTMLTextAreaElement = this.$el.getElementsByClassName ('editor') [0] as HTMLTextAreaElement;
+            const editor: cm.Editor = cm.fromTextArea (textArea, { mode: 'pug', theme: 'base16-dark', indentUnit: 4, lineNumbers: true });
+        });
+    }
+});
+</script>
 
 <style lang="scss" scoped>
 select

@@ -14,3 +14,23 @@ a
         color: $color-mystlu;
     }
 }
+
+.CodeMirror
+{
+    border-radius: $border-radius-std;
+    font-size: 1rem;
+    height: 500px;
+    margin-top: 2rem;
+    background-color: $color-nanolight !important;
+    line-height: 1.5rem;
+
+    .CodeMirror-gutters
+    {
+        background-color: $color-nanolight;
+    }
+
+    .CodeMirror-linenumber
+    {
+        font-size: 0.8rem;
+    }
+}

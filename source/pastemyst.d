@@ -259,6 +259,9 @@ PasteMystInfo createPaste (string code, string expiresIn, string language)
 	if (checkValidExpiryTime (expiresIn) == false)
 		throw new HTTPStatusException (400, "Invalid \"expiresIn\" value. Expected: never, 1h, 2h, 10h, 1d, 2d or 1w.");
 
+    if (checkValidLanguage (language) == false)
+        throw new HTTPStatusException (400, "Invalid \"language\" value.");
+
 	Connection connection = connectionPool.getConnection ();
 
 	string id;
@@ -450,6 +453,22 @@ unittest
 	assert (checkValidExpiryTime ("3h") == false);
 	assert (checkValidExpiryTime ("213j98") == false);
 	assert (checkValidExpiryTime ("adsj98sdaj") == false);
+}
+
+bool checkValidLanguage (string language)
+{
+    import std.file : readText, getcwd;
+    import std.string : splitLines;
+
+    string [] validLanguages = readText (getcwd () ~ "/public/languages.txt").splitLines ();
+
+    foreach (lang; validLanguages)
+    {
+        if (language == lang)
+            return true;
+    }
+
+    return false;
 }
 
 /++

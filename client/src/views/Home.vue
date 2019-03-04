@@ -19,12 +19,22 @@
     input(type="text", placeholder="title (optional)", class="title-input")
 
     textarea.editor
+
+    input(type="checkbox", name="account-paste")#account-paste
+    label(for="account-paste") account paste
+
+    input(type="checkbox", name="private-paste")#private-paste
+    label(for="private-paste") private paste
+
+    br
+
+    button.button create
 </template>
 
 <script lang="ts">
 import Vue, { VNode } from 'vue';
 import * as cm from 'codemirror';
-import 'codemirror/mode/pug/pug';
+import 'codemirror/mode/d/d';
 
 export default Vue.extend
 ({
@@ -33,7 +43,7 @@ export default Vue.extend
         this.$nextTick (function ()
         {
             const textArea: HTMLTextAreaElement = this.$el.getElementsByClassName ('editor') [0] as HTMLTextAreaElement;
-            const editor: cm.Editor = cm.fromTextArea (textArea, { mode: 'pug', theme: 'base16-dark', indentUnit: 4, lineNumbers: true });
+            const editor: cm.Editor = cm.fromTextArea (textArea, { mode: 'text/x-d', theme: 'base16-dark', indentUnit: 4, lineNumbers: true });
         });
     }
 });
@@ -43,18 +53,24 @@ export default Vue.extend
 select
 {
     background-color: $color-nanolight;
-    color: $color-white;
+    color: $color-mystge;
     border: none;
     border-radius: $border-radius-std;
     height: 38px;
     font-family: $font-stack;
     font-size: 1.2rem;
 
+    &:hover
+    {
+        cursor: pointer;
+        background-color: $color-mystlu;
+        color: $color-nanolight;
+    }
+
     &:hover, &:focus
     {
         border: none;
         outline: none;
-        color: $color-white;
     }
 }
 
@@ -62,6 +78,20 @@ select
 {
     display: inline-block;
     margin-top: 1rem;
+
+    &:hover
+    {
+        .select-label
+        {
+            background-color: $color-mystlu;
+        }
+
+        select
+        {
+            background-color: $color-mystlu;
+            color: $color-nanolight;
+        }
+    }
 
     @media all and (max-width: $break-small)
     {
@@ -109,6 +139,21 @@ select
     padding: 1rem;
     font-size: $font-size-normal;
     box-sizing: border-box;
+}
+
+label
+{
+    margin-right: 1rem;
+}
+
+input[type="checkbox"]
+{
+    margin-right: 0.5rem;
+}
+
+.button
+{
+    margin-top: 2rem;
 }
 </style>
 

@@ -21,7 +21,25 @@
             li
                 a(href="/api-docs") api docs
     router-view/
+    FooterComponent
 </template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import FooterComponent from '@/components/FooterComponent.vue';
+
+
+@Component
+({
+    components:
+  {
+      FooterComponent
+  }
+})
+
+export default class App extends Vue {}
+</script>
+
 
 <style lang="scss">
 #app

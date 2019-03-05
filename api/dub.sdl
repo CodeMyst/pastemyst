@@ -1,0 +1,6 @@
+name "pastemyst-api"
+description "PasteMyst REST API"
+authors "CodeMyst"
+copyright "Copyright © 2019, CodeMyst"
+license "MPL-2.0"
+dependency "vibe-d" version="~>0.8.2"

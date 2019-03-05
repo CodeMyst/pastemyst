@@ -2,6 +2,7 @@
 docs.json
 __dummy.html
 docs/
+pastemyst-api
 pastemyst-api.so
 pastemyst-api.dylib
 pastemyst-api.dll

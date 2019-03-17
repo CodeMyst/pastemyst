@@ -3,9 +3,13 @@ import vibe.vibe;
 public void main ()
 {
     import pastemyst.rest : APIRoot;
+    import vibe.core.log : setLogLevel, LogLevel;
+    import vibe.web.common : MethodStyle;
+
+    // setLogLevel (LogLevel.verbose4);
 
     URLRouter router = new URLRouter ();
-    router.registerRestInterface (new APIRoot ());
+    router.registerRestInterface (new APIRoot (), MethodStyle.camelCase);
 
 	auto settings = new HTTPServerSettings;
 	settings.port = 5000;

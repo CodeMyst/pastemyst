@@ -8,7 +8,8 @@ private string dataPath = "data";
 /// Enum that defines all available data files.
 public enum DataFile
 {
-    LANGUAGES
+    LANGUAGES,
+    EXPIRE_OPTIONS
 }
 
 /// Gets the data file
@@ -19,6 +20,10 @@ public File getDataFile (DataFile dataFile)
         case DataFile.LANGUAGES:
         {
             return File (getDataFilePath ("languages.json"), "r");
+        }
+        case DataFile.EXPIRE_OPTIONS:
+        {
+            return File (getDataFilePath ("expireOptions.json"), "r");
         }
     }
 }

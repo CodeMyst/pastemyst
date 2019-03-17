@@ -1,22 +1,34 @@
 module pastemyst.rest;
 
 import vibe.vibe;
+import pastemyst.data : DataFile;
 
 /// API Interface for the API root
 @path ("/")
 public interface IAPIRoot
 {
     Json getLanguages () @safe;
+    Json getExpireOptions () @safe;
 }
 
 /// Class implementing the API Interface for root
 public class APIRoot : IAPIRoot
 {
+    private Json getDataTextFileJson (DataFile dataFile)
+    {
+        import pastemyst.data : getDataTextFile;
+        import vibe.data.json : parseJsonString;
+
+        return parseJsonString (getDataTextFile (dataFile));
+    }
+
     public override Json getLanguages () @trusted
     {
-        import pastemyst.data : getDataTextFile, DataFile;
-        import vibe.data.json : parseJsonString;
-    
-        return parseJsonString (getDataTextFile (DataFile.LANGUAGES));
+        return getDataTextFileJson (DataFile.LANGUAGES);
+    }
+
+    public override Json getExpireOptions () @trusted
+    {
+        return getDataTextFileJson (DataFile.EXPIRE_OPTIONS);
     }
 }

@@ -1,0 +1,35 @@
+{
+    "paths": {
+        "src": {
+            "assets": {
+                "images": {},
+                "fonts": {},
+                "icons": {}
+            },
+            "app": {
+                "files": "**/*.ts",
+                "main": {
+                    "folder": "..",
+                    "files": "app.ts"
+                }
+            },
+            "styles": {},
+            "views": {
+                "main": {
+                    "folder": ".."
+                }
+            }
+        },
+        "dist": {
+            "assets": {
+                "images": {},
+                "fonts": {},
+                "icons": {}
+            },
+            "styles": {},
+            "scripts": {},
+            "views": {}
+        },
+        "test": {}
+    }
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        title Document
+        link(rel="stylesheet", href="styles/app.css")
+    body
+        .dropdown.hidden#expires-in
+            .clickable
+                p.selected never
+                img.caret(src="assets/icons/caret.svg")
+            .selectable
+                input.search(type="text", name="search", placeholder="search...")
+                .items
+                    .item never
+                    .item 1h
+                    .item 2h
+                    .item 10h
+                    .item 1d
+                    .item 2d
+                    .item 1w
+                    p.not-found.hidden no items found
+            script(src="scripts/vendor.js")
+            script(src="scripts/app.js")

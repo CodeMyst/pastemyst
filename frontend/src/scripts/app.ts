@@ -1,15 +1,15 @@
 class Dropdown
 {
-    dropdown: HTMLElement;
-    clickable: HTMLElement;
-    selectable: HTMLElement;
-    search: HTMLInputElement;
-    notFound: HTMLElement;
-    visible: boolean;
-    items: HTMLCollectionOf<HTMLElement>;
-    selected: HTMLElement;
-    selectedItem: HTMLElement;
-    
+    private dropdown: HTMLElement;
+    private clickable: HTMLElement;
+    private selectable: HTMLElement;
+    private search: HTMLInputElement;
+    private notFound: HTMLElement;
+    private visible: boolean;
+    private items: HTMLCollectionOf<HTMLElement>;
+    private selected: HTMLElement;
+    private selectedItem: HTMLElement;
+
     constructor (dropdown: HTMLElement)
     {
         this.dropdown = dropdown;
@@ -45,7 +45,7 @@ class Dropdown
         });
     }
 
-    toggleVisible (): void
+    private toggleVisible (): void
     {
         if (this.visible)
         {
@@ -59,7 +59,7 @@ class Dropdown
         this.visible = !this.visible;
     }
 
-    selectItem (item: HTMLElement): void
+    private selectItem (item: HTMLElement): void
     {
         this.selectedItem.classList.remove ("selected");
         this.selectedItem = item;
@@ -68,13 +68,13 @@ class Dropdown
         this.toggleVisible ();
     }
 
-    setSelected (): void
+    private setSelected (): void
     {
-        let selectedText: string = this.selected.innerText;
+        const selectedText: string = this.selected.innerText;
 
         for (let i = 0; i < this.items.length; i++)
         {
-            if (this.items [i].innerText == selectedText)
+            if (this.items [i].innerText === selectedText)
             {
                 this.items [i].classList.add ("selected");
                 this.selectedItem = this.items [i];
@@ -83,13 +83,13 @@ class Dropdown
         }
     }
 
-    onSearch (): void
+    private onSearch (): void
     {
-        let value: string = this.search.value;
+        const value: string = this.search.value;
 
         for (let i = 0; i < this.items.length; i++)
         {
-            let item: HTMLElement = this.items [i];
+            const item: HTMLElement = this.items [i];
 
             if (item.innerText.includes (value))
             {
@@ -108,7 +108,7 @@ class Dropdown
 
         for (let i = 0; i < this.items.length; i++)
         {
-            let item: HTMLElement = this.items [i];
+            const item: HTMLElement = this.items [i];
 
             if (!item.classList.contains ("hidden"))
             {
@@ -136,4 +136,4 @@ class Dropdown
 
 let expiresInDropdown: HTMLElement = document.getElementById ("expires-in");
 
-new Dropdown (expiresInDropdown);
+let d: Dropdown = new Dropdown (expiresInDropdown);

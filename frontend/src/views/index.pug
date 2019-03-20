@@ -5,7 +5,7 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         meta(http-equiv="X-UA-Compatible", content="ie=edge")
         title Document
-        link(rel="stylesheet", href="styles/app.css")
+        link(rel="stylesheet", href="styles/styles.css")
     body
         .dropdown.hidden#expires-in
             .clickable
@@ -22,5 +22,5 @@ html(lang="en")
                     .item 2d
                     .item 1w
                     p.not-found.hidden no items found
-            script(src="scripts/vendor.js")
-            script(src="scripts/app.js")
+
+        script(data-main="scripts/app", src="scripts/require.js")

@@ -1,24 +1,12 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "lib": [
-      "dom",
-      "es2015",
-      "es2016"
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["./src/app/*"],
-      "test/*": ["./test/*"]
-    },
-    "module": "esnext",
-    "moduleResolution": "node",
-    "isolatedModules": false,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true
-  },
-  "compileOnSave": false,
+    "compilerOptions":
+    {
+        "module": "amd",
+        "sourceMap": true,
+        "outFile": "dist/scripts/app.js",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "target": "es5",
+        "lib": ["es2017", "es6", "dom"]
+    }
 }

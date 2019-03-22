@@ -1,35 +1,31 @@
-class Dropdown
+export class Dropdown
 {
     private dropdown: HTMLElement;
     private clickable: HTMLElement;
     private selectable: HTMLElement;
     private search: HTMLInputElement;
     private notFound: HTMLElement;
+    private selectedText: HTMLElement;
     private visible: boolean;
-    private items: HTMLCollectionOf<HTMLElement>;
-    private selected: HTMLElement;
-    private selectedItem: HTMLElement;
+    private items: Map<DropdownItem, HTMLElement>;
+    private selectedItemElement: [DropdownItem, HTMLElement];
+
+    public selectedItem: DropdownItem;
 
     constructor (dropdown: HTMLElement)
     {
         this.dropdown = dropdown;
         this.clickable = this.dropdown.getElementsByClassName ("clickable") [0] as HTMLElement;
         this.selectable = this.dropdown.getElementsByClassName ("selectable") [0] as HTMLElement;
-        this.items = this.selectable.getElementsByClassName ("item") as HTMLCollectionOf<HTMLElement>;
-        this.selected = this.clickable.getElementsByClassName ("selected") [0] as HTMLElement;
+        this.selectedText = this.clickable.getElementsByClassName ("selected") [0] as HTMLElement;
         this.search = this.dropdown.getElementsByClassName ("search") [0] as HTMLInputElement;
         this.notFound = this.selectable.getElementsByClassName ("not-found") [0] as HTMLElement;
-
-        this.setSelected ();
 
         this.clickable.addEventListener ("click", () => this.toggleVisible ());
 
         this.search.addEventListener ("input", () => this.onSearch ());
 
-        for (let i = 0; i < this.items.length; i++)
-        {
-            this.items [i].addEventListener ("click", (evt) => this.selectItem (evt.target as HTMLElement));
-        }
+        this.items = new Map<DropdownItem, HTMLElement> ();
 
         window.addEventListener ("click", (evt) => 
         {
@@ -45,77 +41,90 @@ class Dropdown
         });
     }
 
+    public addItem (item: DropdownItem): void
+    {
+        let itemNode: HTMLDivElement = document.createElement ("div");
+        itemNode.classList.add ("item");
+        itemNode.innerText = item.prettyValue;
+        itemNode.addEventListener ("click", (evt) => this._selectItem ([item, evt.target as HTMLElement]));
+        this.selectable.getElementsByClassName ("items") [0].appendChild (itemNode);
+
+        this.items.set (item, itemNode);
+    }
+
+    private hide (): void
+    {
+        this.dropdown.classList.add ("hidden");
+        this.visible = false;
+    }
+
+    private show (): void
+    {
+        this.dropdown.classList.remove ("hidden");
+        this.visible = true;
+    }
+
     private toggleVisible (): void
     {
         if (this.visible)
         {
-            this.dropdown.classList.add ("hidden");
+            this.hide ();
         }
         else
         {
-            this.dropdown.classList.remove ("hidden");
+            this.show ();
         }
-
-        this.visible = !this.visible;
     }
 
-    private selectItem (item: HTMLElement): void
+    private _selectItem (item: [DropdownItem, HTMLElement]): void
     {
-        this.selectedItem.classList.remove ("selected");
-        this.selectedItem = item;
-        this.selectedItem.classList.add ("selected");
-        this.selected.innerText = item.innerText;
-        this.toggleVisible ();
-    }
-
-    private setSelected (): void
-    {
-        const selectedText: string = this.selected.innerText;
-
-        for (let i = 0; i < this.items.length; i++)
+        if (this.selectedItemElement !== undefined)
         {
-            if (this.items [i].innerText === selectedText)
-            {
-                this.items [i].classList.add ("selected");
-                this.selectedItem = this.items [i];
-                return;
-            }
+            this.selectedItemElement [1].classList.remove ("selected");
         }
+        this.selectedItemElement = item;
+        this.selectedItemElement [1].classList.add ("selected");
+        this.selectedText.innerText = item [0].prettyValue;
+        this.selectedItem = item [0];
+        this.hide ();
+
+        console.log (this.selectedItem.value);
+    }
+
+    public selectItem (item: DropdownItem): void
+    {
+        this._selectItem ([item, this.items.get (item)]);
     }
 
     private onSearch (): void
     {
-        const value: string = this.search.value;
+        const searchValue: string = this.search.value;
 
-        for (let i = 0; i < this.items.length; i++)
+        this.items.forEach ((value: HTMLElement, key: DropdownItem) =>
         {
-            const item: HTMLElement = this.items [i];
-
-            if (item.innerText.includes (value))
+            if (key.prettyValue.includes (searchValue))
             {
-                if (item.classList.contains ("hidden"))
+                if (value.classList.contains ("hidden"))
                 {
-                    item.classList.remove ("hidden");
+                    value.classList.remove ("hidden");
                 }
             }
             else
             {
-                item.classList.add ("hidden");
+                value.classList.add ("hidden");
             }
-        }
+        });
 
         let found: boolean;
 
-        for (let i = 0; i < this.items.length; i++)
+        this.items.forEach ((value: HTMLElement, key: DropdownItem) =>
         {
-            const item: HTMLElement = this.items [i];
-
-            if (!item.classList.contains ("hidden"))
+            if (!value.classList.contains ("hidden"))
             {
                 found = true;
-                break;
+                return;
             }
-        }
+        });
 
         if (found)
         {
@@ -134,6 +143,14 @@ class Dropdown
     }
 }
 
-// let expiresInDropdown: HTMLElement = document.getElementById ("expires-in");
+export class DropdownItem
+{
+    public value: string;
+    public prettyValue: string;
 
-// let d: Dropdown = new Dropdown (expiresInDropdown);
+    constructor (value: string, prettyValue: string)
+    {
+        this.value = value;
+        this.prettyValue = prettyValue;
+    }
+}

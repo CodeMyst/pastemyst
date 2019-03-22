@@ -1,13 +1,20 @@
+import { ExpireOption, getExpireOptions } from "api/expireOptions";
 import { Dropdown, DropdownItem } from "components/dropdown";
 
-const item1: DropdownItem = new DropdownItem ("never", "never");
-const item2: DropdownItem = new DropdownItem ("1h", "1 hour");
-const item3: DropdownItem = new DropdownItem ("2h", "2 hours");
-const item4: DropdownItem = new DropdownItem ("1d", "1 day");
+async function initExpiresInDropdown ()
+{
+    const options: ExpireOption [] = await getExpireOptions ();
+    const items: DropdownItem [] = new Array<DropdownItem> (options.length);
 
-const expiresInDropdown = new Dropdown (document.getElementById ("expires-in").children [0] as HTMLElement);
-expiresInDropdown.addItem (item1);
-expiresInDropdown.addItem (item2);
-expiresInDropdown.addItem (item3);
-expiresInDropdown.addItem (item4);
-expiresInDropdown.selectItem (item3);
+    const expiresInDropdown = new Dropdown (document.getElementById ("expires-in").children [0] as HTMLElement, false);
+    
+    for (let i = 0; i < options.length; i++)
+    {
+        items [i] = new DropdownItem (options [i].value, options [i].pretty);
+        expiresInDropdown.addItem (items [i]);
+    }
+
+    expiresInDropdown.selectItem (items [0]);
+}
+
+initExpiresInDropdown ();

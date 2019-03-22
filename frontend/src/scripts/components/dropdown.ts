@@ -12,13 +12,17 @@ export class Dropdown
 
     public selectedItem: DropdownItem;
 
-    constructor (dropdown: HTMLElement)
+    constructor (dropdown: HTMLElement, hasSearch: boolean)
     {
         this.dropdown = dropdown;
         this.clickable = this.dropdown.getElementsByClassName ("clickable") [0] as HTMLElement;
         this.selectable = this.dropdown.getElementsByClassName ("selectable") [0] as HTMLElement;
         this.selectedText = this.clickable.getElementsByClassName ("selected") [0] as HTMLElement;
         this.search = this.dropdown.getElementsByClassName ("search") [0] as HTMLInputElement;
+        if (!hasSearch)
+        {
+            this.search.remove ();
+        }
         this.notFound = this.selectable.getElementsByClassName ("not-found") [0] as HTMLElement;
 
         this.clickable.addEventListener ("click", () => this.toggleVisible ());
@@ -87,8 +91,6 @@ export class Dropdown
         this.selectedText.innerText = item [0].prettyValue;
         this.selectedItem = item [0];
         this.hide ();
-
-        console.log (this.selectedItem.value);
     }
 
     public selectItem (item: DropdownItem): void

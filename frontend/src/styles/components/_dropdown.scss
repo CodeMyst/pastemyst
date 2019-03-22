@@ -2,14 +2,37 @@
 
 .dropdown
 {
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: row;
+
+    .label
+    {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        background-color: $color-nanolight;
+        border-top-left-radius: $border-radius-std;
+        border-bottom-left-radius: $border-radius-std;
+
+        p
+        {
+            margin: 0;
+            padding-left: 1rem;
+            align-self: center;
+        }
+    }
+
+    .dropdown-content
+    {
+        flex-direction: column;
+    }
 
     .clickable
     {
         background-color: $color-nanolight;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-        border-top-left-radius: $border-radius-std;
+        border-top-left-radius: 0;
         border-top-right-radius: $border-radius-std;
         color: $color-white;
         display: flex;
@@ -43,6 +66,7 @@
         border-bottom-left-radius: $border-radius-std;
         border-bottom-right-radius: $border-radius-std;
         display: flex;
+        position: absolute;
         flex-direction: column;
         width: 132px;
 
@@ -104,7 +128,8 @@
     {
         .clickable
         {
-            border-radius: 0.3rem;
+            border-top-right-radius: $border-radius-std;
+            border-bottom-right-radius: $border-radius-std;
 
             .caret
             {

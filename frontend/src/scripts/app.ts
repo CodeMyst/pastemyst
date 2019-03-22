@@ -6,7 +6,7 @@ async function initExpiresInDropdown ()
     const options: ExpireOption [] = await getExpireOptions ();
     const items: DropdownItem [] = new Array<DropdownItem> (options.length);
 
-    const expiresInDropdown = new Dropdown (document.getElementById ("expires-in").children [0] as HTMLElement, false);
+    const expiresInDropdown = new Dropdown (document.getElementById ("expires-in").children [0] as HTMLElement, "expires in:", false);
     
     for (let i = 0; i < options.length; i++)
     {

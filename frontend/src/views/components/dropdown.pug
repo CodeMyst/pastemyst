@@ -1,9 +1,12 @@
 .dropdown.hidden
-    .clickable
-        p.selected loading...
-        img.caret(src="assets/icons/caret.svg")
-    .selectable
-        input.search(type="text", name="search", placeholder="search...")
-        .items
-            //- .item never
-            p.not-found.hidden no items found
+    .label
+        p label:
+    .dropdown-content
+        .clickable
+            p.selected loading...
+            img.caret(src="assets/icons/caret.svg")
+        .selectable
+            input.search(type="text", name="search", placeholder="search...")
+            .items
+                //- .item never
+                p.not-found.hidden no items found

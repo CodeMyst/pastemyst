@@ -7,20 +7,9 @@ html(lang="en")
         title Document
         link(rel="stylesheet", href="styles/styles.css")
     body
-        .dropdown.hidden#expires-in
-            .clickable
-                p.selected never
-                img.caret(src="assets/icons/caret.svg")
-            .selectable
-                input.search(type="text", name="search", placeholder="search...")
-                .items
-                    .item never
-                    .item 1h
-                    .item 2h
-                    .item 10h
-                    .item 1d
-                    .item 2d
-                    .item 1w
-                    p.not-found.hidden no items found
+        div.container
+            include components/header
+
+            include components/navigation
 
         script(data-main="scripts/app", src="scripts/require.js")

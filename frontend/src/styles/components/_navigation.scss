@@ -1,0 +1,18 @@
+@import "../variables";
+
+nav
+{
+    background-color: $color-nanolight;
+    border-radius: $border-radius-std;
+    font-size: $font-size-medium;
+    
+    ul
+    {
+        padding: 1rem;
+
+        li
+        {
+            display: inline;
+        }
+    }
+}

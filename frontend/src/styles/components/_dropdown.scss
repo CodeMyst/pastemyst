@@ -1,0 +1,117 @@
+.dropdown
+{
+    display: inline-block;
+
+    .clickable
+    {
+        background-color: #1D1D1D;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-top-left-radius: .3rem;
+        border-top-right-radius: .3rem;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        padding: .5rem 1rem;
+        width: 100px;
+
+        &:hover
+        {
+            cursor: pointer;
+        }
+
+        p
+        {
+            margin: 0;
+        }
+
+        .caret
+        {
+            align-self: center;
+            fill: white;
+            transform: rotate(180deg);
+            transition: all 250ms ease-in-out;
+            width: 15px;
+        }
+    }
+
+    .selectable
+    {
+        background-color: #1D1D1D;
+        border-bottom-left-radius: .3rem;
+        border-bottom-right-radius: .3rem;
+        display: flex;
+        flex-direction: column;
+        width: 132px;
+
+        .search
+        {
+            border: none;
+            border-radius: 0;
+            outline: none;
+            padding: .5rem 1rem;
+        }
+
+        .items
+        {
+            max-height: 200px;
+            overflow-y: auto;
+
+            .item
+            {
+                border-radius: .3rem;
+                color: white;
+                padding-bottom: .5rem;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                padding-top: .5rem;
+
+                &:hover
+                {
+                    background-color: #232323;
+                    cursor: pointer;
+                }
+
+                &.hidden
+                {
+                    display: none;
+                }
+            }
+
+            .selected
+            {
+                background-color: #232323;
+                color: #EE720D;
+            }
+
+            .not-found
+            {
+                color: white;
+                text-align: center;
+
+                &.hidden
+                {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &.hidden
+    {
+        .clickable
+        {
+            border-radius: .3rem;
+
+            .caret
+            {
+                transform: rotate(0deg);
+            }
+        }
+
+        .selectable
+        {
+            display: none;
+        }
+    }
+}

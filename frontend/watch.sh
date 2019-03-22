@@ -7,7 +7,7 @@ NORMAL=$(tput sgr0)
 
 echo "${GREEN}${BOLD}Watching files for changes...${NORMAL}${NC}"
 
-while inotifywait -qq -e close_write **/*; do
+while inotifywait -qq -r -e close_write **/*; do
     echo "Files changed, compiling..."
     
     if tsout=$(tsc); then

@@ -1,5 +1,18 @@
 @import "../variables";
 
+#language
+{
+    .clickable
+    {
+        width: 200px;
+    }
+    
+    .selectable
+    {
+        width: 232px;
+    }
+}
+
 .dropdown
 {
     display: inline-flex;

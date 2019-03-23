@@ -106,7 +106,7 @@ export class Dropdown
 
         this.items.forEach ((value: HTMLElement, key: DropdownItem) =>
         {
-            if (key.prettyValue.includes (searchValue))
+            if (key.prettyValue.toLowerCase ().includes (searchValue.toLowerCase ()))
             {
                 if (value.classList.contains ("hidden"))
                 {

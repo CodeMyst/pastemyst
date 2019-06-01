@@ -18,11 +18,15 @@ while inotifywait -qq -r -e close_write **/*; do
         else
             echo "${RED}${BOLD}${tslint}${NORMAL}${NC}"
         fi
+
+        cp src/scripts/components/require.js dist/scripts
+        cp src/scripts/types/codemirror/lib/codemirror.js dist/scripts/types/codemirror/lib/
+        cp -r src/scripts/types/codemirror/mode dist/scripts/types/codemirror/
     else
         echo "${RED}${BOLD}${tsout}${NORMAL}${NC}"
     fi
 
-    if scss=$(scss src/styles/styles.scss dist/styles/styles.css); then
+    if scss=$(sass src/styles/styles.scss dist/styles/styles.css); then
         echo "${GREEN}${BOLD}SCSS compiled successfully${NORMAL}${NC}"
     else
         echo "${RED}${BOLD}${scss}${NORMAL}${NC}"

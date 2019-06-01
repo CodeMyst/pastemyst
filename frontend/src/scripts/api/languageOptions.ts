@@ -9,5 +9,6 @@ export async function getLanguageOptions (): Promise<LanguageOption []>
 export class LanguageOption
 {
     public name: string;
+    public mimes: string [];
     public mode: string;
 }

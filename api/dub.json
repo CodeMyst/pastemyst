@@ -1,0 +1,16 @@
+{
+    "name": "pastemyst-api",
+    "description": "PasteMyst REST API",
+    "authors": ["CodeMyst"],
+    "copyright": "Copyright © 2019, CodeMyst",
+    "license": "MPL-2.0",
+    "dependencies":
+    {
+        "vibe-d": "~>0.8.6-alpha.2",
+        "vibe-d:tls": "~>0.8.6-alpha.2"
+    },
+    "subConfigurations":
+    {
+        "vibe-d:tls": "openssl-1.1"
+    }
+}

@@ -1,3 +1,5 @@
+export type OnChangeDelegate = (newItem: DropdownItem) => void;
+
 export class Dropdown
 {
     private dropdown: HTMLElement;
@@ -11,6 +13,8 @@ export class Dropdown
     private selectedItemElement: [DropdownItem, HTMLElement];
 
     public selectedItem: DropdownItem;
+
+    public onChange: OnChangeDelegate;
 
     constructor (dropdown: HTMLElement, label: string, hasSearch: boolean)
     {
@@ -93,6 +97,10 @@ export class Dropdown
         this.selectedText.innerText = item [0].prettyValue;
         this.selectedItem = item [0];
         this.hide ();
+        if (this.onChange !== undefined)
+        {
+            this.onChange (this.selectedItem);
+        }
     }
 
     public selectItem (item: DropdownItem): void
@@ -149,12 +157,12 @@ export class Dropdown
 
 export class DropdownItem
 {
-    public value: string;
+    public values: string [];
     public prettyValue: string;
 
-    constructor (value: string, prettyValue: string)
+    constructor (values: string [], prettyValue: string)
     {
-        this.value = value;
+        this.values = values;
         this.prettyValue = prettyValue;
     }
 }

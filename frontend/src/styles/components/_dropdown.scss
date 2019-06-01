@@ -82,6 +82,7 @@
         position: absolute;
         flex-direction: column;
         width: 132px;
+        z-index: 999;
 
         .search
         {
@@ -90,6 +91,8 @@
             outline: none;
             padding: 0.5rem 1rem;
             background-color: $color-nanolight;
+            color: $color-white;
+            font-family: $font-stack;
         }
 
         .items

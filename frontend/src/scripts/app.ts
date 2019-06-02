@@ -60,7 +60,14 @@ async function initLanguageDropdown ()
 function initEditor ()
 {
     const textarea: HTMLTextAreaElement = document.getElementById ("editor") as HTMLTextAreaElement;
-    editor = CodeMirror.fromTextArea (textarea, { theme: "base16-dark", lineNumbers: true, mode: "text/plain" });
+    editor = CodeMirror.fromTextArea (textarea,
+    {
+        indentUnit: 4,
+        lineNumbers: true, 
+        mode: "text/plain", 
+        tabSize: 4,
+        theme: "darcula", 
+    });
 }
 
 initEditor ();

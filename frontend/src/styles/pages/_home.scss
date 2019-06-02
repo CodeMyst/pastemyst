@@ -4,13 +4,28 @@
     justify-content: space-between;
 }
 
+.title-input
+{
+    margin-top: 25px;
+    width: 100%;
+    border-radius: $border-radius-std;
+    background-color: $color-nanolight;
+    border: none;
+    outline: none;
+    padding: 0.75rem 1rem;
+    box-sizing: border-box;
+    font-size: $font-size-normal;
+    color: $color-white;
+    font-family: $font-stack;
+}
+
 .CodeMirror
 {
     margin-top: 25px;
     border-radius: $border-radius-std;
     font-size: $font-size-code;
     font-family: $font-stack;
-    height: 60vh;
+    height: 50vh;
 }
 
 .cm-s-darcula.CodeMirror

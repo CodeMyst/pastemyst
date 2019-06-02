@@ -24,10 +24,14 @@ html(lang="en")
 
             textarea#editor(autofocus)
 
-            label.private-checkbox.disabled private
-                input(type="checkbox", disabled)
-                span.checkmark
-            .tooltip(data-tooltip="You need to be logged in to create private pastes.")
-                img(src="assets/icons/questionmark.svg", alt="questionmark")
+            .create-options
+                .private-checkbox
+                    label.disabled private
+                        input(type="checkbox", disabled)
+                        span.checkmark
+                    .tooltip(data-tooltip="You need to be logged in to create private pastes.")
+                        img(src="assets/icons/questionmark.svg", alt="questionmark")
+
+                a.button.create-button(href="#") create
 
         script(data-main="scripts/app", src="scripts/require.js")

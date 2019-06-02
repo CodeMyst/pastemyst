@@ -44,8 +44,18 @@
     }
 }
 
-.private-checkbox
+.create-options
 {
-    margin-top: 25px;
-    margin-right: 10px;
+    display: flex;
+    padding-top: 25px;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+
+    .private-checkbox
+    {
+        label
+        {
+            margin-right: 10px;
+        }
+    }
 }

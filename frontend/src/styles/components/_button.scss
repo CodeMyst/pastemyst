@@ -1,0 +1,13 @@
+.button
+{
+    padding: 0.75rem 1rem;
+    background-color: $color-mystge;
+    color: $color-nano;
+    border-radius: $border-radius-std;
+
+    &:hover
+    {
+        background-color: $color-nanolight;
+        color: $color-mystge;
+    }
+}

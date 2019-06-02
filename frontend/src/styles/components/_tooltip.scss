@@ -13,21 +13,21 @@
         font-size: $font-size-normal;
         color: $color-nano;
         content: attr(data-tooltip);
-        min-width: 300px;
+        min-width: 150px;
         opacity: 0;
         transition: all .2s ease-in-out .25s;
         visibility: hidden;
         z-index: 999;
         margin-left: 10px;
-        bottom: 150%;
-        left: -100px;
+        bottom: 250%;
+        left: -300px;
     }
 
     &:hover::after
     {
         opacity: 1;
         visibility: visible;
-        bottom: 140%;
+        bottom: 200%;
     }
 
     img

@@ -3,3 +3,28 @@
     display: flex;
     justify-content: space-between;
 }
+
+.CodeMirror
+{
+    margin-top: 25px;
+    border-radius: $border-radius-std;
+    font-size: $font-size-code;
+    font-family: $font-stack;
+    height: 60vh;
+}
+
+.cm-s-darcula.CodeMirror
+{
+    background-color: $color-nanolight;
+
+    .CodeMirror-gutters
+    {
+        background-color: $color-nanolight;
+        border: none;
+    }
+
+    .CodeMirror-scrollbar-filler
+    {
+        background-color: $color-nanolight;
+    }
+}

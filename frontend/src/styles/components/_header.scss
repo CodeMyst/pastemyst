@@ -6,4 +6,12 @@ h1
     font-weight: normal;
     font-family: $font-stack;
     margin-top: 0;
+
+    .icon
+    {
+        margin-right: 20px;
+        width: 50px;
+        position: relative;
+        top: 10px;
+    }
 }

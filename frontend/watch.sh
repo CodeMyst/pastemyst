@@ -39,5 +39,6 @@ while inotifywait -qq -r -e close_write **/*; do
     fi
 
     cp -r src/assets dist
+    mv dist/assets/favicon.ico dist/
     echo "${GREEN}${BOLD}Copied all assets${NORMAL}${NC}"
 done

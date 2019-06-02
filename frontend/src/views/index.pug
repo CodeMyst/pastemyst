@@ -20,8 +20,14 @@ html(lang="en")
                 #language
                     include components/dropdown
 
-            input.title-input(type="text", name="title", placeholder="title (optional)")
+            input.title-input(type="text", name="title", placeholder="title (optional)", autocomplete="off")
 
             textarea#editor(autofocus)
+
+            label.private-checkbox.disabled private
+                input(type="checkbox", disabled)
+                span.checkmark
+            .tooltip(data-tooltip="You need to be logged in to create private pastes.")
+                img(src="assets/icons/questionmark.svg", alt="questionmark")
 
         script(data-main="scripts/app", src="scripts/require.js")

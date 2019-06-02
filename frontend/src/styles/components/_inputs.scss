@@ -1,0 +1,76 @@
+label
+{
+    position: relative;
+    cursor: pointer;
+    font-size: $font-size-normal;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding-left: 30px;
+    line-height: 25px;
+    height: 25px;
+    display: inline-block;
+
+    &.disabled
+    {
+        opacity: 0.5;
+    }
+
+    input
+    {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+
+        &:checked ~ .checkmark
+        {
+            border-color: $color-mystge;
+        }
+
+        &:checked ~ .checkmark::after
+        {
+            display: block;
+        }
+    }
+
+    .checkmark
+    {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        border-radius: $border-radius-std;
+        border: 3px solid $color-nanolight;
+        box-sizing: border-box;
+
+        &::after
+        {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid $color-mystge;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+    }
+
+    &:hover input ~ .checkmark
+    {
+        border-color: $color-mystge;
+    }
+
+    &.disabled:hover input ~ .checkmark
+    {
+        border-color: $color-nanolight;
+    }
+}

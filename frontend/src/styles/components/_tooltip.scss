@@ -1,0 +1,37 @@
+.tooltip
+{
+    position: relative;
+    display: inline-block;
+    top: 2px;
+
+    &::after
+    {
+        position: absolute;
+        padding: 8px;
+        border-radius: $border-radius-std;
+        background-color: $color-mystge;
+        font-size: $font-size-normal;
+        color: $color-nano;
+        content: attr(data-tooltip);
+        min-width: 300px;
+        opacity: 0;
+        transition: all .2s ease-in-out .25s;
+        visibility: hidden;
+        z-index: 999;
+        margin-left: 10px;
+        bottom: 150%;
+        left: -100px;
+    }
+
+    &:hover::after
+    {
+        opacity: 1;
+        visibility: visible;
+        bottom: 140%;
+    }
+
+    img
+    {
+        width: 15px;
+    }
+}

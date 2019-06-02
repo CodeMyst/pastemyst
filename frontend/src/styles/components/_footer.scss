@@ -1,0 +1,10 @@
+footer
+{
+    display: flex;
+    justify-content: space-between;
+    background-color: $color-nanolight;
+    border-radius: $border-radius-std;
+    margin-top: 25px;
+    padding: 0.75rem 1rem;
+    box-sizing: border-box;
+}

@@ -12,5 +12,6 @@
     "subConfigurations":
     {
         "vibe-d:tls": "openssl-1.1"
-    }
+    },
+    "targetPath": "build"
 }

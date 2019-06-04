@@ -1,4 +1,4 @@
-module pastemyst.rest;
+module pastemyst.rest.root;
 
 import vibe.vibe;
 import pastemyst.data : DataFile;
@@ -11,7 +11,6 @@ public interface IAPIRoot
     Json getExpireOptions () @safe;
 }
 
-/// Class implementing the API Interface for root
 public class APIRoot : IAPIRoot
 {
     private Json getDataTextFileJson (DataFile dataFile)

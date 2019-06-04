@@ -13,3 +13,4 @@ pastemyst-api-test-*
 *.o
 *.obj
 *.lst
+build/

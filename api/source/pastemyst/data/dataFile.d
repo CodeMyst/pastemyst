@@ -1,4 +1,4 @@
-module pastemyst.data;
+module pastemyst.data.dataFile; // stfu
 
 import std.stdio : File, readln;
 import std.string : strip;
@@ -12,7 +12,6 @@ public enum DataFile
     EXPIRE_OPTIONS
 }
 
-/// Gets the data file
 public File getDataFile (DataFile dataFile)
 {
     final switch (dataFile)

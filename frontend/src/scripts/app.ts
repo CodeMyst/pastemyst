@@ -1,16 +1,20 @@
 import { ExpireOption, getExpireOptions } from "api/expireOptions";
 import { getLanguageOptions, LanguageOption } from "api/languageOptions";
+import { postPaste } from "api/paste";
 import { Dropdown, DropdownItem, OnChangeDelegate } from "components/dropdown";
+import { Paste, PasteCreateInfo } from "data/paste";
 import * as CodeMirror from "./types/codemirror/lib/codemirror";
 
 let editor: CodeMirror.Editor;
+let expiresInDropdown: Dropdown;
+let languageDropdown: Dropdown;
 
 async function initExpiresInDropdown ()
 {
     const options: ExpireOption [] = await getExpireOptions ();
     const items: DropdownItem [] = new Array<DropdownItem> (options.length);
 
-    const expiresInDropdown = new Dropdown (document.getElementById ("expires-in").children [0] as HTMLElement,
+    expiresInDropdown = new Dropdown (document.getElementById ("expires-in").children [0] as HTMLElement,
                                             "expires in:",
                                             false);
     
@@ -28,7 +32,7 @@ async function initLanguageDropdown ()
     const options: LanguageOption [] = await getLanguageOptions ();
     const items: DropdownItem [] = new Array<DropdownItem> (options.length);
 
-    const languageDropdown = new Dropdown (document.getElementById ("language").children [0] as HTMLElement,
+    languageDropdown = new Dropdown (document.getElementById ("language").children [0] as HTMLElement,
                                             "language:",
                                             true);
     
@@ -70,7 +74,28 @@ function initEditor ()
     });
 }
 
+async function createPaste ()
+{
+    const createInfo: PasteCreateInfo = new PasteCreateInfo ();
+
+    createInfo.expiresIn = expiresInDropdown.selectedItem.values [0];
+
+    const titleInput: HTMLInputElement = document.getElementById ("title-input") as HTMLInputElement;
+    if (titleInput.value !== null && titleInput.value !== "")
+    {
+        createInfo.title = titleInput.value;
+    }
+
+    createInfo.code = editor.getValue ();
+    createInfo.language = languageDropdown.selectedItem.values [1];
+    createInfo.isPrivate = false;
+
+    await postPaste (createInfo);
+}
+
 initEditor ();
 
 initExpiresInDropdown ();
 initLanguageDropdown ();
+
+document.getElementById ("create-button").addEventListener ("click", () => createPaste ());

@@ -20,7 +20,7 @@ html(lang="en")
                 #language
                     include components/dropdown
 
-            input.title-input(type="text", name="title", placeholder="title (optional)", autocomplete="off")
+            input#title-input(type="text", name="title", placeholder="title (optional)", autocomplete="off")
 
             textarea#editor(autofocus)
 
@@ -32,7 +32,7 @@ html(lang="en")
                     .tooltip(data-tooltip="You need to be logged in to create private pastes.")
                         img(src="assets/icons/questionmark.svg", alt="questionmark")
 
-                a.button.create-button(href="#") create
+                a.button#create-button(href="#") create
 
             footer
                 .copyright copyright &copy; #[a(href="https://github.com/CodeMyst", target="_blank") CodeMyst] 2019

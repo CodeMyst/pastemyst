@@ -1,11 +1,13 @@
-module pastemyst.data.dataFile; // stfu
+module pastemyst.data.dataFile;
 
 import std.stdio : File, readln;
 import std.string : strip;
 
 private string dataPath = "data";
 
-/// Enum that defines all available data files.
+/++
+ + Enum that defines all available data files.
+ +/
 public enum DataFile
 {
     LANGUAGES,
@@ -27,7 +29,9 @@ public File getDataFile (DataFile dataFile)
     }
 }
 
-/// Gets the data file as a string
+/++
+ + Gets the data file as a string
+ +/
 public string getDataTextFile (DataFile dataFile)
 {
     string result = "";
@@ -42,7 +46,9 @@ public string getDataTextFile (DataFile dataFile)
     return result;
 }
 
-/// Gets the path of a file in the data directory
+/++
+ + Gets the path of a file in the data directory
+ +/
 private string getDataFilePath (string filename)
 {
     import std.file : getcwd;

@@ -1,6 +1,8 @@
-module pastemyst.data.expiresIn; // stfu
+module pastemyst.data.expiresIn;
 
-/// All possible expires in values
+/++
+ + All possible expires in values
+ +/
 public enum ExpiresIn
 {
     never,

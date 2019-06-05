@@ -13,11 +13,12 @@ public interface IAPIPaste
      + Creates a new paste
      +/
     @bodyParam ("expiresIn", "expiresIn")
+    @bodyParam ("title", "title")
     @bodyParam ("code", "code")
     @bodyParam ("language", "language")
     @bodyParam ("isPrivate", "isPrivate")
     @path ("/paste")
-    Json post (string expiresIn, string code, string language, bool isPrivate) @safe;
+    Json post (string expiresIn, string code, string language, bool isPrivate, string title = "") @safe;
 }
 
 /++
@@ -30,7 +31,7 @@ public class APIPaste : IAPIPaste
      +
      + Creates a new paste
      +/
-    public Json post (string expiresIn, string code, string language, bool isPrivate) @safe
+    public Json post (string expiresIn, string code, string language, bool isPrivate, string title = "") @safe
     {
         import pastemyst.data : Paste, ExpiresIn;
         import pastemyst.db : insertPaste;
@@ -41,6 +42,7 @@ public class APIPaste : IAPIPaste
         Paste paste = Paste (randomBase36String (),
                              Clock.currTime.toUnixTime (),
                              to!ExpiresIn (expiresIn),
+                             title,
                              code,
                              language,
                              "",

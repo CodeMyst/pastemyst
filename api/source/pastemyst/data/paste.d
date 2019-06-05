@@ -15,6 +15,10 @@ public struct Paste
      +/
     public ulong createdAt;
     public ExpiresIn expiresIn;
+    /++
+     + Title of the paste (optional)
+     +/
+    public string title;
     public string code;
     public string language;
     /++

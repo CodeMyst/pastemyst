@@ -42,7 +42,7 @@ public struct Paste
 
         // Using traits to get the name of the expiresIn value.
         // This way if the name of the expiresIn value changes the compiler will report that.
-        res [__traits (identifier, expiresIn)] = to!string (expiresIn);
+        res [__traits (identifier, expiresIn)] = cast (string) expiresIn;
 
         return res;
     }

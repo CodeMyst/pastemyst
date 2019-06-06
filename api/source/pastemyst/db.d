@@ -2,6 +2,7 @@ module pastemyst.db;
 
 import vibe.db.mongo.mongo;
 import pastemyst.data.paste;
+import std.typecons;
 
 private MongoDatabase db;
 
@@ -23,4 +24,14 @@ public void insertPaste (Paste paste) @safe
     Json data = paste.toJson ();
 
     pastesCollection.insert (data);
+}
+
+/++
+ + Gets a paste by its ID from the db
+ +/
+public Nullable!Paste getPaste (string _id) @safe
+{
+    MongoCollection pastesCollections = db ["pastes"];
+
+    return pastesCollections.findOne!Paste (["_id": _id]);
 }

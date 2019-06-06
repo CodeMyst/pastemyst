@@ -36,12 +36,13 @@ public class APIPaste : IAPIPaste
         import pastemyst.data : Paste, ExpiresIn;
         import pastemyst.db : insertPaste;
         import pastemyst.encoding : randomBase36String;
+        import pastemyst.conv : valueToEnum;
         import std.datetime.systime : Clock;
         import std.conv : to;
 
         Paste paste = Paste (randomBase36String (),
                              Clock.currTime.toUnixTime (),
-                             to!ExpiresIn (expiresIn),
+                             valueToEnum!ExpiresIn (expiresIn),
                              title,
                              code,
                              language,

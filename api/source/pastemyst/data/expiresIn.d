@@ -5,11 +5,11 @@ module pastemyst.data.expiresIn;
  +/
 public enum ExpiresIn
 {
-    never,
-    oneHour,
-    twoHours,
-    tenHours,
-    oneDay,
-    twoDays,
-    oneWeek
+    never = "never",
+    oneHour = "1h",
+    twoHours = "2h",
+    tenHours = "10h",
+    oneDay = "1d",
+    twoDays = "2d",
+    oneWeek = "1w"
 }

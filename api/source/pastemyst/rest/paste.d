@@ -19,6 +19,14 @@ public interface IAPIPaste
     @bodyParam ("isPrivate", "isPrivate")
     @path ("/paste")
     Json post (string expiresIn, string code, string language, bool isPrivate, string title = "") @safe;
+
+    /++
+     + `GET /paste/:id`
+     +
+     + Gets a paste by its ID
+     +/
+    @path ("/paste/:id")
+    Json get (string _id) @safe;
 }
 
 /++
@@ -53,5 +61,28 @@ public class APIPaste : IAPIPaste
         insertPaste (paste);
 
         return paste.toJson ();
+    }
+
+    /++
+     + `GET /paste/:id`
+     +
+     + Gets a paste by its ID
+     +/
+    public Json get (string _id) @safe
+    {
+        import std.typecons : Nullable;
+        import pastemyst.data : Paste;
+        import pastemyst.db : getPaste;
+
+        const Nullable!Paste result = getPaste (_id);
+
+        if (result.isNull)
+        {
+            throw new HTTPStatusException (HTTPStatus.notFound);
+        }
+        else
+        {
+            return result.get ().toJson ();
+        }
     }
 }

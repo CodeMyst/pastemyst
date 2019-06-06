@@ -34,7 +34,7 @@ public struct Paste
      + Since the expiresIn value is an enum, the json serializer from `vibe.data.json.serializeToJson` will serialize that to an int instead to text,
      + so this function will replace the int with the string representation of the enum.
      +/
-    public Json toJson () @safe
+    public Json toJson () const @safe
     {
         import std.conv : to;
 

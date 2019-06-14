@@ -1,0 +1,42 @@
+actions:
+    compile_ts:
+        - tsc
+    lint_ts:
+        - tslint -c tslint.json src/**/*.ts
+    copy_libs_ts:
+        - cp src/scripts/components/require.js dist/scripts
+        - cp src/scripts/types/codemirror/lib/codemirror.js dist/scripts/types/codemirror/lib
+        - cp -r src/scripts/types/codemirror/mode dist/scripts/types/codemirror/
+    compile_scss:
+        - sass src/styles/styles.scss dist/styles/styles.css
+    compile_pug:
+        - pug src/views/index.pug -o dist
+    copy_assets:
+        - cp -r src/assets dist
+        - mv dist/assets/favicon.ico dist
+    clean_dist:
+        - ${rmdir dist}
+        - ${mkdir dist}
+
+configurations:
+    - debug
+
+build_debug:
+    - ${compile_ts}
+    - ${lint_ts}
+    - ${copy_libs_ts}
+    - ${compile_scss}
+    - ${compile_pug}
+    - ${copy_assets}
+
+watch:
+    src/assets/:
+        - ${copy_assets}
+    src/scripts/:
+        - ${compile_ts}
+        - ${lint_ts}
+        - ${copy_libs_ts}
+    src/styles/:
+        - ${compile_scss}
+    src/views/:
+        - ${compile_pug}

@@ -2,6 +2,16 @@
 {
     display: flex;
     justify-content: space-between;
+
+    @media screen and (max-width: 720px)
+    {
+        flex-direction: column;
+
+        #language
+        {
+            margin-top: 25px;
+        }
+    }
 }
 
 #title-input

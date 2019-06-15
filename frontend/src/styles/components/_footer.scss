@@ -7,4 +7,14 @@ footer
     margin-top: 25px;
     padding: 0.75rem 1rem;
     box-sizing: border-box;
+
+    @media screen and (max-width: 720px)
+    {
+        flex-direction: column;
+
+        .paste-amount
+        {
+            margin-top: 10px;
+        }
+    }
 }

@@ -11,32 +11,47 @@ actions:
         - sass src/styles/styles.scss dist/styles/styles.css
     compile_pug:
         - pug src/views/index.pug -o dist
+        - pug src/views/home.pug -o dist
+        - pug src/views/paste.pug -o dist
     copy_assets:
         - cp -r src/assets dist
         - mv dist/assets/favicon.ico dist
     clean_dist:
         - ${rmdir dist}
         - ${mkdir dist}
+        - ${mkdir dist/scripts}
+        - ${mkdir dist/scripts/types}
+        - ${mkdir dist/scripts/types/codemirror}
+        - ${mkdir dist/scripts/types/codemirror/lib}
+    template:
+        - ${template home.pug home.ts}
+        - ${template paste.pug paste.ts}
 
 configurations:
     - debug
 
+before_build:
+    - ${clean_dist}
+
 build_debug:
+    - ${compile_pug}
+    - ${template}
     - ${compile_ts}
     - ${lint_ts}
     - ${copy_libs_ts}
     - ${compile_scss}
-    - ${compile_pug}
     - ${copy_assets}
 
 watch:
-    src/assets/:
+    src/assets:
         - ${copy_assets}
-    src/scripts/:
+    src/scripts:
         - ${compile_ts}
         - ${lint_ts}
         - ${copy_libs_ts}
-    src/styles/:
+    src/styles:
         - ${compile_scss}
-    src/views/:
+    src/views:
         - ${compile_pug}
+        - ${template}
+        - ${compile_ts}

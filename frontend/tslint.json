@@ -11,7 +11,9 @@
         "one-line": [false, "check-open-brace"],
         "no-console": false,
         "no-trailing-whitespace": false,
-        "prefer-for-of": false
+        "prefer-for-of": false,
+        "ordered-imports": false,
+        "max-classes-per-file": false
     },
     "rulesDirectory": []
 }

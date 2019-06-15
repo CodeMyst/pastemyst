@@ -19,12 +19,19 @@ actions:
     clean_dist:
         - ${rmdir dist}
         - ${mkdir dist}
+        - ${mkdir dist/scripts}
+        - ${mkdir dist/scripts/types}
+        - ${mkdir dist/scripts/types/codemirror}
+        - ${mkdir dist/scripts/types/codemirror/lib}
     template:
         - ${template home.pug home.ts}
         - ${template paste.pug paste.ts}
 
 configurations:
     - debug
+
+before_build:
+    - ${clean_dist}
 
 build_debug:
     - ${compile_pug}

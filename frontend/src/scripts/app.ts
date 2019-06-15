@@ -12,4 +12,6 @@ function initRouter ()
     router.init ();
 }
 
+window.addEventListener ("popstate", () => initRouter ());
+
 initRouter ();

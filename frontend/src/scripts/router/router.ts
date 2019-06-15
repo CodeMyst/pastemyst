@@ -33,7 +33,6 @@ export class Router
         let request: string = this.parseRequestUrl ();
 
         let page: Page;
-        console.log (request);
         if (this.routes.some ((r) => r.path == request))
         {
             page = this.routes.find ((r) => r.path == request).page;

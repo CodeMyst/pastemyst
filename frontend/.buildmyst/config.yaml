@@ -11,22 +11,28 @@ actions:
         - sass src/styles/styles.scss dist/styles/styles.css
     compile_pug:
         - pug src/views/index.pug -o dist
+        - pug src/views/home.pug -o dist
+        - pug src/views/paste.pug -o dist
     copy_assets:
         - cp -r src/assets dist
         - mv dist/assets/favicon.ico dist
     clean_dist:
         - ${rmdir dist}
         - ${mkdir dist}
+    template:
+        - ${template home.pug home.ts}
+        - ${template paste.pug paste.ts}
 
 configurations:
     - debug
 
 build_debug:
+    - ${compile_pug}
+    - ${template}
     - ${compile_ts}
     - ${lint_ts}
     - ${copy_libs_ts}
     - ${compile_scss}
-    - ${compile_pug}
     - ${copy_assets}
 
 watch:
@@ -40,3 +46,5 @@ watch:
         - ${compile_scss}
     src/views:
         - ${compile_pug}
+        - ${template}
+        - ${compile_ts}

@@ -13,7 +13,22 @@ void main (string [] args)
 
     string tsContent = readText ("src/scripts/views/" ~ tsName);
 
-    tsContent = tsContent.replace (tsContent.indexOf ("`") + 1, tsContent.lastIndexOf ("`"), content);
+    long firstTickIndex = -1;
+    long secondTickIndex = -1;
+
+    foreach (ulong i, char c; tsContent)
+    {
+        if (firstTickIndex == -1 && c == '`')
+        {
+            firstTickIndex = i;
+        }
+        else if (secondTickIndex == -1 && c == '`')
+        {
+            secondTickIndex = i;
+        }
+    }
+
+    tsContent = tsContent.replace (firstTickIndex + 1, secondTickIndex, content);
 
     write ("src/scripts/views/" ~ tsName, tsContent);
 

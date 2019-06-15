@@ -1,13 +1,63 @@
 import { ExpireOption, getExpireOptions } from "api/expireOptions";
 import { getLanguageOptions, LanguageOption } from "api/languageOptions";
 import { postPaste } from "api/paste";
-import { Dropdown, DropdownItem, OnChangeDelegate } from "components/dropdown";
-import { Paste, PasteCreateInfo } from "data/paste";
+import { Dropdown, DropdownItem } from "components/dropdown";
+import { PasteCreateInfo } from "data/paste";
+import { Page, Route, Router } from "router/router";
 import * as CodeMirror from "./types/codemirror/lib/codemirror";
 
 let editor: CodeMirror.Editor;
 let expiresInDropdown: Dropdown;
 let languageDropdown: Dropdown;
+let router: Router;
+
+class Home extends Page
+{
+    public async render (): Promise<string>
+    {
+        return `<p>home</p>`;
+    }
+
+    public async run (): Promise<void>
+    {
+        console.log ("home");
+    }
+}
+
+class About extends Page
+{
+    public async render (): Promise<string>
+    {
+        return `<p>about</p>`;
+    }
+
+    public async run (): Promise<void>
+    {
+        console.log ("about");
+    }
+}
+
+class Paste extends Page
+{
+    public async render (): Promise<string>
+    {
+        return `<p>paste</p>`;
+    }
+
+    public async run (): Promise<void>
+    {
+        console.log ("paste");
+    }
+}
+
+function initRouter ()
+{
+    router = new Router ();
+    router.addRoute (new Route ("/", "Home", new Home ()));
+    router.addRoute (new Route ("/about", "About", new About ()));
+    router.addRoute (new Route ("/:id", "Paste", new Paste ()));
+    router.init ();
+}
 
 async function initExpiresInDropdown ()
 {
@@ -93,9 +143,14 @@ async function createPaste ()
     await postPaste (createInfo);
 }
 
-initEditor ();
+// initEditor ();
 
-initExpiresInDropdown ();
-initLanguageDropdown ();
+// initExpiresInDropdown ();
+// initLanguageDropdown ();
 
-document.getElementById ("create-button").addEventListener ("click", () => createPaste ());
+// document.getElementById ("create-button").addEventListener ("click", () => createPaste ());
+
+window.addEventListener ("hashchange", initRouter);
+window.addEventListener ("load", initRouter);
+
+initRouter ();

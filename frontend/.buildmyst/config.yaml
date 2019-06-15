@@ -30,13 +30,13 @@ build_debug:
     - ${copy_assets}
 
 watch:
-    src/assets/:
+    src/assets:
         - ${copy_assets}
-    src/scripts/:
+    src/scripts:
         - ${compile_ts}
         - ${lint_ts}
         - ${copy_libs_ts}
-    src/styles/:
+    src/styles:
         - ${compile_scss}
-    src/views/:
+    src/views:
         - ${compile_pug}

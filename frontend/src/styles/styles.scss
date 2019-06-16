@@ -3,6 +3,7 @@
 
 @import "components/darcula";
 @import "components/codemirror";
+@import "components/highlight";
 @import "components/inputs";
 @import "components/tooltip";
 @import "components/button";
@@ -12,6 +13,7 @@
 @import "components/dropdown";
 
 @import "pages/home";
+@import "pages/paste";
 
 body
 {
@@ -29,6 +31,7 @@ a
     &:hover
     {
         color: $color-mystlue;
+        cursor: pointer;
     }
 }
 

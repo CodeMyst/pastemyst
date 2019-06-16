@@ -1,0 +1,50 @@
+#paste-header
+{
+    background-color: $color-nanonotsolight;
+    border-radius: $border-radius-std;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 2px solid $color-mystge;
+    border-bottom: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+    margin-top: 3rem;
+
+    .raw
+    {
+        align-self: center;
+        background-color: $color-nano;
+        padding: 0.25rem 0.75rem;
+        border-radius: $border-radius-std;
+    }
+}
+
+#paste-content ~ .CodeMirror
+{
+    margin-top: 0;
+    margin-bottom: 3rem;
+    height: auto;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border: 2px solid $color-mystge;
+    border-top: none;
+    padding: 1rem 0;
+}
+
+#paste-meta
+{
+    background-color: $color-nanolight;
+    border-radius: $border-radius-std;
+    padding: 0.75rem 1rem;
+
+    p
+    {
+        margin: 0;
+    }
+
+    .created-at
+    {
+        margin-bottom: 25px;
+    }
+}

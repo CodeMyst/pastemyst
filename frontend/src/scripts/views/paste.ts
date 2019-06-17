@@ -3,6 +3,7 @@ import { getPaste } from "api/paste";
 import { Paste } from "data/paste";
 import * as CodeMirror from "types/codemirror/lib/codemirror";
 import { getLanguageOptions, LanguageOption } from "api/languageOptions";
+import { rawEndpoint } from "api/api";
 
 export class PastePage extends Page
 {
@@ -23,7 +24,7 @@ version 2.0.0 (<a href="#" target="_blank">changelog</a>).</p><nav><ul><li><a ro
         // Insert the paste title and the link to the raw paste contents
         const header: HTMLElement = document.getElementById ("paste-header");
         header.getElementsByClassName ("title") [0].textContent = title;
-        header.getElementsByClassName ("raw") [0].setAttribute ("route", `/${id}/raw`);
+        header.getElementsByClassName ("raw") [0].setAttribute ("href", `${rawEndpoint}/${id}/raw`);
 
         // Insert the paste contents
         const textarea: HTMLTextAreaElement = document.getElementById ("paste-content") as HTMLTextAreaElement;

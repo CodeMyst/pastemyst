@@ -1,0 +1,60 @@
+.modal
+{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+
+    .content
+    {
+        background-color: $color-nanolight;
+        border-radius: $border-radius-std;
+        width: 80%;
+        max-width: 480px;
+        margin: 0 auto;
+        margin-top: 100px;
+        padding: 1.25rem;
+
+        .head
+        {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+
+            .title
+            {
+                margin: 0;
+                font-size: $font-size-medium;
+            }
+
+            .exit
+            {
+                width: 15px;
+                height: 15px;
+
+                &:hover
+                {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .body
+        {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            
+            p
+            {
+                text-align: justify;
+                text-justify: inter-word;
+                line-height: 1.5;
+            }
+        }
+    }
+}

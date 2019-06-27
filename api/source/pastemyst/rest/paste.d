@@ -42,7 +42,7 @@ public class APIPaste : IAPIPaste
     public Json post (string expiresIn, string code, string language, bool isPrivate, string title = "") @safe
     {
         import pastemyst.data : Paste, ExpiresIn;
-        import pastemyst.db : insertPaste;
+        import pastemyst.db : insertMongo;
         import pastemyst.encoding : randomBase36String;
         import pastemyst.conv : valueToEnum;
         import std.datetime.systime : Clock;
@@ -58,7 +58,7 @@ public class APIPaste : IAPIPaste
                              isPrivate,
                              false);
 
-        insertPaste (paste);
+        insertMongo (paste);
 
         return paste.toJson ();
     }
@@ -72,9 +72,9 @@ public class APIPaste : IAPIPaste
     {
         import std.typecons : Nullable;
         import pastemyst.data : Paste;
-        import pastemyst.db : getPaste;
+        import pastemyst.db : findOneByIdMongo;
 
-        const Nullable!Paste result = getPaste (_id);
+        const Nullable!Paste result = findOneByIdMongo!Paste (_id);
 
         if (result.isNull)
         {

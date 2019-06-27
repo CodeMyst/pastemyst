@@ -2,6 +2,10 @@ export type OnChangeDelegate = (newItem: DropdownItem) => void;
 
 export class Dropdown
 {
+    public selectedItem: DropdownItem;
+
+    public onChange: OnChangeDelegate;
+    
     private dropdown: HTMLElement;
     private clickable: HTMLElement;
     private selectable: HTMLElement;
@@ -11,10 +15,6 @@ export class Dropdown
     private visible: boolean;
     private items: Map<DropdownItem, HTMLElement>;
     private selectedItemElement: [DropdownItem, HTMLElement];
-
-    public selectedItem: DropdownItem;
-
-    public onChange: OnChangeDelegate;
 
     constructor (dropdown: HTMLElement, label: string, hasSearch: boolean)
     {
@@ -53,13 +53,18 @@ export class Dropdown
 
     public addItem (item: DropdownItem): void
     {
-        let itemNode: HTMLDivElement = document.createElement ("div");
+        const itemNode: HTMLDivElement = document.createElement ("div");
         itemNode.classList.add ("item");
         itemNode.innerText = item.prettyValue;
         itemNode.addEventListener ("click", (evt) => this._selectItem ([item, evt.target as HTMLElement]));
         this.selectable.getElementsByClassName ("items") [0].appendChild (itemNode);
 
         this.items.set (item, itemNode);
+    }
+
+    public selectItem (item: DropdownItem): void
+    {
+        this._selectItem ([item, this.items.get (item)]);
     }
 
     private hide (): void
@@ -101,11 +106,6 @@ export class Dropdown
         {
             this.onChange (this.selectedItem);
         }
-    }
-
-    public selectItem (item: DropdownItem): void
-    {
-        this._selectItem ([item, this.items.get (item)]);
     }
 
     private onSearch (): void

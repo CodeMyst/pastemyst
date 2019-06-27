@@ -2,7 +2,7 @@ actions:
     compile_ts:
         - tsc
     lint_ts:
-        - tslint -c tslint.json src/**/*.ts
+        - tslint -p tsconfig.json -c tslint.json
     copy_libs_ts:
         - cp src/scripts/components/require.js dist/scripts
         - cp src/scripts/types/codemirror/lib/codemirror.js dist/scripts/types/codemirror/lib

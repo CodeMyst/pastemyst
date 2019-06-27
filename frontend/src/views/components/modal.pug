@@ -1,0 +1,10 @@
+mixin modal(name, title, buttonHref, buttonText)
+    .modal(id=name)
+        .content
+            .head
+                p.title= title
+                img.exit(src="/assets/icons/exit.svg")
+            .body
+                block
+            .footer
+                a(href=buttonHref)=buttonText

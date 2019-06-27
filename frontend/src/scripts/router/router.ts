@@ -1,24 +1,7 @@
-export class Route
-{
-    public path: string;
-    public name: string;
-    public page: Page;
+import Page from "page";
+import Route from "route";
 
-    constructor (path: string, name: string, page: Page)
-    {
-        this.path = path;
-        this.name = name;
-        this.page = page;
-    }
-}
-
-export abstract class Page
-{
-    public abstract async render (): Promise<string>;
-    public abstract async run (): Promise<void>;
-}
-
-export class Router
+export default class Router
 {
     public routes: Route [] = [];
 
@@ -45,6 +28,7 @@ export class Router
 
         content.innerHTML = await page.render ();
         await page.run ();
+        await page.runComponents ();
 
         const links: NodeListOf<Element> = document.querySelectorAll ("[route]");
 

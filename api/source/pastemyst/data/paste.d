@@ -3,13 +3,15 @@ module pastemyst.data.paste;
 import pastemyst.data;
 import vibe.data.json;
 import vibe.data.bson;
+import vibe.data.serialization;
 
 /++
  +  Structure representing a single paste
  +/
 public struct Paste
 {
-    public string _id;
+    @name ("_id")
+    public string id;
     /++
      + Unix timestamp when the paste was created
      +/

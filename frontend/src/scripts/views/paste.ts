@@ -1,20 +1,25 @@
-import { Page } from "../router/router";
 import { getPaste } from "api/paste";
 import { Paste } from "data/paste";
 import * as CodeMirror from "types/codemirror/lib/codemirror";
 import { getLanguageOptions, LanguageOption } from "api/languageOptions";
 import { rawEndpoint } from "api/api";
+import Page from "router/page";
+import Navigation from "components/navigation";
 
 export class PastePage extends Page
 {
     public async render (): Promise<string>
     {
+        /* tslint:disable:max-line-length */
         return `<h1><img class="icon" src="/assets/icons/pastemyst.svg" alt="icon"/><a route="/">PasteMyst</a></h1><p class="description">a simple website for storing and sharing code snippets.
-version 2.0.0 (<a href="#" target="_blank">changelog</a>).</p><nav><ul><li><a route="/">home</a> - </li><li><a href="/login">login</a> - </li><li><a href="https://github.com/codemyst/pastemyst" target="_blank">github</a> - </li><li><a href="/api-docs">api docs</a></li></ul></nav><div id="paste-header"><p class="title"></p><a class="raw">raw</a></div><textarea id="paste-content"></textarea><div id="paste-meta"><p class="created-at"><span class="highlight">created at:</span></p><p class="expires-in"><span class="highlight">expires in:</span></p></div><footer><div class="copyright">copyright &copy; <a href="https://github.com/CodeMyst" target="_blank">CodeMyst</a> 2019</div><div class="paste-amount">1337 currently active pastes</div></footer>`;
+version 2.0.0 (<a href="#" target="_blank">changelog</a>).</p><nav><ul><li><a route="/">home</a> - </li><li><a id="login" href="http://localhost:5000/auth/github">login</a> - </li><li><a href="https://github.com/codemyst/pastemyst" target="_blank">github</a> - </li><li><a href="/api-docs">api docs</a></li></ul></nav><div id="paste-header"><p class="title"></p><a class="raw">raw</a></div><textarea id="paste-content"></textarea><div id="paste-meta"><p class="created-at"><span class="highlight">created at:</span></p><p class="expires-in"><span class="highlight">expires in:</span></p></div><footer><div class="copyright">copyright &copy; <a href="https://github.com/CodeMyst" target="_blank">CodeMyst</a> 2019</div><div class="paste-amount">1337 currently active pastes</div></footer>`;
+        /* tslint:enable:max-line-length */
     }
 
     public async run (): Promise<void>
     {
+        this.addComponent (new Navigation ());
+
         // Get the id of the paste from the current url
         const id: string = window.location.pathname.slice (1);
         const paste: Paste = await getPaste (id);
@@ -42,11 +47,19 @@ version 2.0.0 (<a href="#" target="_blank">changelog</a>).</p><nav><ul><li><a ro
 
         const languageOption: LanguageOption = (await getLanguageOptions ())
                                                .find ((o) => o.mimes [0] === paste.language);
-        const modePath: string = `types/codemirror/mode/${languageOption.mode}/${languageOption.mode}`;
-        import (modePath).then (() =>
+
+        if (languageOption.mode !== "null")
         {
-            editor.setOption ("mode", paste.language);
-        });
+            const modePath: string = `types/codemirror/mode/${languageOption.mode}/${languageOption.mode}`;
+            import (modePath).then (() =>
+            {
+                editor.setOption ("mode", paste.language);
+            });
+        }
+        else
+        {
+            editor.setOption ("mode", "text/plain");
+        }
 
         // Insert the created at and expires in values
         const createdAt: Date = new Date (paste.createdAt * 1000);

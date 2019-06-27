@@ -1,5 +1,6 @@
 export class Paste
 {
+    /* tslint:disable-next-line */
     public _id: string;
     public createdAt: number;
     public expiresIn: string;

@@ -14,3 +14,4 @@ pastemyst-api-test-*
 *.obj
 *.lst
 build/
+config.json

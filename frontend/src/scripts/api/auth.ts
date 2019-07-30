@@ -6,7 +6,7 @@ export async function isLoggedIn (): Promise<boolean>
 
     if (jwtCookie === null)
     {
-        return false;
+        console.log ("reee");
     }
     else
     {
@@ -20,6 +20,16 @@ export async function isLoggedIn (): Promise<boolean>
         });
 
         return JSON.parse (await response.text ());
+    }
+}
+
+export async function getJwt (): Promise<string>
+{
+    const jwtCookie: string = getCookie ("github");
+
+    if (jwtCookie !== null)
+    {
+        return jwtCookie;
     }
 }
 

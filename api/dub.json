@@ -6,8 +6,8 @@
     "license": "MPL-2.0",
     "dependencies":
     {
-        "vibe-d": "~>0.8.6-alpha.2",
-        "vibe-d:tls": "~>0.8.6-alpha.2",
+        "vibe-d": "~>0.8.6-beta.1",
+        "vibe-d:tls": "~>0.8.6-beta.1",
         "fastjwt": "~>1.1.1"
     },
     "subConfigurations":

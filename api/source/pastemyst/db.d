@@ -105,7 +105,7 @@ public bool existsAccessToken (string jwtToken)
 /++
  + Gets the github access with the specified JWT token as the key
  +/ 
-public string getAccessToken (string jwtToken)
+public string getAccessToken (string jwtToken) @safe
 {
     return redisDb.get (jwtToken);
 }

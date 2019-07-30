@@ -1,15 +1,30 @@
 import { Paste, PasteCreateInfo } from "../data/paste";
 import { apiEndpoint } from "api";
+import { isLoggedIn, getJwt } from "auth";
 
 export async function postPaste (paste: PasteCreateInfo): Promise<Paste>
 {
+    const isLogged: boolean = await isLoggedIn ();
+    let token: string;
+
+    if (isLogged)
+    {
+        token = await getJwt ();
+    }
+
+    const requestHeaders: Headers = new Headers ();
+
+    requestHeaders.append ("Content-Type", "application/json");
+
+    if (isLogged)
+    {
+        requestHeaders.append ("Authorization", `Bearer ${token}`);
+    }
+
     const response: Response = await fetch (`${apiEndpoint}/paste`,
     {
         method: "POST",
-        headers:
-        {
-            "Content-Type": "application/json"
-        },
+        headers: requestHeaders,
         body: JSON.stringify (paste)
     });
 

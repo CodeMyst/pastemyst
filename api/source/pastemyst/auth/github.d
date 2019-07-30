@@ -10,6 +10,7 @@ public class AuthGitHubWeb
 {
     /++
      + `GET /auth/github`
+     +
      + Redirects to the GitHub authorization page.
      +/
     @path ("/auth/github")
@@ -123,6 +124,7 @@ public class AuthGitHubAPI : IAuthGitHubAPI
         StringBuffer header;
         StringBuffer payload;
 
+        // TODO: Handle if the wrong format for authorization is provided
         string token = authorization ["Bearer ".length..$];
 
         const int result = decodeJWTToken (token, jwtSecret, JWTAlgorithm.HS512, header, payload);
@@ -149,4 +151,30 @@ private User getGitHubUser (string accessToken) @safe
     });
 
     return user;
+}
+
+/++
+ + Gets a GitHub user from a JWT
+ +/
+public User getGitHubUserJwt (string authorization) @trusted
+{
+    import pastemyst.config : config;
+    import stringbuffer : StringBuffer;
+    import fastjwt.jwt : decodeJWTToken, JWTAlgorithm;
+    import pastemyst.db : getAccessToken;
+    import pastemyst.auth : InvalidAuthorizationException;
+
+    string jwtSecret = config ["jwt"] ["secret"].get!string;
+
+    StringBuffer header;
+    StringBuffer payload;
+
+    if (decodeJWTToken (authorization, jwtSecret, JWTAlgorithm.HS512, header, payload) != 0)
+    {
+        throw new InvalidAuthorizationException ("Invalid JWT.");
+    }
+
+    string accessToken = getAccessToken (authorization);
+
+    return getGitHubUser (accessToken);
 }

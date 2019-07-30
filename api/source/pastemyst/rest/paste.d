@@ -17,8 +17,9 @@ public interface IAPIPaste
     @bodyParam ("code", "code")
     @bodyParam ("language", "language")
     @bodyParam ("isPrivate", "isPrivate")
+    @headerParam ("authorization", "Authorization")
     @path ("/paste")
-    Json post (string expiresIn, string code, string language, bool isPrivate, string title = "") @safe;
+    Json post (string expiresIn, string code, string language, bool isPrivate, string title = "", string authorization = "") @safe;
 
     /++
      + `GET /paste/:id`
@@ -39,14 +40,32 @@ public class APIPaste : IAPIPaste
      +
      + Creates a new paste
      +/
-    public Json post (string expiresIn, string code, string language, bool isPrivate, string title = "") @safe
+    public Json post (string expiresIn, string code, string language, bool isPrivate, string title = "", string authorization = "") @safe
     {
         import pastemyst.data : Paste, ExpiresIn;
         import pastemyst.db : insertMongo;
         import pastemyst.encoding : randomBase36String;
         import pastemyst.conv : valueToEnum;
+        import pastemyst.auth : getGitHubUserJwt, InvalidAuthorizationException;
         import std.datetime.systime : Clock;
         import std.conv : to;
+
+        string ownerId = "";
+
+        // TODO: Handle if the wrong format for authorization is provided
+        if (authorization != "")
+        {
+            string token = authorization ["Bearer ".length..$];
+
+            try
+            {
+                ownerId = getGitHubUserJwt (token).id.to!string ();
+            }
+            catch (InvalidAuthorizationException e)
+            {
+                throw new HTTPStatusException (401);
+            }
+        }
 
         Paste paste = Paste (randomBase36String (),
                              Clock.currTime.toUnixTime (),
@@ -54,7 +73,7 @@ public class APIPaste : IAPIPaste
                              title,
                              code,
                              language,
-                             "",
+                             ownerId,
                              isPrivate,
                              false);
 

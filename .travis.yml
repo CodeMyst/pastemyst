@@ -1,5 +1,7 @@
 language: d
 
+d: dmd-2.085.0
+
 addons:
   mariadb: '10.3'
 

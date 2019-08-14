@@ -1,0 +1,32 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    name: Build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@master
+    - name: Install D and Dub
+      run: |
+        wget http://downloads.dlang.org/releases/2.x/2.087.1/dmd_2.087.1-0_amd64.deb
+        sudo dpkg -i dmd_2.087.1-0_amd64.deb
+        sudo apt install -f
+    - name: Set up MariaDB
+      run: |
+        sudo apt install mariadb-server
+        mariadb -e 'create user tester@localhost;'
+        mariadb -e 'create database pastemyst;'
+        mariadb -r 'grant all privileges on pastemyst.* to tester@localhost;'
+        mariadb -e 'flush privileges;'
+    - name: Build the project
+      run: dub build
+    - name: Test the project
+      run: dub test
+      env:
+        MYSQL_HOST: localhost
+        MYSQL_USER: tester
+        MYSQL_DB: pastemyst

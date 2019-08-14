@@ -62,11 +62,6 @@ public class AuthGitHubWeb
 
         string jwtToken = sb.getData ();
 
-        if (existsAccessToken (jwtToken))
-        {
-            throw new HTTPStatusException (HTTPStatus.Forbidden, "User is already logged in.");
-        }
-
         if (findOneByIdMongo!User (user.id).isNull ())
         {
             insertMongo (user);
@@ -80,8 +75,13 @@ public class AuthGitHubWeb
         
         res.cookies ["github"] = c;
 
-        insertAccessToken (jwtToken, accessToken);
+        // TODO: Assuming the github token is always the same, maybe it's not (need to check the spec)
+        if (!existsAccessToken (jwtToken))
+        {
+            insertAccessToken (jwtToken, accessToken);
+        }
 
+        // TODO: use a proper url
         return redirect ("http://paste.myst/logged");
     }
 }

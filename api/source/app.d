@@ -4,7 +4,7 @@ public void main ()
 {
     import pastemyst.rest : APIRoot, APIPaste;
     import pastemyst.web : RawWeb;
-    import pastemyst.auth : AuthGitHubWeb, AuthGitHubAPI;
+    import pastemyst.auth : AuthGitHubWeb, AuthGitHubAPI, GitHubAPI;
     import pastemyst.db : connectMongoDb, connectRedisDb;
     import vibe.core.log : setLogLevel, LogLevel;
     import vibe.web.common : MethodStyle;
@@ -16,6 +16,7 @@ public void main ()
     router.registerRestInterface (new APIRoot (), MethodStyle.camelCase);
     router.registerRestInterface (new APIPaste (), MethodStyle.camelCase);
     router.registerRestInterface (new AuthGitHubAPI (), MethodStyle.camelCase);
+    router.registerRestInterface (new GitHubAPI (), MethodStyle.camelCase);
 
     router.registerWebInterface (new AuthGitHubWeb ());
     router.registerWebInterface (new RawWeb ());

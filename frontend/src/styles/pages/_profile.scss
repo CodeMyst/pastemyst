@@ -1,0 +1,30 @@
+#profile-header
+{
+    width: 100%;
+    background-color: $color-nanolight;
+    border-radius: $border-radius-std;
+    padding: 1rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+
+    .avatar
+    {
+        width: 50px;
+        height: 50px;
+        border-radius: $border-radius-std;
+        margin-right: 15px;
+    }
+
+    .logout
+    {
+        align-self: center;
+        margin-left: auto;
+    }
+
+    .username
+    {
+        margin: 0;
+        align-self: center;
+    }
+}

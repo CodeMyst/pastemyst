@@ -1,6 +1,7 @@
 import { Paste, PasteCreateInfo } from "../data/paste";
 import { apiEndpoint } from "api";
-import { isLoggedIn, getJwt } from "auth";
+import { isLoggedIn } from "auth";
+import { getJwt } from "security/cookies";
 
 export async function postPaste (paste: PasteCreateInfo): Promise<Paste>
 {
@@ -9,7 +10,7 @@ export async function postPaste (paste: PasteCreateInfo): Promise<Paste>
 
     if (isLogged)
     {
-        token = await getJwt ();
+        token = getJwt ();
     }
 
     const requestHeaders: Headers = new Headers ();

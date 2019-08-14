@@ -16,7 +16,7 @@ export function getCookie (name: string): string
 {
     const nameEQ: string = name + "=";
     const cookies: string [] = document.cookie.split(";");
-    
+
     for (let i: number = 0; i < cookies.length; i++)
     {
         let cookie: string = cookies [i];
@@ -33,4 +33,15 @@ export function getCookie (name: string): string
     }
 
     return null;
+}
+
+export function deleteCookie (name: string, path: string): void
+{
+    if (getCookie (name) !== null)
+    {
+        document.cookie = name + "=" +
+                          ((path) ? ";path=" + path : "") +
+                          (";domain=" + window.location.hostname) +
+                          ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    }
 }

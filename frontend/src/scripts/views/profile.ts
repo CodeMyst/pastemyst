@@ -3,6 +3,7 @@ import Navigation from "components/navigation";
 import Modal from "components/modal";
 import { getUser } from "api/user";
 import User from "data/user";
+import { deleteCookie } from "security/cookies";
 
 export class ProfilePage extends Page
 {
@@ -25,5 +26,11 @@ version 2.0.0 (<a href="#" target="_blank">changelog</a>).</p><div class="modal"
 
         header.getElementsByClassName ("avatar") [0].setAttribute ("src", user.avatar);
         header.getElementsByClassName ("username") [0].textContent = user.username;
+
+        header.getElementsByClassName ("logout") [0].addEventListener ("click", (event) =>
+        {
+            deleteCookie ("github", "/");
+            this.router.redirect ("/");
+        });
     }
 }

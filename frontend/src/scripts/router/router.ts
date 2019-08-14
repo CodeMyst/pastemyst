@@ -40,7 +40,22 @@ export default class Router
 
     public registerLink (link: Element): void
     {
-        link.addEventListener ("click", (event) => this.navigate (event, this.routes), false);
+        link.addEventListener ("click", (event) => this.navigate (event), false);
+    }
+
+    public async redirect (path: string): Promise<void>
+    {
+        if (this.routes.some ((r) => r.path === path))
+        {
+            const route: Route = this.routes.find ((r) => r.path === path);
+
+            window.history.pushState ({}, document.title, route.path);
+            window.dispatchEvent (new Event ("popstate"));
+        }
+        else
+        {
+            console.log ("Route doesn't exist.");
+        }
     }
 
     private parseRequestUrl (): string
@@ -48,7 +63,7 @@ export default class Router
         return window.location.pathname.toLowerCase () || "/";
     }
 
-    private async navigate (event: Event, routes: Route []): Promise<void>
+    private async navigate (event: Event): Promise<void>
     {
         const element: Element = event.target as Element;
 
@@ -62,16 +77,6 @@ export default class Router
 
         const routePath: string = routeAttr.value;
 
-        if (routes.some ((r) => r.path === routePath))
-        {
-            const route: Route = routes.find ((r) => r.path === routePath);
-
-            window.history.pushState ({}, document.title, route.path);
-            window.dispatchEvent (new Event ("popstate"));
-        }
-        else
-        {
-            console.log ("Route doesn't exist.");
-        }
+        this.redirect (routePath);
     }
 }

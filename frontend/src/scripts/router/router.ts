@@ -34,8 +34,13 @@ export default class Router
 
         links.forEach ((link: Element) =>
         {
-            link.addEventListener ("click", (event) => this.navigate (event, this.routes), false);
+            this.registerLink (link);
         });
+    }
+
+    public registerLink (link: Element): void
+    {
+        link.addEventListener ("click", (event) => this.navigate (event, this.routes), false);
     }
 
     private parseRequestUrl (): string
@@ -46,7 +51,16 @@ export default class Router
     private async navigate (event: Event, routes: Route []): Promise<void>
     {
         const element: Element = event.target as Element;
-        const routePath: string = element.attributes [0].value;
+
+        const routeAttr: Attr = element.attributes.getNamedItem ("route");
+
+        if (routeAttr === null)
+        {
+            console.log ("Link doesn't have a route attribute");
+            return;
+        }
+
+        const routePath: string = routeAttr.value;
 
         if (routes.some ((r) => r.path === routePath))
         {

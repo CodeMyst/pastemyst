@@ -13,6 +13,7 @@ actions:
         - pug src/views/index.pug -o dist
         - pug src/views/home.pug -o dist
         - pug src/views/paste.pug -o dist
+        - pug src/views/profile.pug -o dist
     copy_assets:
         - cp -r src/assets dist
         - mv dist/assets/favicon.ico dist
@@ -26,6 +27,7 @@ actions:
     template:
         - ${template home.pug home.ts}
         - ${template paste.pug paste.ts}
+        - ${template profile.pug profile.ts}
 
 configurations:
     - debug

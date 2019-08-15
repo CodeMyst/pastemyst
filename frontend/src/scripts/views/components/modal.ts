@@ -1,16 +1,17 @@
-import IViewComponent from "router/viewComponent";
-import Page from "router/page";
+import ViewComponent from "router/viewComponent";
+import Router from "router/router";
 
-export default class Modal implements IViewComponent
+export default class Modal extends ViewComponent
 {
-    public parent: Page;
     public name: string;
 
     private modalElement: HTMLElement;
     private closeButton: Element;
 
-    public constructor (name: string)
+    public constructor (router: Router, name: string)
     {
+        super (router);
+
         this.name = name;
     }
 

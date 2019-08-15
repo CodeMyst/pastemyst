@@ -34,23 +34,20 @@ export default class Router
 
         links.forEach ((link: Element) =>
         {
-            link.addEventListener ("click", (event) => this.navigate (event, this.routes), false);
+            this.registerLink (link);
         });
     }
 
-    private parseRequestUrl (): string
+    public registerLink (link: Element): void
     {
-        return window.location.pathname.toLowerCase () || "/";
+        link.addEventListener ("click", (event) => this.navigate (event), false);
     }
 
-    private async navigate (event: Event, routes: Route []): Promise<void>
+    public async redirect (path: string): Promise<void>
     {
-        const element: Element = event.target as Element;
-        const routePath: string = element.attributes [0].value;
-
-        if (routes.some ((r) => r.path === routePath))
+        if (this.routes.some ((r) => r.path === path))
         {
-            const route: Route = routes.find ((r) => r.path === routePath);
+            const route: Route = this.routes.find ((r) => r.path === path);
 
             window.history.pushState ({}, document.title, route.path);
             window.dispatchEvent (new Event ("popstate"));
@@ -59,5 +56,27 @@ export default class Router
         {
             console.log ("Route doesn't exist.");
         }
+    }
+
+    private parseRequestUrl (): string
+    {
+        return window.location.pathname.toLowerCase () || "/";
+    }
+
+    private async navigate (event: Event): Promise<void>
+    {
+        const element: Element = event.target as Element;
+
+        const routeAttr: Attr = element.attributes.getNamedItem ("route");
+
+        if (routeAttr === null)
+        {
+            console.log ("Link doesn't have a route attribute");
+            return;
+        }
+
+        const routePath: string = routeAttr.value;
+
+        this.redirect (routePath);
     }
 }

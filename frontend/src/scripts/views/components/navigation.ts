@@ -1,12 +1,9 @@
-import IViewComponent from "router/viewComponent";
+import ViewComponent from "router/viewComponent";
 import { isLoggedIn } from "api/auth";
-import Page from "router/page";
 import Modal from "modal";
 
-export default class Navigation implements IViewComponent
+export default class Navigation extends ViewComponent
 {
-    public parent: Page;
-
     public async run (): Promise<void>
     {
         const loggedIn: boolean = await isLoggedIn ();
@@ -17,10 +14,11 @@ export default class Navigation implements IViewComponent
         {
             loginElement.setAttribute ("route", "/profile");
             loginElement.textContent = "profile";
+            this.router.registerLink (loginElement);
         }
         else
         {
-            this.parent.viewComponents.forEach ((component: IViewComponent) =>
+            this.parent.viewComponents.forEach ((component: ViewComponent) =>
             {
                 const loginModal: Modal = component as Modal;
 

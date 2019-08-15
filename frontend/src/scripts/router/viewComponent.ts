@@ -1,8 +1,16 @@
 import Page from "page";
+import Router from "router";
 
-export default interface IViewComponent
+export default abstract class ViewComponent
 {
-    parent: Page;
+    public parent: Page;
+    
+    protected router: Router;
+    
+    public constructor (router: Router)
+    {
+        this.router = router;
+    }
 
-    run (): Promise<void>;
+    public abstract run (): Promise<void>;
 }

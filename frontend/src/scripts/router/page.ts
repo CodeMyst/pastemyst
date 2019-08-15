@@ -1,12 +1,20 @@
 import IViewComponent from "viewComponent";
+import Router from "router";
 
 export default abstract class Page
 {
     public viewComponents: IViewComponent [] = new Array<IViewComponent> ();
+    
+    protected router: Router;
+
+    public constructor (router: Router)
+    {
+        this.router = router;
+    }
 
     public abstract async render (): Promise<string>;
     public abstract async run (): Promise<void>;
-
+    
     public async runComponents (): Promise<void>
     {
         this.viewComponents.forEach (async (component) =>

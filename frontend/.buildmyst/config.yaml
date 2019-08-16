@@ -11,6 +11,8 @@ actions:
         - sass src/styles/styles.scss dist/styles/styles.css
     compile_pug:
         - pug src/views/index.pug -o dist
+        - pug src/views/components/header.pug -o dist
+        - pug src/views/components/footer.pug -o dist
         - pug src/views/home.pug -o dist
         - pug src/views/paste.pug -o dist
         - pug src/views/profile.pug -o dist
@@ -25,6 +27,8 @@ actions:
         - ${mkdir dist/scripts/types/codemirror}
         - ${mkdir dist/scripts/types/codemirror/lib}
     template:
+        - ${template header.pug header.ts}
+        - ${template footer.pug footer.ts}
         - ${template home.pug home.ts}
         - ${template paste.pug paste.ts}
         - ${template profile.pug profile.ts}

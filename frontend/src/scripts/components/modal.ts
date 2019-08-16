@@ -1,17 +1,12 @@
-import ViewComponent from "router/viewComponent";
-import Router from "router/router";
-
-export default class Modal extends ViewComponent
+export default class Modal
 {
     public name: string;
 
     private modalElement: HTMLElement;
     private closeButton: Element;
 
-    public constructor (router: Router, name: string)
+    public constructor (name: string)
     {
-        super (router);
-
         this.name = name;
     }
 
@@ -36,6 +31,7 @@ export default class Modal extends ViewComponent
 
     public open (): void
     {
+        this.modalElement = document.getElementById (this.name);
         this.modalElement.style.display = "block";
     }
 }

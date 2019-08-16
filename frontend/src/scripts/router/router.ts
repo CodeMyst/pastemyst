@@ -1,9 +1,21 @@
-import Page from "page";
 import Route from "route";
+
+export type OnRouteChangeDelegate = (route: Route) => void;
 
 export default class Router
 {
-    public routes: Route [] = [];
+    public routes: Route [] = new Array<Route> ();
+
+    public onRouteChange: OnRouteChangeDelegate;
+
+    public currentRoute: Route;
+
+    private links: HTMLElement [] = new Array<HTMLElement> ();
+
+    public constructor ()
+    {
+        window.addEventListener ("popstate", async () => await this.init ());
+    }
 
     public addRoute (route: Route): void
     {
@@ -12,71 +24,71 @@ export default class Router
 
     public async init (): Promise<void>
     {
-        const content: HTMLElement = null || document.getElementById ("container");
-        const request: string = this.parseRequestUrl ();
+        // NOTE: This will get run every time the route changes.
 
-        let page: Page;
-        if (this.routes.some ((r) => r.path === request))
+        const path: string = this.parseRequestUrl ();
+
+        let route: Route = this.routes.find ((r) => r.path === path);
+    
+        // TODO: Not the best solution for this...
+        if (!route)
         {
-            page = this.routes.find ((r) => r.path === request).page;
-        }
-        else
-        {
-            // TODO: Check if ID exists, otherwise return 404
-            page = this.routes.find ((r) => r.path === "/:id").page;
+            route = this.routes.find ((r) => r.path === "/:id");
         }
 
-        content.innerHTML = await page.render ();
-        await page.run ();
-        await page.runComponents ();
-
-        const links: NodeListOf<Element> = document.querySelectorAll ("[route]");
-
-        links.forEach ((link: Element) =>
+        if (this.onRouteChange)
         {
-            this.registerLink (link);
+            this.onRouteChange (route);
+        }
+
+        document.querySelectorAll ("[route]").forEach ((element: HTMLElement) =>
+        {
+            if (!this.links.some ((l) => l === element))
+            {
+                this.registerLink (element);
+            }
         });
+
+        this.currentRoute = route;
     }
 
-    public registerLink (link: Element): void
+    public registerLink (link: HTMLElement): void
     {
-        link.addEventListener ("click", (event) => this.navigate (event), false);
+        link.addEventListener ("click", (event) => this.navigateElement (event.target as HTMLElement));
+        this.links.push (link);
     }
 
-    public async redirect (path: string): Promise<void>
+    public async navigate (path: string): Promise<void>
     {
-        if (this.routes.some ((r) => r.path === path))
+        const route: Route = this.routes.find ((r) => r.path === path);
+
+        if (!route)
         {
-            const route: Route = this.routes.find ((r) => r.path === path);
+            console.error (`Route ${path} doesn't exist!`);
+            return;
+        }
 
-            window.history.pushState ({}, document.title, route.path);
-            window.dispatchEvent (new Event ("popstate"));
-        }
-        else
-        {
-            console.log ("Route doesn't exist.");
-        }
+        window.history.pushState ({}, document.title, route.path);
+        window.dispatchEvent (new Event ("popstate"));
     }
 
-    private parseRequestUrl (): string
+    private async navigateElement (element: HTMLElement): Promise<void>
     {
-        return window.location.pathname.toLowerCase () || "/";
-    }
-
-    private async navigate (event: Event): Promise<void>
-    {
-        const element: Element = event.target as Element;
-
         const routeAttr: Attr = element.attributes.getNamedItem ("route");
 
-        if (routeAttr === null)
+        if (!routeAttr)
         {
-            console.log ("Link doesn't have a route attribute");
+            console.error ("Element doesn't have a route attribute!");
             return;
         }
 
         const routePath: string = routeAttr.value;
 
-        this.redirect (routePath);
+        this.navigate (routePath);
+    }
+
+    private parseRequestUrl (): string
+    {
+        return window.location.pathname.toLowerCase () || "/";
     }
 }

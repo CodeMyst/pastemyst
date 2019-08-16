@@ -4,29 +4,23 @@ import { postPaste } from "api/paste";
 import { Dropdown, DropdownItem } from "components/dropdown";
 import { Paste, PasteCreateInfo } from "data/paste";
 import * as CodeMirror from "types/codemirror/lib/codemirror";
-import Page from "router/page";
-import Navigation from "components/navigation";
-import Modal from "components/modal";
+import View from "renderer/view";
 
-export class HomePage extends Page
+export default class Home extends View
 {
     private editor: CodeMirror.Editor;
     private expiresInDropdown: Dropdown;
     private languageDropdown: Dropdown;
 
-    public async render (): Promise<string>
+    public render (): string
     {
         /* tslint:disable:max-line-length */
-        return `<h1><img class="icon" src="/assets/icons/pastemyst.svg" alt="icon"/><a route="/">PasteMyst</a></h1><p class="description">a simple website for storing and sharing code snippets.
-version 2.0.0 (<a href="#" target="_blank">changelog</a>).</p><div class="modal" id="login-modal"><div class="content"><div class="head"><p class="title">login</p><img class="exit" src="/assets/icons/exit.svg"/></div><div class="body"><p>logging in with github you'll be able to do many more things, like seeing a list of all pastes you made, creating private pastes which can only be accessed with your account, labeling pastes and organizing them, and much more.</p><p>only your github id and username will be stored to uniquely identify you and nothing more.</p></div><div class="footer"><a href="http://api.paste.myst/auth/github">login with github</a></div></div></div><nav><ul><li><a route="/">home</a> - </li><li><a id="login">login</a> - </li><li><a href="https://github.com/codemyst/pastemyst" target="_blank">github</a> - </li><li><a href="/api-docs">api docs</a></li></ul></nav><div class="options"><div id="expires-in"><div class="dropdown hidden"><div class="label"><p>label:</p></div><div class="dropdown-content"><div class="clickable"><p class="selected">loading...</p><img class="caret" src="/assets/icons/caret.svg"/></div><div class="selectable"><input class="search" type="text" name="search" placeholder="search..." autocomplete="off"/><div class="items"><p class="not-found hidden">no items found</p></div></div></div></div></div><div id="language"><div class="dropdown hidden"><div class="label"><p>label:</p></div><div class="dropdown-content"><div class="clickable"><p class="selected">loading...</p><img class="caret" src="/assets/icons/caret.svg"/></div><div class="selectable"><input class="search" type="text" name="search" placeholder="search..." autocomplete="off"/><div class="items"><p class="not-found hidden">no items found</p></div></div></div></div></div></div><input id="title-input" type="text" name="title" placeholder="title (optional)" autocomplete="off"/><textarea id="editor" autofocus="autofocus"></textarea><div class="create-options"><div class="private-checkbox"><label class="disabled">private<input type="checkbox" disabled="disabled"/><span class="checkmark"></span></label><div class="tooltip" data-tooltip="You need to be logged in to create private pastes."><img src="/assets/icons/questionmark.svg" alt="questionmark"/></div></div><a class="button" id="create-button">create</a></div><footer><div class="copyright">copyright &copy; <a href="https://github.com/CodeMyst" target="_blank">CodeMyst</a> 2019</div><div class="paste-amount">1337 currently active pastes</div></footer>`;
+        return `<div class="options"><div id="expires-in"><div class="dropdown hidden"><div class="label"><p>label:</p></div><div class="dropdown-content"><div class="clickable"><p class="selected">loading...</p><img class="caret" src="/assets/icons/caret.svg"/></div><div class="selectable"><input class="search" type="text" name="search" placeholder="search..." autocomplete="off"/><div class="items"><p class="not-found hidden">no items found</p></div></div></div></div></div><div id="language"><div class="dropdown hidden"><div class="label"><p>label:</p></div><div class="dropdown-content"><div class="clickable"><p class="selected">loading...</p><img class="caret" src="/assets/icons/caret.svg"/></div><div class="selectable"><input class="search" type="text" name="search" placeholder="search..." autocomplete="off"/><div class="items"><p class="not-found hidden">no items found</p></div></div></div></div></div></div><input id="title-input" type="text" name="title" placeholder="title (optional)" autocomplete="off"/><textarea id="editor" autofocus="autofocus"></textarea><div class="create-options"><div class="private-checkbox"><label class="disabled">private<input type="checkbox" disabled="disabled"/><span class="checkmark"></span></label><div class="tooltip" data-tooltip="You need to be logged in to create private pastes."><img src="/assets/icons/questionmark.svg" alt="questionmark"/></div></div><a class="button" id="create-button">create</a></div>`;
         /* tslint:enable:max-line-length */        
     }
 
     public async run (): Promise<void>
     {
-        this.addComponent (new Navigation (this.router));
-        this.addComponent (new Modal (this.router, "login-modal"));
-
         this.initEditor ();
 
         this.initExpiresInDropdown ();
@@ -99,7 +93,7 @@ version 2.0.0 (<a href="#" target="_blank">changelog</a>).</p><div class="modal"
         this.editor = CodeMirror.fromTextArea (textarea,
         {
             indentUnit: 4,
-            lineNumbers: true, 
+            lineNumbers: false, 
             mode: "text/plain", 
             tabSize: 4,
             theme: "darcula",

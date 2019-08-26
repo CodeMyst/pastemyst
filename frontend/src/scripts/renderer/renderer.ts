@@ -33,7 +33,10 @@ export default class Renderer
             {
                 await part.view.run ().then (() =>
                 {
-                    part.element.attributes.removeNamedItem ("style");
+                    if (part.element.attributes.getNamedItem ("style"))
+                    {
+                        part.element.attributes.removeNamedItem ("style");
+                    }
                 });
             }
         });
@@ -47,7 +50,10 @@ export default class Renderer
             part.element.innerHTML = part.view.render ();
             await part.view.run ().then (() =>
             {
-                part.element.attributes.removeNamedItem ("style");
+                if (part.element.attributes.getNamedItem ("style"))
+                {
+                    part.element.attributes.removeNamedItem ("style");
+                }
             });
         }
     }

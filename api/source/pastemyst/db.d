@@ -87,6 +87,18 @@ public Nullable!R findOneByIdMongo (R, T) (T id)
 }
 
 /++
+ + Gets all items from the Mongo DB.
+ +
+ + The collection is automatically determined from the item type. It will throw an error if you try to insert an invalid type.
+ +/
+public MongoCursor!R findMongo (R, T) (T query)
+{
+    MongoCollection collection = mongoDb [getCollectionName!R];
+
+    return collection.find!R (query);
+}
+
+/++
  + Inserts the github access token in the redis db
  +/
 public void insertAccessToken (string jwtToken, string githubToken)

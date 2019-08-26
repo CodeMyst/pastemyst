@@ -129,47 +129,6 @@ public class AuthGitHubAPI : IAuthGitHubAPI
     }
 }
 
-/++
- + GitHub API interface.
- +/
-public interface IGitHubAPI
-{
-    /++
-     + GET /user
-     +
-     + Returns the current authenticated user.
-     +/
-    @path ("/user")
-    @headerParam ("authorization", "Authorization")
-    Json getUser (string authorization) @safe;
-}
-
-/++
- + GitHub API interface.
- +/
-public class GitHubAPI : IGitHubAPI
-{
-    /++
-     + GET /user
-     +
-     + Returns the current authenticated user.
-     +/
-    public Json getUser (string authorization) @safe
-    {
-        import vibe.data.json : serializeToJson;
-        import pastemyst.auth : isBearerFormatValid;
-
-        if (!isBearerFormatValid (authorization))
-        {
-            throw new HTTPStatusException (HTTPStatus.unauthorized, "Authorization token is not valid.");
-        }
-
-        string token = authorization ["Bearer ".length..$];
-
-        return getGitHubUserJwt (token).serializeToJson ();
-    }
-}
-
 private User getGitHubUser (string accessToken) @safe
 {
     User user;
@@ -209,7 +168,7 @@ public User getGitHubUserJwt (string authorization) @trusted
 
     if (decodeJWTToken (authorization, jwtSecret, JWTAlgorithm.HS512, header, payload) != 0)
     {
-        throw new InvalidAuthorizationException ("Invalid JWT.");
+        throw new HTTPStatusException (HTTPStatus.Unauthorized, "Invalid JWT.");
     }
 
     string accessToken = getAccessToken (authorization);

@@ -93,7 +93,7 @@ export default class Home extends View
         this.editor = CodeMirror.fromTextArea (textarea,
         {
             indentUnit: 4,
-            lineNumbers: false, 
+            lineNumbers: true, 
             mode: "text/plain", 
             tabSize: 4,
             theme: "darcula",

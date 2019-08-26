@@ -75,11 +75,7 @@ public class AuthGitHubWeb
         
         res.cookies ["github"] = c;
 
-        // TODO: Assuming the github token is always the same, maybe it's not (need to check the spec)
-        if (!existsAccessToken (jwtToken))
-        {
-            insertAccessToken (jwtToken, accessToken);
-        }
+        insertAccessToken (jwtToken, accessToken);
 
         // TODO: use a proper url
         return redirect ("http://paste.myst/logged");
@@ -161,8 +157,13 @@ public class GitHubAPI : IGitHubAPI
     public Json getUser (string authorization) @safe
     {
         import vibe.data.json : serializeToJson;
+        import pastemyst.auth : isBearerFormatValid;
 
-        // TODO: Handle if the wrong format for authorization is provided
+        if (!isBearerFormatValid (authorization))
+        {
+            throw new HTTPStatusException (HTTPStatus.unauthorized, "Authorization token is not valid.");
+        }
+
         string token = authorization ["Bearer ".length..$];
 
         return getGitHubUserJwt (token).serializeToJson ();

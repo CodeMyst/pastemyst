@@ -3,6 +3,7 @@ import User from "data/user";
 import { deleteCookie } from "security/cookies";
 import View from "renderer/view";
 import Router from "router/router";
+import { isLoggedIn } from "api/auth";
 
 export default class Profile extends View
 {
@@ -24,7 +25,15 @@ export default class Profile extends View
 
     public async run (): Promise<void>
     {
+        if (!(await isLoggedIn ()))
+        {
+            this.router.navigate ("/");
+            return;
+        }
+
         const user: User = await getUser ();
+
+        console.log (user);
 
         const header = document.getElementById ("profile-header");
 

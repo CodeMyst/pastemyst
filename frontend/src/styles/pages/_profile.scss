@@ -28,3 +28,47 @@
         align-self: center;
     }
 }
+
+#profile-pastes
+{
+    list-style: none;
+    padding: 0;
+
+    .paste
+    {
+        margin-bottom: 1em;
+        
+        a
+        {
+            box-sizing: border-box;
+            display: block;
+            background-color: $color-nanolight;
+            border-radius: $border-radius-std;
+            padding: 0.5em 1em;
+            border: 2px solid $color-nanolight;
+
+            &:hover
+            {
+                border-color: $color-mystlue;
+            }
+
+            .title
+            {
+                font-size: $font-size-medium;
+                margin: 0;
+            }
+
+            .info
+            {
+                margin: 0;
+
+                .created-at
+                {
+                    color: $color-white;
+                    font-size: $font-size-small;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}

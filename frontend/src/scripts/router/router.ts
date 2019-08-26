@@ -54,27 +54,21 @@ export default class Router
 
     public registerLink (link: HTMLElement): void
     {
-        link.addEventListener ("click", (event) => this.navigateElement (event.target as HTMLElement));
+        link.addEventListener ("click", () => this.navigateElement (link));
         this.links.push (link);
     }
 
     public async navigate (path: string): Promise<void>
     {
-        const route: Route = this.routes.find ((r) => r.path === path);
+        // TODO: Check if the route exists...
 
-        if (!route)
-        {
-            console.error (`Route ${path} doesn't exist!`);
-            return;
-        }
-
-        window.history.pushState ({}, document.title, route.path);
+        window.history.pushState ({}, document.title, path);
         window.dispatchEvent (new Event ("popstate"));
     }
 
     private async navigateElement (element: HTMLElement): Promise<void>
     {
-        const routeAttr: Attr = element.attributes.getNamedItem ("route");
+        const routeAttr: string = element.getAttribute ("route");
 
         if (!routeAttr)
         {
@@ -82,7 +76,7 @@ export default class Router
             return;
         }
 
-        const routePath: string = routeAttr.value;
+        const routePath: string = routeAttr;
 
         this.navigate (routePath);
     }

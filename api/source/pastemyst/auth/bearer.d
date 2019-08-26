@@ -3,22 +3,43 @@ module pastemyst.auth.bearer;
 /++
  + Checks if the bearer token's format is valid
  +/
-public bool isBearerFormatValid (string token) @safe
+public bool isBearerFormatValid (string authorization) @safe
 {
-    if (token.length <= "Bearer ".length)
+    if (authorization.length <= "Bearer ".length)
     {
         return false;
     }
 
-    if (token [0.."Bearer ".length] != "Bearer ")
+    if (authorization [0.."Bearer ".length] != "Bearer ")
     {
         return false;
     }
 
-    if (token ["Bearer ".length..$].length == 0)
+    if (authorization ["Bearer ".length..$].length == 0)
     {
         return false;
     }
 
     return true;
+}
+
+/++
+ + Checks if the bearer token's format is valid
+ +/
+public void checkBearerFormat (string authorization) @safe
+{
+    import vibe.http.common : HTTPStatusException, HTTPStatus;
+
+    if (!isBearerFormatValid (authorization))
+    {
+        throw new HTTPStatusException (HTTPStatus.unauthorized, "Authorization token is not valid.");
+    }
+}
+
+/++
+ + Returns the token from the Authorization header
+ +/
+public string getToken (string authorization) @safe
+{
+    return authorization ["Bearer ".length..$];
 }

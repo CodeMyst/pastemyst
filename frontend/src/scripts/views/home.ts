@@ -5,12 +5,16 @@ import { Dropdown, DropdownItem } from "components/dropdown";
 import { Paste, PasteCreateInfo } from "data/paste";
 import * as CodeMirror from "types/codemirror/lib/codemirror";
 import View from "renderer/view";
+import { isLoggedIn } from "api/auth";
 
 export default class Home extends View
 {
     private editor: CodeMirror.Editor;
     private expiresInDropdown: Dropdown;
     private languageDropdown: Dropdown;
+    private privateCheckbox: Element;
+
+    private isLoggedIn: boolean = false;
 
     public render (): string
     {
@@ -21,6 +25,8 @@ export default class Home extends View
 
     public async run (): Promise<void>
     {
+        this.isLoggedIn = await isLoggedIn ();
+
         this.initEditor ();
 
         this.initExpiresInDropdown ();
@@ -33,6 +39,15 @@ export default class Home extends View
             window.history.pushState ({}, document.title, paste._id);
             window.dispatchEvent (new Event ("popstate"));
         });
+
+        if (this.isLoggedIn)
+        {
+            this.privateCheckbox = document.getElementsByClassName ("private-checkbox") [0];
+            this.privateCheckbox.getElementsByTagName ("input") [0].disabled = false;
+            this.privateCheckbox.getElementsByTagName ("label") [0].classList.remove ("disabled");
+            this.privateCheckbox.getElementsByClassName ("tooltip") [0]
+                .setAttribute ("data-tooltip", "Private pastes are visible only to you.");
+        }
     }
 
     private async initExpiresInDropdown (): Promise<void>
@@ -115,7 +130,15 @@ export default class Home extends View
 
         createInfo.code = this.editor.getValue ();
         createInfo.language = this.languageDropdown.selectedItem.values [1];
-        createInfo.isPrivate = false;
+
+        if (this.isLoggedIn)
+        {
+            createInfo.isPrivate = this.privateCheckbox.getElementsByTagName ("input") [0].checked;
+        }
+        else
+        {
+            createInfo.isPrivate = false;
+        }
 
         return await postPaste (createInfo);
     }

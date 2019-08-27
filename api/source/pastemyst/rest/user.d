@@ -39,9 +39,9 @@ public class APIUser : IAPIUser
     public Json getUser (string authorization) @safe
     {
         import vibe.data.json : serializeToJson;
-        import pastemyst.auth : checkBearerFormat, getGitHubUserJwt, getToken;
+        import pastemyst.auth : enforceBearerFormat, getGitHubUserJwt, getToken;
 
-        checkBearerFormat (authorization);
+        enforceBearerFormat (authorization);
         string token = getToken (authorization);
 
         return getGitHubUserJwt (token).serializeToJson ();
@@ -54,13 +54,13 @@ public class APIUser : IAPIUser
      +/
     public Json getPastes (string authorization)
     {
-        import pastemyst.auth : checkBearerFormat, getGitHubUserJwt, getToken;
+        import pastemyst.auth : enforceBearerFormat, getGitHubUserJwt, getToken;
         import pastemyst.data : User, Paste;
         import pastemyst.db : findMongo;
         import std.conv : to;
         import vibe.data.json : serializeToJson;
 
-        checkBearerFormat (authorization);
+        enforceBearerFormat (authorization);
         string token = getToken (authorization);
 
         User user = getGitHubUserJwt (token);

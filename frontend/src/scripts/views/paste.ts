@@ -72,9 +72,7 @@ export default class Paste extends View
 
         if (paste.expiresIn !== "never")
         {
-                /* tslint:disable:max-line-length */
             const expiresInDate: Date = new Date (this.expiresInToUnixTime (paste.expiresIn, paste.createdAt) * 1000);
-                /* tslint:enable:max-line-length */
             const timeDifference: number = Math.abs (expiresInDate.getTime () - new Date ().getTime ());
 
             expiresInContentElement.textContent = ` ${this.timeDifferenceToString (timeDifference)}`;

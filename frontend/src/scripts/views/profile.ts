@@ -52,6 +52,7 @@ export default class Profile extends View
         {
             deleteCookie ("github", "/");
             this.router.navigate ("/");
+            location.reload ();
         });
     }
 

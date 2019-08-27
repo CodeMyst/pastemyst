@@ -27,7 +27,8 @@ public interface IAPIPaste
      + Gets a paste by its ID
      +/
     @path ("/paste/:id")
-    Json get (string _id) @safe;
+    @headerParam ("authorization", "Authorization")
+    Json get (string _id, string authorization = "") @safe;
 }
 
 /++
@@ -46,25 +47,18 @@ public class APIPaste : IAPIPaste
         import pastemyst.db : insertMongo;
         import pastemyst.encoding : randomBase36String;
         import pastemyst.conv : valueToEnum;
-        import pastemyst.auth : getGitHubUserJwt, InvalidAuthorizationException;
+        import pastemyst.auth : getGitHubUserJwt, enforceBearerFormat, getToken;
         import std.datetime.systime : Clock;
         import std.conv : to;
 
         string ownerId = "";
 
-        // TODO: Handle if the wrong format for authorization is provided
         if (authorization != "")
         {
-            string token = authorization ["Bearer ".length..$];
+            enforceBearerFormat (authorization);
+            string token = getToken (authorization);
 
-            try
-            {
-                ownerId = getGitHubUserJwt (token).id.to!string ();
-            }
-            catch (InvalidAuthorizationException e)
-            {
-                throw new HTTPStatusException (401);
-            }
+            ownerId = getGitHubUserJwt (token).id.to!string ();
         }
 
         Paste paste = Paste (randomBase36String (),
@@ -87,11 +81,22 @@ public class APIPaste : IAPIPaste
      +
      + Gets a paste by its ID
      +/
-    public Json get (string _id) @safe
+    public Json get (string _id, string authorization = "") @safe
     {
         import std.typecons : Nullable;
         import pastemyst.data : Paste;
         import pastemyst.db : findOneByIdMongo;
+        import pastemyst.auth : getGitHubUserJwt, enforceBearerFormat, getToken;
+
+        string ownerId = "";
+
+        if (authorization != "")
+        {
+            enforceBearerFormat (authorization);
+            string token = getToken (authorization);
+
+            ownerId = getGitHubUserJwt (token).id.to!string ();
+        }
 
         const Nullable!Paste result = findOneByIdMongo!Paste (_id);
 
@@ -101,7 +106,14 @@ public class APIPaste : IAPIPaste
         }
         else
         {
-            return result.get ().toJson ();
+            Paste p = result.get ();
+
+            if (p.isPrivate && p.ownerId != ownerId)
+            {
+                throw new HTTPStatusException (HTTPStatus.notFound);
+            }
+
+            return p.toJson ();
         }
     }
 }

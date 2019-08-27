@@ -159,7 +159,6 @@ public User getGitHubUserJwt (string authorization) @trusted
     import stringbuffer : StringBuffer;
     import fastjwt.jwt : decodeJWTToken, JWTAlgorithm;
     import pastemyst.db : getAccessToken;
-    import pastemyst.auth : InvalidAuthorizationException;
 
     string jwtSecret = config ["jwt"] ["secret"].get!string;
 
@@ -168,7 +167,7 @@ public User getGitHubUserJwt (string authorization) @trusted
 
     if (decodeJWTToken (authorization, jwtSecret, JWTAlgorithm.HS512, header, payload) != 0)
     {
-        throw new HTTPStatusException (HTTPStatus.Unauthorized, "Invalid JWT.");
+        throw new HTTPStatusException (HTTPStatus.unauthorized, "Invalid JWT.");
     }
 
     string accessToken = getAccessToken (authorization);

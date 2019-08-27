@@ -24,9 +24,9 @@ public bool isBearerFormatValid (string authorization) @safe
 }
 
 /++
- + Checks if the bearer token's format is valid
+ + Checks if the bearer token's format is valid. Throws an unauthorized exception if it isn't.
  +/
-public void checkBearerFormat (string authorization) @safe
+public void enforceBearerFormat (string authorization) @safe
 {
     import vibe.http.common : HTTPStatusException, HTTPStatus;
 

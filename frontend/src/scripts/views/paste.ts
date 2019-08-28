@@ -13,7 +13,7 @@ export default class Paste extends View
     public render (): string
     {
         /* tslint:disable:max-line-length */
-        return `<div id="paste-header"><p class="title"></p><a class="raw">raw</a></div><textarea id="paste-content"></textarea><div id="paste-meta"><p class="created-at"><span class="highlight">created at:</span></p><p class="expires-in"><span class="highlight">expires in:</span></p></div>`;
+        return `<div id="paste-header"><div class="title"><img class="lock" src="/assets/icons/lock.svg"/><p></p></div><a class="raw">raw</a></div><textarea id="paste-content"></textarea><div id="paste-meta"><p class="created-at"><span class="highlight">created at:</span></p><p class="expires-in"><span class="highlight">expires in:</span></p></div>`;
         /* tslint:enable:max-line-length */
     }
 
@@ -27,7 +27,15 @@ export default class Paste extends View
 
         // Insert the paste title and the link to the raw paste contents
         const header: HTMLElement = document.getElementById ("paste-header");
-        header.getElementsByClassName ("title") [0].textContent = title;
+        
+        const titleElement = header.getElementsByClassName ("title") [0];
+        titleElement.getElementsByTagName ("p") [0].textContent = title;
+
+        if (paste.isPrivate)
+        {
+            (titleElement.getElementsByClassName ("lock") [0] as HTMLElement).style.display = "block";
+        }
+
         header.getElementsByClassName ("raw") [0].setAttribute ("href", `${rawEndpoint}/${id}/raw`);
 
         // Insert the paste contents

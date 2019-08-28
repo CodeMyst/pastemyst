@@ -57,6 +57,20 @@
                 font-size: $font-size-medium;
                 margin: 0;
                 margin-bottom: 15px;
+                display: flex;
+                flex-direction: row;
+
+                .lock
+                {
+                    width: 20px;
+                    margin-right: 5px;
+                    display: none;
+                }
+
+                p
+                {
+                    margin: 0;
+                }
             }
 
             .info

@@ -7,6 +7,8 @@ import View from "renderer/view";
 
 export default class Paste extends View
 {
+    private editor: CodeMirror.Editor;
+
     public render (): string
     {
         /* tslint:disable:max-line-length */
@@ -29,8 +31,8 @@ export default class Paste extends View
 
         // Insert the paste contents
         const textarea: HTMLTextAreaElement = document.getElementById ("paste-content") as HTMLTextAreaElement;
-        const editor: CodeMirror.Editor = CodeMirror.fromTextArea (textarea,
-            {
+        this.editor = CodeMirror.fromTextArea (textarea,
+        {
             indentUnit: 4,
             lineNumbers: true,
             tabSize: 4,
@@ -39,7 +41,7 @@ export default class Paste extends View
             lineWrapping: true
         });
         
-        editor.setValue (paste.code);
+        this.editor.setValue (paste.code);
 
         const languageOption: LanguageOption = (await getLanguageOptions ())
                                                .find ((o) => o.mimes [0] === paste.language);
@@ -49,12 +51,12 @@ export default class Paste extends View
             const modePath: string = `types/codemirror/mode/${languageOption.mode}/${languageOption.mode}`;
             import (modePath).then (() =>
             {
-                editor.setOption ("mode", paste.language);
+                this.editor.setOption ("mode", paste.language);
             });
         }
         else
         {
-            editor.setOption ("mode", "text/plain");
+            this.editor.setOption ("mode", "text/plain");
         }
 
         // Insert the created at and expires in values
@@ -84,6 +86,11 @@ export default class Paste extends View
 
         createdAtElement.appendChild (createdAtContentElement);
         expiresInElement.appendChild (expiresInContentElement);
+    }
+
+    public async postRun (): Promise<void>
+    {
+        this.editor.refresh ();
     }
 
     /**

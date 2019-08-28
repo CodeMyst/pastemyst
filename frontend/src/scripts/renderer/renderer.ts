@@ -31,12 +31,14 @@ export default class Renderer
 
             if (part.view)
             {
-                await part.view.run ().then (() =>
+                await part.view.run ().then (async () =>
                 {
                     if (part.element.attributes.getNamedItem ("style"))
                     {
                         part.element.attributes.removeNamedItem ("style");
                     }
+
+                    await part.view.postRun ();
                 });
             }
         });
@@ -48,12 +50,14 @@ export default class Renderer
         {
             part.element.style.display = "none";
             part.element.innerHTML = part.view.render ();
-            await part.view.run ().then (() =>
+            await part.view.run ().then (async () =>
             {
                 if (part.element.attributes.getNamedItem ("style"))
                 {
                     part.element.attributes.removeNamedItem ("style");
                 }
+
+                await part.view.postRun ();
             });
         }
     }

@@ -50,6 +50,12 @@ export default class Home extends View
         }
     }
 
+    public async postRun (): Promise<void>
+    {
+        this.editor.refresh ();
+        this.editor.focus ();
+    }
+
     private async initExpiresInDropdown (): Promise<void>
     {
         const options: ExpireOption [] = await getExpireOptions ();

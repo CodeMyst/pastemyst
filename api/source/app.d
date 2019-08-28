@@ -5,7 +5,7 @@ public void main ()
     import pastemyst.rest : APIRoot, APIPaste, APIUser;
     import pastemyst.web : RawWeb;
     import pastemyst.auth : AuthGitHubWeb, AuthGitHubAPI;
-    import pastemyst.db : connectMongoDb, connectRedisDb;
+    import pastemyst.db : connectMongoDb, connectRedisDb, deleteExpiredPastes;
     import vibe.core.log : setLogLevel, LogLevel;
     import vibe.web.common : MethodStyle;
 
@@ -29,6 +29,8 @@ public void main ()
 
     connectMongoDb ("127.0.0.1", "pastemyst");
     connectRedisDb ("127.0.0.1");
+
+    setTimer (1.seconds, toDelegate (&deleteExpiredPastes), true);
 
 	runApplication ();
 }

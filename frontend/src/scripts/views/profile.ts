@@ -5,6 +5,7 @@ import View from "renderer/view";
 import Router from "router/router";
 import { isLoggedIn } from "api/auth";
 import { Paste } from "data/paste";
+import { expiresInToUnixTime, timeDifferenceToString } from "time/time";
 
 export default class Profile extends View
 {
@@ -22,7 +23,7 @@ export default class Profile extends View
     public render (): string
     {
         /* tslint:disable:max-line-length */
-        return `<div id="profile-header"><img class="avatar"/><p class="username"></p><a class="logout">logout</a></div><ul id="profile-pastes"><li class="paste"><a route=""><p class="title"></p><p class="info"><span class="created-at"></span></p></a></li></ul>`;
+        return `<div id="profile-header"><img class="avatar"/><p class="username"></p><a class="logout">logout</a></div><ul id="profile-pastes"><li class="paste"><a route=""><p class="title"></p><p class="info"><span class="created-at"></span><span class="expires-in"></span></p></a></li></ul>`;
         /* tslint:enable:max-line-length */        
     }
 
@@ -74,7 +75,21 @@ export default class Profile extends View
             const date: Date = new Date (paste.createdAt * 1000);
             
             (pasteTemplate.getElementsByClassName ("created-at") [0] as HTMLElement).innerText =
-                `${date.toDateString ()} ${date.toLocaleTimeString ()}`;
+                `created at: ${date.toDateString ()} ${date.toLocaleTimeString ()}`;
+
+            if (paste.expiresIn !== "never")
+            {
+                const expiresInDate: Date = new Date (expiresInToUnixTime (paste.expiresIn, paste.createdAt) * 1000);
+                const timeDifference: number = Math.abs (expiresInDate.getTime () - new Date ().getTime ());
+
+                (pasteTemplate.getElementsByClassName ("expires-in") [0] as HTMLElement).innerText =
+                    `expires in: ${timeDifferenceToString (timeDifference)}`;
+            }
+            else
+            {
+                const expiresin = pasteTemplate.getElementsByClassName ("expires-in") [0];
+                expiresin.parentNode.removeChild (expiresin);
+            }
             
             const el = pastes.appendChild (pasteTemplate);
             this.router.registerLink (el.getElementsByTagName ("a") [0]);

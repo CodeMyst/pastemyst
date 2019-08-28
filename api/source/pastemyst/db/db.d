@@ -1,4 +1,4 @@
-module pastemyst.db;
+module pastemyst.db.db;
 
 import vibe.db.mongo.mongo;
 import vibe.db.redis.redis;
@@ -9,7 +9,7 @@ import std.typecons;
 private MongoDatabase mongoDb;
 private RedisDatabase redisDb;
 
-private string getCollectionName (T) ()
+private string getCollectionName (T) () @safe
 {
     static if (is (T == Paste))
     {
@@ -28,7 +28,7 @@ private string getCollectionName (T) ()
 /++
  + Connects to the MongoDB
  +/
-public void connectMongoDb (string host, string dbName)
+public void connectMongoDb (string host, string dbName) @safe
 {
     mongoDb = connectMongoDB (host).getDatabase (dbName);
 }
@@ -36,7 +36,7 @@ public void connectMongoDb (string host, string dbName)
 /++
  + Connects to the Redis DB
  +/
-public void connectRedisDb (string host)
+public void connectRedisDb (string host) @safe
 {
     redisDb = connectRedis (host).getDatabase (0);
 }
@@ -65,11 +65,23 @@ public void insertMongo (T) (T item) @safe
 }
 
 /++
+ + Removes items from the Mongo DB.
+ +
+ + The collection is automatically determined from the item type. It will throw an error if you try to insert an invalid type.
+ +/
+public void removeMongo (T) (T item) @safe
+{
+    MongoCollection collection = mongoDb [getCollectionName!T];
+
+    collection.remove (item);
+}
+
+/++
  + Gets one item from the Mongo DB.
  +
  + The collection is automatically determined from the item type. It will throw an error if you try to insert an invalid type.
  +/
-public Nullable!R findOneMongo (R, T) (T query)
+public Nullable!R findOneMongo (R, T) (T query) @safe
 {
     MongoCollection collection = mongoDb [getCollectionName!R];
 
@@ -81,7 +93,7 @@ public Nullable!R findOneMongo (R, T) (T query)
  +
  + The collection is automatically determined from the item type. It will throw an error if you try to insert an invalid type.
  +/
-public Nullable!R findOneByIdMongo (R, T) (T id)
+public Nullable!R findOneByIdMongo (R, T) (T id) @safe
 {
     return findOneMongo!R (["_id": id]);
 }
@@ -91,7 +103,7 @@ public Nullable!R findOneByIdMongo (R, T) (T id)
  +
  + The collection is automatically determined from the item type. It will throw an error if you try to insert an invalid type.
  +/
-public MongoCursor!R findMongo (R, T) (T query)
+public MongoCursor!R findMongo (R, T) (T query) @safe
 {
     MongoCollection collection = mongoDb [getCollectionName!R];
 
@@ -101,7 +113,7 @@ public MongoCursor!R findMongo (R, T) (T query)
 /++
  + Inserts the github access token in the redis db
  +/
-public void insertAccessToken (string jwtToken, string githubToken)
+public void insertAccessToken (string jwtToken, string githubToken) @safe
 {
     redisDb.set (jwtToken, githubToken);
 }
@@ -109,7 +121,7 @@ public void insertAccessToken (string jwtToken, string githubToken)
 /++
  + Checks if a github access token exists with the specified JWT token as the key
  +/
-public bool existsAccessToken (string jwtToken)
+public bool existsAccessToken (string jwtToken) @safe
 {
     return redisDb.exists (jwtToken);
 }

@@ -11,6 +11,19 @@
     padding: 0 2rem;
     margin-top: 3rem;
 
+    .title
+    {
+        display: flex;
+        flex-direction: row;
+
+        .lock
+        {
+            display: none;
+            width: 20px;
+            margin-right: 5px;
+        }
+    }
+
     .raw
     {
         align-self: center;

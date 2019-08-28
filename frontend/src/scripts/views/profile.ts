@@ -23,7 +23,7 @@ export default class Profile extends View
     public render (): string
     {
         /* tslint:disable:max-line-length */
-        return `<div id="profile-header"><img class="avatar"/><p class="username"></p><a class="logout">logout</a></div><ul id="profile-pastes"><li class="paste"><a route=""><p class="title"></p><p class="info"><span class="created-at"></span><span class="expires-in"></span></p></a></li></ul>`;
+        return `<div id="profile-header"><img class="avatar"/><p class="username"></p><a class="logout">logout</a></div><ul id="profile-pastes"><li class="paste"><a route=""><div class="title"><img class="lock" src="/assets/icons/lock.svg"/><p></p></div><p class="info"><span class="created-at"></span><span class="expires-in"></span></p></a></li></ul>`;
         /* tslint:enable:max-line-length */        
     }
 
@@ -68,9 +68,14 @@ export default class Profile extends View
             const pasteTemplate: HTMLElement = pastes.children [0].cloneNode (true) as HTMLElement;
 
             pasteTemplate.getElementsByTagName ("a") [0].setAttribute ("route", `/${paste._id}`);
+
+            if (paste.isPrivate)
+            {
+                (pasteTemplate.getElementsByClassName ("lock") [0] as HTMLElement).style.display = "block";
+            }
             
-            (pasteTemplate.getElementsByClassName ("title") [0] as HTMLElement).innerText =
-            paste.title ? paste.title : "no title";
+            (pasteTemplate.getElementsByClassName ("title") [0].
+                getElementsByTagName ("p") [0] as HTMLElement).innerText = paste.title ? paste.title : "no title";
 
             const date: Date = new Date (paste.createdAt * 1000);
             

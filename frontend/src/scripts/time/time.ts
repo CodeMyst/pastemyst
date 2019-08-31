@@ -67,6 +67,11 @@ export function timeDifferenceToString (timeDifference: number): string
         resTime = Math.ceil (timeDifference / 86400000);
         resString = `${resTime.toString ()} days`;
     }
+    else
+    {
+        resTime = Math.ceil (timeDifference / 604800000);
+        resString = `${resTime.toString ()} weeks`;
+    }
 
     // If the time is just one, remove the s so the time is singular
     if (resTime === 1)

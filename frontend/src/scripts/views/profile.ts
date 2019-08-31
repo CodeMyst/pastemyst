@@ -80,7 +80,7 @@ export default class Profile extends View
             const date: Date = new Date (paste.createdAt * 1000);
             
             (pasteTemplate.getElementsByClassName ("created-at") [0] as HTMLElement).innerText =
-                `created at: ${date.toDateString ()} ${date.toLocaleTimeString ()}`;
+                `created at: ${date.toDateString ().toLowerCase ()} ${date.toTimeString ().substr (0, 8)}`;
 
             if (paste.expiresIn !== "never")
             {

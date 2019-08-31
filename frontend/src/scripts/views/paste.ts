@@ -76,7 +76,7 @@ export default class Paste extends View
         const createdAtElement: Element = meta.getElementsByClassName ("created-at") [0];
         const createdAtContentElement: Element = document.createElement ("span");
 
-        createdAtContentElement.textContent = ` ${createdAt}`;
+        createdAtContentElement.textContent = ` ${createdAt.toString ().toLowerCase ()}`;
 
         const expiresInElement: Element = meta.getElementsByClassName ("expires-in") [0];
         const expiresInContentElement: Node = document.createElement ("span");

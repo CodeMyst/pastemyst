@@ -1,6 +1,7 @@
 module pastemyst.rest.paste;
 
 import vibe.vibe;
+import pastemyst.data;
 
 /++
  + API interface for the `/paste` endpoint.
@@ -13,13 +14,12 @@ public interface IAPIPaste
      + Creates a new paste
      +/
     @bodyParam ("expiresIn", "expiresIn")
-    @bodyParam ("title", "title")
-    @bodyParam ("code", "code")
-    @bodyParam ("language", "language")
     @bodyParam ("isPrivate", "isPrivate")
+    @bodyParam ("title", "title")
+    @bodyParam ("pasties", "pasties")
     @headerParam ("authorization", "Authorization")
     @path ("/paste")
-    Json post (string expiresIn, string code, string language, bool isPrivate, string title = "", string authorization = "") @safe;
+    Json post (string title, string expiresIn, bool isPrivate, Pasty [] pasties, string authorization = "") @safe;
 
     /++
      + `GET /paste/:id`
@@ -41,15 +41,19 @@ public class APIPaste : IAPIPaste
      +
      + Creates a new paste
      +/
-    public Json post (string expiresIn, string code, string language, bool isPrivate, string title = "", string authorization = "") @safe
+    public Json post (string title, string expiresIn, bool isPrivate, Pasty [] pasties, string authorization = "") @safe
     {
-        import pastemyst.data : Paste, ExpiresIn;
         import pastemyst.db : insertMongo;
         import pastemyst.encoding : randomBase36String;
         import pastemyst.conv : valueToEnum;
         import pastemyst.auth : getGitHubUserJwt, enforceBearerFormat, getToken;
         import std.datetime.systime : Clock;
         import std.conv : to;
+
+        if (pasties.length == 0)
+        {
+            throw new HTTPStatusException (HTTPStatus.badRequest, "Pasties array has to have at least one element.");
+        }
 
         string ownerId = "";
 
@@ -61,15 +65,16 @@ public class APIPaste : IAPIPaste
             ownerId = getGitHubUserJwt (token).id.to!string ();
         }
 
-        Paste paste = Paste (randomBase36String (),
-                             Clock.currTime.toUnixTime (),
-                             valueToEnum!ExpiresIn (expiresIn),
-                             title,
-                             code,
-                             language,
-                             ownerId,
-                             isPrivate,
-                             false);
+        Paste paste =
+        {
+            id: randomBase36String (),
+            createdAt: Clock.currTime ().toUnixTime (),
+            expiresIn: valueToEnum!ExpiresIn (expiresIn),
+            title: title,
+            ownerId: ownerId,
+            isPrivate: isPrivate,
+            pasties: pasties
+        };
 
         insertMongo (paste);
 
@@ -84,7 +89,6 @@ public class APIPaste : IAPIPaste
     public Json get (string _id, string authorization = "") @safe
     {
         import std.typecons : Nullable;
-        import pastemyst.data : Paste;
         import pastemyst.db : findOneByIdMongo;
         import pastemyst.auth : getGitHubUserJwt, enforceBearerFormat, getToken;
 
@@ -106,7 +110,7 @@ public class APIPaste : IAPIPaste
         }
         else
         {
-            Paste p = result.get ();
+            const (Paste) p = result.get ();
 
             if (p.isPrivate && p.ownerId != ownerId)
             {

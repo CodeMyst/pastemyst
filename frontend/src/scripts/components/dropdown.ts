@@ -37,6 +37,13 @@ export class Dropdown
 
         this.items = new Map<DropdownItem, HTMLElement> ();
 
+        this.selectable.getElementsByClassName ("items") [0].querySelectorAll (".item").forEach ((e) =>
+        {
+            e.remove ();
+        });
+
+        this.search.value = "";
+
         window.addEventListener ("click", (evt) => 
         {
             if (!this.visible)

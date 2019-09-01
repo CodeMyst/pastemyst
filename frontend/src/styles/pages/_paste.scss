@@ -1,20 +1,14 @@
 #paste-header
 {
-    background-color: $color-nanonotsolight;
+    background-color: $color-nanolight;
     border-radius: $border-radius-std;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border: 2px solid $color-mystge;
-    border-bottom: none;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 2rem;
-    margin-top: 3rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 25px;
 
     .title
     {
-        display: flex;
-        flex-direction: row;
+        margin: 0;
+        padding: 0;
 
         .lock
         {
@@ -22,27 +16,58 @@
             width: 20px;
             margin-right: 5px;
         }
-    }
 
-    .raw
-    {
-        align-self: center;
-        background-color: $color-nano;
-        padding: 0.25rem 0.75rem;
-        border-radius: $border-radius-std;
+        p
+        {
+            margin: 0;
+        }
     }
 }
 
-#paste-content ~ .CodeMirror
+#paste-pasties
 {
-    margin-top: 0;
-    margin-bottom: 3rem;
-    height: auto;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border: 2px solid $color-mystge;
-    border-top: none;
-    padding: 1rem 0;
+    .pastie
+    {
+        margin-bottom: 25px;
+
+        .pastie-header
+        {
+            background-color: $color-nanonotsolight;
+            border-top-left-radius: $border-radius-std;
+            border-top-right-radius: $border-radius-std;
+            border: 2px solid $color-mystge;
+            border-bottom: none;
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 2rem;
+
+            .title
+            {
+                margin: 0;
+                align-self: center;
+            }
+
+            .raw
+            {
+                background-color: $color-nano;
+                padding: 0.25rem 0.75rem;
+                border-radius: $border-radius-std;
+            }
+        }
+
+        .pastie-content
+        {
+            .CodeMirror
+            {
+                margin-top: 0;
+                height: auto;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+                border: 2px solid $color-mystge;
+                border-top: none;
+            }
+        }
+    }
 }
 
 #paste-meta

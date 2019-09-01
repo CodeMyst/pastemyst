@@ -1,33 +1,157 @@
-.options
+.title
 {
     display: flex;
-    justify-content: space-between;
+    margin-top: 25px;
 
-    @media screen and (max-width: 720px)
+    input
     {
-        flex-direction: column;
+        border-radius: $border-radius-std;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        background-color: $color-nanolight;
+        border: none;
+        outline: none;
+        padding: 0.75rem 1rem;
+        box-sizing: border-box;
+        color: $color-white;
+        font-family: $font-stack;
+        font-size: $font-size-normal;
+        flex-grow: 1;
+    }
 
-        #language
+    #expires-in
+    {
+        .dropdown
         {
-            margin-top: 25px;
+            .label
+            {
+                border-radius: 0;
+            }
+
+            .dropdown-content .clickable
+            {
+                padding: 0.75rem 1rem;
+            }
         }
     }
 }
 
-#title-input
+.pasty-editors
+{
+    .pasty-editor
+    {
+        margin-top: 25px;
+
+        .pasty-title
+        {
+            display: flex;
+
+            input[name="pasty-title"]
+            {
+                border-top-left-radius: $border-radius-std;
+                background-color: $color-nanonotsolight;
+                border: none;
+                outline: none;
+                padding: 0.75rem 2rem;
+                box-sizing: border-box;
+                color: $color-white;
+                font-family: $font-stack;
+                font-size: $font-size-normal;
+                flex-grow: 1;
+                border: 2px solid $color-mystge;
+                border-bottom: none;
+                border-right: none;
+            }
+
+            .language
+            {
+                .label
+                {
+                    border-radius: 0;
+                    background-color: $color-nanonotsolight;
+                    border-top: 2px solid $color-mystge;
+                }
+
+                .dropdown-content
+                {
+                    .clickable
+                    {
+                        padding: 0.75rem 1rem;
+                        border-bottom-right-radius: 0;
+                        width: 300px;
+                        background-color: $color-nanonotsolight;
+                        border: 2px solid $color-mystge;
+                        border-bottom: none;
+                        border-left: none;
+                    }
+
+                    .selectable
+                    {
+                        width: 332px;
+                        background-color: $color-nanonotsolight;
+                        border: none;
+
+                        input
+                        {
+                            background-color: $color-nanonotsolight;
+                        }
+
+                        .item:hover
+                        {
+                            background-color: $color-nanolight;
+                        }
+                    }
+                }
+            }
+        }
+
+        .CodeMirror
+        {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            margin-top: 0;
+            border: 2px solid $color-mystge;
+            border-top: none;
+        }
+    }
+}
+
+.pasty-button
 {
     margin-top: 25px;
-    width: 100%;
-    border-radius: $border-radius-std;
-    background-color: $color-nanolight;
-    border: none;
-    outline: none;
-    padding: 0.75rem 1rem;
-    box-sizing: border-box;
-    font-size: $font-size-normal;
-    color: $color-white;
-    font-family: $font-stack;
+    display: block;
 }
+
+// .options
+// {
+//     display: flex;
+//     justify-content: space-between;
+
+//     @media screen and (max-width: 720px)
+//     {
+//         flex-direction: column;
+
+//         #language
+//         {
+//             margin-top: 25px;
+//         }
+//     }
+// }
+
+// #title-input
+// {
+//     margin-top: 25px;
+//     width: 100%;
+//     border-radius: $border-radius-std;
+//     background-color: $color-nanolight;
+//     border: none;
+//     outline: none;
+//     padding: 0.75rem 1rem;
+//     box-sizing: border-box;
+//     font-size: $font-size-normal;
+//     color: $color-white;
+//     font-family: $font-stack;
+// }
 
 .CodeMirror
 {

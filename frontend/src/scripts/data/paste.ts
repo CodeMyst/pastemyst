@@ -5,18 +5,22 @@ export class Paste
     public createdAt: number;
     public expiresIn: string;
     public title: string;
-    public code: string;
-    public language: string;
     public ownerId: string;
+    public pasties: Pasty [];
     public isPrivate: boolean;
-    public isEdited: boolean;
 }
 
 export class PasteCreateInfo
 {
     public expiresIn: string;
-    public title?: string;
-    public code: string;
-    public language: string;
+    public title: string;
+    public pasties: Pasty [];
     public isPrivate: boolean;
+}
+
+export class Pasty
+{
+    public title: string;
+    public language: string;
+    public code: string;
 }

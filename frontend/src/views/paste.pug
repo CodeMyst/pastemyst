@@ -2,9 +2,14 @@
     .title
         img.lock(src="/assets/icons/lock.svg")
         p
-    a.raw raw
 
-textarea#paste-content
+#paste-pasties
+    .pastie
+        .pastie-header
+            p.title
+            a.raw raw
+        .pastie-content
+            textarea
 
 #paste-meta
     p.created-at

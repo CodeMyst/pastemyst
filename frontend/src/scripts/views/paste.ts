@@ -8,12 +8,12 @@ import { expiresInToUnixTime, timeDifferenceToString } from "time/time";
 
 export default class Paste extends View
 {
-    private editor: CodeMirror.Editor;
+    private editors: CodeMirror.Editor [] = new Array<CodeMirror.Editor> ();
 
     public render (): string
     {
         /* tslint:disable:max-line-length */
-        return `<div id="paste-header"><div class="title"><img class="lock" src="/assets/icons/lock.svg"/><p></p></div><a class="raw">raw</a></div><textarea id="paste-content"></textarea><div id="paste-meta"><p class="created-at"><span class="highlight">created at:</span></p><p class="expires-in"><span class="highlight">expires in:</span></p></div>`;
+        return `<div id="paste-header"><div class="title"><img class="lock" src="/assets/icons/lock.svg"/><p></p></div></div><div id="paste-pasties"><div class="pastie"><div class="pastie-header"><p class="title"></p><a class="raw">raw</a></div><div class="pastie-content"><textarea></textarea></div></div></div><div id="paste-meta"><p class="created-at"><span class="highlight">created at:</span></p><p class="expires-in"><span class="highlight">expires in:</span></p></div>`;
         /* tslint:enable:max-line-length */
     }
 
@@ -36,37 +36,54 @@ export default class Paste extends View
             (titleElement.getElementsByClassName ("lock") [0] as HTMLElement).style.display = "block";
         }
 
-        header.getElementsByClassName ("raw") [0].setAttribute ("href", `${rawEndpoint}/${id}/raw`);
+        const languageOptions: LanguageOption [] = await getLanguageOptions ();
 
-        // Insert the paste contents
-        const textarea: HTMLTextAreaElement = document.getElementById ("paste-content") as HTMLTextAreaElement;
-        this.editor = CodeMirror.fromTextArea (textarea,
+        paste.pasties.forEach ((p, i) =>
         {
-            indentUnit: 4,
-            lineNumbers: true,
-            tabSize: 4,
-            theme: "darcula",
-            readOnly: "nocursor",
-            lineWrapping: true
-        });
-        
-        this.editor.setValue (paste.code);
+            const clone = document.querySelector ("#paste-pasties .pastie").cloneNode (true) as HTMLElement;
 
-        const languageOption: LanguageOption = (await getLanguageOptions ())
-                                               .find ((o) => o.mimes [0] === paste.language);
+            const pastieHeader = clone.getElementsByClassName ("pastie-header") [0];
 
-        if (languageOption.mode !== "null")
-        {
-            const modePath: string = `types/codemirror/mode/${languageOption.mode}/${languageOption.mode}`;
-            import (modePath).then (() =>
+            (pastieHeader.getElementsByClassName ("title") [0] as HTMLElement).textContent =
+                p.title ? p.title : "no title";
+            
+            pastieHeader.getElementsByClassName ("raw") [0].setAttribute ("href",
+                `${rawEndpoint}/${paste._id}/${i}/raw`);
+
+            const textarea: HTMLTextAreaElement = clone.getElementsByTagName ("textarea") [0];
+            const editor = CodeMirror.fromTextArea (textarea,
             {
-                this.editor.setOption ("mode", paste.language);
+                indentUnit: 4,
+                lineNumbers: true,
+                tabSize: 4,
+                theme: "darcula",
+                readOnly: "nocursor",
+                lineWrapping: true
             });
-        }
-        else
-        {
-            this.editor.setOption ("mode", "text/plain");
-        }
+
+            editor.setValue (p.code);
+
+            const languageOption: LanguageOption = languageOptions.find ((o) => o.mimes [0] === p.language);
+
+            if (languageOption.mode !== "null")
+            {
+                const modePath: string = `types/codemirror/mode/${languageOption.mode}/${languageOption.mode}`;
+                import (modePath).then (() =>
+                {
+                    editor.setOption ("mode", p.language);
+                });
+            }
+            else
+            {
+                editor.setOption ("mode", "text/plain");
+            }
+
+            this.editors.push (editor);
+
+            document.getElementById ("paste-pasties").appendChild (clone);
+        });
+
+        document.querySelector ("#paste-pasties .pastie").remove ();
 
         // Insert the created at and expires in values
         const createdAt: Date = new Date (paste.createdAt * 1000);
@@ -99,6 +116,9 @@ export default class Paste extends View
 
     public async postRun (): Promise<void>
     {
-        this.editor.refresh ();
+        this.editors.forEach ((e) =>
+        {
+            e.refresh ();
+        });
     }
 }

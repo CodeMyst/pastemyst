@@ -12,23 +12,29 @@ public struct Paste
 {
     @name ("_id")
     public string id;
-    /++
-     + Unix timestamp when the paste was created
-     +/
+
     public ulong createdAt;
+
     public ExpiresIn expiresIn;
-    /++
-     + Title of the paste (optional)
-     +/
+
     public string title;
-    public string code;
-    public string language;
-    /++
-     + Id of the owner (if applicable)
-     +/
+
     public string ownerId;
+
     public bool isPrivate;
-    public bool isEdited;
+
+    public Pasty [] pasties;
+
+    // @name ("_id")
+    // public string id;
+    // public ulong createdAt;
+    // public ExpiresIn expiresIn;
+    // public string title;
+    // public string code;
+    // public string language;
+    // public string ownerId;
+    // public bool isPrivate;
+    // public bool isEdited;
 
     /++
      + Converts the paste to JSON.
@@ -48,4 +54,13 @@ public struct Paste
 
         return res;
     }
+}
+
+public struct Pasty
+{
+    public string title;
+
+    public string language;
+
+    public string code;
 }

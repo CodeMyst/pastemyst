@@ -12,8 +12,8 @@ public interface IRawWeb
      +
      + Returns the raw paste contents.
      +/
-    @path ("/:id/raw")
-    void get (string _id, HTTPServerResponse res) @safe;
+    @path ("/:id/:pastyIndex/raw")
+    void get (string _id, ulong _pastyIndex, HTTPServerResponse res) @safe;
 }
 
 /++
@@ -26,8 +26,8 @@ public class RawWeb : IRawWeb
      +
      + Returns the raw paste contents.
      +/
-    @path ("/:id/raw")
-    public void get (string _id, HTTPServerResponse res) @safe
+    @path ("/:id/:pastyIndex/raw")
+    public void get (string _id, ulong _pastyIndex, HTTPServerResponse res) @safe
     {
         import std.typecons : Nullable;
         import pastemyst.data : Paste;
@@ -40,9 +40,14 @@ public class RawWeb : IRawWeb
         {
             throw new HTTPStatusException (HTTPStatus.notFound);
         }
-        else
+     
+        const (Paste) paste = result.get ();
+
+        if (_pastyIndex > paste.pasties.length)
         {
-            res.writeBody (result.get ().code, null);
+            throw new HTTPStatusException (HTTPStatus.notFound, "Invalid pasty index.");
         }
+
+        res.writeBody (paste.pasties [_pastyIndex].code, null);
     }
 }

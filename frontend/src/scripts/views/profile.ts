@@ -23,7 +23,7 @@ export default class Profile extends View
     public render (): string
     {
         /* tslint:disable:max-line-length */
-        return `<div id="profile-header"><img class="avatar"/><p class="username"></p><a class="logout">logout</a></div><ul id="profile-pastes"><li class="paste"><a route=""><div class="title"><img class="lock" src="/assets/icons/lock.svg"/><p></p></div><p class="info"><span class="created-at"></span><span class="expires-in"></span></p></a></li></ul>`;
+        return `<div id="profile-header"><img class="avatar"/><p class="username"></p><a class="logout">logout</a></div><ul id="profile-pastes"><li class="paste"><a route=""><div class="title"><ion-icon class="lock" name="lock"></ion-icon><p></p></div><p class="info"><span class="created-at"></span><span class="expires-in"></span></p></a></li></ul>`;
         /* tslint:enable:max-line-length */        
     }
 

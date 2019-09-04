@@ -46,6 +46,28 @@
         {
             display: flex;
 
+            .delete-button
+            {
+                background-color: $color-nanonotsolight;
+                align-self: center;
+                border-top-left-radius: $border-radius-std;
+                border: 2px solid $color-mystge;
+                border-bottom: none;
+                border-right: none;
+                padding: 0.65rem 0rem 0.65rem 0.75rem;
+                display: none;
+
+                &:hover
+                {
+                    cursor: pointer;
+                }
+
+                ion-icon
+                {
+                    color: $color-mystge;
+                }
+            }
+
             input[name="pasty-title"]
             {
                 border-top-left-radius: $border-radius-std;
@@ -116,12 +138,6 @@
     }
 }
 
-.pasty-button
-{
-    margin-top: 25px;
-    display: block;
-}
-
 // .options
 // {
 //     display: flex;
@@ -179,12 +195,28 @@
     }
 }
 
-.create-options
+.flex-row-space-between
 {
     display: flex;
-    padding-top: 25px;
     justify-content: space-between;
-    flex-direction: row-reverse;
+    margin-top: 25px;
+
+    .pasty-button
+    {
+        display: flex;
+        flex-direction: row;
+
+        ion-icon
+        {
+            align-self: center;
+            margin-right: 5px;
+        }
+
+        p
+        {
+            margin: 0;
+        }
+    }
 
     .private-checkbox
     {
@@ -193,4 +225,10 @@
             margin-right: 10px;
         }
     }
+}
+
+#create-button
+{
+    margin-top: 25px;
+    display: inline-block;
 }

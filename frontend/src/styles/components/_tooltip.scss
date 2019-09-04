@@ -2,7 +2,7 @@
 {
     position: relative;
     display: inline-block;
-    top: 2px;
+    top: 3px;
 
     &::after
     {
@@ -30,8 +30,8 @@
         bottom: 200%;
     }
 
-    img
+    ion-icon
     {
-        width: 15px;
+        color: $color-mystge;
     }
 }

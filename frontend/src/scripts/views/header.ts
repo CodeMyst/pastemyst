@@ -20,7 +20,7 @@ export default class Header extends View
     {
         /* tslint:disable:max-line-length */
         return `<h1><img class="icon" src="/assets/icons/pastemyst.svg" alt="icon"/><a route="/">PasteMyst</a></h1><p class="description">a simple website for storing and sharing code snippets.
-version 2.0.0 (<a href="#" target="_blank">changelog</a>).</p><div class="modal" id="login-modal"><div class="content"><div class="head"><p class="title">login</p><img class="exit" src="/assets/icons/exit.svg"/></div><div class="body"><p>logging in with github you'll be able to do many more things, like seeing a list of all pastes you made, creating private pastes which can only be accessed with your account, labeling pastes and organizing them, and much more.</p><p>only your github id and username will be stored to uniquely identify you and nothing more.</p></div><div class="footer"><a href="http://api.paste.myst/auth/github">login with github</a></div></div></div><nav><ul><li><a route="/">home</a> - </li><li><a id="login">login</a> - </li><li><a href="https://github.com/codemyst/pastemyst" target="_blank">github</a> - </li><li><a href="/api-docs">api docs</a></li></ul></nav>`;
+version 2.0.0 (<a href="#" target="_blank">changelog</a>).</p><div class="modal" id="login-modal"><div class="content"><div class="head"><p class="title">login</p><ion-icon class="exit" name="close"></ion-icon></div><div class="body"><p>logging in with github you'll be able to do many more things, like seeing a list of all pastes you made, creating private pastes which can only be accessed with your account, labeling pastes and organizing them, and much more.</p><p>only your github id and username will be stored to uniquely identify you and nothing more.</p></div><div class="footer"><a href="http://api.paste.myst/auth/github">login with github</a></div></div></div><nav><ul><li><a route="/">home</a> - </li><li><a id="login">login</a> - </li><li><a href="https://github.com/codemyst/pastemyst" target="_blank">github</a> - </li><li><a href="/api-docs">api docs</a></li></ul></nav>`;
         /* tslint:enable:max-line-length */
     }
     
@@ -39,6 +39,7 @@ version 2.0.0 (<a href="#" target="_blank">changelog</a>).</p><div class="modal"
         else
         {
             this.loginModal = new Modal ("login-modal");
+            await this.loginModal.run ();
 
             loginElement.addEventListener ("click", () =>
             {

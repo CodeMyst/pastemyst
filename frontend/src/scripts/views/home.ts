@@ -19,7 +19,7 @@ export default class Home extends View
     public render (): string
     {
         /* tslint:disable:max-line-length */
-        return `<div class="title"><input id="title-input" type="text" name="title" placeholder="title (optional)" autocomplete="off"/><div id="expires-in"><div class="dropdown hidden"><div class="label"><p>label:</p></div><div class="dropdown-content"><div class="clickable"><p class="selected">loading...</p><img class="caret" src="/assets/icons/caret.svg"/></div><div class="selectable"><input class="search" type="text" name="search" placeholder="search..." autocomplete="off"/><div class="items"><p class="not-found hidden">no items found</p></div></div></div></div></div></div><div class="pasty-editors"><div class="pasty-editor"><div class="pasty-title"><input type="text" name="pasty-title" placeholder="pasty title (optional)" autocomplete="off"/><div class="language"><div class="dropdown hidden"><div class="label"><p>label:</p></div><div class="dropdown-content"><div class="clickable"><p class="selected">loading...</p><img class="caret" src="/assets/icons/caret.svg"/></div><div class="selectable"><input class="search" type="text" name="search" placeholder="search..." autocomplete="off"/><div class="items"><p class="not-found hidden">no items found</p></div></div></div></div></div></div><textarea autofocus="autofocus"></textarea></div></div><a class="pasty-button">+ add another pasty</a><div class="create-options"><div class="private-checkbox"><label class="disabled">private<input type="checkbox" disabled="disabled"/><span class="checkmark"></span></label><div class="tooltip" data-tooltip="You need to be logged in to create private pastes."><img src="/assets/icons/questionmark.svg" alt="questionmark"/></div></div><a class="button" id="create-button">create</a></div>`;
+        return `<div class="title"><input id="title-input" type="text" name="title" placeholder="title (optional)" autocomplete="off"/><div id="expires-in"><div class="dropdown hidden"><div class="label"><p>label:</p></div><div class="dropdown-content"><div class="clickable"><p class="selected">loading...</p><ion-icon class="caret" name="arrow-dropdown"></ion-icon></div><div class="selectable"><input class="search" type="text" name="search" placeholder="search..." autocomplete="off"/><div class="items"><p class="not-found hidden">no items found</p></div></div></div></div></div></div><div class="pasty-editors"><div class="pasty-editor"><div class="pasty-title"><div class="delete-button"><ion-icon name="trash"></ion-icon></div><input type="text" name="pasty-title" placeholder="pasty title (optional)" autocomplete="off"/><div class="language"><div class="dropdown hidden"><div class="label"><p>label:</p></div><div class="dropdown-content"><div class="clickable"><p class="selected">loading...</p><ion-icon class="caret" name="arrow-dropdown"></ion-icon></div><div class="selectable"><input class="search" type="text" name="search" placeholder="search..." autocomplete="off"/><div class="items"><p class="not-found hidden">no items found</p></div></div></div></div></div></div><textarea autofocus="autofocus"></textarea></div></div><div class="flex-row-space-between"><a class="pasty-button"><ion-icon name="add"></ion-icon><p>add another pasty</p></a><div class="private-checkbox"><label class="disabled">private<input type="checkbox" disabled="disabled"/><span class="checkmark"></span></label><div class="tooltip" data-tooltip="You need to be logged in to create private pastes."><ion-icon name="information-circle"></ion-icon></div></div></div><a class="button" id="create-button">create</a>`;
         /* tslint:enable:max-line-length */        
     }
 
@@ -116,6 +116,8 @@ export default class Home extends View
     {
         const editor: PastyEditor = new PastyEditor ();
 
+        editor.index = 0;
+
         editor.rootElement = document.getElementsByClassName ("pasty-editor") [0] as HTMLElement;
 
         editor.titleInput = document.querySelector (".pasty-title input") as HTMLInputElement;
@@ -133,12 +135,19 @@ export default class Home extends View
 
         this.initLanguageDropdown (editor);
 
+        editor.rootElement.getElementsByClassName ("delete-button") [0].addEventListener ("click", () =>
+        {
+            this.removeEditor (editor);
+        });
+
         this.editors.push (editor);
     }
 
     private addEditor (): void
     {
         const editor: PastyEditor = new PastyEditor ();
+
+        editor.index = this.editors.length;
 
         const clone: HTMLElement = this.editors [this.editors.length - 1].rootElement.cloneNode (true) as HTMLElement;
 
@@ -148,7 +157,9 @@ export default class Home extends View
 
         this.initLanguageDropdown (editor);
 
-        editor.titleInput = clone.querySelector (".pasty-title input") as HTMLInputElement;
+        const titleInput = clone.querySelector (".pasty-title input") as HTMLInputElement;
+
+        editor.titleInput = titleInput;
         editor.titleInput.value = "";
 
         const textarea: HTMLTextAreaElement = clone.querySelector (".pasty-editor textarea") as HTMLTextAreaElement;
@@ -166,8 +177,59 @@ export default class Home extends View
         
         this.editors.push (editor);
 
+        this.enableDeleteButton (editor);
+
+        if (this.editors.length === 2)
+        {
+            this.enableDeleteButton (this.editors [0]);
+        }
+
+        editor.rootElement.getElementsByClassName ("delete-button") [0].addEventListener ("click", () =>
+        {
+            this.removeEditor (editor);
+        });
+
         editor.editor.refresh ();
         editor.editor.focus ();
+    }
+
+    private enableDeleteButton (editor: PastyEditor): void
+    {
+        (editor.rootElement.getElementsByClassName ("delete-button") [0] as HTMLElement).style.display = "initial";
+        const titleInput = editor.rootElement.getElementsByTagName ("input") [0] as HTMLElement;
+        titleInput.style.borderLeft = "none";
+        titleInput.style.borderTopLeftRadius = "0";
+        titleInput.style.paddingLeft = "0.75rem";
+    }
+
+    private removeDeleteButton (editor: PastyEditor): void
+    {
+        (editor.rootElement.getElementsByClassName ("delete-button") [0] as HTMLElement).style.display = "none";
+        editor.titleInput.style.borderLeft = "2px solid #ee720d";
+        editor.titleInput.style.borderTopLeftRadius = "0.3rem";
+        editor.titleInput.style.paddingLeft = "2rem";
+    }
+
+    private removeEditor (editor: PastyEditor): void
+    {
+        if (this.editors.length === 1)
+        {
+            return;
+        }
+
+        editor.rootElement.remove ();
+
+        this.editors.splice (editor.index, 1);
+
+        if (this.editors.length === 1)
+        {
+            this.removeDeleteButton (this.editors [0]);
+        }
+
+        for (let i = 0; i < this.editors.length; i++)
+        {
+            this.editors [i].index = i;
+        }
     }
 
     private async createPaste (): Promise<Paste>
@@ -207,6 +269,8 @@ export default class Home extends View
 
 class PastyEditor
 {
+    public index: number;
+
     public rootElement: HTMLElement;
 
     public titleInput: HTMLInputElement;    

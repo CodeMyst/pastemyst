@@ -6,19 +6,22 @@
 .pasty-editors
     .pasty-editor
         .pasty-title
+            .delete-button
+                ion-icon(name="trash")
             input(type="text", name="pasty-title", placeholder="pasty title (optional)", autocomplete="off")
             .language
                 include components/dropdown
         textarea(autofocus)
 
-a.pasty-button + add another pasty
-
-.create-options
+.flex-row-space-between
+    a.pasty-button
+        ion-icon(name="add")
+        p add another pasty
     .private-checkbox
         label.disabled private
             input(type="checkbox", disabled)
             span.checkmark
         .tooltip(data-tooltip="You need to be logged in to create private pastes.")
-            img(src="/assets/icons/questionmark.svg", alt="questionmark")
+            ion-icon(name="information-circle")
 
-    a.button#create-button create
+a.button#create-button create

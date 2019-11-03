@@ -11,7 +11,7 @@ block body
 
     h3#rate-limit Rate Limit #[a(href="#rate-limit", class="anchor-link") 🔗]
 
-    p The API is rate limited to 5 requests a second (a request every 200 milliseconds). After exceeding that limit you will get a #[code 429 (Too Many Requests)] satus code.
+    p The API is rate limited to 5 requests a second (a request every 200 milliseconds). After exceeding that limit you will get a #[code 429 (Too Many Requests)] status code.
 
     h3#create-pastemyst Create a PasteMyst #[a(href="#create-pastemyst", class="anchor-link") 🔗]
     span.http-method POST

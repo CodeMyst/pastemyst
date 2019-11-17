@@ -2,6 +2,8 @@ import vibe.d;
 
 public void main ()
 {
+	import web : WebInterface;
+
 	URLRouter router = new URLRouter ();
 	router.registerWebInterface (new WebInterface ());
 
@@ -12,12 +14,4 @@ public void main ()
 	listenHTTP (serverSettings, router);
 
 	runApplication ();
-}
-
-public class WebInterface
-{
-	public void index ()
-	{
-		render!("index.dt");
-	}
 }

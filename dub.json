@@ -1,0 +1,12 @@
+{
+	"authors": [
+		"CodeMyst"
+	],
+	"copyright": "Copyright © 2019, CodeMyst",
+	"dependencies": {
+		"vibe-d": "~>0.8.6"
+	},
+	"description": "A minimal D application.",
+	"license": "MPL-2.0",
+	"name": "pastemyst"
+}

@@ -21,6 +21,15 @@ unittest
     },
     (scope res)
     {
-        assert (res.bodyReader.readAllUTF8 () == "<p>hello!</p>");
+        assert (res.bodyReader.readAllUTF8 () == `<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>pastemyst</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	</head>
+	<body>
+		<p>hello</p>
+	</body>
+</html>`);
     });
 }

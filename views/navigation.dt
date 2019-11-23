@@ -1,0 +1,14 @@
+nav
+    ul
+        li
+            a(href="/") home
+        li
+            a#login login
+        li
+            a(href="https://github.com/codemyst/pastemyst-v2", target="_blank") github
+        li
+            a(href="api-docs") api
+        li
+            a(href="about") about
+        li.no-delimiter
+            a(href="donate") donate

@@ -3,7 +3,14 @@ html(lang="en")
     head
         title pastemyst
 
+        meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+
+        link(rel="stylesheet", href="style/main.css")
 
     body
-        p hello
+        #container
+            include header
+
+        script(src="scripts/main.js")

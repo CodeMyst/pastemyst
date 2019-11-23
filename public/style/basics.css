@@ -1,0 +1,27 @@
+body
+{
+    background-color: var(--color-nano);
+    color: var(--color-white);
+    font-family: var(--font-stack);
+    font-size: var(--font-size-normal);
+}
+
+a
+{
+    color: var(--color-mystge);
+    text-decoration: none;
+}
+
+a:hover
+{
+    color: var(--color-mystlue);
+    cursor: pointer;
+}
+
+#container
+{
+    width: 90%;
+    margin: 0 auto;
+    max-width: 960px;
+    box-sizing: border-box;
+}

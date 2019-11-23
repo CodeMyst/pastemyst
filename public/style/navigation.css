@@ -1,0 +1,27 @@
+nav
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-medium);
+}
+
+nav ul
+{
+    padding: 1rem;
+}
+
+nav ul li
+{
+    display: inline;
+}
+
+nav ul li::after
+{
+    content: "-";
+}
+
+nav ul li.no-delimiter::after
+{
+    content: "\A";
+    white-space: pre;
+}

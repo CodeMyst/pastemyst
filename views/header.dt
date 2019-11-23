@@ -1,0 +1,11 @@
+#header
+    h1
+        img.icon(src="assets/icons/pastemyst.svg")
+        a(href="/") pastemyst
+
+    //- TODO: Add a proper changelog link.
+    p.description
+        | a simple website for sharing code.
+        | version 2.0.0 #[span.alpha alpha] (#[a(href="#") changelog]).
+
+    include navigation

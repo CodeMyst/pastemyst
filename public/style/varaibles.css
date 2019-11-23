@@ -1,0 +1,22 @@
+:root
+{
+    --color-nano: #141414;
+    --color-nanonotsolight: #1c1c1c;
+    --color-nanolight: #222222;
+    --color-nanolightlight: #777777;
+    --color-white: #ffffff;
+    --color-mystge: #ee720d;
+    --color-mystlue: #1EAEDB;
+
+    --font-size-code: 1rem;
+    --font-size-small: 1rem;
+    --font-size-normal: 1.2rem;
+    --font-size-medium: 1.5rem;
+    --font-size-big: 3rem;
+
+    --border-radius: 0.3rem;
+
+    --break-small: 640px;
+
+    --font-stack: 'Ubuntu Mono', monospace;
+}

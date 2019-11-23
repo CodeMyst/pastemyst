@@ -5,6 +5,7 @@ public void main ()
 	import web : WebInterface;
 
 	URLRouter router = new URLRouter ();
+	router.get ("*", serveStaticFiles ("public"));
 	router.registerWebInterface (new WebInterface ());
 
 	HTTPServerSettings serverSettings = new HTTPServerSettings ();

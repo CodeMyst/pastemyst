@@ -1,0 +1,26 @@
+#header h1
+{
+    font-size: var(--font-size-big);
+    font-weight: normal;
+    margin-top: 0;
+}
+
+#header h1 .icon
+{
+    width: 50px;
+    position: relative;
+    top: 15px;
+}
+
+#header .description
+{
+    line-height: 1.25;
+}
+
+#header span.alpha
+{
+    background-color: var(--color-mystlue);
+    border-radius: var(--border-radius);
+    padding: 2px 4px;
+    color: var(--color-nano);
+}

@@ -1,0 +1,55 @@
+#home .paste-options input
+{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--color-nanolight);
+    color: var(--color-white);
+    border-radius: var(--border-radius);
+    border: none;
+    font-size: var(--font-size-normal);
+    padding: 0.5rem 1rem;
+    margin: 0;
+    margin-bottom: 20px;
+    font-family: var(--font-stack);
+}
+
+#home .paste-options #expires-in-dropdown
+{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+}
+
+#home .paste-options #expires-in-dropdown .label
+{
+    display: inline-block;
+    background-color: var(--color-nanolight);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+}
+
+@media screen and (min-width: 640px)
+{
+    #home .paste-options
+    {
+        display: flex;
+    }
+
+    #home .paste-options input
+    {
+        margin-bottom: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    #home .paste-options #expires-in-dropdown
+    {
+        justify-content: initial;
+        width: auto;
+        flex-shrink: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}

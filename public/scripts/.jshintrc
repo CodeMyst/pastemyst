@@ -1,0 +1,11 @@
+{
+    "curly": true,
+    "eqeqeq": true,
+    "esversion": 6,
+    "leanswitch": true,
+    "nocomma": true,
+    "strict": "implied",
+    "undef": true,
+    "unused": true,
+    "browser": true
+}

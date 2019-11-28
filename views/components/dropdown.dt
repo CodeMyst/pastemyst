@@ -1,0 +1,10 @@
+details.dropdown
+    summary --
+    .select
+        input(type="text", autocomplete="off", placeholder="search...", name="search")
+        p.not-found.hidden no items found
+        block options
+        // example option:
+        // label.option
+        //     input(type="radio", name="example", value="slower", checked)
+        //     span slower

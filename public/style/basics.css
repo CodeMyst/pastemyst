@@ -1,9 +1,16 @@
+*
+{
+    font-family: var(--font-stack);
+    margin: 0;
+    padding: 0;
+    outline-color: var(--color-mystge);
+}
+
 body
 {
+    font-size: var(--font-size-normal);
     background-color: var(--color-nano);
     color: var(--color-white);
-    font-family: var(--font-stack);
-    font-size: var(--font-size-normal);
 }
 
 a

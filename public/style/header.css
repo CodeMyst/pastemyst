@@ -1,8 +1,14 @@
+#header
+{
+    margin-bottom: 20px;
+}
+
 #header h1
 {
     font-size: var(--font-size-big);
     font-weight: normal;
     margin-top: 0;
+    margin-bottom: 20px;
 }
 
 #header h1 .icon
@@ -15,6 +21,8 @@
 #header .description
 {
     line-height: 1.25;
+    margin: 0;
+    margin-bottom: 20px;
 }
 
 #header span.alpha

@@ -1,7 +1,7 @@
 window.addEventListener ("load", () =>
 {
     removeNavigationDelimiters ();
-})
+});
 
 window.addEventListener ("resize", () =>
 {
@@ -25,12 +25,10 @@ function removeNavigationDelimiters ()
 {
     let elements = document.getElementsByTagName ("nav") [0].getElementsByTagName ("li");
 
-    for (let i = 0; i < elements.length; i++)
+    for (let i = 0; i < elements.length - 1; i++)
     {
         elements [i].classList.remove ("no-delimiter");
     }
-
-    elements [elements.length - 1].classList.add ("no-delimiter");
 
     for (let i = 0; i < elements.length - 1; i++)
     {

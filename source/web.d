@@ -12,6 +12,10 @@ public class WebInterface
 	 +/
 	public void index ()
 	{
-		render!("index.dt");
+		import data.file : expireOptions;
+
+		const Json expires = expireOptions;
+
+		render!("index.dt", expires);
 	}
 }

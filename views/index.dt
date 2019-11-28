@@ -13,4 +13,18 @@ html(lang="en")
         #container
             include header
 
-        script(src="scripts/main.js")
+            #home
+                .paste-options
+                    input(placeholder="paste title", type="text", autocomplete="off", spellcheck="false")
+                    #expires-in-dropdown.no-search
+                        .label expires in:
+                        include components/dropdown
+                            block options
+                                - import std.conv : to;
+                                - foreach (ulong i, exp; expires)
+                                    label.option
+                                        input(type="radio", name="expires-in", value=exp ["value"].to!string (), checked=i == 0 ? true : false)
+                                        span= exp ["pretty"].to!string ()
+
+        script(src="scripts/libs/codemirror/codemirror.js")
+        script(type="module", src="scripts/home.js")

@@ -83,7 +83,13 @@ unittest
 {
     const string contents = getTextDataFile (DataFile.EXPIRE_OPTIONS);
 
-    assert (contents == `{"expireOptions":[{"value": "never","pretty": "never"},{"value": "1h","pretty": "1 hour"},{"value": "2h","pretty": "2 hours"},{"value": "10h","pretty": "10 hours"},{"value": "1d","pretty": "1 day"},{"value": "2d","pretty": "2 days"},{"value": "1w","pretty": "1 week"}]}`); // @suppress(dscanner.style.long_line)
+    assert (contents == `{"expireOptions":[{"value": "never","pretty": "never"},` ~
+                        `{"value": "1h","pretty": "1 hour"},` ~
+                        `{"value": "2h","pretty": "2 hours"},` ~
+                        `{"value": "10h","pretty": "10 hours"},` ~
+                        `{"value": "1d","pretty": "1 day"},` ~
+                        `{"value": "2d","pretty": "2 days"},` ~
+                        `{"value": "1w","pretty": "1 week"}]}`);
 }
 
 /++ 

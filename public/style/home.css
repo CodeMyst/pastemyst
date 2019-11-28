@@ -1,3 +1,8 @@
+#home .paste-options
+{
+    margin-bottom: 20px;
+}
+
 #home .paste-options input
 {
     width: 100%;
@@ -52,4 +57,68 @@
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
     }
+}
+
+#home .pasty-editor .pasty-editor-options
+{
+    border-bottom: 2px solid var(--color-mystge);
+}
+
+#home .pasty-editor .pasty-editor-options input
+{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--color-nanolight);
+    color: var(--color-white);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    border: none;
+    font-size: var(--font-size-normal);
+    padding: 0.5rem 1rem;
+    margin: 0;
+    font-family: var(--font-stack);
+}
+
+#home .pasty-editor .pasty-editor-options #language-dropdown
+{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    background-color: var(--color-nanolight);
+}
+
+#home .pasty-editor .pasty-editor-options #language-dropdown .label
+{
+    display: inline-block;
+    background-color: var(--color-nanolight);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+}
+
+@media screen and (min-width: 640px)
+{
+    #home .pasty-editor .pasty-editor-options
+    {
+        display: flex;
+    }
+
+    #home .pasty-editor .pasty-editor-options input
+    {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    #home .pasty-editor .pasty-editor-options #language-dropdown
+    {
+        justify-content: initial;
+        width: auto;
+        flex-shrink: 0;
+        border-top-right-radius: var(--border-radius);
+    }
+}
+
+#home .pasty-editor .CodeMirror
+{
+    height: 50vh;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    padding-top: 0.5rem;
 }

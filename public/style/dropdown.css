@@ -27,11 +27,21 @@ details.dropdown summary
     background: var(--color-nanolight);
     list-style: none;
     border-radius: var(--border-radius);
+    border: 2px solid var(--color-nanolight);
+    border-bottom: none;
+    outline: none;
 }
 
 details.dropdown[open] summary
 {
     border-radius: var(--border-radius) var(--border-radius) 0 0;
+    border-color: var(--color-mystge);
+    border-bottom: none;
+}
+
+details.dropdown[open] summary:hover
+{
+    border-color: var(--color-mystge);
 }
 
 details.dropdown summary::-webkit-details-marker
@@ -42,6 +52,7 @@ details.dropdown summary::-webkit-details-marker
 details.dropdown summary:hover
 {
     background: var(--color-nanonotsolight);
+    border-color: var(--color-nanonotsolight);
 }
 
 details.dropdown .select
@@ -52,6 +63,10 @@ details.dropdown .select
     width: 100%;
     border-radius: 0 0 var(--border-radius) var(--border-radius);
     background: var(--color-nanolight);
+    z-index: 999;
+    border: 2px solid var(--color-mystge);
+    border-top: none;
+    box-sizing: border-box;
 }
 
 .no-search details.dropdown .not-found
@@ -61,7 +76,7 @@ details.dropdown .select
 
 details.dropdown .not-found
 {
-    padding-left: 1rem;
+    padding: 0.5rem 1rem;
 }
 
 .no-search details.dropdown input[name="search"]

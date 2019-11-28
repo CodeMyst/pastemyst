@@ -1,6 +1,8 @@
 import "./navigation.js";
 import Dropdown from "./dropdown.js";
 
+var CodeMirror;
+
 window.addEventListener ("load", () =>
 {
     new Dropdown ("#expires-in-dropdown .dropdown");

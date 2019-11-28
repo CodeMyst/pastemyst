@@ -12,6 +12,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - name: Lint JavaScript
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo npm install -g jshint
       - name: Install D
         uses: mihails-strasuns/setup-dlang@v0.3.1
         with:

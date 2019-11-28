@@ -15,7 +15,7 @@ unittest
 {
     Json res = expireOptions;
 
-    assert (res ["expireOptions"] [0] ["value"] == "never");
+    assert (res [0] ["value"] == "never");
 }
 
 private const string dataPath = "data";

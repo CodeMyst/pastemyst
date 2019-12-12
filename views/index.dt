@@ -28,14 +28,16 @@ html(lang="en")
 
                 .pasty-editor
                     .pasty-editor-options
-                        input(placeholder="pasty title", type="text", autocomplete="off", spellcheck="false")
+                        input.pasty-editor-title(placeholder="pasty title", type="text", autocomplete="off", spellcheck="false")
                         #language-dropdown
                             .label language:
                             include components/dropdown
                                 block options
-                                    label.option
-                                        input(type="radio", name="language", value="test", checked)
-                                        span test
+                                    - import std.conv : to;
+                                    - foreach (ulong i, lang; languages)
+                                        label.option
+                                            input(type="radio", name="language", value=lang ["name"].to!string () ~ "," ~ lang ["mode"].to!string () ~ "," ~ lang ["mimes"] [0].to!string (), checked=i == 0 ? true : false)
+                                            span= lang ["name"].to!string ()
                     textarea.editor(type="text", autocomplete="off", spellcheck="false")
 
         script(src="scripts/libs/codemirror/codemirror.js")

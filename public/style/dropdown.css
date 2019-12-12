@@ -67,6 +67,8 @@ details.dropdown .select
     border: 2px solid var(--color-mystge);
     border-top: none;
     box-sizing: border-box;
+    max-height: 275px;
+    overflow-y: auto;
 }
 
 .no-search details.dropdown .not-found
@@ -89,9 +91,12 @@ details.dropdown input
     background-color: var(--color-nanolight);
     color: var(--color-white);
     border: none;
+    border-bottom: 2px solid var(--color-mystge);
     padding: 0.5rem 1rem;
     font-size: var(--font-size-code);
     font-family: var(--font-stack);
+    position: sticky;
+    top: 0;
 }
 
 details.dropdown .option

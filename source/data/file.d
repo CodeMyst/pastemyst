@@ -11,11 +11,22 @@ import vibe.d;
 public Json expireOptions () { return _expireOptions; }
 private Json _expireOptions;
 
+/++ 
+ + All supported languages Json object.
+ +/
+@property
+public Json languages () { return _languages; }
+private Json _languages;
+
 unittest
 {
     Json res = expireOptions;
 
     assert (res [0] ["value"] == "never");
+
+    Json res2 = languages;
+
+    assert (res2 [0] ["name"] == "Autodetect");
 }
 
 private const string dataPath = "data";
@@ -25,12 +36,14 @@ private const string dataPath = "data";
  +/
 public enum DataFile
 {
-    EXPIRE_OPTIONS
+    EXPIRE_OPTIONS,
+    LANGUAGES
 }
 
 static this ()
 {
     _expireOptions = parseJsonString (getTextDataFile (DataFile.EXPIRE_OPTIONS)) ["expireOptions"];
+    _languages = parseJsonString (getTextDataFile (DataFile.LANGUAGES)) ["languages"];
 }
 
 /++ 
@@ -47,6 +60,10 @@ public File getDataFile (DataFile dataFile)
         {
             return File (getDataFilePath ("expireOptions.json"), "r");
         }
+        case DataFile.LANGUAGES:
+        {
+            return File (getDataFilePath ("languages.json"), "r");
+        }
     }
 }
 
@@ -57,6 +74,10 @@ unittest
     File dtfile = getDataFile (DataFile.EXPIRE_OPTIONS);
 
     assert (baseName (dtfile.name) == "expireOptions.json");
+
+    File dtfile2 = getDataFile (DataFile.LANGUAGES);
+
+    assert (baseName (dtfile2.name) == "languages.json");
 }
 
 /++ 

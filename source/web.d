@@ -12,10 +12,11 @@ public class WebInterface
 	 +/
 	public void index ()
 	{
-		import data.file : expireOptions;
+		import data.file : expireOptions, languages;
 
+		// a separate variable is made for expireOptions only to change its name
 		const Json expires = expireOptions;
 
-		render!("index.dt", expires);
+		render!("index.dt", expires, languages);
 	}
 }

@@ -2,6 +2,7 @@ export default class Dropdown
 {
     constructor (container)
     {
+        this.onValueChange = () => { };
         this.container = document.querySelector (container);
         this.search = document.querySelector (`${container} > .select > input`);
         this.notFound = document.querySelector (`${container} > .select > .not-found`);
@@ -188,5 +189,6 @@ export default class Dropdown
         this.search.value = "";
         this.onSearch ();
         this.container.dispatchEvent (new Event ("change"));
+        this.onValueChange (this.value);
     }
 }

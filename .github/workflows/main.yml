@@ -1,0 +1,16 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install D
+        uses: mihails-strasuns/setup-dlang@v0.3.1
+        with:
+          compiler: dmd-latest
+      - name: Build
+        run: dub build

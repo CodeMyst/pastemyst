@@ -12,4 +12,6 @@ jobs:
         with:
           compiler: dmd-latest
       - name: Build
-        run: dub build
+        run: |
+          cd ..
+          dub build

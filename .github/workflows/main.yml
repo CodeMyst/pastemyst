@@ -11,17 +11,5 @@ jobs:
         uses: mihails-strasuns/setup-dlang@v0.3.1
         with:
           compiler: dmd-latest
-      - name: Setup MySQL
-        run: |
-          sudo mysql -u root -p -e 'create database if not exists pastemyst;'
-          sudo mysql -u root -p -e 'create user tester@localhost;'
-          sudo mysql -u root -p -e 'grant all privileges on pastemyst.* to tester@localhost;'
-          sudo mysql -u root -p -e 'flush privileges;'
       - name: Build
         run: dub build
-      - name: Test
-        run: dub test
-        env:
-          MYSQL_HOST: localhost
-          MYSQL_USER: tester
-          MYSQL_DB: pastemyst

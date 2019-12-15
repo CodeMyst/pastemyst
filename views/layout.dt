@@ -32,7 +32,7 @@ html(lang="en")
                     a(href="/") pastemyst
                 p.description
                     | a simple website for sharing code.
-                    | version 1.6.4 (#[a(href="https://github.com/CodeMyst/PasteMyst/releases", target="_blank") changelog])
+                    | version 1.7 (#[a(href="https://github.com/CodeMyst/PasteMyst/releases", target="_blank") changelog])
 
                 nav
                     ul

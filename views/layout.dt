@@ -26,15 +26,24 @@ html(lang="en")
         block head
     body
         div.container
-            pre.codeblock-text
-                a(href="/", class="page-title") #[h1 PasteMyst]
-                
-                code.hljs.d.page-nav.
-                    string #[a(href="/") home] => "/";
-                    string #[a(href="https://github.com/codemyst/pastemyst", target="_blank") github] => "github.com/codemyst/pastemyst";
-                    string #[a(href="/api-docs") api-docs] => "/api-docs";
-                    string #[a description] => "A simple website for pasting text, mainly code snippets.";
-                    string #[a version] => "1.6.4"; // #[a(href="https://github.com/CodeMyst/PasteMyst/releases", target="_blank") changelog]
+            #header
+                h1
+                    img(src="logo.svg")
+                    a(href="/") pastemyst
+                p.description
+                    | a simple website for sharing code.
+                    | version 1.6.4 (#[a(href="https://github.com/CodeMyst/PasteMyst/releases", target="_blank") changelog])
+
+                nav
+                    ul
+                        li
+                            a(href="/") home
+                        li
+                            a(href="https://github.com/codemyst/pastemyst", target="_blank") github
+                        li
+                            a(href="/api-docs") api
+                        li.no-delimiter
+                            a(href="https://ko-fi.com/codemyst", target="_blank") donate
             
             block body
 

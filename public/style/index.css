@@ -206,5 +206,33 @@ footer {
   footer .number-of-pastes {
     float: none;
     margin-bottom: 2rem; } }
+#header {
+  margin-bottom: 20px; }
+  #header h1 {
+    font-weight: normal;
+    margin-top: 0;
+    margin-bottom: 20px; }
+    #header h1 img {
+      width: 50px;
+      position: relative;
+      top: 15px; }
+  #header .description {
+    line-height: 1.25;
+    margin: 0;
+    margin-bottom: 20px; }
+  #header nav {
+    background-color: #222222;
+    border-radius: 0.3rem;
+    font-size: 2rem; }
+    #header nav ul {
+      padding: 1rem;
+      margin: 0; }
+      #header nav ul li {
+        display: inline; }
+        #header nav ul li::after {
+          content: "-"; }
+        #header nav ul li:last-child::after {
+          content: "\A";
+          white-space: pre; }
 
 /*# sourceMappingURL=index.css.map */

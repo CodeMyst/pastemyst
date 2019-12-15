@@ -350,3 +350,58 @@ footer
         }
     }
 }
+
+#header
+{
+    margin-bottom: 20px;
+
+    h1
+    {
+        font-weight: normal;
+        margin-top: 0;
+        margin-bottom: 20px;
+
+        img
+        {
+            width: 50px;
+            position: relative;
+            top: 15px;
+        }
+    }
+
+    .description
+    {
+        line-height: 1.25;
+        margin: 0;
+        margin-bottom: 20px;
+    }
+
+    nav
+    {
+        background-color: $color-nanolight;
+        border-radius: 0.3rem;
+        font-size: 2rem;
+
+        ul
+        {
+            padding: 1rem;
+            margin: 0;
+
+            li
+            {
+                display: inline;
+
+                &::after
+                {
+                    content: "-";
+                }
+
+                &:last-child::after
+                {
+                    content: "\A";
+                    white-space: pre;
+                }
+            }
+        }
+    }
+}

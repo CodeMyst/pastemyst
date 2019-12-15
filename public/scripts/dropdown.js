@@ -3,11 +3,11 @@ export default class Dropdown
     constructor (container)
     {
         this.onValueChange = () => { };
-        this.container = document.querySelector (container);
-        this.search = document.querySelector (`${container} > .select > input`);
-        this.notFound = document.querySelector (`${container} > .select > .not-found`);
-        this.options = document.querySelectorAll (`${container} > .select > .option`);
-        this.value = this.container.querySelector ("summary").textContent;
+        this.container = container;
+        this.search = container.querySelector (".select > input");
+        this.notFound = container.querySelector (".select > .not-found");
+        this.options = container.querySelectorAll (".select > .option");
+        this.value = container.querySelector ("summary").textContent;
         this.mouseDown = false;
         this.addEventListeners ();
         this.setAria ();
@@ -190,5 +190,10 @@ export default class Dropdown
         this.onSearch ();
         this.container.dispatchEvent (new Event ("change"));
         this.onValueChange (this.value);
+    }
+
+    resetValue ()
+    {
+        this.setValue (this.container.querySelector (".option input"));
     }
 }

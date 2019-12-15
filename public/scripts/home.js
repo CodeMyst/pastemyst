@@ -1,33 +1,175 @@
 import "./navigation.js";
 import Dropdown from "./dropdown.js";
 
-let editor;
+class PastyEditor
+{
+    constructor ()
+    {
+        this.index = 0;
+        
+        this.rootElement = null;
+
+        this.titleInput = null;
+        this.languageDropdown = null;
+        this.editor = null;
+    }
+}
+
+let editors = [];
 
 window.addEventListener ("load", () =>
 {
-    new Dropdown ("#expires-in-dropdown .dropdown");
-    let language = new Dropdown ("#language-dropdown .dropdown");
+    new Dropdown (document.querySelector ("#expires-in-dropdown .dropdown"));
+
+    initFirstEditor ();
+
+    document.getElementsByClassName ("new-pasty-editor") [0].addEventListener ("click", () =>
+    {
+        addEditor ();
+    });
+});
+
+function initFirstEditor ()
+{
+    let editor = new PastyEditor ();
+
+    editor.index = 0;
+
+    editor.rootElement = document.getElementsByClassName ("pasty-editor") [0];
+    editor.titleInput = editor.rootElement.getElementsByClassName ("pasty-editor-title") [0];
+
+    let textarea = editor.rootElement.getElementsByClassName ("editor") [0];
+
+    // todo: set initial mode
+    editor.editor = CodeMirror.fromTextArea (textarea, // jshint ignore:line
+    {
+       indentUnit: 4,
+       lineNumbers: true,
+       mode: "text/plain",
+       tabSize: 4,
+       theme: "darcula",
+       lineWrapping: true
+    });
+
+    setupLanguageDropdown (editor);
+
+    editor.rootElement.getElementsByClassName ("pasty-editor-delete") [0].addEventListener ("click", () =>
+    {
+        removeEditor (editor);
+    });
+
+    editors.push (editor);
+}
+
+function addEditor ()
+{
+    let editor = new PastyEditor ();
+
+    editor.index = editors.length;
+
+    let clone = editors [editors.length - 1].rootElement.cloneNode (true);
+
+    editor.rootElement = clone;
+
+    clone.getElementsByClassName ("CodeMirror") [0].remove ();
+
+    let titleInput = clone.getElementsByClassName ("pasty-editor-title") [0];
+
+    editor.titleInput = titleInput;
+    editor.titleInput.value = "";
+
+    let textArea = clone.getElementsByClassName ("editor") [0];
+
+    // todo: set initial mode
+    editor.editor = CodeMirror.fromTextArea (textArea, // jshint ignore:line
+    {
+        indentUnit: 4,
+        lineNumbers: true,
+        mode: "text/plain",
+        tabSize: 4,
+        theme: "darcula",
+        lineWrapping: true
+    });
+
+    document.getElementById ("pasty-editors").appendChild (clone);
+
+    editors.push (editor);
+
+    setupDeleteButton (editor);
+
+    if (editors.length === 2)
+    {
+        setupDeleteButton (editors [0]);
+    }
+
+    setupLanguageDropdown (editor);
+
+    editor.rootElement.getElementsByClassName ("pasty-editor-delete") [0].addEventListener ("click", () =>
+    {
+        removeEditor (editor);
+    });
+
+    editor.editor.refresh ();
+    editor.editor.focus ();
+}
+
+function setupLanguageDropdown (editor)
+{
+    let language = new Dropdown (editor.rootElement.querySelector ("#language-dropdown .dropdown"));
+
+    language.resetValue ();
 
     language.onValueChange = (v) =>
     {
         // using 1 and 2 because the first index is the name
         let s = v.split (",");
-        setMode (s [1], s [2]);
+        setMode (editor.editor, s [1], s [2]);
     };
-
-    let editorTextArea = document.querySelector (".pasty-editor .editor");
-    editor = CodeMirror.fromTextArea (editorTextArea, // jshint ignore:line
-    {
-       theme: "darcula",
-       lineNumbers: true 
-    });
 
     // using 1 and 2 because the first index is the name
     let l = language.value.split (",");
-    setMode (l [1], l [2]);
-});
+    setMode (editor.editor, l [1], l [2]);
 
-function setMode (mode, mime)
+    return language;
+}
+
+function removeEditor (editor)
+{
+    if (editors.length === 1)
+    {
+        return;
+    }
+
+    editor.rootElement.remove ();
+
+    editors.splice (editor.index, 1);
+
+    if (editors.length === 1)
+    {
+        removeDeleteButton (editors [0]);
+    }
+
+    for (let i = 0; i < editors.length; i++)
+    {
+        editors [i].index = i;
+    }
+}
+
+function setupDeleteButton (editor)
+{
+    editor.rootElement.getElementsByClassName ("pasty-editor-delete") [0].style.display = "initial";
+    let titleInput = editor.rootElement.getElementsByClassName ("pasty-editor-title") [0];
+    titleInput.style.borderTopLeftRadius = "0";
+}
+
+function removeDeleteButton (editor)
+{
+    editor.rootElement.getElementsByClassName ("pasty-editor-delete") [0].style.display = "none";
+    let titleInput = editor.rootElement.getElementsByClassName ("pasty-editor-title") [0];
+    titleInput.style.borderTopLeftRadius = "0.3rem";
+}
+
+function setMode (editor, mode, mime)
 {
     if (mode === "null")
     {

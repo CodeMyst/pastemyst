@@ -1,8 +1,19 @@
 import vibe.vibe;
 import mysql;
-import mysql.pool;
 
-private ConnectionPool connectionPool;
+private string connectionString;
+
+static this ()
+{
+	Json appsettings = getAppsettings ("appsettings.json");
+	Json mysql = appsettings ["mysql"];
+
+	string host = mysql ["host"].get!string;
+	string user = mysql ["user"].get!string;
+	string db = mysql ["db"].get!string;
+
+	connectionString = "host=" ~ host ~ ";user=" ~ user ~ ";db=" ~ db;
+}
 
 version (unittest)
 	private const string tableName = "Test";
@@ -253,6 +264,7 @@ PasteMystInfo createPaste (string code, string expiresIn, string language)
 	import id : createId;
 	import std.uri : decodeComponent;
 	import detector : detectLanguage;
+	import std.array : array;
 
 	immutable long createdAt = Clock.currTime.toUnixTime;
 
@@ -262,7 +274,7 @@ PasteMystInfo createPaste (string code, string expiresIn, string language)
     if (checkValidLanguage (language) == false)
         throw new HTTPStatusException (400, "Invalid \"language\" value.");
 
-	Connection connection = connectionPool.getConnection ();
+	Connection connection = createConnection ();
 
 	string id;
 
@@ -274,19 +286,16 @@ PasteMystInfo createPaste (string code, string expiresIn, string language)
 		
 		count = 0;
 		// Do this check in case there is already a paste with the same id
-		connection.execute ("select id from " ~ tableName ~ " where id = ?", id, (MySQLRow row)
-		{
-			count++;
-		});
+		count += connection.query ("select id from " ~ tableName ~ " where id = ?", id).array.length;
 	} while (count != 0);
 
 	if (language == "autodetect" || language == "" || language == null)
 		language = detectLanguage (decodeComponent (code));
 
-	connection.execute ("insert into " ~ tableName ~ " (id, createdAt, expiresIn, code, language) values (?, ?, ?, ?, ?)",
-                         id, to!string (createdAt), expiresIn, code, language);
+	connection.exec ("insert into " ~ tableName ~ " (id, createdAt, expiresIn, code, language) values (?, ?, ?, ?, ?)",
+                     id, to!string (createdAt), expiresIn, code, language);
 
-	connectionPool.releaseConnection (connection);
+	connection.close ();
 
 	return PasteMystInfo (id, createdAt, expiresIn, code, language);
 }
@@ -299,27 +308,25 @@ PasteMystInfo createPaste (string code, string expiresIn, string language)
 +/
 PasteMystInfo getPaste (string id)
 {
-	Connection connection = connectionPool.getConnection ();
+	import std.array : array;
 
-	MySQLRow [] rows;
-	connection.execute ("select id, createdAt, expiresIn, code, language from " ~ tableName ~ " where id = ?", id, (MySQLRow row)
-	{
-		rows ~= row;
-	});
+	Connection connection = createConnection ();
+
+	Row [] rows = connection.query ("select id, createdAt, expiresIn, code, language from " ~ tableName ~ " where id = ?", id).array;
 
 	if (rows.length == 0)
 		return PasteMystInfo ();
 
-	MySQLRow row = rows [0];
-
-	connectionPool.releaseConnection (connection);
+	Row row = rows [0];
 
 	string language = "";
 
 	// If it's null that means this is an older paste (backwards compatibility).
 	// If the language is empty then hljs will automatically detect the language.
-	if (!row [4].isNull)
+	if (row [4].type != typeid (typeof (null)))
 		language = row [4].get!string;
+
+	connection.close ();
 
 	return PasteMystInfo (id, row [1].get!long, row [2].get!string, row [3].get!string, language);
 }
@@ -329,17 +336,18 @@ PasteMystInfo getPaste (string id)
 +/
 void deleteExpiredPasteMysts ()
 {
-	import std.array : join;
+	import std.array : join, array;
 	import std.format : format;
 
 	try
 	{
 		string [] pasteMystsToDelete;
 
-		Connection connection = connectionPool.getConnection ();
+		Connection connection = createConnection ();
 
-		connection.execute ("select id, createdAt, expiresIn from " ~ tableName ~ " where not expiresIn = 'never'",
-		(MySQLRow row)
+		Row [] rows = connection.query ("select id, createdAt, expiresIn from " ~ tableName ~ " where not expiresIn = 'never'").array;
+		
+		foreach (row; rows)
 		{
 			const string id = row [0].get!string;
 			const long createdAt = row [1].get!long;
@@ -349,7 +357,7 @@ void deleteExpiredPasteMysts ()
 
 			if (Clock.currTime.toUnixTime > expiresInUnixTime)
 				pasteMystsToDelete ~= id;
-		});
+		}
 
 		if (pasteMystsToDelete.length == 0) return;
 
@@ -361,11 +369,11 @@ void deleteExpiredPasteMysts ()
 				toDelete ~= ",";
 		}
 		string deleteQuery = format ("delete from %s where id in (%s)", tableName, toDelete);
-		connection.execute (deleteQuery);
+		connection.exec (deleteQuery);
 
 		logInfo ("Deleted %s PasteMysts: %s", pasteMystsToDelete.length, toDelete);
 
-		connectionPool.releaseConnection (connection);
+		connection.close ();
 	}
 	catch (Exception e)
 	{
@@ -411,14 +419,12 @@ long expiresInToUnixTime (long createdAt, string expiresIn)
 +/
 long getNumberOfPastes ()
 {
-	Connection connection = connectionPool.getConnection ();
-	MySQLRow countRow;
-	connection.execute ("select count(*) from " ~ tableName, (MySQLRow row)
-	{
-		countRow = row;
-	});
+	import std.array : array;
 
-	connectionPool.releaseConnection (connection);
+	Connection connection = createConnection ();
+	Row countRow = connection.query ("select count(*) from " ~ tableName).array [0];
+
+	connection.close ();
 
 	return countRow [0].get!long;
 }
@@ -501,24 +507,15 @@ Json getAppsettings (string name)
 +/
 void initialize ()
 {
-	initializeDbConnection ();
-
 	createDbTable ();
 }
 
 /++
 	Creates a new DB Connection Pool
 +/
-private void initializeDbConnection ()
+private Connection createConnection ()
 {
-	Json appsettings = getAppsettings ("appsettings.json");
-	Json mysql = appsettings ["mysql"];
-
-	string host = mysql ["host"].get!string;
-	string user = mysql ["user"].get!string;
-	string db = mysql ["db"].get!string;
-
-	connectionPool = ConnectionPool.getInstance (host, user, "", db);
+	return new Connection (connectionString);
 }
 
 /++
@@ -526,9 +523,9 @@ private void initializeDbConnection ()
 +/
 private void createDbTable ()
 {
-	Connection connection = connectionPool.getConnection ();
+	Connection connection = createConnection ();
 
-	connection.execute ("create table if not exists " ~ tableName ~ " (
+	connection.exec ("create table if not exists " ~ tableName ~ " (
 							id varchar(50) primary key,
 							createdAt integer,
 							expiresIn text,
@@ -536,7 +533,7 @@ private void createDbTable ()
 							language text
 						) engine=InnoDB default charset latin1;");
 
-	connectionPool.releaseConnection (connection);
+	connection.close ();
 }
 
 /++
@@ -544,9 +541,9 @@ private void createDbTable ()
 +/
 private void deleteDbTable ()
 {
-	Connection connection = connectionPool.getConnection ();
+	Connection connection = createConnection ();
 
-	connection.execute ("drop table " ~ tableName);
+	connection.exec ("drop table " ~ tableName);
 
-	connectionPool.releaseConnection (connection);
+	connection.close ();
 }

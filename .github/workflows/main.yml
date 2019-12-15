@@ -12,19 +12,17 @@ jobs:
         with:
           compiler: dmd-latest
       - name: Install MariaDB
-        uses: getong/mariadb-action@v1.1
-        with:
-          mysql database: 'PasteMyst'
-          mysql user: 'CodeMyst'
-          mysql password: '123'
-          host port: 3306
-          container port: 3307
+        run: |
+          sudo apt install mariadb-server
+          sudo mysql -e 'create database if not exists pastemyst;'
+          sudo mysql -e 'create user tester@localhost;'
+          sudo mysql -e 'grant all privileges on pastemyst.* to tester@localhost;'
+          sudo mysql -e 'flush privileges;'
       - name: Build
         run: dub build
       - name: Test
         run: dub test
         env:
           MYSQL_HOST: localhost
-          MYSQL_USER: CodeMyst
-          MYSQL_DB: PasteMyst
-          MYSQL_PWD: 123
+          MYSQL_USER: tester
+          MYSQL_DB: pastemyst

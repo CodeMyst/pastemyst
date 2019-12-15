@@ -1,4 +1,4 @@
-# PasteMyst [![Build Status](https://travis-ci.com/CodeMyst/PasteMyst.svg?branch=master)](https://travis-ci.com/CodeMyst/PasteMyst)
+# PasteMyst ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CodeMyst/PasteMyst/CI)
 
 A lightweight and simple website for pasting text, mainly code snippets.
 

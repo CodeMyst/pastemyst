@@ -1,0 +1,28 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install D
+        uses: mihails-strasuns/setup-dlang@v0.3.1
+        with:
+          compiler: dmd-latest
+      - name: Install MariaDB
+        uses: getong/mariadb-action@v1.1
+        with:
+          mysql database: 'PasteMyst'
+          mysql user: 'CodeMyst'
+          mysql password: '123'
+      - name: Build
+        run: dub build
+      - name: Test
+        run: dub test
+        env:
+          MYSQL_HOST: localhost
+          MYSQL_USER: CodeMyst
+          MYSQL_DB: PasteMyst
+          MYSQL_PWD: 123

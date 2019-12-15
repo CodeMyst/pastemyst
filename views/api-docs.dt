@@ -11,7 +11,7 @@ block body
 
     h3#rate-limit Rate Limit #[a(href="#rate-limit", class="anchor-link") 🔗]
 
-    p The API is rate limited to 5 requests a second (a request every 200 milliseconds). After exceeding that limit you will get a #[code 429 (Too Many Requests)] satus code.
+    p The API is rate limited to 5 requests a second (a request every 200 milliseconds). After exceeding that limit you will get a #[code 429 (Too Many Requests)] status code.
 
     h3#create-pastemyst Create a PasteMyst #[a(href="#create-pastemyst", class="anchor-link") 🔗]
     span.http-method POST
@@ -36,10 +36,15 @@ block body
                 td expiresIn
                 td string
                 td When the PasteMyst expires. Valid values are: never, 1h, 2h, 10h, 1d, 2d or 1w.
+        tbody
+            tr
+                td language (optional)
+                td string
+                td Language of the paste.
 
     h6 Example PasteMyst POST request
     pre.api-code
-        code(class="hljs json") {&#13;    "code": "public%20class%20I%0A%7B%0A%20%20%20%20public%20string%20Dont%3B%0A%20%20%20%20public%20string%20Know%3B%0A%20%20%20%20public%20string%20Of%3B%0A%20%20%20%20public%20string%20Anything%3B%0A%20%20%20%20public%20string%20Clever%3B%0A%20%20%20%20public%20string%20To%3B%0A%20%20%20%20public%20string%20Put%3B%0A%20%20%20%20public%20string%20Here%3B%0A%7D",&#13;    "expiresIn": "never"&#13;}
+        code(class="hljs json") {&#13;    "code": "public%20class%20I%0A%7B%0A%20%20%20%20public%20string%20Dont%3B%0A%20%20%20%20public%20string%20Know%3B%0A%20%20%20%20public%20string%20Of%3B%0A%20%20%20%20public%20string%20Anything%3B%0A%20%20%20%20public%20string%20Clever%3B%0A%20%20%20%20public%20string%20To%3B%0A%20%20%20%20public%20string%20Put%3B%0A%20%20%20%20public%20string%20Here%3B%0A%7D",&#13;    "expiresIn": "never",&#13;    "language": "csharp"&#13;}
 
     h3#get-pastemyst Get a PasteMyst #[a(href="#get-pastemyst", class="anchor-link") 🔗]
     span.http-method GET
@@ -72,7 +77,11 @@ block body
                 td expiresIn
                 td string
                 td When the PasteMyst expires. Valid values are: never, 1h, 2h, 10h, 1d, 2d or 1w.
+            tr
+                td language
+                td string
+                td Language of the paste.
 
     h6 Example PasteMystInfo Object
     pre.api-code
-        code(class="hljs json api-code") {&#13;    "id": "br6",&#13;    "createdAt": 1541188042,&#13;    "code": "public%20class%20I%0A%7B%0A%20%20%20%20public%20string%20Dont%3B%0A%20%20%20%20public%20string%20Know%3B%0A%20%20%20%20public%20string%20Of%3B%0A%20%20%20%20public%20string%20Anything%3B%0A%20%20%20%20public%20string%20Clever%3B%0A%20%20%20%20public%20string%20To%3B%0A%20%20%20%20public%20string%20Put%3B%0A%20%20%20%20public%20string%20Here%3B%0A%7D",&#13;    "expiresIn": "never"&#13;}
+        code(class="hljs json api-code") {&#13;    "id": "jnp",&#13;    "createdAt": 1576414274,,&#13;    "code": "public%20class%20I%0A%7B%0A%20%20%20%20public%20string%20Dont%3B%0A%20%20%20%20public%20string%20Know%3B%0A%20%20%20%20public%20string%20Of%3B%0A%20%20%20%20public%20string%20Anything%3B%0A%20%20%20%20public%20string%20Clever%3B%0A%20%20%20%20public%20string%20To%3B%0A%20%20%20%20public%20string%20Put%3B%0A%20%20%20%20public%20string%20Here%3B%0A%7D",&#13;    "expiresIn": "never",&#13;    "language": "csharp"&#13;}

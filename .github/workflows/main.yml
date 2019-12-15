@@ -17,6 +17,8 @@ jobs:
           mysql database: 'PasteMyst'
           mysql user: 'CodeMyst'
           mysql password: '123'
+          host port: 3306
+          container port: 3307
       - name: Build
         run: dub build
       - name: Test

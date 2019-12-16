@@ -27,6 +27,20 @@ window.addEventListener ("load", () =>
     {
         addEditor ();
     });
+
+    let pasteOptionsBottomObserver = new IntersectionObserver ((e) =>
+    {
+        if (e [0].intersectionRatio === 0)
+        {
+            document.querySelector (".paste-options-bottom").classList.add ("paste-options-bottom-sticky");
+        }
+        else if (e [0].intersectionRatio === 1)
+        {
+            document.querySelector (".paste-options-bottom").classList.remove ("paste-options-bottom-sticky");
+        }
+    }, { threshold: [0, 1] });
+
+    pasteOptionsBottomObserver.observe (document.querySelector (".paste-options-bottom-1px"));
 });
 
 function initFirstEditor ()

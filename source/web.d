@@ -10,7 +10,7 @@ public class WebInterface
 	/++ 
 	 + index
 	 +/
-	public void index ()
+	public void index()
 	{
 		import data.file : expireOptions, languages;
 

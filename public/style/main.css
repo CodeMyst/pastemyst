@@ -5,6 +5,7 @@
 
 @import url(header.css);
 @import url(navigation.css);
+@import url(footer.css);
 
 @import url(libs/codemirror.css);
 @import url(libs/darcula.css);

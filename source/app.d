@@ -1,18 +1,18 @@
 import vibe.d;
 
-public void main ()
+public void main()
 {
 	import web : WebInterface;
 
-	URLRouter router = new URLRouter ();
-	router.get ("*", serveStaticFiles ("public"));
-	router.registerWebInterface (new WebInterface ());
+	URLRouter router = new URLRouter();
+	router.get("*", serveStaticFiles("public"));
+	router.registerWebInterface(new WebInterface());
 
-	HTTPServerSettings serverSettings = new HTTPServerSettings ();
+	HTTPServerSettings serverSettings = new HTTPServerSettings();
 	serverSettings.bindAddresses = ["127.0.0.1"];
 	serverSettings.port = 5000;
 
-	listenHTTP (serverSettings, router);
+	listenHTTP(serverSettings, router);
 
-	runApplication ();
+	runApplication();
 }

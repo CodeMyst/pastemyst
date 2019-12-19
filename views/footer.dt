@@ -1,0 +1,6 @@
+footer
+    - import std.datetime : Clock;
+    - import std.conv : to;
+    - string year = Clock.currTime().year.to!string();
+    .copyright copyright &copy; #[a(href="https://github.com/codemyst", target="_blank") codemyst] #{year}
+    .paste-amount (amount) currently active pastes 

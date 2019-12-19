@@ -8,25 +8,25 @@ import vibe.d;
  + Expire options Json object.
  +/
 @property
-public Json expireOptions () { return _expireOptions; }
+public Json expireOptions() { return _expireOptions; }
 private Json _expireOptions;
 
 /++ 
  + All supported languages Json object.
  +/
 @property
-public Json languages () { return _languages; }
+public Json languages() { return _languages; }
 private Json _languages;
 
 unittest
 {
     Json res = expireOptions;
 
-    assert (res [0] ["value"] == "never");
+    assert(res[0]["value"] == "never");
 
     Json res2 = languages;
 
-    assert (res2 [0] ["name"] == "Autodetect");
+    assert(res2[0]["name"] == "Autodetect");
 }
 
 private const string dataPath = "data";
@@ -40,10 +40,10 @@ public enum DataFile
     LANGUAGES
 }
 
-static this ()
+static this()
 {
-    _expireOptions = parseJsonString (getTextDataFile (DataFile.EXPIRE_OPTIONS)) ["expireOptions"];
-    _languages = parseJsonString (getTextDataFile (DataFile.LANGUAGES)) ["languages"];
+    _expireOptions = parseJsonString(getTextDataFile(DataFile.EXPIRE_OPTIONS))["expireOptions"];
+    _languages = parseJsonString(getTextDataFile(DataFile.LANGUAGES))["languages"];
 }
 
 /++ 
@@ -52,17 +52,17 @@ static this ()
  +   dataFile = Type of data file.
  + Returns: File struct.
  +/
-public File getDataFile (DataFile dataFile)
+public File getDataFile(DataFile dataFile)
 {
     final switch (dataFile)
     {
         case DataFile.EXPIRE_OPTIONS:
         {
-            return File (getDataFilePath ("expireOptions.json"), "r");
+            return File(getDataFilePath("expireOptions.json"), "r");
         }
         case DataFile.LANGUAGES:
         {
-            return File (getDataFilePath ("languages.json"), "r");
+            return File(getDataFilePath("languages.json"), "r");
         }
     }
 }
@@ -71,13 +71,13 @@ unittest
 {
     import std.path : baseName;
 
-    File dtfile = getDataFile (DataFile.EXPIRE_OPTIONS);
+    File dtfile = getDataFile(DataFile.EXPIRE_OPTIONS);
 
-    assert (baseName (dtfile.name) == "expireOptions.json");
+    assert(baseName(dtfile.name) == "expireOptions.json");
 
-    File dtfile2 = getDataFile (DataFile.LANGUAGES);
+    File dtfile2 = getDataFile(DataFile.LANGUAGES);
 
-    assert (baseName (dtfile2.name) == "languages.json");
+    assert(baseName(dtfile2.name) == "languages.json");
 }
 
 /++ 
@@ -86,15 +86,15 @@ unittest
  +   dataFile = Type of data file.
  + Returns: String contents of the file.
  +/
-public string getTextDataFile (DataFile dataFile)
+public string getTextDataFile(DataFile dataFile)
 {
     string res = "";
 
-    File file = getDataFile (dataFile);
+    File file = getDataFile(dataFile);
 
-    while (!file.eof ())
+    while (!file.eof())
     {
-        res ~= strip (file.readln ());
+        res ~= strip(file.readln());
     }
 
     return res;
@@ -102,15 +102,15 @@ public string getTextDataFile (DataFile dataFile)
 
 unittest
 {
-    const string contents = getTextDataFile (DataFile.EXPIRE_OPTIONS);
+    const string contents = getTextDataFile(DataFile.EXPIRE_OPTIONS);
 
-    assert (contents == `{"expireOptions":[{"value": "never","pretty": "never"},` ~
-                        `{"value": "1h","pretty": "1 hour"},` ~
-                        `{"value": "2h","pretty": "2 hours"},` ~
-                        `{"value": "10h","pretty": "10 hours"},` ~
-                        `{"value": "1d","pretty": "1 day"},` ~
-                        `{"value": "2d","pretty": "2 days"},` ~
-                        `{"value": "1w","pretty": "1 week"}]}`);
+    assert(contents == `{"expireOptions":[{"value": "never","pretty": "never"},` ~
+                       `{"value": "1h","pretty": "1 hour"},` ~
+                       `{"value": "2h","pretty": "2 hours"},` ~
+                       `{"value": "10h","pretty": "10 hours"},` ~
+                       `{"value": "1d","pretty": "1 day"},` ~
+                       `{"value": "2d","pretty": "2 days"},` ~
+                       `{"value": "1w","pretty": "1 week"}]}`);
 }
 
 /++ 
@@ -119,9 +119,9 @@ unittest
  +   filename = Name of the file (with the extension).
  + Returns: The path to the data file.
  +/
-private string getDataFilePath (string filename)
+private string getDataFilePath(string filename)
 {
     import std.file : getcwd;
 
-    return getcwd () ~ "/" ~ dataPath ~ "/" ~ filename;
+    return getcwd() ~ "/" ~ dataPath ~ "/" ~ filename;
 }

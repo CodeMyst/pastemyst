@@ -1,11 +1,11 @@
-window.addEventListener ("load", () =>
+window.addEventListener("load", () =>
 {
-    removeNavigationDelimiters ();
+    removeNavigationDelimiters();
 });
 
-window.addEventListener ("resize", () =>
+window.addEventListener("resize", () =>
 {
-    removeNavigationDelimiters ();
+    removeNavigationDelimiters();
 });
 
 /**
@@ -21,23 +21,23 @@ window.addEventListener ("resize", () =>
  * about - donate
  * ```
  */
-function removeNavigationDelimiters ()
+function removeNavigationDelimiters()
 {
-    let elements = document.getElementsByTagName ("nav") [0].getElementsByTagName ("li");
+    let elements = document.getElementsByTagName("nav")[0].getElementsByTagName("li");
 
     for (let i = 0; i < elements.length - 1; i++)
     {
-        elements [i].classList.remove ("no-delimiter");
+        elements[i].classList.remove("no-delimiter");
     }
 
     for (let i = 0; i < elements.length - 1; i++)
     {
-        let currentRect = elements [i].getBoundingClientRect ();
-        let nextRect = elements [i + 1].getBoundingClientRect ();
+        let currentRect = elements[i].getBoundingClientRect();
+        let nextRect = elements[i + 1].getBoundingClientRect();
 
         if (currentRect.top !== nextRect.top)
         {
-            elements [i].classList.add ("no-delimiter");
+            elements[i].classList.add("no-delimiter");
         }
     }
 }

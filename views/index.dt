@@ -50,9 +50,7 @@ html(lang="en")
                 //- this is used for detecting when the .paste-options-bottom is in fixed position to apply different styles
                 .paste-options-bottom-1px
 
-                br
-                br
-                p Reprehenderit odit sit nihil consequatur facere consequatur repudiandae. Earum sit vel sit aut maxime odio dolores nemo. Et pariatur ex deleniti iusto corporis. Est nemo fuga alias dolor officia vitae velit est.
+            include footer
 
         script(src="scripts/libs/codemirror/codemirror.js")
         script(type="module", src="scripts/home.js")

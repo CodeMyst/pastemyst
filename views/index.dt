@@ -5,9 +5,6 @@ block head
     meta(property="og:title", content="PasteMyst")
 
 block body
-    pre.codeblock-text
-        code.hljs.plaintext Create a new PasteMyst:
-
     div.expires-in
         span.select-label Expires in:
         select
@@ -73,7 +70,7 @@ block body
         input(type="hidden", name="expiresIn")
         input(type="hidden", name="language")
 
-    a(class="button button-primary") Create a PasteMyst
+    a(class="button button-primary") create paste
 
 block scripts
     script(src="/vs/loader.js")

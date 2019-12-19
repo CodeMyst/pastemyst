@@ -207,7 +207,7 @@ td.hljs-ln-numbers
 
 #text-editor
 {
-    height: 75vh;
+    min-height: 50vh;
     margin-bottom: 2rem;
 
     @media all and (max-width: 640px)
@@ -244,13 +244,15 @@ td.hljs-ln-numbers
 
 .button.button-primary
 {
-    background-color: $color-nanolight;
+    background-color: $color-range;
+    color: $color-nano;
     border: none;
 
     &:hover, &:focus
     {
         border: none;
         background-color: $color-nanolight;
+        color: $color-white;
     }
 }
 

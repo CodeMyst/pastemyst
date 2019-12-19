@@ -119,7 +119,7 @@ td.hljs-ln-numbers {
   padding-right: 10px !important; }
 
 #text-editor {
-  height: 75vh;
+  min-height: 50vh;
   margin-bottom: 2rem; }
   @media all and (max-width: 640px) {
     #text-editor {
@@ -146,11 +146,13 @@ td.hljs-ln-numbers {
   font-style: italic; }
 
 .button.button-primary {
-  background-color: #222222;
+  background-color: #ee720d;
+  color: #141414;
   border: none; }
   .button.button-primary:hover, .button.button-primary:focus {
     border: none;
-    background-color: #222222; }
+    background-color: #222222;
+    color: #ffffff; }
 
 h3 .anchor-link {
   font-size: 1.5rem;

@@ -48,10 +48,13 @@ html(lang="en")
             block body
 
             footer
+                - import std.datetime : Clock;
+                - import std.conv : to;
+                - string year = Clock.currTime().year.to!string();
                 pre.codeblock-text
                     code.hljs.plaintext
                         p.number-of-pastes #[b= numberOfPastes] currently active PasteMysts
-                        p Copyright #[span.copyright-symbol &#169;] #[a(href="https://github.com/codemyst") CodeMyst] 2019
+                        p Copyright #[span.copyright-symbol &#169;] #[a(href="https://github.com/codemyst") CodeMyst] #{year}
 
         block scripts
         link(rel="stylesheet", href="/style/materialdark.css")

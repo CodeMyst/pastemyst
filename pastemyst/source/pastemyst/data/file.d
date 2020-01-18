@@ -1,8 +1,13 @@
-module data.file;
+module pastemyst.data.file;
 
 import std.stdio : File, readln;
 import std.string : strip;
 import vibe.d;
+
+version(unittest)
+{
+    import dshould;
+}
 
 /++ 
  + Expire options Json object.
@@ -18,18 +23,19 @@ private Json _expireOptions;
 public Json languages() { return _languages; }
 private Json _languages;
 
+@("expire options and languages json files")
 unittest
 {
     Json res = expireOptions;
 
-    assert(res[0]["value"] == "never");
+    res[0]["value"].should.equal("never");
 
     Json res2 = languages;
 
-    assert(res2[0]["name"] == "Autodetect");
+    res2[0]["name"].should.equal("Autodetect");
 }
 
-private const string dataPath = "data";
+private const string dataPath = "../data";
 
 /++
  + Enum that defines all possible data files.
@@ -67,17 +73,18 @@ public File getDataFile(DataFile dataFile)
     }
 }
 
+@("getting json data files")
 unittest
 {
     import std.path : baseName;
 
     File dtfile = getDataFile(DataFile.EXPIRE_OPTIONS);
 
-    assert(baseName(dtfile.name) == "expireOptions.json");
+    baseName(dtfile.name).should.equal("expireOptions.json");
 
     File dtfile2 = getDataFile(DataFile.LANGUAGES);
 
-    assert(baseName(dtfile2.name) == "languages.json");
+    baseName(dtfile2.name).should.equal("languages.json");
 }
 
 /++ 
@@ -100,17 +107,18 @@ public string getTextDataFile(DataFile dataFile)
     return res;
 }
 
+@("expireOptions.json file correctness")
 unittest
 {
     const string contents = getTextDataFile(DataFile.EXPIRE_OPTIONS);
 
-    assert(contents == `{"expireOptions":[{"value": "never","pretty": "never"},` ~
-                       `{"value": "1h","pretty": "1 hour"},` ~
-                       `{"value": "2h","pretty": "2 hours"},` ~
-                       `{"value": "10h","pretty": "10 hours"},` ~
-                       `{"value": "1d","pretty": "1 day"},` ~
-                       `{"value": "2d","pretty": "2 days"},` ~
-                       `{"value": "1w","pretty": "1 week"}]}`);
+    contents.should.equal(`{"expireOptions":[{"value": "never","pretty": "never"},` ~
+                          `{"value": "1h","pretty": "1 hour"},` ~
+                          `{"value": "2h","pretty": "2 hours"},` ~
+                          `{"value": "10h","pretty": "10 hours"},` ~
+                          `{"value": "1d","pretty": "1 day"},` ~
+                          `{"value": "2d","pretty": "2 days"},` ~
+                          `{"value": "1w","pretty": "1 week"}]}`);
 }
 
 /++ 

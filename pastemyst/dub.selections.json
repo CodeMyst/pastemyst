@@ -3,16 +3,18 @@
 	"versions": {
 		"botan": "1.12.10",
 		"botan-math": "1.0.3",
-		"diet-ng": "1.6.0",
+		"diet-ng": "1.6.1",
+		"dshould": "1.1.0",
 		"eventcore": "0.8.48",
 		"libasync": "0.8.4",
-		"libevent": "2.0.2+2.0.16",
 		"memutils": "0.4.13",
 		"mir-linux-kernel": "1.0.1",
 		"openssl": "1.1.6+1.0.1g",
+		"silly": "1.0.1",
 		"stdx-allocator": "2.77.5",
-		"taggedalgebraic": "0.11.7",
-		"vibe-core": "1.7.0",
-		"vibe-d": "0.8.6"
+		"taggedalgebraic": "0.11.8",
+		"unit-threaded": "0.10.6",
+		"vibe-core": "1.8.1",
+		"vibe-d": "0.9.0-alpha.1"
 	}
 }

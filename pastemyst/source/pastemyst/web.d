@@ -1,4 +1,4 @@
-module web;
+module pastemyst.web;
 
 import vibe.d;
 
@@ -12,7 +12,7 @@ public class WebInterface
 	 +/
 	public void index()
 	{
-		import data.file : expireOptions, languages;
+		import pastemyst.data : expireOptions, languages;
 
 		// a separate variable is made for expireOptions only to change its name
 		const Json expires = expireOptions;

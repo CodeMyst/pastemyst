@@ -5,35 +5,35 @@ on: [push, pull_request]
 jobs:
   build:
     name: Test
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-        dc: [dmd-latest, ldc-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Setup Node
-        if: matrix.os == 'ubuntu-latest'
         uses: actions/setup-node@v1
         with:
           node-version: '10.x'
       - name: Lint JavaScript
-        if: matrix.os == 'ubuntu-latest'
         run: |
           sudo npm install -g jshint
           jshint --exclude-path public/scripts/.jshintignore public/scripts
+        working-directory: ./pastemyst
       - name: Install D
         uses: mihails-strasuns/setup-dlang@v0.3.1
         with:
-          compiler:  ${{ matrix.dc }}
+          compiler: dmd-latest
       - name: Build
         run: dub build
-      - name: Test
-        run: dub test -b unittest-cov
+        working-directory: ./pastemyst
       - name: Style cheks
         run: |
           dub fetch dscanner
           dub run dscanner -- -S source/
+      - name: Unit Tests
+        run: dub test -b unittest-cov
+        working-directory: ./pastemyst
+      - name: Integration Tests
+        run: dub run
+        working-directory: ./integration-test
       - name: Coverage report
-        if: matrix.os == 'ubuntu-latest' && matrix.dc == 'dmd-latest'
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+        working-directory: ./pastemyst

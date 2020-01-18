@@ -1,2 +1,2 @@
-public/scripts/libs/**/* linguist-vendored
-public/style/libs/**/* linguist-vendored
+pastemyst/public/scripts/libs/**/* linguist-vendored
+pastemyst/public/style/libs/**/* linguist-vendored

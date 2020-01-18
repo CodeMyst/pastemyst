@@ -27,7 +27,8 @@ jobs:
       - name: Style cheks
         run: |
           dub fetch dscanner
-          dub run dscanner -- -S source/
+          dub run dscanner -- -S pastemyst/
+          dub run dscanner -- -S integration-test/
       - name: Unit Tests
         run: dub test -b unittest-cov
         working-directory: ./pastemyst

@@ -35,7 +35,7 @@ block body
             tr
                 td expiresIn
                 td string
-                td When the PasteMyst expires. Valid values are: never, 1h, 2h, 10h, 1d, 2d or 1w.
+                td When the PasteMyst expires. Valid values are: never, 1h, 2h, 10h, 1d, 2d, 1w, 1m or 1y.
         tbody
             tr
                 td language (optional)
@@ -76,7 +76,7 @@ block body
             tr
                 td expiresIn
                 td string
-                td When the PasteMyst expires. Valid values are: never, 1h, 2h, 10h, 1d, 2d or 1w.
+                td When the PasteMyst expires. Valid values are: never, 1h, 2h, 10h, 1d, 2d, 1w, 1m or 1y.
             tr
                 td language
                 td string

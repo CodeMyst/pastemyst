@@ -269,7 +269,7 @@ PasteMystInfo createPaste (string code, string expiresIn, string language)
 	immutable long createdAt = Clock.currTime.toUnixTime;
 
 	if (checkValidExpiryTime (expiresIn) == false)
-		throw new HTTPStatusException (400, "Invalid \"expiresIn\" value. Expected: never, 1h, 2h, 10h, 1d, 2d or 1w.");
+		throw new HTTPStatusException (400, "Invalid \"expiresIn\" value. Expected: never, 1h, 2h, 10h, 1d, 2d, 1w, 1m or 1y.");
 
     if (checkValidLanguage (language) == false)
         throw new HTTPStatusException (400, "Invalid \"language\" value.");
@@ -405,6 +405,12 @@ long expiresInToUnixTime (long createdAt, string expiresIn)
 		case "1w":
 			expiresInUnixTime += 168 * 3600;
 			break;
+		case "1m":
+			expiresInUnixTime += 2_629_800;
+			break;
+		case "1y":
+			expiresInUnixTime += 31_557_600;
+			break;
 		case "never":
 			expiresInUnixTime = 0;
 			break;
@@ -442,7 +448,9 @@ bool checkValidExpiryTime (string expiresIn)
 		    expiresIn == "10h"   ||
 		    expiresIn == "1d"    ||
 		    expiresIn == "2d"    ||
-		    expiresIn == "1w");
+		    expiresIn == "1w"	 ||
+			expiresIn == "1m"    ||
+			expiresIn == "1y");
 }
 
 unittest
@@ -455,6 +463,8 @@ unittest
 	assert (checkValidExpiryTime ("2d") == true);
 	assert (checkValidExpiryTime ("1w") == true);
 	assert (checkValidExpiryTime ("2d") == true);
+	assert (checkValidExpiryTime ("1m") == true);
+	assert (checkValidExpiryTime ("1y") == true);
 	assert (checkValidExpiryTime ("isjadiojsad") == false);
 	assert (checkValidExpiryTime ("3h") == false);
 	assert (checkValidExpiryTime ("213j98") == false);

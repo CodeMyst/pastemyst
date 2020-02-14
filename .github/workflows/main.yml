@@ -16,25 +16,17 @@ jobs:
         run: |
           sudo npm install -g jshint
           jshint --exclude-path public/scripts/.jshintignore public/scripts
-        working-directory: ./pastemyst
       - name: Install D
         uses: mihails-strasuns/setup-dlang@v0.3.1
         with:
           compiler: dmd-latest
       - name: Build
         run: dub build
-        working-directory: ./pastemyst
       - name: Style cheks
         run: |
           dub fetch dscanner
-          dub run dscanner -- -S pastemyst/
-          dub run dscanner -- -S integration-test/
+          dub run dscanner -- -S source/
       - name: Unit Tests
         run: dub test -b unittest-cov
-        working-directory: ./pastemyst
-      - name: Integration Tests
-        run: dub run
-        working-directory: ./integration-test
       - name: Coverage report
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
-        working-directory: ./pastemyst

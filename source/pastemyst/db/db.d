@@ -20,7 +20,7 @@ private MongoDatabase mongo;
  +/
 public void connect()
 {
-    version(integrationtest)
+    version(unittest)
     {
         import pastemyst.data : Paste;
 
@@ -104,7 +104,7 @@ public Nullable!R findOneById(R, T)(T id) @safe
     return findOne!R(["_id": id]);
 }
 
-version(integrationtest)
+version(unittest)
 {
     /++
      + DANGEROUS! Drops all collections in the mongo db. Used for cleaning the db before running tests.

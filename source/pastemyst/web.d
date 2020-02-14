@@ -10,13 +10,14 @@ public class WebInterface
 	/++ 
 	 + index
 	 +/
-	public void index()
+	@path("/")
+	public void getHome()
 	{
 		import pastemyst.data : expireOptions, languages;
 
 		// a separate variable is made for expireOptions only to change its name
 		const Json expires = expireOptions;
 
-		render!("index.dt", expires, languages);
+		render!("home.dt", expires, languages);
 	}
 }

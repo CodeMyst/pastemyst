@@ -1,0 +1,42 @@
+extends baseLayout
+
+block body
+    #home
+        .paste-options
+            input(placeholder="paste title", type="text", autocomplete="off", spellcheck="false")
+            #expires-in-dropdown.no-search
+                .label expires in:
+                include components/dropdown
+                    block options
+                        - import std.conv : to;
+                        - foreach (ulong i, exp; expires)
+                            label.option
+                                input(type="radio", name="expires-in", value=exp ["value"].to!string (), checked=i == 0 ? true : false)
+                                span= exp ["pretty"].to!string ()
+
+        #pasty-editors
+            .pasty-editor
+                .pasty-editor-options
+                    i.fas.fa-minus-square.pasty-editor-delete
+                    input.pasty-editor-title(placeholder="pasty title", type="text", autocomplete="off", spellcheck="false")
+                    #language-dropdown
+                        .label language:
+                        include components/dropdown
+                            block options
+                                - import std.conv : to;
+                                - foreach (ulong i, lang; languages)
+                                    label.option
+                                        input(type="radio", name="language", value=lang ["name"].to!string () ~ "," ~ lang ["mode"].to!string () ~ "," ~ lang ["mimes"] [0].to!string (), checked=i == 0 ? true : false)
+                                        span= lang ["name"].to!string ()
+                textarea.editor(type="text", autocomplete="off", spellcheck="false")
+        
+        .paste-options-bottom
+            a.new-pasty-editor add editor
+            label.disabled private
+                input(type="checkbox", disabled)
+            a.create create paste
+        //- this is used for detecting when the .paste-options-bottom is in fixed position to apply different styles
+        .paste-options-bottom-1px
+
+block scripts
+    script(type="module", src="scripts/home.js")

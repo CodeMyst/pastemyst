@@ -8,6 +8,11 @@ version(unittest)
     import dshould;
 }
 
+/++
+ + List of all collections in the mongo db.
+ +/
+public const string[] collectionNames = ["pastes"];
+
 private MongoDatabase mongo;
 
 /++ 
@@ -15,7 +20,7 @@ private MongoDatabase mongo;
  +/
 public void connect()
 {
-    version(unittest)
+    version(integrationtest)
     {
         import pastemyst.data : Paste;
 
@@ -97,4 +102,18 @@ public Nullable!R findOne(R, T)(T query) @safe
 public Nullable!R findOneById(R, T)(T id) @safe
 {
     return findOne!R(["_id": id]);
+}
+
+version(integrationtest)
+{
+    /++
+     + DANGEROUS! Drops all collections in the mongo db. Used for cleaning the db before running tests.
+     +/
+    public void dropAllCollections()
+    {
+        foreach (string c; collectionNames)
+        {
+            mongo[c].drop();
+        }
+    }
 }

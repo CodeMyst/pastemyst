@@ -54,4 +54,5 @@ unittest
     randomBase36Id().length.should.equal(8);
     randomBase36Id().length.should.equal(8);
     randomBase36Id().length.should.equal(8);
+    assert(false);
 }

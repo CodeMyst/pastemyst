@@ -35,7 +35,7 @@ unittest
     res2[0]["name"].should.equal("Autodetect");
 }
 
-private const string dataPath = "../data";
+private const string dataPath = "data";
 
 /++
  + Enum that defines all possible data files.

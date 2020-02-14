@@ -59,6 +59,7 @@ public class APIPaste : IAPIPaste
 
         enforceHTTP(!expires.isNull, HTTPStatus.badRequest, "invalid expiresIn value.");
 
+        // todo: do checks to see if paste already exists with the same id
         Paste paste =
         {
             id: randomBase36Id(),

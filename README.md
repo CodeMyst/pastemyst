@@ -46,3 +46,9 @@ You can also use environment variables instead of `appsettings.json`. The equiva
 | mysql:pwd   | MYSQL_PWD    *(optional)* |
 
 To build / run the project simply run `dub build` / `dub run`. To unit test the project run `dub test`.
+
+## API Wrappers
+
+| Language | URL                                      |
+|----------|------------------------------------------|
+| Python   | https://github.com/Dmunch04/PasteMyst.py |

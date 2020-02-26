@@ -80,6 +80,16 @@ public void insert(T)(T item)
     collection.insert(data);
 }
 
+/++
+ + Get the count of objects in the collection
+ +/
+public ulong getCollectionCount(T)()
+{
+    MongoCollection collection = mongo[getCollectionName!T()];
+
+    return collection.count ("");
+}
+
 /++ 
  +
  + Gets one item from the Mongo DB.

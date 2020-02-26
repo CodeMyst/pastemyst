@@ -11,5 +11,7 @@ public enum ExpiresIn
     tenHours = "10h",
     oneDay = "1d",
     twoDays = "2d",
-    oneWeek = "1w"
+    oneWeek = "1w",
+    oneMonth = "1m",
+    oneYear = "1y"
 }

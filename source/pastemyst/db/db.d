@@ -87,7 +87,7 @@ public ulong getCollectionCount(T)()
 {
     MongoCollection collection = mongo[getCollectionName!T()];
 
-    return collection.count ("");
+    return collection.find().count();
 }
 
 /++ 

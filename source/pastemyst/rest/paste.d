@@ -54,6 +54,7 @@ public class APIPaste : IAPIPaste
         import pastemyst.db : insert, findOneById;
         import pastemyst.data.paste : Paste;
         import pastemyst.data.file : languages;
+        import std.uni : toLower;
 
         enforceHTTP(!pasties.length == 0, HTTPStatus.badRequest, "pasties arrays has to have at least one element.");
 
@@ -66,10 +67,14 @@ public class APIPaste : IAPIPaste
             bool languageFound = false;
             foreach (language; languages.byValue ())
             {
-                languageFound = language["name"] == pasty.language;
+                if (language["name"].get!string().toLower() == pasty.language.toLower())
+                {
+                    languageFound = true;
+                    break;
+                }
             }
 
-            enforceHTTP(!languageFound, HTTPStatus.badRequest, "invalid language value.");
+            enforceHTTP(languageFound, HTTPStatus.badRequest, "invalid language value.");
         }
 
         string id = randomBase36Id();

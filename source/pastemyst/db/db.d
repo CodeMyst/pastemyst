@@ -81,7 +81,7 @@ public void insert(T)(T item)
 }
 
 /++
- + Get the amount of Paste objects in the DB
+ + Get the count of objects in the collection
  +/
 public ulong getCollectionCount(T)()
 {

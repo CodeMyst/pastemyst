@@ -27,6 +27,4 @@ jobs:
           dub fetch dscanner
           dub run dscanner -- -S source/
       - name: Unit Tests
-        run: dub test -b unittest-cov
-      - name: Coverage report
-        run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+        run: dub test

@@ -51,7 +51,8 @@ public class APIPaste : IAPIPaste
         import pastemyst.conv : valueToEnum;
         import std.typecons : Nullable;
         import std.datetime : Clock;
-        import pastemyst.db : insert;
+        import pastemyst.db : insert, findOneById;
+        import pastemyst.data.paste : Paste;
 
         enforceHTTP(!pasties.length == 0, HTTPStatus.badRequest, "pasties arrays has to have at least one element.");
 
@@ -59,10 +60,17 @@ public class APIPaste : IAPIPaste
 
         enforceHTTP(!expires.isNull, HTTPStatus.badRequest, "invalid expiresIn value.");
 
-        // todo: do checks to see if paste already exists with the same id
+        string id = randomBase36Id();
+        auto pasteResult = findOneById!Paste(id);
+        while (!pasteResult.isNull)
+        {
+            id = randomBase36Id();
+            pasteResult = findOneById!Paste(id);
+        }
+
         Paste paste =
         {
-            id: randomBase36Id(),
+            id: id,
             createdAt: Clock.currTime().toUnixTime(),
             expiresIn: expires.get(),
             title: title,

@@ -80,10 +80,13 @@ public void insert(T)(T item)
     collection.insert(data);
 }
 
+/++
+ + Get the amount of Paste objects in the DB
+ +/
 public ulong getPastiesAmount(T)()
 {
     MongoCollection collection = mongo[getCollectionName!T()];
-    
+
     // this here might not be the best solution
     ulong count = collection.count ("");
 

@@ -17,9 +17,11 @@ class PastyEditor
 
 let editors = [];
 
+let expiresInDropdown;
+
 window.addEventListener("load", () =>
 {
-    new Dropdown(document.querySelector("#expires-in-dropdown .dropdown"));
+    expiresInDropdown = new Dropdown(document.querySelector("#expires-in-dropdown .dropdown"));
 
     initFirstEditor();
 
@@ -41,6 +43,8 @@ window.addEventListener("load", () =>
     }, { threshold: [0, 1] });
 
     pasteOptionsBottomObserver.observe(document.querySelector(".paste-options-bottom-1px"));
+
+    document.getElementById("create-paste").addEventListener("click", async () => await createPaste());
 });
 
 function initFirstEditor()
@@ -65,7 +69,7 @@ function initFirstEditor()
        lineWrapping: true
     });
 
-    setupLanguageDropdown(editor);
+    editor.languageDropdown = setupLanguageDropdown(editor);
 
     editor.rootElement.getElementsByClassName("pasty-editor-delete")[0].addEventListener("click", () =>
     {
@@ -116,7 +120,7 @@ function addEditor()
         setupDeleteButton(editors[0]);
     }
 
-    setupLanguageDropdown(editor);
+    editor.languageDropdown = setupLanguageDropdown(editor);
 
     editor.rootElement.getElementsByClassName("pasty-editor-delete")[0].addEventListener("click", () =>
     {
@@ -195,4 +199,45 @@ function setMode(editor, mode, mime)
     {
         editor.setOption("mode", mime);
     });
+}
+
+async function createPaste()
+{
+    // todo: add isPrivate field
+
+    const data =
+    {
+        title: document.querySelector(`.paste-options input[name="title"]`).value,
+        expiresIn: expiresInDropdown.value
+    };
+
+    const pasties = [];
+
+    for (let i = 0; i < editors.length; i++)
+    {
+        let pasty =
+        {
+            title: editors[i].titleInput.value,
+            language: editors[i].languageDropdown.value.split(",")[0],
+            code: editors[i].editor.getValue()
+        };
+
+        pasties.push(pasty);
+    }
+
+    data.pasties = pasties;
+
+    const response = await fetch("/api/paste",
+    {
+        method: "POST",
+        headers:
+        {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    const j = await response.json();
+
+    window.location = `/${j._id}`;
 }

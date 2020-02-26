@@ -187,11 +187,16 @@
     text-align: right;
 }
 
-#home .paste-options-bottom .create
+#home .paste-options-bottom #create-paste
 {
     margin-top: 20px;
     background-color: var(--color-mystge);
     padding: 0.5rem 1rem;
     color: var(--color-nano);
     border-radius: var(--border-radius);
+}
+
+#home .paste-options-bottom #create-paste:hover
+{
+    background-color: var(--color-mystlue);
 }

@@ -3,7 +3,7 @@ extends baseLayout
 block body
     #home
         .paste-options
-            input(placeholder="paste title", type="text", autocomplete="off", spellcheck="false")
+            input(name="title", placeholder="paste title", type="text", autocomplete="off", spellcheck="false")
             #expires-in-dropdown.no-search
                 .label expires in:
                 include components/dropdown
@@ -34,7 +34,7 @@ block body
             a.new-pasty-editor add editor
             label.disabled private
                 input(type="checkbox", disabled)
-            a.create create paste
+            a#create-paste create paste
         //- this is used for detecting when the .paste-options-bottom is in fixed position to apply different styles
         .paste-options-bottom-1px
 

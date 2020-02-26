@@ -1,4 +1,4 @@
-# pastemyst v2 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/codemyst/pastemyst-v2/CI) ![Codecov branch](https://img.shields.io/codecov/c/github/codemyst/pastemyst-v2/master) [![Discord Server](https://discordapp.com/api/guilds/298510542535000065/widget.png)](https://discord.gg/SdKbcbq)
+# pastemyst v2 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/codemyst/pastemyst-v2/CI) [![Discord Server](https://discordapp.com/api/guilds/298510542535000065/widget.png)](https://discord.gg/SdKbcbq)
 
 this is the repo of the second version of [pastemyst](https://paste.myst.rs). it's in a separate repo because it's already messy in the main one and the second version is a huge rewrite and brings a lot more features. eventually this repo will end up as the master branch of the original repo once it's finished.
 

@@ -19,7 +19,7 @@ private Json _expireOptions;
 /++ 
  + All supported languages Json object.
  +/
-@property
+@property @safe
 public Json languages() { return _languages; }
 private Json _languages;
 

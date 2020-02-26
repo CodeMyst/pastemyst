@@ -53,12 +53,24 @@ public class APIPaste : IAPIPaste
         import std.datetime : Clock;
         import pastemyst.db : insert, findOneById;
         import pastemyst.data.paste : Paste;
+        import pastemyst.data.file : languages;
 
         enforceHTTP(!pasties.length == 0, HTTPStatus.badRequest, "pasties arrays has to have at least one element.");
 
         Nullable!ExpiresIn expires = valueToEnum!ExpiresIn(expiresIn);
 
         enforceHTTP(!expires.isNull, HTTPStatus.badRequest, "invalid expiresIn value.");
+
+        foreach (pasty; pasties)
+        {
+            bool languageFound = false;
+            foreach (language; languages.byValue ())
+            {
+                languageFound = language["name"] == pasty.language;
+            }
+
+            enforceHTTP(!languageFound, HTTPStatus.badRequest, "invalid language value.");
+        }
 
         string id = randomBase36Id();
         auto pasteResult = findOneById!Paste(id);

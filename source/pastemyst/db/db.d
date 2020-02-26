@@ -80,6 +80,16 @@ public void insert(T)(T item)
     collection.insert(data);
 }
 
+public ulong getPastiesAmount(T)()
+{
+    MongoCollection collection = mongo[getCollectionName!T()];
+    
+    // this here might not be the best solution
+    ulong count = collection.count ("");
+
+    return count;
+}
+
 /++ 
  +
  + Gets one item from the Mongo DB.

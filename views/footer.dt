@@ -1,9 +1,8 @@
 footer
     - import std.datetime : Clock;
     - import std.conv : to;
-    - import pastemyst.db : getPastiesAmount;
+    - import pastemyst.db : getCollectionCount;
     - import pastemyst.data : Paste;
     - string year = Clock.currTime().year.to!string();
-    - ulong amount = getPastiesAmount!Paste();
     .copyright copyright &copy; #[a(href="https://github.com/codemyst", target="_blank") codemyst] #{year}
-    .paste-amount #{amount} currently active pastes 
+    .paste-amount #{getCollectionCount!Paste()} currently active pastes 

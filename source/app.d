@@ -1,10 +1,10 @@
 import vibe.d;
 
-// todo: fix the problem with assets (css, js, img, etc.) not being linked correctly
 void displayError(HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
 {
 	string errorDebug = "";
 	debug errorDebug = error.debugMessage;
+	
 	res.render!("error.dt", error, errorDebug);
 }
 

@@ -1,5 +1,8 @@
 import vibe.d;
 
+/++
+ + Renders an error page, everytime an error occured
+ +/
 void displayError(HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
 {
 	string errorDebug = "";

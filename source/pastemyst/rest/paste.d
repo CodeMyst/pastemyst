@@ -56,11 +56,11 @@ public class APIPaste : IAPIPaste
         import pastemyst.data.file : languages;
         import std.uni : toLower;
 
-        enforceHTTP(!pasties.length == 0, HTTPStatus.badRequest, "pasties arrays has to have at least one element.");
+        enforceHTTP(!pasties.length == 0, HTTPStatus.badRequest, "Pasties arrays has to have at least one element.");
 
         Nullable!ExpiresIn expires = valueToEnum!ExpiresIn(expiresIn);
 
-        enforceHTTP(!expires.isNull, HTTPStatus.badRequest, "invalid expiresIn value.");
+        enforceHTTP(!expires.isNull, HTTPStatus.badRequest, "Invalid expiresIn value.");
 
         foreach (pasty; pasties)
         {
@@ -74,7 +74,7 @@ public class APIPaste : IAPIPaste
                 }
             }
 
-            enforceHTTP(languageFound, HTTPStatus.badRequest, "invalid language value.");
+            enforceHTTP(languageFound, HTTPStatus.badRequest, "Invalid language value.");
         }
 
         string id = randomBase36Id();

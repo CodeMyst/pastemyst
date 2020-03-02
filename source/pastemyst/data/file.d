@@ -118,7 +118,9 @@ unittest
                           `{"value": "10h","pretty": "10 hours"},` ~
                           `{"value": "1d","pretty": "1 day"},` ~
                           `{"value": "2d","pretty": "2 days"},` ~
-                          `{"value": "1w","pretty": "1 week"}]}`);
+                          `{"value": "1w","pretty": "1 week"},` ~
+                          `{"value": "1m","pretty": "1 month"},` ~
+                          `{"value": "1y","pretty": "1 year"}]}`);
 }
 
 /++ 

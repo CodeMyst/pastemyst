@@ -1,0 +1,53 @@
+#paste .title.untitled
+{
+    color: var(--color-nanolightlight);
+}
+
+#paste .paste-header
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    font-size: var(--font-size-medium);
+    margin-bottom: 20px;
+}
+
+#paste .paste-pasties .pasty
+{
+    margin-bottom: 20px;
+}
+
+#paste .paste-pasties .pasty .pasty-header
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: 2px solid var(--color-mystge);
+    padding: 0.5rem 1rem;
+    font-size: var(--font-size-normal);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#paste .CodeMirror
+{
+    border-radius: var(--border-radius);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    height: auto;
+}
+
+#paste .paste-meta
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    line-height: 2rem;
+}
+
+#paste .paste-meta .highlight
+{
+    color: var(--color-mystge);
+}

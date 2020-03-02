@@ -3,11 +3,6 @@ module pastemyst.rest.paste;
 import pastemyst.data;
 import vibe.d;
 
-version(unittest)
-{
-    import dshould;
-}
-
 /++
  + API interface for the `/api/paste` endpoint.
  +/
@@ -103,10 +98,10 @@ public class APIPaste : IAPIPaste
     }
 
     /++ 
-     + GET /paste/:id
-     +
-     + Fetches the paste.
-     +/
+        + GET /paste/:id
+        +
+        + Fetches the paste.
+        +/
     public Json get(string _id) @safe
     {
         import pastemyst.db : findOneById;

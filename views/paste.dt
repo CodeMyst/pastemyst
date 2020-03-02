@@ -17,6 +17,7 @@ block body
                             p.title= p.title
                         -else
                             p.title.untitled (untitled)
+                        span.lang= p.language
                         a.raw(href="/raw/" ~ paste.id ~ "/" ~ i.to!string()) raw
                     .pasty-content
                         textarea=p.code

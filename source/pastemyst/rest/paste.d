@@ -98,10 +98,10 @@ public class APIPaste : IAPIPaste
     }
 
     /++ 
-        + GET /paste/:id
-        +
-        + Fetches the paste.
-        +/
+     + GET /paste/:id
+     +
+     + Fetches the paste.
+     +/
     public Json get(string _id) @safe
     {
         import pastemyst.db : findOneById;

@@ -1,160 +1,1769 @@
 {
-    "languages":
-    [
-        {"name": "Autodetect", "mimes": ["text/plain"], "mode": "null"},
-        {"name": "Plain Text", "mimes": ["text/plain"], "mode": "null", "ext": ["txt", "text", "conf", "def", "list", "log"]},
-        {"name": "APL", "mimes": ["text/apl"], "mode": "apl", "ext": ["dyalog", "apl"]},
-        {"name": "PGP", "mimes": ["application/pgp", "application/pgp-encrypted", "application/pgp-keys", "application/pgp-signature"], "mode": "asciiarmor", "ext": ["asc", "pgp", "sig"]},
-        {"name": "ASN.1", "mimes": ["text/x-ttcn-asn"], "mode": "asn.1", "ext": ["asn", "asn1"]},
-        {"name": "Asterisk", "mimes": ["text/x-asterisk"], "mode": "asterisk", "file": "/^extensions\\.conf$/i"},
-        {"name": "Brainfuck", "mimes": ["text/x-brainfuck"], "mode": "brainfuck", "ext": ["b", "bf"]},
-        {"name": "C", "mimes": ["text/x-csrc"], "mode": "clike", "ext": ["c", "h", "ino"]},
-        {"name": "C++", "mimes": ["text/x-c++src"], "mode": "clike", "ext": ["cpp", "c++", "cc", "cxx", "hpp", "h++", "hh", "hxx"], "alias": ["cpp"]},
-        {"name": "Cobol", "mimes": ["text/x-cobol"], "mode": "cobol", "ext": ["cob", "cpy"]},
-        {"name": "C#", "mimes": ["text/x-csharp"], "mode": "clike", "ext": ["cs"], "alias": ["csharp"]},
-        {"name": "Clojure", "mimes": ["text/x-clojure"], "mode": "clojure", "ext": ["clj", "cljc", "cljx"]},
-        {"name": "ClojureScript", "mimes": ["text/x-clojurescript"], "mode": "clojure", "ext": ["cljs"]},
-        {"name": "Closure Stylesheets (GSS)", "mimes": ["text/x-gss"], "mode": "css", "ext": ["gss"]},
-        {"name": "CMake", "mimes": ["text/x-cmake"], "mode": "cmake", "ext": ["cmake", "cmake.in"], "file": "/^CMakeLists.txt$/"},
-        {"name": "CoffeeScript", "mimes": ["application/vnd.coffeescript", "text/coffeescript", "text/x-coffeescript"], "mode": "coffeescript", "ext": ["coffee"], "alias": ["coffee", "coffee-script"]},
-        {"name": "Common Lisp", "mimes": ["text/x-common-lisp"], "mode": "commonlisp", "ext": ["cl", "lisp", "el"], "alias": ["lisp"]},
-        {"name": "Cypher", "mimes": ["application/x-cypher-query"], "mode": "cypher", "ext": ["cyp", "cypher"]},
-        {"name": "Cython", "mimes": ["text/x-cython"], "mode": "python", "ext": ["pyx", "pxd", "pxi"]},
-        {"name": "Crystal", "mimes": ["text/x-crystal"], "mode": "crystal", "ext": ["cr"]},
-        {"name": "CSS", "mimes": ["text/css"], "mode": "css", "ext": ["css"]},
-        {"name": "CQL", "mimes": ["text/x-cassandra"], "mode": "sql", "ext": ["cql"]},
-        {"name": "D", "mimes": ["text/x-d"], "mode": "d", "ext": ["d"]},
-        {"name": "Dart", "mimes": ["application/dart", "text/x-dart"], "mode": "dart", "ext": ["dart"]},
-        {"name": "diff", "mimes": ["text/x-diff"], "mode": "diff", "ext": ["diff", "patch"]},
-        {"name": "Django", "mimes": ["text/x-django"], "mode": "django"},
-        {"name": "Dockerfile", "mimes": ["text/x-dockerfile"], "mode": "dockerfile", "file": "/^Dockerfile$/"},
-        {"name": "DTD", "mimes": ["application/xml-dtd"], "mode": "dtd", "ext": ["dtd"]},
-        {"name": "Dylan", "mimes": ["text/x-dylan"], "mode": "dylan", "ext": ["dylan", "dyl", "intr"]},
-        {"name": "EBNF", "mimes": ["text/x-ebnf"], "mode": "ebnf"},
-        {"name": "ECL", "mimes": ["text/x-ecl"], "mode": "ecl", "ext": ["ecl"]},
-        {"name": "edn", "mimes": ["application/edn"], "mode": "clojure", "ext": ["edn"]},
-        {"name": "Eiffel", "mimes": ["text/x-eiffel"], "mode": "eiffel", "ext": ["e"]},
-        {"name": "Elm", "mimes": ["text/x-elm"], "mode": "elm", "ext": ["elm"]},
-        {"name": "Embedded Javascript", "mimes": ["application/x-ejs"], "mode": "htmlembedded", "ext": ["ejs"]},
-        {"name": "Embedded Ruby", "mimes": ["application/x-erb"], "mode": "htmlembedded", "ext": ["erb"]},
-        {"name": "Erlang", "mimes": ["text/x-erlang"], "mode": "erlang", "ext": ["erl"]},
-        {"name": "Esper", "mimes": ["text/x-esper"], "mode": "sql"},
-        {"name": "Factor", "mimes": ["text/x-factor"], "mode": "factor", "ext": ["factor"]},
-        {"name": "FCL", "mimes": ["text/x-fcl"], "mode": "fcl"},
-        {"name": "Forth", "mimes": ["text/x-forth"], "mode": "forth", "ext": ["forth", "fth", "4th"]},
-        {"name": "Fortran", "mimes": ["text/x-fortran"], "mode": "fortran", "ext": ["f", "for", "f77", "f90", "f95"]},
-        {"name": "F#", "mimes": ["text/x-fsharp"], "mode": "mllike", "ext": ["fs"], "alias": ["fsharp"]},
-        {"name": "Gas", "mimes": ["text/x-gas"], "mode": "gas", "ext": ["s"]},
-        {"name": "Gherkin", "mimes": ["text/x-feature"], "mode": "gherkin", "ext": ["feature"]},
-        {"name": "GitHub Flavored Markdown", "mimes": ["text/x-gfm"], "mode": "gfm", "file": "/^(readme|contributing|history).md$/i"},
-        {"name": "Go", "mimes": ["text/x-go"], "mode": "go", "ext": ["go"]},
-        {"name": "Groovy", "mimes": ["text/x-groovy"], "mode": "groovy", "ext": ["groovy", "gradle"], "file": "/^Jenkinsfile$/"},
-        {"name": "HAML", "mimes": ["text/x-haml"], "mode": "haml", "ext": ["haml"]},
-        {"name": "Haskell", "mimes": ["text/x-haskell"], "mode": "haskell", "ext": ["hs"]},
-        {"name": "Haskell (Literate)", "mimes": ["text/x-literate-haskell"], "mode": "haskell-literate", "ext": ["lhs"]},
-        {"name": "Haxe", "mimes": ["text/x-haxe"], "mode": "haxe", "ext": ["hx"]},
-        {"name": "HXML", "mimes": ["text/x-hxml"], "mode": "haxe", "ext": ["hxml"]},
-        {"name": "ASP.NET", "mimes": ["application/x-aspx"], "mode": "htmlembedded", "ext": ["aspx"], "alias": ["asp", "aspx"]},
-        {"name": "HTML", "mimes": ["text/html"], "mode": "htmlmixed", "ext": ["html", "htm", "handlebars", "hbs"], "alias": ["xhtml"]},
-        {"name": "HTTP", "mimes": ["message/http"], "mode": "http"},
-        {"name": "IDL", "mimes": ["text/x-idl"], "mode": "idl", "ext": ["pro"]},
-        {"name": "Pug", "mimes": ["text/x-pug"], "mode": "pug", "ext": ["jade", "pug"], "alias": ["jade"]},
-        {"name": "Java", "mimes": ["text/x-java"], "mode": "clike", "ext": ["java"]},
-        {"name": "Java Server Pages", "mimes": ["application/x-jsp"], "mode": "htmlembedded", "ext": ["jsp"], "alias": ["jsp"]},
-        {"name": "JavaScript", "mimes": ["text/javascript", "text/ecmascript", "application/javascript", "application/x-javascript", "application/ecmascript"], "mode": "javascript", "ext": ["js"], "alias": ["ecmascript", "js", "node"]},
-        {"name": "JSON", "mimes": ["application/json", "application/x-json"], "mode": "javascript", "ext": ["json", "map"], "alias": ["json5"]},
-        {"name": "JSON-LD", "mimes": ["application/ld+json"], "mode": "javascript", "ext": ["jsonld"], "alias": ["jsonld"]},
-        {"name": "JSX", "mimes": ["text/jsx"], "mode": "jsx", "ext": ["jsx"]},
-        {"name": "Jinja2", "mimes": ["text/jinja2"], "mode": "jinja2", "ext": ["j2", "jinja", "jinja2"]},
-        {"name": "Julia", "mimes": ["text/x-julia"], "mode": "julia", "ext": ["jl"]},
-        {"name": "Kotlin", "mimes": ["text/x-kotlin"], "mode": "clike", "ext": ["kt"]},
-        {"name": "LESS", "mimes": ["text/x-less"], "mode": "css", "ext": ["less"]},
-        {"name": "LiveScript", "mimes": ["text/x-livescript"], "mode": "livescript", "ext": ["ls"], "alias": ["ls"]},
-        {"name": "Lua", "mimes": ["text/x-lua"], "mode": "lua", "ext": ["lua"]},
-        {"name": "Markdown", "mimes": ["text/x-markdown"], "mode": "markdown", "ext": ["markdown", "md", "mkd"]},
-        {"name": "mIRC", "mimes": ["text/mirc"], "mode": "mirc"},
-        {"name": "MariaDB SQL", "mimes": ["text/x-mariadb"], "mode": "sql"},
-        {"name": "Mathematica", "mimes": ["text/x-mathematica"], "mode": "mathematica", "ext": ["m", "nb"]},
-        {"name": "Modelica", "mimes": ["text/x-modelica"], "mode": "modelica", "ext": ["mo"]},
-        {"name": "MUMPS", "mimes": ["text/x-mumps"], "mode": "mumps", "ext": ["mps"]},
-        {"name": "MS SQL", "mimes": ["text/x-mssql"], "mode": "sql"},
-        {"name": "mbox", "mimes": ["application/mbox"], "mode": "mbox", "ext": ["mbox"]},
-        {"name": "MySQL", "mimes": ["text/x-mysql"], "mode": "sql"},
-        {"name": "Nginx", "mimes": ["text/x-nginx-conf"], "mode": "nginx", "file": "/nginx.*\\.conf$/i"},
-        {"name": "NSIS", "mimes": ["text/x-nsis"], "mode": "nsis", "ext": ["nsh", "nsi"]},
-        {"name": "NTriples", "mimes": ["application/n-triples", "application/n-quads", "text/n-triples"], "mode": "ntriples", "ext": ["nt", "nq"]},
-        {"name": "Objective-C", "mimes": ["text/x-objectivec"], "mode": "clike", "ext": ["m", "mm"], "alias": ["objective-c", "objc"]},
-        {"name": "OCaml", "mimes": ["text/x-ocaml"], "mode": "mllike", "ext": ["ml", "mli", "mll", "mly"]},
-        {"name": "Octave", "mimes": ["text/x-octave"], "mode": "octave", "ext": ["m"]},
-        {"name": "Oz", "mimes": ["text/x-oz"], "mode": "oz", "ext": ["oz"]},
-        {"name": "Pascal", "mimes": ["text/x-pascal"], "mode": "pascal", "ext": ["p", "pas"]},
-        {"name": "PEG.js", "mimes": ["null"], "mode": "pegjs", "ext": ["jsonld"]},
-        {"name": "Perl", "mimes": ["text/x-perl"], "mode": "perl", "ext": ["pl", "pm"]},
-        {"name": "PHP", "mimes": ["text/x-php", "application/x-httpd-php", "application/x-httpd-php-open"], "mode": "php", "ext": ["php", "php3", "php4", "php5", "php7", "phtml"]},
-        {"name": "Pig", "mimes": ["text/x-pig"], "mode": "pig", "ext": ["pig"]},
-        {"name": "PLSQL", "mimes": ["text/x-plsql"], "mode": "sql", "ext": ["pls"]},
-        {"name": "PowerShell", "mimes": ["application/x-powershell"], "mode": "powershell", "ext": ["ps1", "psd1", "psm1"]},
-        {"name": "Properties files", "mimes": ["text/x-properties"], "mode": "properties", "ext": ["properties", "ini", "in"], "alias": ["ini", "properties"]},
-        {"name": "ProtoBuf", "mimes": ["text/x-protobuf"], "mode": "protobuf", "ext": ["proto"]},
-        {"name": "Python", "mimes": ["text/x-python"], "mode": "python", "ext": ["BUILD", "bzl", "py", "pyw"], "file": "/^(BUCK|BUILD)$/"},
-        {"name": "Puppet", "mimes": ["text/x-puppet"], "mode": "puppet", "ext": ["pp"]},
-        {"name": "Q", "mimes": ["text/x-q"], "mode": "q", "ext": ["q"]},
-        {"name": "R", "mimes": ["text/x-rsrc"], "mode": "r", "ext": ["r", "R"], "alias": ["rscript"]},
-        {"name": "reStructuredText", "mimes": ["text/x-rst"], "mode": "rst", "ext": ["rst"], "alias": ["rst"]},
-        {"name": "RPM Changes", "mimes": ["text/x-rpm-changes"], "mode": "rpm"},
-        {"name": "RPM Spec", "mimes": ["text/x-rpm-spec"], "mode": "rpm", "ext": ["spec"]},
-        {"name": "Ruby", "mimes": ["text/x-ruby"], "mode": "ruby", "ext": ["rb"], "alias": ["jruby", "macruby", "rake", "rb", "rbx"]},
-        {"name": "Rust", "mimes": ["text/x-rustsrc"], "mode": "rust", "ext": ["rs"]},
-        {"name": "SAS", "mimes": ["text/x-sas"], "mode": "sas", "ext": ["sas"]},
-        {"name": "Sass", "mimes": ["text/x-sass"], "mode": "sass", "ext": ["sass"]},
-        {"name": "Scala", "mimes": ["text/x-scala"], "mode": "clike", "ext": ["scala"]},
-        {"name": "Scheme", "mimes": ["text/x-scheme"], "mode": "scheme", "ext": ["scm", "ss"]},
-        {"name": "SCSS", "mimes": ["text/x-scss"], "mode": "css", "ext": ["scss"]},
-        {"name": "Shell", "mimes": ["text/x-sh", "application/x-sh"], "mode": "shell", "ext": ["sh", "ksh", "bash"], "alias": ["bash", "sh", "zsh"], "file": "/^PKGBUILD$/"},
-        {"name": "Sieve", "mimes": ["application/sieve"], "mode": "sieve", "ext": ["siv", "sieve"]},
-        {"name": "Slim", "mimes": ["text/x-slim", "application/x-slim"], "mode": "slim", "ext": ["slim"]},
-        {"name": "Smalltalk", "mimes": ["text/x-stsrc"], "mode": "smalltalk", "ext": ["st"]},
-        {"name": "Smarty", "mimes": ["text/x-smarty"], "mode": "smarty", "ext": ["tpl"]},
-        {"name": "Solr", "mimes": ["text/x-solr"], "mode": "solr"},
-        {"name": "SML", "mimes": ["text/x-sml"], "mode": "mllike", "ext": ["sml", "sig", "fun", "smackspec"]},
-        {"name": "Soy", "mimes": ["text/x-soy"], "mode": "soy", "ext": ["soy"], "alias": ["closure template"]},
-        {"name": "SPARQL", "mimes": ["application/sparql-query"], "mode": "sparql", "ext": ["rq", "sparql"], "alias": ["sparul"]},
-        {"name": "Spreadsheet", "mimes": ["text/x-spreadsheet"], "mode": "spreadsheet", "alias": ["excel", "formula"]},
-        {"name": "SQL", "mimes": ["text/x-sql"], "mode": "sql", "ext": ["sql"]},
-        {"name": "SQLite", "mimes": ["text/x-sqlite"], "mode": "sql"},
-        {"name": "Squirrel", "mimes": ["text/x-squirrel"], "mode": "clike", "ext": ["nut"]},
-        {"name": "Stylus", "mimes": ["text/x-styl"], "mode": "stylus", "ext": ["styl"]},
-        {"name": "Swift", "mimes": ["text/x-swift"], "mode": "swift", "ext": ["swift"]},
-        {"name": "sTeX", "mimes": ["text/x-stex"], "mode": "stex"},
-        {"name": "LaTeX", "mimes": ["text/x-latex"], "mode": "stex", "ext": ["text", "ltx", "tex"], "alias": ["tex"]},
-        {"name": "SystemVerilog", "mimes": ["text/x-systemverilog"], "mode": "verilog", "ext": ["v", "sv", "svh"]},
-        {"name": "Tcl", "mimes": ["text/x-tcl"], "mode": "tcl", "ext": ["tcl"]},
-        {"name": "Textile", "mimes": ["text/x-textile"], "mode": "textile", "ext": ["textile"]},
-        {"name": "TiddlyWiki ", "mimes": ["text/x-tiddlywiki"], "mode": "tiddlywiki"},
-        {"name": "Tiki wiki", "mimes": ["text/tiki"], "mode": "tiki"},
-        {"name": "TOML", "mimes": ["text/x-toml"], "mode": "toml", "ext": ["toml"]},
-        {"name": "Tornado", "mimes": ["text/x-tornado"], "mode": "tornado"},
-        {"name": "troff", "mimes": ["text/troff"], "mode": "troff", "ext": ["1", "2", "3", "4", "5", "6", "7", "8", "9"]},
-        {"name": "TTCN", "mimes": ["text/x-ttcn"], "mode": "ttcn", "ext": ["ttcn", "ttcn3", "ttcnpp"]},
-        {"name": "TTCN_CFG", "mimes": ["text/x-ttcn-cfg"], "mode": "ttcn-cfg", "ext": ["cfg"]},
-        {"name": "Turtle", "mimes": ["text/turtle"], "mode": "turtle", "ext": ["ttl"]},
-        {"name": "TypeScript", "mimes": ["application/typescript"], "mode": "javascript", "ext": ["ts"], "alias": ["ts"]},
-        {"name": "TypeScript-JSX", "mimes": ["text/typescript-jsx"], "mode": "jsx", "ext": ["tsx"], "alias": ["tsx"]},
-        {"name": "Twig", "mimes": ["text/x-twig"], "mode": "twig"},
-        {"name": "Web IDL", "mimes": ["text/x-webidl"], "mode": "webidl", "ext": ["webidl"]},
-        {"name": "VB.NET", "mimes": ["text/x-vb"], "mode": "vb", "ext": ["vb"]},
-        {"name": "VBScript", "mimes": ["text/vbscript"], "mode": "vbscript", "ext": ["vbs"]},
-        {"name": "Velocity", "mimes": ["text/velocity"], "mode": "velocity", "ext": ["vtl"]},
-        {"name": "Verilog", "mimes": ["text/x-verilog"], "mode": "verilog", "ext": ["v"]},
-        {"name": "VHDL", "mimes": ["text/x-vhdl"], "mode": "vhdl", "ext": ["vhd", "vhdl"]},
-        {"name": "Vue.js Component", "mimes": ["script/x-vue", "text/x-vue"], "mode": "vue", "ext": ["vue"]},
-        {"name": "XML", "mimes": ["application/xml", "text/xml"], "mode": "xml", "ext": ["xml", "xsl", "xsd", "svg"], "alias": ["rss", "wsdl", "xsd"]},
-        {"name": "XQuery", "mimes": ["application/xquery"], "mode": "xquery", "ext": ["xy", "xquery"]},
-        {"name": "Yacas", "mimes": ["text/x-yacas"], "mode": "yacas", "ext": ["ys"]},
-        {"name": "YAML", "mimes": ["text/x-yaml", "text/yaml"], "mode": "yaml", "ext": ["yaml", "yml"], "alias": ["yml"]},
-        {"name": "Z80", "mimes": ["text/x-z80"], "mode": "z80", "ext": ["z80"]},
-        {"name": "mscgen", "mimes": ["text/x-mscgen"], "mode": "mscgen", "ext": ["mscgen", "mscin", "msc"]},
-        {"name": "xu", "mimes": ["text/x-xu"], "mode": "mscgen", "ext": ["xu"]},
-        {"name": "msgenny", "mimes": ["text/x-msgenny"], "mode": "mscgen", "ext": ["msgenny"]}
+    "languages": [
+        {
+            "mimes": [
+                "text\/plain"
+            ],
+            "mode": "null",
+            "name": "Autodetect"
+        },
+        {
+            "ext": [
+                "txt",
+                "text",
+                "conf",
+                "def",
+                "list",
+                "log"
+            ],
+            "mimes": [
+                "text\/plain"
+            ],
+            "mode": "null",
+            "name": "Plain Text"
+        },
+        {
+            "color": "#5A8164",
+            "ext": [
+                "dyalog",
+                "apl"
+            ],
+            "mimes": [
+                "text\/apl"
+            ],
+            "mode": "apl",
+            "name": "APL"
+        },
+        {
+            "ext": [
+                "asc",
+                "pgp",
+                "sig"
+            ],
+            "mimes": [
+                "application\/pgp",
+                "application\/pgp-encrypted",
+                "application\/pgp-keys",
+                "application\/pgp-signature"
+            ],
+            "mode": "asciiarmor",
+            "name": "PGP"
+        },
+        {
+            "ext": [
+                "asn",
+                "asn1"
+            ],
+            "mimes": [
+                "text\/x-ttcn-asn"
+            ],
+            "mode": "asn.1",
+            "name": "ASN.1"
+        },
+        {
+            "file": "\/^extensions\\.conf$\/i",
+            "mimes": [
+                "text\/x-asterisk"
+            ],
+            "mode": "asterisk",
+            "name": "Asterisk"
+        },
+        {
+            "color": "#2F2530",
+            "ext": [
+                "b",
+                "bf"
+            ],
+            "mimes": [
+                "text\/x-brainfuck"
+            ],
+            "mode": "brainfuck",
+            "name": "Brainfuck"
+        },
+        {
+            "color": "#555555",
+            "ext": [
+                "c",
+                "h",
+                "ino"
+            ],
+            "mimes": [
+                "text\/x-csrc"
+            ],
+            "mode": "clike",
+            "name": "C"
+        },
+        {
+            "alias": [
+                "cpp"
+            ],
+            "color": "#f34b7d",
+            "ext": [
+                "cpp",
+                "c++",
+                "cc",
+                "cxx",
+                "hpp",
+                "h++",
+                "hh",
+                "hxx"
+            ],
+            "mimes": [
+                "text\/x-c++src"
+            ],
+            "mode": "clike",
+            "name": "C++"
+        },
+        {
+            "ext": [
+                "cob",
+                "cpy"
+            ],
+            "mimes": [
+                "text\/x-cobol"
+            ],
+            "mode": "cobol",
+            "name": "Cobol"
+        },
+        {
+            "alias": [
+                "csharp"
+            ],
+            "color": "#178600",
+            "ext": [
+                "cs"
+            ],
+            "mimes": [
+                "text\/x-csharp"
+            ],
+            "mode": "clike",
+            "name": "C#"
+        },
+        {
+            "color": "#db5855",
+            "ext": [
+                "clj",
+                "cljc",
+                "cljx"
+            ],
+            "mimes": [
+                "text\/x-clojure"
+            ],
+            "mode": "clojure",
+            "name": "Clojure"
+        },
+        {
+            "ext": [
+                "cljs"
+            ],
+            "mimes": [
+                "text\/x-clojurescript"
+            ],
+            "mode": "clojure",
+            "name": "ClojureScript"
+        },
+        {
+            "ext": [
+                "gss"
+            ],
+            "mimes": [
+                "text\/x-gss"
+            ],
+            "mode": "css",
+            "name": "Closure Stylesheets (GSS)"
+        },
+        {
+            "ext": [
+                "cmake",
+                "cmake.in"
+            ],
+            "file": "\/^CMakeLists.txt$\/",
+            "mimes": [
+                "text\/x-cmake"
+            ],
+            "mode": "cmake",
+            "name": "CMake"
+        },
+        {
+            "alias": [
+                "coffee",
+                "coffee-script"
+            ],
+            "color": "#244776",
+            "ext": [
+                "coffee"
+            ],
+            "mimes": [
+                "application\/vnd.coffeescript",
+                "text\/coffeescript",
+                "text\/x-coffeescript"
+            ],
+            "mode": "coffeescript",
+            "name": "CoffeeScript"
+        },
+        {
+            "alias": [
+                "lisp"
+            ],
+            "color": "#3fb68b",
+            "ext": [
+                "cl",
+                "lisp",
+                "el"
+            ],
+            "mimes": [
+                "text\/x-common-lisp"
+            ],
+            "mode": "commonlisp",
+            "name": "Common Lisp"
+        },
+        {
+            "ext": [
+                "cyp",
+                "cypher"
+            ],
+            "mimes": [
+                "application\/x-cypher-query"
+            ],
+            "mode": "cypher",
+            "name": "Cypher"
+        },
+        {
+            "ext": [
+                "pyx",
+                "pxd",
+                "pxi"
+            ],
+            "mimes": [
+                "text\/x-cython"
+            ],
+            "mode": "python",
+            "name": "Cython"
+        },
+        {
+            "color": "#000100",
+            "ext": [
+                "cr"
+            ],
+            "mimes": [
+                "text\/x-crystal"
+            ],
+            "mode": "crystal",
+            "name": "Crystal"
+        },
+        {
+            "color": "#563d7c",
+            "ext": [
+                "css"
+            ],
+            "mimes": [
+                "text\/css"
+            ],
+            "mode": "css",
+            "name": "CSS"
+        },
+        {
+            "ext": [
+                "cql"
+            ],
+            "mimes": [
+                "text\/x-cassandra"
+            ],
+            "mode": "sql",
+            "name": "CQL"
+        },
+        {
+            "color": "#ba595e",
+            "ext": [
+                "d"
+            ],
+            "mimes": [
+                "text\/x-d"
+            ],
+            "mode": "d",
+            "name": "D"
+        },
+        {
+            "color": "#00B4AB",
+            "ext": [
+                "dart"
+            ],
+            "mimes": [
+                "application\/dart",
+                "text\/x-dart"
+            ],
+            "mode": "dart",
+            "name": "Dart"
+        },
+        {
+            "ext": [
+                "diff",
+                "patch"
+            ],
+            "mimes": [
+                "text\/x-diff"
+            ],
+            "mode": "diff",
+            "name": "diff"
+        },
+        {
+            "mimes": [
+                "text\/x-django"
+            ],
+            "mode": "django",
+            "name": "Django"
+        },
+        {
+            "color": "#384d54",
+            "file": "\/^Dockerfile$\/",
+            "mimes": [
+                "text\/x-dockerfile"
+            ],
+            "mode": "dockerfile",
+            "name": "Dockerfile"
+        },
+        {
+            "ext": [
+                "dtd"
+            ],
+            "mimes": [
+                "application\/xml-dtd"
+            ],
+            "mode": "dtd",
+            "name": "DTD"
+        },
+        {
+            "color": "#6c616e",
+            "ext": [
+                "dylan",
+                "dyl",
+                "intr"
+            ],
+            "mimes": [
+                "text\/x-dylan"
+            ],
+            "mode": "dylan",
+            "name": "Dylan"
+        },
+        {
+            "mimes": [
+                "text\/x-ebnf"
+            ],
+            "mode": "ebnf",
+            "name": "EBNF"
+        },
+        {
+            "color": "#8a1267",
+            "ext": [
+                "ecl"
+            ],
+            "mimes": [
+                "text\/x-ecl"
+            ],
+            "mode": "ecl",
+            "name": "ECL"
+        },
+        {
+            "ext": [
+                "edn"
+            ],
+            "mimes": [
+                "application\/edn"
+            ],
+            "mode": "clojure",
+            "name": "edn"
+        },
+        {
+            "color": "#946d57",
+            "ext": [
+                "e"
+            ],
+            "mimes": [
+                "text\/x-eiffel"
+            ],
+            "mode": "eiffel",
+            "name": "Eiffel"
+        },
+        {
+            "color": "#60B5CC",
+            "ext": [
+                "elm"
+            ],
+            "mimes": [
+                "text\/x-elm"
+            ],
+            "mode": "elm",
+            "name": "Elm"
+        },
+        {
+            "ext": [
+                "ejs"
+            ],
+            "mimes": [
+                "application\/x-ejs"
+            ],
+            "mode": "htmlembedded",
+            "name": "Embedded Javascript"
+        },
+        {
+            "ext": [
+                "erb"
+            ],
+            "mimes": [
+                "application\/x-erb"
+            ],
+            "mode": "htmlembedded",
+            "name": "Embedded Ruby"
+        },
+        {
+            "color": "#B83998",
+            "ext": [
+                "erl"
+            ],
+            "mimes": [
+                "text\/x-erlang"
+            ],
+            "mode": "erlang",
+            "name": "Erlang"
+        },
+        {
+            "mimes": [
+                "text\/x-esper"
+            ],
+            "mode": "sql",
+            "name": "Esper"
+        },
+        {
+            "color": "#636746",
+            "ext": [
+                "factor"
+            ],
+            "mimes": [
+                "text\/x-factor"
+            ],
+            "mode": "factor",
+            "name": "Factor"
+        },
+        {
+            "mimes": [
+                "text\/x-fcl"
+            ],
+            "mode": "fcl",
+            "name": "FCL"
+        },
+        {
+            "color": "#341708",
+            "ext": [
+                "forth",
+                "fth",
+                "4th"
+            ],
+            "mimes": [
+                "text\/x-forth"
+            ],
+            "mode": "forth",
+            "name": "Forth"
+        },
+        {
+            "color": "#4d41b1",
+            "ext": [
+                "f",
+                "for",
+                "f77",
+                "f90",
+                "f95"
+            ],
+            "mimes": [
+                "text\/x-fortran"
+            ],
+            "mode": "fortran",
+            "name": "Fortran"
+        },
+        {
+            "alias": [
+                "fsharp"
+            ],
+            "color": "#b845fc",
+            "ext": [
+                "fs"
+            ],
+            "mimes": [
+                "text\/x-fsharp"
+            ],
+            "mode": "mllike",
+            "name": "F#"
+        },
+        {
+            "ext": [
+                "s"
+            ],
+            "mimes": [
+                "text\/x-gas"
+            ],
+            "mode": "gas",
+            "name": "Gas"
+        },
+        {
+            "color": "#5B2063",
+            "ext": [
+                "feature"
+            ],
+            "mimes": [
+                "text\/x-feature"
+            ],
+            "mode": "gherkin",
+            "name": "Gherkin"
+        },
+        {
+            "file": "\/^(readme|contributing|history).md$\/i",
+            "mimes": [
+                "text\/x-gfm"
+            ],
+            "mode": "gfm",
+            "name": "GitHub Flavored Markdown"
+        },
+        {
+            "color": "#00ADD8",
+            "ext": [
+                "go"
+            ],
+            "mimes": [
+                "text\/x-go"
+            ],
+            "mode": "go",
+            "name": "Go"
+        },
+        {
+            "color": "#e69f56",
+            "ext": [
+                "groovy",
+                "gradle"
+            ],
+            "file": "\/^Jenkinsfile$\/",
+            "mimes": [
+                "text\/x-groovy"
+            ],
+            "mode": "groovy",
+            "name": "Groovy"
+        },
+        {
+            "ext": [
+                "haml"
+            ],
+            "mimes": [
+                "text\/x-haml"
+            ],
+            "mode": "haml",
+            "name": "HAML"
+        },
+        {
+            "color": "#5e5086",
+            "ext": [
+                "hs"
+            ],
+            "mimes": [
+                "text\/x-haskell"
+            ],
+            "mode": "haskell",
+            "name": "Haskell"
+        },
+        {
+            "ext": [
+                "lhs"
+            ],
+            "mimes": [
+                "text\/x-literate-haskell"
+            ],
+            "mode": "haskell-literate",
+            "name": "Haskell (Literate)"
+        },
+        {
+            "color": "#df7900",
+            "ext": [
+                "hx"
+            ],
+            "mimes": [
+                "text\/x-haxe"
+            ],
+            "mode": "haxe",
+            "name": "Haxe"
+        },
+        {
+            "ext": [
+                "hxml"
+            ],
+            "mimes": [
+                "text\/x-hxml"
+            ],
+            "mode": "haxe",
+            "name": "HXML"
+        },
+        {
+            "alias": [
+                "asp",
+                "aspx"
+            ],
+            "ext": [
+                "aspx"
+            ],
+            "mimes": [
+                "application\/x-aspx"
+            ],
+            "mode": "htmlembedded",
+            "name": "ASP.NET"
+        },
+        {
+            "alias": [
+                "xhtml"
+            ],
+            "color": "#e34c26",
+            "ext": [
+                "html",
+                "htm",
+                "handlebars",
+                "hbs"
+            ],
+            "mimes": [
+                "text\/html"
+            ],
+            "mode": "htmlmixed",
+            "name": "HTML"
+        },
+        {
+            "mimes": [
+                "message\/http"
+            ],
+            "mode": "http",
+            "name": "HTTP"
+        },
+        {
+            "color": "#a3522f",
+            "ext": [
+                "pro"
+            ],
+            "mimes": [
+                "text\/x-idl"
+            ],
+            "mode": "idl",
+            "name": "IDL"
+        },
+        {
+            "alias": [
+                "jade"
+            ],
+            "ext": [
+                "jade",
+                "pug"
+            ],
+            "mimes": [
+                "text\/x-pug"
+            ],
+            "mode": "pug",
+            "name": "Pug"
+        },
+        {
+            "color": "#b07219",
+            "ext": [
+                "java"
+            ],
+            "mimes": [
+                "text\/x-java"
+            ],
+            "mode": "clike",
+            "name": "Java"
+        },
+        {
+            "alias": [
+                "jsp"
+            ],
+            "ext": [
+                "jsp"
+            ],
+            "mimes": [
+                "application\/x-jsp"
+            ],
+            "mode": "htmlembedded",
+            "name": "Java Server Pages"
+        },
+        {
+            "alias": [
+                "ecmascript",
+                "js",
+                "node"
+            ],
+            "color": "#f1e05a",
+            "ext": [
+                "js"
+            ],
+            "mimes": [
+                "text\/javascript",
+                "text\/ecmascript",
+                "application\/javascript",
+                "application\/x-javascript",
+                "application\/ecmascript"
+            ],
+            "mode": "javascript",
+            "name": "JavaScript"
+        },
+        {
+            "alias": [
+                "json5"
+            ],
+            "ext": [
+                "json",
+                "map"
+            ],
+            "mimes": [
+                "application\/json",
+                "application\/x-json"
+            ],
+            "mode": "javascript",
+            "name": "JSON"
+        },
+        {
+            "alias": [
+                "jsonld"
+            ],
+            "ext": [
+                "jsonld"
+            ],
+            "mimes": [
+                "application\/ld+json"
+            ],
+            "mode": "javascript",
+            "name": "JSON-LD"
+        },
+        {
+            "ext": [
+                "jsx"
+            ],
+            "mimes": [
+                "text\/jsx"
+            ],
+            "mode": "jsx",
+            "name": "JSX"
+        },
+        {
+            "ext": [
+                "j2",
+                "jinja",
+                "jinja2"
+            ],
+            "mimes": [
+                "text\/jinja2"
+            ],
+            "mode": "jinja2",
+            "name": "Jinja2"
+        },
+        {
+            "color": "#a270ba",
+            "ext": [
+                "jl"
+            ],
+            "mimes": [
+                "text\/x-julia"
+            ],
+            "mode": "julia",
+            "name": "Julia"
+        },
+        {
+            "color": "#F18E33",
+            "ext": [
+                "kt"
+            ],
+            "mimes": [
+                "text\/x-kotlin"
+            ],
+            "mode": "clike",
+            "name": "Kotlin"
+        },
+        {
+            "ext": [
+                "less"
+            ],
+            "mimes": [
+                "text\/x-less"
+            ],
+            "mode": "css",
+            "name": "LESS"
+        },
+        {
+            "alias": [
+                "ls"
+            ],
+            "color": "#499886",
+            "ext": [
+                "ls"
+            ],
+            "mimes": [
+                "text\/x-livescript"
+            ],
+            "mode": "livescript",
+            "name": "LiveScript"
+        },
+        {
+            "color": "#000080",
+            "ext": [
+                "lua"
+            ],
+            "mimes": [
+                "text\/x-lua"
+            ],
+            "mode": "lua",
+            "name": "Lua"
+        },
+        {
+            "ext": [
+                "markdown",
+                "md",
+                "mkd"
+            ],
+            "mimes": [
+                "text\/x-markdown"
+            ],
+            "mode": "markdown",
+            "name": "Markdown"
+        },
+        {
+            "mimes": [
+                "text\/mirc"
+            ],
+            "mode": "mirc",
+            "name": "mIRC"
+        },
+        {
+            "mimes": [
+                "text\/x-mariadb"
+            ],
+            "mode": "sql",
+            "name": "MariaDB SQL"
+        },
+        {
+            "ext": [
+                "m",
+                "nb"
+            ],
+            "mimes": [
+                "text\/x-mathematica"
+            ],
+            "mode": "mathematica",
+            "name": "Mathematica"
+        },
+        {
+            "ext": [
+                "mo"
+            ],
+            "mimes": [
+                "text\/x-modelica"
+            ],
+            "mode": "modelica",
+            "name": "Modelica"
+        },
+        {
+            "ext": [
+                "mps"
+            ],
+            "mimes": [
+                "text\/x-mumps"
+            ],
+            "mode": "mumps",
+            "name": "MUMPS"
+        },
+        {
+            "mimes": [
+                "text\/x-mssql"
+            ],
+            "mode": "sql",
+            "name": "MS SQL"
+        },
+        {
+            "ext": [
+                "mbox"
+            ],
+            "mimes": [
+                "application\/mbox"
+            ],
+            "mode": "mbox",
+            "name": "mbox"
+        },
+        {
+            "mimes": [
+                "text\/x-mysql"
+            ],
+            "mode": "sql",
+            "name": "MySQL"
+        },
+        {
+            "file": "\/nginx.*\\.conf$\/i",
+            "mimes": [
+                "text\/x-nginx-conf"
+            ],
+            "mode": "nginx",
+            "name": "Nginx"
+        },
+        {
+            "ext": [
+                "nsh",
+                "nsi"
+            ],
+            "mimes": [
+                "text\/x-nsis"
+            ],
+            "mode": "nsis",
+            "name": "NSIS"
+        },
+        {
+            "ext": [
+                "nt",
+                "nq"
+            ],
+            "mimes": [
+                "application\/n-triples",
+                "application\/n-quads",
+                "text\/n-triples"
+            ],
+            "mode": "ntriples",
+            "name": "NTriples"
+        },
+        {
+            "alias": [
+                "objective-c",
+                "objc"
+            ],
+            "color": "#438eff",
+            "ext": [
+                "m",
+                "mm"
+            ],
+            "mimes": [
+                "text\/x-objectivec"
+            ],
+            "mode": "clike",
+            "name": "Objective-C"
+        },
+        {
+            "color": "#3be133",
+            "ext": [
+                "ml",
+                "mli",
+                "mll",
+                "mly"
+            ],
+            "mimes": [
+                "text\/x-ocaml"
+            ],
+            "mode": "mllike",
+            "name": "OCaml"
+        },
+        {
+            "ext": [
+                "m"
+            ],
+            "mimes": [
+                "text\/x-octave"
+            ],
+            "mode": "octave",
+            "name": "Octave"
+        },
+        {
+            "color": "#fab738",
+            "ext": [
+                "oz"
+            ],
+            "mimes": [
+                "text\/x-oz"
+            ],
+            "mode": "oz",
+            "name": "Oz"
+        },
+        {
+            "color": "#E3F171",
+            "ext": [
+                "p",
+                "pas"
+            ],
+            "mimes": [
+                "text\/x-pascal"
+            ],
+            "mode": "pascal",
+            "name": "Pascal"
+        },
+        {
+            "ext": [
+                "jsonld"
+            ],
+            "mimes": [
+                "null"
+            ],
+            "mode": "pegjs",
+            "name": "PEG.js"
+        },
+        {
+            "color": "#0298c3",
+            "ext": [
+                "pl",
+                "pm"
+            ],
+            "mimes": [
+                "text\/x-perl"
+            ],
+            "mode": "perl",
+            "name": "Perl"
+        },
+        {
+            "color": "#4F5D95",
+            "ext": [
+                "php",
+                "php3",
+                "php4",
+                "php5",
+                "php7",
+                "phtml"
+            ],
+            "mimes": [
+                "text\/x-php",
+                "application\/x-httpd-php",
+                "application\/x-httpd-php-open"
+            ],
+            "mode": "php",
+            "name": "PHP"
+        },
+        {
+            "ext": [
+                "pig"
+            ],
+            "mimes": [
+                "text\/x-pig"
+            ],
+            "mode": "pig",
+            "name": "Pig"
+        },
+        {
+            "color": "#dad8d8",
+            "ext": [
+                "pls"
+            ],
+            "mimes": [
+                "text\/x-plsql"
+            ],
+            "mode": "sql",
+            "name": "PLSQL"
+        },
+        {
+            "color": "#012456",
+            "ext": [
+                "ps1",
+                "psd1",
+                "psm1"
+            ],
+            "mimes": [
+                "application\/x-powershell"
+            ],
+            "mode": "powershell",
+            "name": "PowerShell"
+        },
+        {
+            "alias": [
+                "ini",
+                "properties"
+            ],
+            "ext": [
+                "properties",
+                "ini",
+                "in"
+            ],
+            "mimes": [
+                "text\/x-properties"
+            ],
+            "mode": "properties",
+            "name": "Properties files"
+        },
+        {
+            "ext": [
+                "proto"
+            ],
+            "mimes": [
+                "text\/x-protobuf"
+            ],
+            "mode": "protobuf",
+            "name": "ProtoBuf"
+        },
+        {
+            "color": "#3572A5",
+            "ext": [
+                "BUILD",
+                "bzl",
+                "py",
+                "pyw"
+            ],
+            "file": "\/^(BUCK|BUILD)$\/",
+            "mimes": [
+                "text\/x-python"
+            ],
+            "mode": "python",
+            "name": "Python"
+        },
+        {
+            "color": "#302B6D",
+            "ext": [
+                "pp"
+            ],
+            "mimes": [
+                "text\/x-puppet"
+            ],
+            "mode": "puppet",
+            "name": "Puppet"
+        },
+        {
+            "ext": [
+                "q"
+            ],
+            "mimes": [
+                "text\/x-q"
+            ],
+            "mode": "q",
+            "name": "Q"
+        },
+        {
+            "alias": [
+                "rscript"
+            ],
+            "color": "#198CE7",
+            "ext": [
+                "r",
+                "R"
+            ],
+            "mimes": [
+                "text\/x-rsrc"
+            ],
+            "mode": "r",
+            "name": "R"
+        },
+        {
+            "alias": [
+                "rst"
+            ],
+            "ext": [
+                "rst"
+            ],
+            "mimes": [
+                "text\/x-rst"
+            ],
+            "mode": "rst",
+            "name": "reStructuredText"
+        },
+        {
+            "mimes": [
+                "text\/x-rpm-changes"
+            ],
+            "mode": "rpm",
+            "name": "RPM Changes"
+        },
+        {
+            "ext": [
+                "spec"
+            ],
+            "mimes": [
+                "text\/x-rpm-spec"
+            ],
+            "mode": "rpm",
+            "name": "RPM Spec"
+        },
+        {
+            "alias": [
+                "jruby",
+                "macruby",
+                "rake",
+                "rb",
+                "rbx"
+            ],
+            "color": "#701516",
+            "ext": [
+                "rb"
+            ],
+            "mimes": [
+                "text\/x-ruby"
+            ],
+            "mode": "ruby",
+            "name": "Ruby"
+        },
+        {
+            "color": "#dea584",
+            "ext": [
+                "rs"
+            ],
+            "mimes": [
+                "text\/x-rustsrc"
+            ],
+            "mode": "rust",
+            "name": "Rust"
+        },
+        {
+            "color": "#B34936",
+            "ext": [
+                "sas"
+            ],
+            "mimes": [
+                "text\/x-sas"
+            ],
+            "mode": "sas",
+            "name": "SAS"
+        },
+        {
+            "ext": [
+                "sass"
+            ],
+            "mimes": [
+                "text\/x-sass"
+            ],
+            "mode": "sass",
+            "name": "Sass"
+        },
+        {
+            "color": "#c22d40",
+            "ext": [
+                "scala"
+            ],
+            "mimes": [
+                "text\/x-scala"
+            ],
+            "mode": "clike",
+            "name": "Scala"
+        },
+        {
+            "color": "#1e4aec",
+            "ext": [
+                "scm",
+                "ss"
+            ],
+            "mimes": [
+                "text\/x-scheme"
+            ],
+            "mode": "scheme",
+            "name": "Scheme"
+        },
+        {
+            "ext": [
+                "scss"
+            ],
+            "mimes": [
+                "text\/x-scss"
+            ],
+            "mode": "css",
+            "name": "SCSS"
+        },
+        {
+            "alias": [
+                "bash",
+                "sh",
+                "zsh"
+            ],
+            "color": "#89e051",
+            "ext": [
+                "sh",
+                "ksh",
+                "bash"
+            ],
+            "file": "\/^PKGBUILD$\/",
+            "mimes": [
+                "text\/x-sh",
+                "application\/x-sh"
+            ],
+            "mode": "shell",
+            "name": "Shell"
+        },
+        {
+            "ext": [
+                "siv",
+                "sieve"
+            ],
+            "mimes": [
+                "application\/sieve"
+            ],
+            "mode": "sieve",
+            "name": "Sieve"
+        },
+        {
+            "ext": [
+                "slim"
+            ],
+            "mimes": [
+                "text\/x-slim",
+                "application\/x-slim"
+            ],
+            "mode": "slim",
+            "name": "Slim"
+        },
+        {
+            "color": "#596706",
+            "ext": [
+                "st"
+            ],
+            "mimes": [
+                "text\/x-stsrc"
+            ],
+            "mode": "smalltalk",
+            "name": "Smalltalk"
+        },
+        {
+            "ext": [
+                "tpl"
+            ],
+            "mimes": [
+                "text\/x-smarty"
+            ],
+            "mode": "smarty",
+            "name": "Smarty"
+        },
+        {
+            "mimes": [
+                "text\/x-solr"
+            ],
+            "mode": "solr",
+            "name": "Solr"
+        },
+        {
+            "ext": [
+                "sml",
+                "sig",
+                "fun",
+                "smackspec"
+            ],
+            "mimes": [
+                "text\/x-sml"
+            ],
+            "mode": "mllike",
+            "name": "SML"
+        },
+        {
+            "alias": [
+                "closure template"
+            ],
+            "ext": [
+                "soy"
+            ],
+            "mimes": [
+                "text\/x-soy"
+            ],
+            "mode": "soy",
+            "name": "Soy"
+        },
+        {
+            "alias": [
+                "sparul"
+            ],
+            "ext": [
+                "rq",
+                "sparql"
+            ],
+            "mimes": [
+                "application\/sparql-query"
+            ],
+            "mode": "sparql",
+            "name": "SPARQL"
+        },
+        {
+            "alias": [
+                "excel",
+                "formula"
+            ],
+            "mimes": [
+                "text\/x-spreadsheet"
+            ],
+            "mode": "spreadsheet",
+            "name": "Spreadsheet"
+        },
+        {
+            "ext": [
+                "sql"
+            ],
+            "mimes": [
+                "text\/x-sql"
+            ],
+            "mode": "sql",
+            "name": "SQL"
+        },
+        {
+            "mimes": [
+                "text\/x-sqlite"
+            ],
+            "mode": "sql",
+            "name": "SQLite"
+        },
+        {
+            "color": "#800000",
+            "ext": [
+                "nut"
+            ],
+            "mimes": [
+                "text\/x-squirrel"
+            ],
+            "mode": "clike",
+            "name": "Squirrel"
+        },
+        {
+            "ext": [
+                "styl"
+            ],
+            "mimes": [
+                "text\/x-styl"
+            ],
+            "mode": "stylus",
+            "name": "Stylus"
+        },
+        {
+            "color": "#ffac45",
+            "ext": [
+                "swift"
+            ],
+            "mimes": [
+                "text\/x-swift"
+            ],
+            "mode": "swift",
+            "name": "Swift"
+        },
+        {
+            "mimes": [
+                "text\/x-stex"
+            ],
+            "mode": "stex",
+            "name": "sTeX"
+        },
+        {
+            "alias": [
+                "tex"
+            ],
+            "ext": [
+                "text",
+                "ltx",
+                "tex"
+            ],
+            "mimes": [
+                "text\/x-latex"
+            ],
+            "mode": "stex",
+            "name": "LaTeX"
+        },
+        {
+            "color": "#DAE1C2",
+            "ext": [
+                "v",
+                "sv",
+                "svh"
+            ],
+            "mimes": [
+                "text\/x-systemverilog"
+            ],
+            "mode": "verilog",
+            "name": "SystemVerilog"
+        },
+        {
+            "color": "#e4cc98",
+            "ext": [
+                "tcl"
+            ],
+            "mimes": [
+                "text\/x-tcl"
+            ],
+            "mode": "tcl",
+            "name": "Tcl"
+        },
+        {
+            "ext": [
+                "textile"
+            ],
+            "mimes": [
+                "text\/x-textile"
+            ],
+            "mode": "textile",
+            "name": "Textile"
+        },
+        {
+            "mimes": [
+                "text\/x-tiddlywiki"
+            ],
+            "mode": "tiddlywiki",
+            "name": "TiddlyWiki "
+        },
+        {
+            "mimes": [
+                "text\/tiki"
+            ],
+            "mode": "tiki",
+            "name": "Tiki wiki"
+        },
+        {
+            "ext": [
+                "toml"
+            ],
+            "mimes": [
+                "text\/x-toml"
+            ],
+            "mode": "toml",
+            "name": "TOML"
+        },
+        {
+            "mimes": [
+                "text\/x-tornado"
+            ],
+            "mode": "tornado",
+            "name": "Tornado"
+        },
+        {
+            "ext": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9"
+            ],
+            "mimes": [
+                "text\/troff"
+            ],
+            "mode": "troff",
+            "name": "troff"
+        },
+        {
+            "ext": [
+                "ttcn",
+                "ttcn3",
+                "ttcnpp"
+            ],
+            "mimes": [
+                "text\/x-ttcn"
+            ],
+            "mode": "ttcn",
+            "name": "TTCN"
+        },
+        {
+            "ext": [
+                "cfg"
+            ],
+            "mimes": [
+                "text\/x-ttcn-cfg"
+            ],
+            "mode": "ttcn-cfg",
+            "name": "TTCN_CFG"
+        },
+        {
+            "ext": [
+                "ttl"
+            ],
+            "mimes": [
+                "text\/turtle"
+            ],
+            "mode": "turtle",
+            "name": "Turtle"
+        },
+        {
+            "alias": [
+                "ts"
+            ],
+            "color": "#2b7489",
+            "ext": [
+                "ts"
+            ],
+            "mimes": [
+                "application\/typescript"
+            ],
+            "mode": "javascript",
+            "name": "TypeScript"
+        },
+        {
+            "alias": [
+                "tsx"
+            ],
+            "ext": [
+                "tsx"
+            ],
+            "mimes": [
+                "text\/typescript-jsx"
+            ],
+            "mode": "jsx",
+            "name": "TypeScript-JSX"
+        },
+        {
+            "mimes": [
+                "text\/x-twig"
+            ],
+            "mode": "twig",
+            "name": "Twig"
+        },
+        {
+            "ext": [
+                "webidl"
+            ],
+            "mimes": [
+                "text\/x-webidl"
+            ],
+            "mode": "webidl",
+            "name": "Web IDL"
+        },
+        {
+            "ext": [
+                "vb"
+            ],
+            "mimes": [
+                "text\/x-vb"
+            ],
+            "mode": "vb",
+            "name": "VB.NET"
+        },
+        {
+            "ext": [
+                "vbs"
+            ],
+            "mimes": [
+                "text\/vbscript"
+            ],
+            "mode": "vbscript",
+            "name": "VBScript"
+        },
+        {
+            "ext": [
+                "vtl"
+            ],
+            "mimes": [
+                "text\/velocity"
+            ],
+            "mode": "velocity",
+            "name": "Velocity"
+        },
+        {
+            "color": "#b2b7f8",
+            "ext": [
+                "v"
+            ],
+            "mimes": [
+                "text\/x-verilog"
+            ],
+            "mode": "verilog",
+            "name": "Verilog"
+        },
+        {
+            "color": "#adb2cb",
+            "ext": [
+                "vhd",
+                "vhdl"
+            ],
+            "mimes": [
+                "text\/x-vhdl"
+            ],
+            "mode": "vhdl",
+            "name": "VHDL"
+        },
+        {
+            "ext": [
+                "vue"
+            ],
+            "mimes": [
+                "script\/x-vue",
+                "text\/x-vue"
+            ],
+            "mode": "vue",
+            "name": "Vue.js Component"
+        },
+        {
+            "alias": [
+                "rss",
+                "wsdl",
+                "xsd"
+            ],
+            "ext": [
+                "xml",
+                "xsl",
+                "xsd",
+                "svg"
+            ],
+            "mimes": [
+                "application\/xml",
+                "text\/xml"
+            ],
+            "mode": "xml",
+            "name": "XML"
+        },
+        {
+            "color": "#5232e7",
+            "ext": [
+                "xy",
+                "xquery"
+            ],
+            "mimes": [
+                "application\/xquery"
+            ],
+            "mode": "xquery",
+            "name": "XQuery"
+        },
+        {
+            "ext": [
+                "ys"
+            ],
+            "mimes": [
+                "text\/x-yacas"
+            ],
+            "mode": "yacas",
+            "name": "Yacas"
+        },
+        {
+            "alias": [
+                "yml"
+            ],
+            "ext": [
+                "yaml",
+                "yml"
+            ],
+            "mimes": [
+                "text\/x-yaml",
+                "text\/yaml"
+            ],
+            "mode": "yaml",
+            "name": "YAML"
+        },
+        {
+            "ext": [
+                "z80"
+            ],
+            "mimes": [
+                "text\/x-z80"
+            ],
+            "mode": "z80",
+            "name": "Z80"
+        },
+        {
+            "ext": [
+                "mscgen",
+                "mscin",
+                "msc"
+            ],
+            "mimes": [
+                "text\/x-mscgen"
+            ],
+            "mode": "mscgen",
+            "name": "mscgen"
+        },
+        {
+            "ext": [
+                "xu"
+            ],
+            "mimes": [
+                "text\/x-xu"
+            ],
+            "mode": "mscgen",
+            "name": "xu"
+        },
+        {
+            "ext": [
+                "msgenny"
+            ],
+            "mimes": [
+                "text\/x-msgenny"
+            ],
+            "mode": "mscgen",
+            "name": "msgenny"
+        }
     ]
 }

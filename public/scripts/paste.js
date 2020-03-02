@@ -17,44 +17,53 @@ window.addEventListener("load", async () =>
             readOnly: "nocursor"
         });
 
+        let langMime;
+        let langColor;
+
         if (langCache.has(langs[i]))
         {
-            editor.setOption("mode", langCache.get(langs[i])[0]);
+            langMime = langCache.get(langs[i])[0];
         }
         else
         {
-            let res = await fetch(`/api/data/language?name=${langs[i]}`,
+            let res = await fetch(`/api/data/language?name=${encodeURIComponent(langs[i])}`,
             {
                 headers:
                 {
                     "Content-Type": "application/json"
                 }
             });
-    
-            let lang = await res.json();
-    
-            await import(`./libs/codemirror/${lang["mode"]}/${lang["mode"]}.js`).then(() =>
-            {
-                editor.setOption("mode", lang["mimes"][0]);
-            });
 
-            langCache.set(langs[i], [lang["mimes"][0], lang["color"]]);
+            let langData = await res.json();
+
+            if (langData["mode"] !== "null")
+            {
+                await import(`./libs/codemirror/${langData["mode"]}/${langData["mode"]}.js`).then(() =>
+                {
+                    langMime = langData["mimes"][0];
+                });
+            }
+
+            langCache.set(langs[i], [langData["mimes"][0], langData["color"]]);
         }
 
-        if (langCache.get(langs[i])[1])
+        editor.setOption("mode", langMime);
+
+        langColor = langCache.get(langs[i])[1];
+
+        if (langColor)
         {
-            let langText = textareas[i].closest(".pasty").getElementsByClassName("lang")[0];
-            let color = langCache.get(langs[i])[1];
+            let langTextElem = textareas[i].closest(".pasty").getElementsByClassName("lang")[0];
 
-            langText.style.backgroundColor = color;
+            langTextElem.style.backgroundColor = langColor;
 
-            if (getColor(color))
+            if (getColor(langColor))
             {
-                langText.style.color = "white";
+                langTextElem.style.color = "white";
             }
             else
             {
-                langText.style.color = "black";
+                langTextElem.style.color = "black";
             }
         }
     }

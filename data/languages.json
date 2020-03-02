@@ -307,6 +307,7 @@
             "name": "diff"
         },
         {
+            "color": "#092D1F",
             "mimes": [
                 "text\/x-django"
             ],
@@ -396,6 +397,7 @@
             "name": "Elm"
         },
         {
+            "color": "#f1e05a",
             "ext": [
                 "ejs"
             ],
@@ -406,6 +408,7 @@
             "name": "Embedded Javascript"
         },
         {
+            "color": "#701516",
             "ext": [
                 "erb"
             ],
@@ -547,6 +550,7 @@
             "name": "Groovy"
         },
         {
+            "color": "#E5D8A2",
             "ext": [
                 "haml"
             ],
@@ -568,6 +572,7 @@
             "name": "Haskell"
         },
         {
+            "color": "#5e5086",
             "ext": [
                 "lhs"
             ],
@@ -599,6 +604,7 @@
             "name": "HXML"
         },
         {
+            "color": "#0381C1",
             "alias": [
                 "asp",
                 "aspx"
@@ -648,6 +654,7 @@
             "name": "IDL"
         },
         {
+            "color": "#A86454",
             "alias": [
                 "jade"
             ],
@@ -778,6 +785,7 @@
             "name": "Kotlin"
         },
         {
+            "color": "#204470",
             "ext": [
                 "less"
             ],
@@ -832,6 +840,7 @@
             "name": "mIRC"
         },
         {
+            "color": "#00225D",
             "mimes": [
                 "text\/x-mariadb"
             ],
@@ -839,6 +848,7 @@
             "name": "MariaDB SQL"
         },
         {
+            "color": "#D61001",
             "ext": [
                 "m",
                 "nb"
@@ -887,6 +897,7 @@
             "name": "mbox"
         },
         {
+            "color": "#DD8A00",
             "mimes": [
                 "text\/x-mysql"
             ],
@@ -894,6 +905,7 @@
             "name": "MySQL"
         },
         {
+            "color": "#0D924B",
             "file": "\/nginx.*\\.conf$\/i",
             "mimes": [
                 "text\/x-nginx-conf"
@@ -1210,6 +1222,7 @@
             "name": "SAS"
         },
         {
+            "color": "#CE6B9E",
             "ext": [
                 "sass"
             ],
@@ -1243,6 +1256,7 @@
             "name": "Scheme"
         },
         {
+            "color": "#CE6B9E",
             "ext": [
                 "scss"
             ],
@@ -1493,6 +1507,7 @@
             "name": "Tiki wiki"
         },
         {
+            "color": "#414243",
             "ext": [
                 "toml"
             ],
@@ -1574,6 +1589,7 @@
             "name": "TypeScript"
         },
         {
+            "color": "#2b7489",
             "alias": [
                 "tsx"
             ],
@@ -1604,6 +1620,7 @@
             "name": "Web IDL"
         },
         {
+            "color": "#36127E",
             "ext": [
                 "vb"
             ],
@@ -1709,6 +1726,7 @@
             "name": "Yacas"
         },
         {
+            "color": "#E98C1E",
             "alias": [
                 "yml"
             ],

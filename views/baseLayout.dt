@@ -23,5 +23,8 @@ html(lang="en")
             include footer
 
         script(src="scripts/libs/codemirror/codemirror.js")
+        script(src="scripts/libs/codemirror/simple.js")
+        script(src="scripts/libs/codemirror/overlay.js")
+        script(src="scripts/libs/codemirror/multiplex.js")
         
         block scripts

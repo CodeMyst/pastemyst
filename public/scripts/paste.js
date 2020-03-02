@@ -20,13 +20,13 @@ window.addEventListener("load", async () =>
         let langMime;
         let langColor;
 
-        if (langCache.has(langs[i]))
+        if (langCache.has(langs[i])) // jshint ignore:line
         {
-            langMime = langCache.get(langs[i])[0];
+            langMime = langCache.get(langs[i])[0]; // jshint ignore:line
         }
         else
         {
-            let res = await fetch(`/api/data/language?name=${encodeURIComponent(langs[i])}`,
+            let res = await fetch(`/api/data/language?name=${encodeURIComponent(langs[i])}`, // jshint ignore:line
             {
                 headers:
                 {
@@ -36,20 +36,20 @@ window.addEventListener("load", async () =>
 
             let langData = await res.json();
 
-            if (langData["mode"] !== "null")
+            if (langData.mode !== "null")
             {
-                await import(`./libs/codemirror/${langData["mode"]}/${langData["mode"]}.js`).then(() =>
+                await import(`./libs/codemirror/${langData.mode}/${langData.mode}.js`).then(() => // jshint ignore:line
                 {
-                    langMime = langData["mimes"][0];
+                    langMime = langData.mimes[0];
                 });
             }
 
-            langCache.set(langs[i], [langData["mimes"][0], langData["color"]]);
+            langCache.set(langs[i], [langData.mimes[0], langData.color]); // jshint ignore:line
         }
 
         editor.setOption("mode", langMime);
 
-        langColor = langCache.get(langs[i])[1];
+        langColor = langCache.get(langs[i])[1]; // jshint ignore:line
 
         if (langColor)
         {
@@ -68,11 +68,11 @@ window.addEventListener("load", async () =>
         }
     }
 
-    let createdAtDate = new Date(createdAt * 1000);
+    let createdAtDate = new Date(createdAt * 1000); // jshint ignore:line
 
     document.querySelector(".paste-meta .created-at .value").textContent = " " + createdAtDate.toString().toLowerCase();
 
-    const response = await fetch(`/api/time/expiresInToUnixTime?createdAt=${createdAt}&expiresIn=${expiresIn}`,
+    const response = await fetch(`/api/time/expiresInToUnixTime?createdAt=${createdAt}&expiresIn=${expiresIn}`, // jshint ignore:line
     {
         headers:
         {
@@ -80,7 +80,7 @@ window.addEventListener("load", async () =>
         }
     });
 
-    let expiresAt = (await response.json())["result"];
+    let expiresAt = (await response.json()).result;
 
     if (expiresAt !== 0)
     {

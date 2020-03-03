@@ -40,5 +40,27 @@ public class WebInterface
 		const string rawCode = pasty.code;
 
 		render!("raw.dt", title, rawCode);
+  }
+  
+	/++
+	 + paste
+	 +/
+	@path("/:id")
+	public void getPaste(string _id)
+	{
+		import pastemyst.db : findOneById;
+		import pastemyst.data : Paste;
+		import std.conv : to;
+ 
+		const auto res = findOneById!Paste(_id);
+ 
+		if (res.isNull)
+		{
+			return;
+		}
+ 
+		const Paste paste = res.get();
+ 
+		render!("paste.dt", paste);
 	}
 }

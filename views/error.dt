@@ -1,0 +1,10 @@
+extends baseLayout
+
+block body
+    pre
+        code.hljs.markdown
+            h1 # #{error.code}
+            br
+            p #{error.message}
+            p You can go back to the #[a(href="/") home] page.
+            p #{errorDebug}

@@ -3,7 +3,7 @@ import vibe.d;
 /++
  + Renders an error page, everytime an error occured
  +/
-void displayError(HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
+void displayError(HTTPServerRequest _, HTTPServerResponse res, HTTPServerErrorInfo error)
 {
 	string errorDebug = "";
 	debug errorDebug = error.debugMessage;

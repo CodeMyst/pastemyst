@@ -1,0 +1,7 @@
+extends baseLayout
+
+block body
+    //- todo: this page is incomplete
+    //- todo: specify which information is stored about the user
+
+    a(href="/login/github") login with github

@@ -10,7 +10,7 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         meta(http-equiv="X-UA-Compatible", content="ie=edge")
 
-        link(rel="stylesheet", href="style/main.css")
+        link(rel="stylesheet", href="/style/main.css")
 
         block head
     
@@ -22,9 +22,9 @@ html(lang="en")
 
             include footer
 
-        script(src="scripts/libs/codemirror/codemirror.js")
-        script(src="scripts/libs/codemirror/simple.js")
-        script(src="scripts/libs/codemirror/overlay.js")
-        script(src="scripts/libs/codemirror/multiplex.js")
+        script(src="/scripts/libs/codemirror/codemirror.js")
+        script(src="/scripts/libs/codemirror/simple.js")
+        script(src="/scripts/libs/codemirror/overlay.js")
+        script(src="/scripts/libs/codemirror/multiplex.js")
         
         block scripts

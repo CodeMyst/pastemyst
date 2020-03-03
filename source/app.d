@@ -2,13 +2,15 @@ import vibe.d;
 
 public void main()
 {
-	import pastemyst.web : WebInterface;
+	import pastemyst.web : RootWeb, PasteWeb, LoginWeb;
 	import pastemyst.rest : APIPaste, APITime, APIData;
 	import pastemyst.db : connect;
 
 	URLRouter router = new URLRouter();
 	router.get("*", serveStaticFiles("public"));
-	router.registerWebInterface(new WebInterface());
+	router.registerWebInterface(new RootWeb());
+	router.registerWebInterface(new LoginWeb());
+	router.registerWebInterface(new PasteWeb());
 	router.registerRestInterface(new APIPaste());
 	router.registerRestInterface(new APITime());
 	router.registerRestInterface(new APIData());

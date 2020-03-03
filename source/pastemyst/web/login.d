@@ -17,4 +17,14 @@ public class LoginWeb
     {
         render!("login.dt");
     }
+
+    /++
+     + GET /login/github
+     +
+     + login with github
+     +/
+    public void getGithub()
+    {
+        logInfo("github");
+    }
 }

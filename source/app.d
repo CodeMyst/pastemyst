@@ -1,5 +1,16 @@
 import vibe.d;
 
+/++
+ + Renders an error page, everytime an error occured
+ +/
+void displayError(HTTPServerRequest _, HTTPServerResponse res, HTTPServerErrorInfo error)
+{
+	string errorDebug = "";
+	debug errorDebug = error.debugMessage;
+	
+	res.render!("error.dt", error, errorDebug);
+}
+
 public void main()
 {
 	import pastemyst.web : WebInterface;
@@ -16,6 +27,7 @@ public void main()
 	HTTPServerSettings serverSettings = new HTTPServerSettings();
 	serverSettings.bindAddresses = ["127.0.0.1"];
 	serverSettings.port = 5000;
+	serverSettings.errorPageHandler = toDelegate(&displayError);
 
 	listenHTTP(serverSettings, router);
 

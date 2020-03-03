@@ -11,6 +11,11 @@ public struct Config
      + github config for oauth
      +/
     public Github github;
+
+    /++
+     + jwt config
+     +/
+    public Jwt jwt;
 }
 
 /++
@@ -30,6 +35,17 @@ public struct Github
 }
 
 /++
+ + struct holding the jwt secret
+ +/
+public struct Jwt
+{
+    /++
+     + jwt secret
+     +/
+    public string secret;
+}
+
+/++
  + app config
  +/
 @property
@@ -40,39 +56,45 @@ private const string configPath = "config.yaml";
 
 static this()
 {
-    import std.file : exists;
-
-    if (!exists("config.yaml"))
+    version (unittest)
     {
-        throw new Exception("missing config.yaml");
+        return;
     }
-
-    Node cfg;
-
-    try
+    else
     {
-        cfg = Loader.fromFile("config.yaml").load();
-    }
-    catch (YAMLException e)
-    {
-        throw new Exception("config.yaml: invalid or empty");
-    }
+        import std.file : exists;
+        import std.exception : enforce;
 
-    if (!cfg.isValid())
-    {
-        throw new Exception("config.yaml: invalid");
-    }
+        if (!exists("config.yaml"))
+        {
+            throw new Exception("missing config.yaml");
+        }
 
-    if (!cfg.containsKey("github"))
-    {
-        throw new Exception("config.yaml: missing github");
-    }
+        Node cfg;
 
-    if (!cfg["github"].containsKey("id") || !cfg["github"].containsKey("secret"))
-    {
-        throw new Exception("config.yaml: missing github id or github secret");
-    }
+        try
+        {
+            cfg = Loader.fromFile("config.yaml").load();
+        }
+        catch (YAMLException e)
+        {
+            throw new Exception("config.yaml: invalid or empty");
+        }
 
-    _config.github.id = cfg["github"]["id"].as!string();
-    _config.github.secret = cfg["github"]["secret"].as!string();
+        enforce(cfg.isValid(), "config.yaml: invalid");
+
+        enforce(cfg.containsKey("github"), "config.yaml: missing github");
+
+        enforce(cfg["github"].containsKey("id"), "config.yaml: missing github id");
+        enforce(cfg["github"].containsKey("secret"), "config.yaml: missing github secret");
+
+        _config.github.id = cfg["github"]["id"].as!string();
+        _config.github.secret = cfg["github"]["secret"].as!string();
+
+        enforce(cfg.containsKey("jwt"), "config.yaml: missing jwt");
+
+        enforce(cfg["jwt"].containsKey("secret"), "config.yaml: missing jwt secret");
+
+        _config.jwt.secret = cfg["jwt"]["secret"].as!string();
+    }
 }

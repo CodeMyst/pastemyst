@@ -3,11 +3,6 @@ module pastemyst.rest.paste;
 import pastemyst.data;
 import vibe.d;
 
-version(unittest)
-{
-    import dshould;
-}
-
 /++
  + API interface for the `/api/paste` endpoint.
  +/

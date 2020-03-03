@@ -1,0 +1,43 @@
+extends baseLayout
+ 
+block body
+    #paste
+        .paste-header
+            -if(paste.title != "")
+                p.title= paste.title
+            -else
+                p.title.untitled (untitled)
+ 
+        .paste-pasties
+            -import std.conv : to;
+            -foreach(i, p; paste.pasties)
+                .pasty
+                    .pasty-header
+                        -if(p.title != "")
+                            p.title= p.title
+                        -else
+                            p.title.untitled (untitled)
+                        span.lang= p.language
+                        a.raw(href="/raw/" ~ paste.id ~ "/" ~ i.to!string()) raw
+                    .pasty-content
+                        textarea=p.code
+ 
+        .paste-meta
+            p.created-at
+                span.highlight created at:
+                span.value
+            p.expires-at
+                span.highlight expires at:
+                span.value
+ 
+block scripts
+    script.
+        var createdAt = #{paste.createdAt};
+        var expiresIn = "#{cast(string) paste.expiresIn}";
+        var langs = [];
+
+    -foreach(p; paste.pasties)
+        script.
+            langs.push("#{p.language}");
+
+    script(type="module", src="scripts/paste.js")

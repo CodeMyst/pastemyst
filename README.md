@@ -1,4 +1,4 @@
-# pastemyst v2 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/codemyst/pastemyst-v2/CI) [![Discord Server](https://discordapp.com/api/guilds/298510542535000065/widget.png)](https://discord.gg/SdKbcbq)
+# pastemyst v2 ![CI](https://github.com/CodeMyst/pastemyst-v2/workflows/CI/badge.svg) [![Discord Server](https://discordapp.com/api/guilds/298510542535000065/widget.png)](https://discord.gg/SdKbcbq)
 
 ## about
 

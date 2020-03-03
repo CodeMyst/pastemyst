@@ -126,8 +126,7 @@ public void removeOne(R, T)(T query) @safe
  +/
 public void removeOneById(R, T)(T id) @safe
 {
-    if (!findOneById!R(id).isNull)
-        removeOne!R(["_id": id]);
+    removeOne!R(["_id": id]);
 }
 
 version(unittest)

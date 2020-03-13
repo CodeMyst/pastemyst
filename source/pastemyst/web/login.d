@@ -41,6 +41,7 @@ public class LoginWeb
     {
         import pastemyst.data : config, User;
         import pastemyst.auth : getGithubUser, getUserJwt;
+        import pastemyst.db : findOneById, insert, redisSet;
         import std.conv : to;
 
         string accessToken;
@@ -59,6 +60,11 @@ public class LoginWeb
 
         User user = getGithubUser(accessToken);
 
+        if (!findOneById!User(user.id).isNull())
+        {
+            insert(user);
+        }
+
         const string jwt = getUserJwt(user);
 
         Cookie c = new Cookie();
@@ -70,6 +76,9 @@ public class LoginWeb
         c.httpOnly = true;
 
         res.cookies["jwt"] = c;
+
+        // every time the user logs in, the access token is different so we will set the new access token every time
+        redisSet(jwt, accessToken);
 
         redirect("/");
     }

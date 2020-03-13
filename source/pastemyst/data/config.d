@@ -16,6 +16,11 @@ public struct Config
      + jwt config
      +/
     public Jwt jwt;
+
+    /++
+     + redis config
+     +/
+    public Redis redis;
 }
 
 /++
@@ -43,6 +48,22 @@ public struct Jwt
      + jwt secret
      +/
     public string secret;
+}
+
+/++
+ + redis config
+ +/
+public struct Redis
+{
+    /++
+     + redis host string
+     +/
+    public string host;
+
+    /++
+     + redis db index
+     +/
+    public ulong index;
 }
 
 /++
@@ -96,5 +117,13 @@ static this()
         enforce(cfg["jwt"].containsKey("secret"), "config.yaml: missing jwt secret");
 
         _config.jwt.secret = cfg["jwt"]["secret"].as!string();
+
+        enforce(cfg.containsKey("redis"), "config.yaml: missing redis");
+
+        enforce(cfg["redis"].containsKey("host"), "config.yaml: missing redis host");
+        enforce(cfg["redis"].containsKey("index"), "config.yaml: missing redis db index");
+
+        _config.redis.host = cfg["redis"]["host"].as!string();
+        _config.redis.index = cfg["redis"]["index"].as!ulong();
     }
 }

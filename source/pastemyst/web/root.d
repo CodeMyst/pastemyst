@@ -17,6 +17,7 @@ public class RootWeb
     {
         import pastemyst.data : expireOptions, languages;
 
+        // todo: this can be moved to the template
 		// a separate variable is made for expireOptions only to change its name
 		const Json expires = expireOptions;
 

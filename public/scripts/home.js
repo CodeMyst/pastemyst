@@ -21,6 +21,12 @@ let expiresInDropdown;
 
 window.addEventListener("load", () =>
 {
+    // FIXME: issue#55
+    if (window.location.hash === "#reload")
+    {
+        window.location = "/";
+    }
+
     expiresInDropdown = new Dropdown(document.querySelector("#expires-in-dropdown .dropdown"));
 
     initFirstEditor();

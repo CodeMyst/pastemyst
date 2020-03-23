@@ -1,6 +1,7 @@
 module pastemyst.web.login;
 
 import vibe.d;
+import pastemyst.data;
 
 /++
  + web interface for the `/login` endpoint
@@ -8,6 +9,9 @@ import vibe.d;
 @path("/login")
 public class LoginWeb
 {
+    /// user session
+    public SessionVar!(UserSession, "user") userSession;
+
     /++
      + GET /login
      +
@@ -15,7 +19,7 @@ public class LoginWeb
      +/
     public void get()
     {
-        render!("login.dt");
+        render!("login.dt", userSession);
     }
 
     /++
@@ -25,8 +29,6 @@ public class LoginWeb
      +/
     public void getGithub()
     {
-        import pastemyst.data : config;
-
         redirect("https://github.com/login/oauth/authorize?client_id=" ~ config.github.id ~ "&scope=read:user");
     }
 
@@ -37,9 +39,8 @@ public class LoginWeb
      +/
     @path("github/callback")
     @queryParam("code", "code")
-    public void getGithubCallback(string code, HTTPServerResponse res)
+    public void getGithubCallback(string code)
     {
-        import pastemyst.data : config, User;
         import pastemyst.auth : getGithubUser, getUserJwt;
         import pastemyst.db : findOneById, insert, redisSet;
         import std.conv : to;
@@ -65,21 +66,13 @@ public class LoginWeb
             insert(user);
         }
 
-        const string jwt = getUserJwt(user);
+        UserSession u = userSession;
+        u.loggedIn = true;
+        u.id = user.id;
+        u.token = accessToken;
+        userSession = u;
 
-        Cookie c = new Cookie();
-        c.path = "/";
-        // todo: make sure to change this if in production
-        c.domain = "localhost";
-        c.value = jwt;
-        c.sameSite = Cookie.SameSite.strict;
-        c.httpOnly = true;
-
-        res.cookies["jwt"] = c;
-
-        // every time the user logs in, the access token is different so we will set the new access token every time
-        redisSet(jwt, accessToken);
-
-        redirect("/");
+        // FIXME: issue#55
+        redirect("/#reload");
     }
 }

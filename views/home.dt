@@ -9,7 +9,8 @@ block body
                 include components/dropdown
                     block options
                         - import std.conv : to;
-                        - foreach (ulong i, exp; expires)
+                        - import pastemyst.data : expireOptions;
+                        - foreach (ulong i, exp; expireOptions)
                             label.option
                                 input(type="radio", name="expires-in", value=exp ["value"].to!string (), checked=i == 0 ? true : false)
                                 span= exp ["pretty"].to!string ()
@@ -24,6 +25,7 @@ block body
                         include components/dropdown
                             block options
                                 - import std.conv : to;
+                                - import pastemyst.data : languages;
                                 - foreach (ulong i, lang; languages)
                                     label.option
                                         input(type="radio", name="language", value=lang ["name"].to!string () ~ "," ~ lang ["mode"].to!string () ~ "," ~ lang ["mimes"] [0].to!string (), checked=i == 0 ? true : false)

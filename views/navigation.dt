@@ -3,7 +3,10 @@ nav
         li
             a(href="/") home
         li
-            a(href="/login") login
+            - if(userSession.loggedIn) 
+                a(href="/profile") profile
+            - else
+                a(href="/login") login
         li
             a(href="https://github.com/codemyst/pastemyst-v2", target="_blank") github
         li

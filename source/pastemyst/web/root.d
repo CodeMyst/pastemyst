@@ -1,12 +1,16 @@
 module pastemyst.web.root;
 
 import vibe.d;
+import pastemyst.data;
 
 /++
  + web interface for the `/` endpoint.
  +/
 public class RootWeb
 {
+    /// user session
+    public SessionVar!(UserSession, "user") userSession;
+
     /++
      + GET /
      +
@@ -15,12 +19,6 @@ public class RootWeb
     @path("/")
     public void getHome()
     {
-        import pastemyst.data : expireOptions, languages;
-
-        // todo: this can be moved to the template
-		// a separate variable is made for expireOptions only to change its name
-		const Json expires = expireOptions;
-
-		render!("home.dt", expires, languages);
+		render!("home.dt", userSession);
     }
 }

@@ -1,12 +1,16 @@
 module pastemyst.web.paste;
 
 import vibe.d;
+import pastemyst.data;
 
 /++
  + web interface for getting pastes
  +/
 public class PasteWeb
 {
+    /// user session
+    public SessionVar!(UserSession, "user") userSession;
+
     /++
      + GET /:id
      +
@@ -16,7 +20,6 @@ public class PasteWeb
     public void getPaste(string _id)
     {
         import pastemyst.db : findOneById;
-		import pastemyst.data : Paste;
 		import std.conv : to;
  
 		const auto res = findOneById!Paste(_id);
@@ -28,6 +31,6 @@ public class PasteWeb
  
 		const Paste paste = res.get();
  
-		render!("paste.dt", paste);
+		render!("paste.dt", paste, userSession);
     }
 }

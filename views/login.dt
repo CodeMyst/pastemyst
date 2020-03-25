@@ -1,7 +1,10 @@
 extends baseLayout
 
 block body
-    //- todo: this page is incomplete
-    //- todo: specify which information is stored about the user
+    //- TODO: this page is incomplete
+    //- TODO: specify which information is stored about the user
+    //- TODO: issue#56
 
     a(href="/login/github") login with github
+    br
+    a(href="/login/gitlab") login with gitlab

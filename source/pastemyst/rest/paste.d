@@ -86,7 +86,7 @@ public class APIPaste : IAPIPaste
             createdAt: Clock.currTime().toUnixTime(),
             expiresIn: expires.get(),
             title: title,
-            // todo: do user stuff and authentication stuff
+            // TODO: do user stuff and authentication stuff
             ownerId: "",
             isPrivate: isPrivate,
             pasties: pasties

@@ -13,6 +13,11 @@ public struct Config
     public Github github;
 
     /++
+     + gitlab config for oauth
+     +/
+    public Gitlab gitlab;
+
+    /++
      + jwt config
      +/
     public Jwt jwt;
@@ -35,6 +40,22 @@ public struct Github
     
     /++
      + github client secret
+     +/
+    public string secret;
+}
+
+/++
+ + struct holding gitlab oauth id and secret
+ +/
+public struct Gitlab
+{
+    /++
+     + gitlab client id
+     +/
+    public string id;
+    
+    /++
+     + gitlab client secret
      +/
     public string secret;
 }
@@ -111,6 +132,14 @@ static this()
 
         _config.github.id = cfg["github"]["id"].as!string();
         _config.github.secret = cfg["github"]["secret"].as!string();
+
+        enforce(cfg.containsKey("gitlab"), "config.yaml: missing gitlab");
+
+        enforce(cfg["gitlab"].containsKey("id"), "config.yaml: missing gitlab id");
+        enforce(cfg["gitlab"].containsKey("secret"), "config.yaml: missing gitlab secret");
+
+        _config.gitlab.id = cfg["gitlab"]["id"].as!string();
+        _config.gitlab.secret = cfg["gitlab"]["secret"].as!string();
 
         enforce(cfg.containsKey("jwt"), "config.yaml: missing jwt");
 

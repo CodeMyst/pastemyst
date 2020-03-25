@@ -4,9 +4,8 @@ import vibe.d;
 import pastemyst.data;
 
 /++
- + web interface for the `/login` endpoint
+ + web interface for logging in and out
  +/
-@path("/login")
 public class LoginWeb
 {
     /// user session
@@ -17,9 +16,23 @@ public class LoginWeb
      +
      + login page
      +/
-    public void get()
+    @path("/login")
+    public void getLogin()
     {
         render!("login.dt", userSession);
+    }
+
+    /++
+     + GET /logout
+     +
+     + logs the user out
+     +/
+    @path("/logout")
+    public void getLogout()
+    {
+        userSession = UserSession.init;
+        terminateSession();
+        redirect("/");
     }
 
     /++
@@ -27,6 +40,7 @@ public class LoginWeb
      +
      + login with github
      +/
+    @path("/login/github")
     public void getGithub()
     {
         redirect("https://github.com/login/oauth/authorize?client_id=" ~ config.github.id ~ "&scope=read:user");
@@ -37,7 +51,7 @@ public class LoginWeb
      +
      + github oauth callback
      +/
-    @path("github/callback")
+    @path("/login/github/callback")
     @queryParam("code", "code")
     public void getGithubCallback(string code)
     {

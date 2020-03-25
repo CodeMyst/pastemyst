@@ -2,7 +2,7 @@ import vibe.d;
 
 public void main()
 {
-	import pastemyst.web : RootWeb, PasteWeb, LoginWeb;
+	import pastemyst.web : RootWeb, PasteWeb, LoginWeb, UserWeb;
 	import pastemyst.rest : APIPaste, APITime, APIData;
 	import pastemyst.db : connect;
 
@@ -10,6 +10,7 @@ public void main()
 	router.get("*", serveStaticFiles("public"));
 	router.registerWebInterface(new RootWeb());
 	router.registerWebInterface(new LoginWeb());
+	router.registerWebInterface(new UserWeb());
 	router.registerWebInterface(new PasteWeb());
 	router.registerRestInterface(new APIPaste());
 	router.registerRestInterface(new APITime());

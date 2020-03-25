@@ -1,5 +1,7 @@
 module pastemyst.data.session;
 
+import pastemyst.data.user;
+
 /++
  + the current user session
  +/
@@ -11,12 +13,12 @@ public struct UserSession
     public bool loggedIn = false;
 
     /++
-     + user's id
+     + user
      +/
-    public int id;
+    public User user;
 
     /++
-     + user's github access token
+     + github token for the user
      +/
     public string token;
 }

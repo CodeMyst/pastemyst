@@ -19,6 +19,7 @@ public User getGithubUser(string accessToken) @safe
 
         u.id = j["id"].get!int();
         u.username = j["login"].get!string();
+        u.avatarUrl = j["avatar_url"].get!string();
     });
 
     return u;

@@ -68,7 +68,7 @@ public class LoginWeb
 
         UserSession u = userSession;
         u.loggedIn = true;
-        u.id = user.id;
+        u.user = user;
         u.token = accessToken;
         userSession = u;
 

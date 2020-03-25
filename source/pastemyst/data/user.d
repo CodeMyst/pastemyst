@@ -14,4 +14,9 @@ public struct User
      + User's username.
      +/
     public string username;
+
+    /++
+     + User's avatar url
+     +/
+    public string avatarUrl;
 }

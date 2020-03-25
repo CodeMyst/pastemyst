@@ -4,7 +4,7 @@ nav
             a(href="/") home
         li
             - if(userSession.loggedIn) 
-                a(href="/profile") profile
+                a(href="/user") profile
             - else
                 a(href="/login") login
         li

@@ -2,11 +2,23 @@ module pastemyst.auth.github;
 
 import vibe.d;
 
-import pastemyst.data : User;
-
-public User getGithubUser(string accessToken) @safe
+///
+public struct GithubUser
 {
-    User u;
+    ///
+    public int id;
+    ///
+    public string username;
+    ///
+    public string avatarUrl;
+}
+
+/++
+ + gets the github user from an access token
+ +/
+public GithubUser getGithubUser(string accessToken) @safe
+{
+    GithubUser u;
 
     requestHTTP("https://api.github.com/user",
     (scope req)

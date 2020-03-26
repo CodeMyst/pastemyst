@@ -2,6 +2,7 @@ module pastemyst.web.login;
 
 import vibe.d;
 import pastemyst.data;
+import pastemyst.auth;
 
 /++
  + web interface for logging in and out
@@ -54,20 +55,70 @@ public class LoginWeb
     @path("/login/gitlab")
     public void getGitlab()
     {
-        redirect("https://gitlab.com/oauth/authorize?client_id=" ~ config.gitlab.id ~ "&redirect_uri=http://localhost:5000/login/gitlab/callback&response_type=code&scope=read_user+email");
+        redirect("https://gitlab.com/oauth/authorize?client_id=" ~ config.gitlab.id ~
+                 "&redirect_uri=http://localhost:5000/login/gitlab/callback&response_type=code&scope=read_user+email");
     }
 
+    // TODO: cleanup
+    @noRoute
+    private User createUser(UserType type, int id, string username, string avatarUrl)
+    {
+        import pastemyst.db : findOne, insert;
+        import pastemyst.util : generateUniqueId;
+        import std.typecons : Nullable;
+
+        final switch (type)
+        {
+            case UserType.Github:
+            {
+                Nullable!User u = findOne!User(["githubId": id]);
+                if (u.isNull())
+                {
+                    User user;
+                    user.id =  generateUniqueId!User();
+                    user.username = username;
+                    user.avatarUrl = avatarUrl;
+                    user.githubId = id;
+                    insert(user);
+                    return user;
+                }
+                else
+                {
+                    return u.get();
+                }
+            } 
+
+            case UserType.Gitlab:
+            {
+                Nullable!User u = findOne!User(["gitlabId": id]);
+                if (u.isNull())
+                {
+                    User user;
+                    user.id =  generateUniqueId!User();
+                    user.username = username;
+                    user.avatarUrl = avatarUrl;
+                    user.gitlabId = id;
+                    insert(user);
+                    return user;
+                }
+                else
+                {
+                    return u.get();
+                }
+            } 
+        }
+    }
 
     /++
      + GET /login/github/callback?code=
      +
      + github oauth callback
      +/
+    // TODO: cleanup
     @path("/login/github/callback")
     @queryParam("code", "code")
     public void getGithubCallback(string code)
     {
-        import pastemyst.auth : getGithubUser;
         import pastemyst.db : findOneById, insert;
 
         string accessToken;
@@ -84,12 +135,9 @@ public class LoginWeb
             accessToken = parseJsonString(res.bodyReader.readAllUTF8())["access_token"].get!string();
         });
 
-        User user = getGithubUser(accessToken);
+        GithubUser ghuser = getGithubUser(accessToken);
 
-        if (!findOneById!User(user.id).isNull())
-        {
-            insert(user);
-        }
+        User user = createUser(UserType.Github, ghuser.id, ghuser.username, ghuser.avatarUrl);
 
         UserSession u = userSession;
         u.loggedIn = true;
@@ -106,16 +154,18 @@ public class LoginWeb
      +
      + gitlab oauth callback
      +/
+    // TODO: cleanup
     @path("/login/gitlab/callback")
     @queryParam("code", "code")
     public void getGitlabCallback(string code)
     {
-        import pastemyst.auth : getGitlabUser;
         import pastemyst.db : findOneById, insert;
 
         string accessToken;
 
-        requestHTTP("https://gitlab.com/oauth/token?client_id=" ~ config.gitlab.id ~ "&client_secret=" ~ config.gitlab.secret ~ "&code=" ~ code ~ "&grant_type=authorization_code&redirect_uri=http://localhost:5000/login/gitlab/callback",
+        requestHTTP("https://gitlab.com/oauth/token?client_id=" ~ config.gitlab.id ~
+                    "&client_secret=" ~ config.gitlab.secret ~ "&code=" ~ code ~ 
+                    "&grant_type=authorization_code&redirect_uri=http://localhost:5000/login/gitlab/callback",
         (scope req)
         {
             req.method = HTTPMethod.POST;
@@ -126,12 +176,9 @@ public class LoginWeb
             accessToken = parseJsonString(res.bodyReader.readAllUTF8())["access_token"].get!string();
         });
 
-        User user = getGitlabUser(accessToken);
+        GitlabUser gluser = getGitlabUser(accessToken);
 
-        if (!findOneById!User(user.id).isNull())
-        {
-            insert(user);
-        }
+        User user = createUser(UserType.Gitlab, gluser.id, gluser.username, gluser.avatarUrl);
 
         UserSession u = userSession;
         u.loggedIn = true;

@@ -2,11 +2,23 @@ module pastemyst.auth.gitlab;
 
 import vibe.d;
 
-import pastemyst.data : User;
-
-public User getGitlabUser(string accessToken) @safe
+///
+public struct GitlabUser
 {
-    User u;
+    ///
+    public int id;
+    ///
+    public string username;
+    ///
+    public string avatarUrl;
+}
+
+/++
+ + gets the gitlab user from an access token
+ +/
+public GitlabUser getGitlabUser(string accessToken) @safe
+{
+    GitlabUser u;
 
     requestHTTP("https://gitlab.com/api/v4/user",
     (scope req)

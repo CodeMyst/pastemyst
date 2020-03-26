@@ -2,29 +2,31 @@
 	"authors": [
 		"CodeMyst"
 	],
+	"configurations": [
+		{
+			"mainSourceFile": "source/app.d",
+			"name": "application",
+			"targetType": "executable"
+		},
+		{
+			"excludedSourceFiles": [
+				"source/app.d"
+			],
+			"name": "library",
+			"targetType": "library"
+		}
+	],
 	"copyright": "Copyright © 2019, CodeMyst",
 	"dependencies": {
+		"diet-ng": "~>1.6.1",
 		"dshould": "~>1.1.0",
+		"dyaml": "~>0.8.0",
+		"fastjwt": "~>1.1.1",
 		"silly": "~>1.0.2",
-		"vibe-d": "~>0.9.0-alpha.1",
-		"diet-ng": "~>1.6.1"
+		"vibe-d": ">=0.9.0-alpha.1 <0.10.0-0"
 	},
 	"description": "A minimal D application.",
 	"license": "MPL-2.0",
 	"name": "pastemyst",
-	"targetPath": "bin",
-
-	"configurations":
-	[
-		{
-			"name": "application",
-			"targetType": "executable",
-			"mainSourceFile": "source/app.d"
-		},
-		{
-			"name": "library",
-			"targetType": "library",
-			"excludedSourceFiles": ["source/app.d"]
-		}
-	]
+	"targetPath": "bin"
 }

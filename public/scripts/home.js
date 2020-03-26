@@ -21,6 +21,12 @@ let expiresInDropdown;
 
 window.addEventListener("load", () =>
 {
+    // FIXME: issue#55
+    if (window.location.hash === "#reload")
+    {
+        window.location = "/";
+    }
+
     expiresInDropdown = new Dropdown(document.querySelector("#expires-in-dropdown .dropdown"));
 
     initFirstEditor();
@@ -58,7 +64,7 @@ function initFirstEditor()
 
     let textarea = editor.rootElement.getElementsByClassName("editor")[0];
 
-    // todo: set initial mode
+    // TODO: set initial mode
     editor.editor = CodeMirror.fromTextArea(textarea, // jshint ignore:line
     {
        indentUnit: 4,
@@ -98,7 +104,7 @@ function addEditor()
 
     let textArea = clone.getElementsByClassName("editor")[0];
 
-    // todo: set initial mode
+    // TODO: set initial mode
     editor.editor = CodeMirror.fromTextArea(textArea, // jshint ignore:line
     {
         indentUnit: 4,
@@ -203,7 +209,7 @@ function setMode(editor, mode, mime)
 
 async function createPaste()
 {
-    // todo: add isPrivate field
+    // TODO: add isPrivate field
 
     const data =
     {

@@ -49,6 +49,7 @@ public class APIPaste : IAPIPaste
         import pastemyst.db : insert, findOneById;
         import pastemyst.data.paste : Paste;
         import pastemyst.data.file : languages;
+        import pastemyst.util : generateUniqueId;
         import std.uni : toLower;
 
         enforceHTTP(!pasties.length == 0, HTTPStatus.badRequest, "pasties arrays has to have at least one element.");
@@ -72,21 +73,13 @@ public class APIPaste : IAPIPaste
             enforceHTTP(languageFound, HTTPStatus.badRequest, "invalid language value.");
         }
 
-        string id = randomBase36Id();
-        auto pasteResult = findOneById!Paste(id);
-        while (!pasteResult.isNull)
-        {
-            id = randomBase36Id();
-            pasteResult = findOneById!Paste(id);
-        }
-
         Paste paste =
         {
-            id: id,
+            id: generateUniqueId!Paste(),
             createdAt: Clock.currTime().toUnixTime(),
             expiresIn: expires.get(),
             title: title,
-            // todo: do user stuff and authentication stuff
+            // TODO: do user stuff and authentication stuff
             ownerId: "",
             isPrivate: isPrivate,
             pasties: pasties

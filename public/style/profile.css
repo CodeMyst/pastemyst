@@ -1,0 +1,32 @@
+#profile .user-info
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+}
+
+.left, .right
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.left *
+{
+    margin-right: 20px;
+}
+
+.right *
+{
+    margin-left: 20px;
+}
+
+#profile .user-info .avatar
+{
+    width: 50px;
+    border-radius: var(--border-radius);
+}

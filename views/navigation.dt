@@ -3,12 +3,15 @@ nav
         li
             a(href="/") home
         li
-            a#login login
+            - if(userSession.loggedIn) 
+                a(href="/user") profile
+            - else
+                a(href="/login") login
         li
             a(href="https://github.com/codemyst/pastemyst-v2", target="_blank") github
         li
-            a(href="api-docs") api
+            a(href="/api-docs") api
         li
-            a(href="about") about
+            a(href="/about") about
         li.no-delimiter
-            a(href="donate") donate
+            a(href="/donate") donate

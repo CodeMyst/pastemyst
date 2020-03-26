@@ -89,9 +89,7 @@ public void redisSet(T)(string key, T value)
  + The collection is automatically determined from the item type. It will throw an error if you try to insert an invalid type.
  +/
 public void insert(T)(T item)
-{
-    import pastemyst.data : Paste;
-    
+{   
     MongoCollection collection = mongo[getCollectionName!T()];
 
     Json data;
@@ -133,6 +131,23 @@ public Nullable!R findOne(R, T)(T query) @safe
 public Nullable!R findOneById(R, T)(T id) @safe
 {
     return findOne!R(["_id": id]);
+}
+
+/++
+ + Removes one item from the DB, using the specified query
+ +/
+public void removeOne(R, T)(T query) @safe
+{
+    MongoCollection collection = mongo[getCollectionName!R()];
+    collection.remove(query);
+}
+
+/++
+ + Removes an existing object, with the specified id
+ +/
+public void removeOneById(R, T)(T id) @safe
+{
+    removeOne!R(["_id": id]);
 }
 
 version(unittest)

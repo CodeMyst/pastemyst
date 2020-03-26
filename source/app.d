@@ -1,5 +1,25 @@
 import vibe.d;
 
+/++
+ + Renders an error page, everytime an error occured
+ +/
+void displayError(HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
+{
+    import pastemyst.data : UserSession;
+
+	string errorDebug = "";
+	debug errorDebug = error.debugMessage;
+
+    UserSession userSession = UserSession.init;
+
+    if (req.session)
+    {
+        userSession = req.session.get!UserSession("user");
+    }
+	
+	res.render!("error.dt", error, errorDebug, userSession);
+}
+
 public void main()
 {
 	import pastemyst.web : RootWeb, PasteWeb, LoginWeb, UserWeb;
@@ -20,6 +40,7 @@ public void main()
 	serverSettings.bindAddresses = ["127.0.0.1"];
 	serverSettings.port = 5000;
     serverSettings.sessionStore = new MemorySessionStore();
+	serverSettings.errorPageHandler = toDelegate(&displayError);
 
 	listenHTTP(serverSettings, router);
 

@@ -40,5 +40,12 @@ block body
         //- this is used for detecting when the .paste-options-bottom is in fixed position to apply different styles
         .paste-options-bottom-1px
 
+        form#paste-create-form-hidden(action="/paste", method="post")
+            input(type="text", name="title")
+            input(type="text", name="expiresIn")
+            input(type="checkbox", name="isPrivate")
+            input(type="text", name="pasties")
+            input(type="submit")
+
 block scripts
     script(type="module", src="scripts/home.js")

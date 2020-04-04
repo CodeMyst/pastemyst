@@ -3,6 +3,8 @@ module pastemyst.web.paste;
 import vibe.d;
 import pastemyst.data;
 
+import std.typecons : Nullable;
+
 /++
  + web interface for getting pastes
  +/
@@ -32,6 +34,30 @@ public class PasteWeb
 		const Paste paste = res.get();
  
 		render!("paste.dt", paste, userSession);
+    }
+
+    /++
+     + POST /paste
+     +
+     + creates a paste
+     +/
+    public void postPaste(string title, string expiresIn, bool isPrivate, string pasties)
+    {
+        import pastemyst.paste : createPaste;
+        import pastemyst.db : insert;
+
+        // TODO: private pastes
+
+        if (userSession.loggedIn)
+        {
+
+        }
+
+        Paste paste = createPaste(title, expiresIn, deserializeJson!(Pasty[])(pasties), isPrivate, userSession.user.id);
+
+        insert(paste);
+
+        redirect("/" ~ paste.id);
     }
 
 	@path("/raw/:id/:index")

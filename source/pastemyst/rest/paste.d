@@ -42,48 +42,10 @@ public class APIPaste : IAPIPaste
      +/
     public Json post(Pasty[] pasties, string title = "", string expiresIn = "never", bool isPrivate = false) @safe
     {
-        import pastemyst.encoding : randomBase36Id;
-        import pastemyst.conv : valueToEnum;
-        import std.typecons : Nullable;
-        import std.datetime : Clock;
-        import pastemyst.db : insert, findOneById;
-        import pastemyst.data.paste : Paste;
-        import pastemyst.data.file : languages;
-        import pastemyst.util : generateUniqueId;
-        import std.uni : toLower;
+        import pastemyst.paste : createPaste;
+        import pastemyst.db : insert;
 
-        enforceHTTP(!pasties.length == 0, HTTPStatus.badRequest, "pasties arrays has to have at least one element.");
-
-        Nullable!ExpiresIn expires = valueToEnum!ExpiresIn(expiresIn);
-
-        enforceHTTP(!expires.isNull, HTTPStatus.badRequest, "invalid expiresIn value.");
-
-        foreach (pasty; pasties)
-        {
-            bool languageFound = false;
-            foreach (language; languages.byValue ())
-            {
-                if (language["name"].get!string().toLower() == pasty.language.toLower())
-                {
-                    languageFound = true;
-                    break;
-                }
-            }
-
-            enforceHTTP(languageFound, HTTPStatus.badRequest, "invalid language value.");
-        }
-
-        Paste paste =
-        {
-            id: generateUniqueId!Paste(),
-            createdAt: Clock.currTime().toUnixTime(),
-            expiresIn: expires.get(),
-            title: title,
-            // TODO: do user stuff and authentication stuff
-            ownerId: "",
-            isPrivate: isPrivate,
-            pasties: pasties
-        };
+        Paste paste = createPaste(title, expiresIn, pasties, isPrivate, "");
 
         insert(paste);
 

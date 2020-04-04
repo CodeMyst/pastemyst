@@ -210,12 +210,12 @@ function setMode(editor, mode, mime)
 async function createPaste()
 {
     // TODO: add isPrivate field
+    
+    let form = document.getElementById("paste-create-form-hidden");
 
-    const data =
-    {
-        title: document.querySelector(`.paste-options input[name="title"]`).value,
-        expiresIn: expiresInDropdown.value
-    };
+    form.querySelector("input[name=title]").value = document.querySelector(`.paste-options input[name="title"]`).value;
+    form.querySelector("input[name=expiresIn]").value = expiresInDropdown.value;
+    form.querySelector("input[name=isPrivate]").checked = false;
 
     const pasties = [];
 
@@ -231,19 +231,7 @@ async function createPaste()
         pasties.push(pasty);
     }
 
-    data.pasties = pasties;
+    form.querySelector("input[name=pasties]").value = JSON.stringify(pasties);
 
-    const response = await fetch("/api/paste",
-    {
-        method: "POST",
-        headers:
-        {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
-
-    const j = await response.json();
-
-    window.location = `/${j._id}`;
+    form.submit();
 }

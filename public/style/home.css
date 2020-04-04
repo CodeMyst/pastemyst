@@ -200,3 +200,8 @@
 {
     background-color: var(--color-mystlue);
 }
+
+#home #paste-create-form-hidden
+{
+    display: none;
+}

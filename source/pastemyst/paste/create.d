@@ -7,7 +7,7 @@ import pastemyst.data;
  + creates a paste, to be used in web and rest interfaces
  + it validates the data but doesn't insert into the db
  +/
-public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool isPrivate) @safe
+public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool isPrivate, string ownerId) @safe
 {
     import pastemyst.encoding : randomBase36Id;
     import pastemyst.conv : valueToEnum;
@@ -24,6 +24,8 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
     Nullable!ExpiresIn expires = valueToEnum!ExpiresIn(expiresIn);
 
     enforceHTTP(!expires.isNull, HTTPStatus.badRequest, "invalid expiresIn value.");
+
+    enforceHTTP(!isPrivate || ownerId != "", HTTPStatus.forbidden, "can't create a private paste if not logged in");
 
     foreach (pasty; pasties)
     {
@@ -46,8 +48,7 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
         createdAt: Clock.currTime().toUnixTime(),
         expiresIn: expires.get(),
         title: title,
-        // TODO: do user stuff and authentication stuff
-        ownerId: "",
+        ownerId: ownerId,
         isPrivate: isPrivate,
         pasties: pasties
     };

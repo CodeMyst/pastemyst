@@ -45,7 +45,7 @@ public class APIPaste : IAPIPaste
         import pastemyst.paste : createPaste;
         import pastemyst.db : insert;
 
-        Paste paste = createPaste(title, expiresIn, pasties, isPrivate);
+        Paste paste = createPaste(title, expiresIn, pasties, isPrivate, "");
 
         insert(paste);
 

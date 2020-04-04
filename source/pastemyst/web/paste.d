@@ -43,14 +43,21 @@ public class PasteWeb
      +/
     public void postPaste(string title, string expiresIn, bool isPrivate, string pasties)
     {
-       import pastemyst.paste : createPaste;
-       import pastemyst.db : insert;
+        import pastemyst.paste : createPaste;
+        import pastemyst.db : insert;
 
-       Paste paste = createPaste(title, expiresIn, deserializeJson!(Pasty[])(pasties), isPrivate);
+        // TODO: private pastes
 
-       insert(paste);
+        if (userSession.loggedIn)
+        {
 
-       redirect("/" ~ paste.id);
+        }
+
+        Paste paste = createPaste(title, expiresIn, deserializeJson!(Pasty[])(pasties), isPrivate, userSession.user.id);
+
+        insert(paste);
+
+        redirect("/" ~ paste.id);
     }
 
 	@path("/raw/:id/:index")

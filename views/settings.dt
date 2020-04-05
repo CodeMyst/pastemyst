@@ -1,4 +1,19 @@
 extends baseLayout
 
 block body
-    include components/userinfo
+    #settings
+        include components/userinfo
+
+        .settings-block
+            h3 connect services
+
+            //- TODO: write a better description
+            p.description depending which service you used to log in you can also connect more accounts with a single pastemyst account, when logging in with either of these you will log into the same pastemyst account. if you want to connect to the account another service which already has a pastemyst account associated with it you will be prompted to merge these 2 accounts and all data will be merged into one account, overlapping things like the settings will be used from the currently logged in account.
+
+            - if (session.user.githubId.isNull())
+                a connect with github
+                br
+
+            - if (session.user.gitlabId.isNull())
+                a connect with gitlab
+                br

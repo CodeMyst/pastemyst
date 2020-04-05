@@ -3,24 +3,29 @@ module pastemyst.web.login;
 import vibe.d;
 import pastemyst.data;
 import pastemyst.auth;
+import pastemyst.web;
 
 /++
  + web interface for logging in and out
  +/
 public class LoginWeb
 {
-    /// user session
-    public SessionVar!(UserSession, "user") userSession;
-
     /++
      + GET /login
      +
      + login page
      +/
     @path("/login")
-    public void getLogin()
+    public void getLogin(HTTPServerRequest req)
     {
-        render!("login.dt", userSession);
+        UserSession session = UserSession.init;
+
+        if (req.session && req.session.isKeySet("user"))
+        {
+            session = req.session.get!UserSession("user");    
+        }
+
+        render!("login.dt", session);
     }
 
     /++
@@ -29,9 +34,10 @@ public class LoginWeb
      + logs the user out
      +/
     @path("/logout")
-    public void getLogout()
+    public void getLogout(HTTPServerRequest req)
     {
-        userSession = UserSession.init;
+        // TODO: do this only if logged in
+        req.session.set("user", UserSession.init);
         terminateSession();
         redirect("/");
     }
@@ -117,7 +123,7 @@ public class LoginWeb
     // TODO: cleanup
     @path("/login/github/callback")
     @queryParam("code", "code")
-    public void getGithubCallback(string code)
+    public void getGithubCallback(string code, HTTPServerRequest req, HTTPServerResponse res)
     {
         import pastemyst.db : findOneById, insert;
 
@@ -139,11 +145,12 @@ public class LoginWeb
 
         User user = createUser(UserType.Github, ghuser.id, ghuser.username, ghuser.avatarUrl);
 
-        UserSession u = userSession;
+        UserSession u;
         u.loggedIn = true;
         u.user = user;
         u.token = accessToken;
-        userSession = u;
+        req.session = res.startSession();
+        req.session.set("user", u);
 
         // FIXME: issue#55
         redirect("/#reload");
@@ -157,7 +164,7 @@ public class LoginWeb
     // TODO: cleanup
     @path("/login/gitlab/callback")
     @queryParam("code", "code")
-    public void getGitlabCallback(string code)
+    public void getGitlabCallback(string code, HTTPServerRequest req, HTTPServerResponse res)
     {
         import pastemyst.db : findOneById, insert;
 
@@ -180,11 +187,12 @@ public class LoginWeb
 
         User user = createUser(UserType.Gitlab, gluser.id, gluser.username, gluser.avatarUrl);
 
-        UserSession u = userSession;
+        UserSession u;
         u.loggedIn = true;
         u.user = user;
         u.token = accessToken;
-        userSession = u;
+        req.session = res.startSession();
+        req.session.set("user", u);
 
         // FIXME: issue#55
         redirect("/#reload");

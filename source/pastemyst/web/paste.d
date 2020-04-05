@@ -2,6 +2,7 @@ module pastemyst.web.paste;
 
 import vibe.d;
 import pastemyst.data;
+import pastemyst.web;
 
 import std.typecons : Nullable;
 
@@ -10,16 +11,13 @@ import std.typecons : Nullable;
  +/
 public class PasteWeb
 {
-    /// user session
-    public SessionVar!(UserSession, "user") userSession;
-
     /++
      + GET /:id
      +
      + gets the paste with the specified id
      +/
     @path("/:id")
-    public void getPaste(string _id)
+    public void getPaste(string _id, HTTPServerRequest req)
     {
         import pastemyst.db : findOneById;
 		import std.conv : to;
@@ -33,7 +31,14 @@ public class PasteWeb
  
 		const Paste paste = res.get();
  
-		render!("paste.dt", paste, userSession);
+        UserSession session = UserSession.init;
+
+        if (req.session && req.session.isKeySet("user"))
+        {
+            session = req.session.get!UserSession("user");    
+        }
+
+		render!("paste.dt", paste, session);
     }
 
     /++
@@ -41,19 +46,26 @@ public class PasteWeb
      +
      + creates a paste
      +/
-    public void postPaste(string title, string expiresIn, bool isPrivate, string pasties)
+    public void postPaste(string title, string expiresIn, bool isPrivate, string pasties, HTTPServerRequest req)
     {
         import pastemyst.paste : createPaste;
         import pastemyst.db : insert;
 
         // TODO: private pastes
 
-        if (userSession.loggedIn)
-        {
+        string ownerId = "";
 
+        if (req.session && req.session.isKeySet("user"))
+        {
+            UserSession session = req.session.get!UserSession("user");
+
+            if (session.loggedIn)
+            {
+                ownerId = session.user.id;
+            }
         }
 
-        Paste paste = createPaste(title, expiresIn, deserializeJson!(Pasty[])(pasties), isPrivate, userSession.user.id);
+        Paste paste = createPaste(title, expiresIn, deserializeJson!(Pasty[])(pasties), isPrivate, ownerId);
 
         insert(paste);
 

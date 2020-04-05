@@ -1,0 +1,7 @@
+.user-info
+    .left
+        img.avatar(src=session.user.avatarUrl)
+        p.username= session.user.username
+    .right
+        a(href="/user/settings") settings
+        a(href="/logout") logout

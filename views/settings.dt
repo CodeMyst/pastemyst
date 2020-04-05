@@ -1,0 +1,4 @@
+extends baseLayout
+
+block body
+    include components/userinfo

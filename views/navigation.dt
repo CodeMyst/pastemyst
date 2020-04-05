@@ -3,8 +3,8 @@ nav
         li
             a(href="/") home
         li
-            - if(userSession.loggedIn) 
-                a(href="/user") profile
+            - if(session.loggedIn) 
+                a(href="/user/profile") profile
             - else
                 a(href="/login") login
         li

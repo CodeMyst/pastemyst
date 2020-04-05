@@ -3,6 +3,7 @@ module pastemyst.web.user;
 import vibe.d;
 import vibe.web.auth;
 import pastemyst.data;
+import pastemyst.web;
 
 /++
  + web interface for the /user endpoint
@@ -11,31 +12,34 @@ import pastemyst.data;
 @requiresAuth
 public class UserWeb
 {
-    /// user session
-    public SessionVar!(UserSession, "user") userSession;
-
-    /// will get called to make sure the user is authenticated
-    @noRoute
-    public UserSession authenticate(scope HTTPServerRequest req, scope HTTPServerResponse res) @safe
-    {
-        if (!req.session || !req.session.isKeySet("user"))
-        {
-            res.redirect("/login");
-            return UserSession.init;
-        }
-
-        return req.session.get!UserSession("user");
-    }
+    mixin Auth;
 
     /++
      + GET /user/profile
      +
      + user profile page
      +/
-    @path("/")
+    @path("profile")
     @anyAuth
-    public void getProfile()
+    public void getProfile(HTTPServerRequest req)
     {
-        render!("profile.dt", userSession);
+        UserSession session = req.session.get!UserSession("user");    
+        const title = session.user.username ~ " - profile";
+
+        render!("profile.dt", session, title);
+    }
+
+    /++
+     + GET /user/settings
+     +
+     + user settings page
+     +/
+    @path("settings")
+    @anyAuth
+    public void getSettings(HTTPServerRequest req)
+    {
+        UserSession session = req.session.get!UserSession("user");    
+        const title = session.user.username ~ " - settings";
+        render!("settings.dt", session, title);
     }
 }

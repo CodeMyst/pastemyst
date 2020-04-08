@@ -7,13 +7,16 @@ block body
         .settings-block
             h3 connect services
 
-            //- TODO: write a better description
-            p.description depending which service you used to log in you can also connect more accounts with a single pastemyst account, when logging in with either of these you will log into the same pastemyst account. if you want to connect to the account another service which already has a pastemyst account associated with it you will be prompted to merge these 2 accounts and all data will be merged into one account, overlapping things like the settings will be used from the currently logged in account.
+            p.description you can connect more services to a single pastemyst account so logging in with different services will log you into the same account.
+            p.description connecting to a service already associated with a pastemyst account will prompt you to merge both accounts into one (the one you are currently logged in).
 
             - if (session.user.githubId.isNull())
-                a connect with github
-                br
+                a(href="/login/github") connect with github
+            - else
+                p.disabled connect with github (already connected)
+            br
 
             - if (session.user.gitlabId.isNull())
-                a connect with gitlab
-                br
+                a(href="/login/gitlab") connect with gitlab
+            - else
+                p.disabled connect with gitlab (already connected)

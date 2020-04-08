@@ -121,14 +121,16 @@ public class LoginWeb
      + github oauth callback
      +/
     // TODO: cleanup
+    // TODO: handle existing accounts
     @path("/login/github/callback")
     @queryParam("code", "code")
     public void getGithubCallback(string code, HTTPServerRequest req, HTTPServerResponse res)
     {
-        import pastemyst.db : findOneById, insert;
+        import pastemyst.db : findOneById, insert, update;
 
         string accessToken;
 
+        // TODO: add handling in case the request of the token fails
         requestHTTP("https://github.com/login/oauth/access_token?client_id=" ~ config.github.id ~
                     "&client_secret=" ~ config.github.secret ~ "&code=" ~ code,
         (scope req)
@@ -143,17 +145,39 @@ public class LoginWeb
 
         GithubUser ghuser = getGithubUser(accessToken);
 
-        User user = createUser(UserType.Github, ghuser.id, ghuser.username, ghuser.avatarUrl);
+        if (req.session && req.session.isKeySet("user") && req.session.get!UserSession("user").loggedIn)
+        {
+            // already logged in, begin the account connection process
 
-        UserSession u;
-        u.loggedIn = true;
-        u.user = user;
-        u.token = accessToken;
-        req.session = res.startSession();
-        req.session.set("user", u);
+            UserSession session = req.session.get!UserSession("user");
 
-        // FIXME: issue#55
-        redirect("/#reload");
+            enforceHTTP(session.user.githubId.isNull(), HTTPStatus.badRequest,
+                "you already have github connected to your account.");
+
+            update!User(["_id": session.user.id], ["$set": ["githubId": ghuser.id]]);
+            session.user.githubId = ghuser.id;
+            req.session.set("user", session);
+
+            const string msg = "successfully connected github to your account, " ~
+                "you can now sign into this account with github.";
+
+            render!("success.dt", msg, session);
+        }
+        else
+        {
+            // not logged in, start a session and redirect to home
+
+            User user = createUser(UserType.Github, ghuser.id, ghuser.username, ghuser.avatarUrl);
+            UserSession u;
+            u.loggedIn = true;
+            u.user = user;
+            u.token = accessToken;
+            req.session = res.startSession();
+            req.session.set("user", u);
+
+            // FIXME: issue#55
+            redirect("/#reload");
+        }
     }
 
     /++
@@ -166,10 +190,11 @@ public class LoginWeb
     @queryParam("code", "code")
     public void getGitlabCallback(string code, HTTPServerRequest req, HTTPServerResponse res)
     {
-        import pastemyst.db : findOneById, insert;
+        import pastemyst.db : findOneById, insert, update;
 
         string accessToken;
 
+        // TODO: add handling in case the request of the token fails
         requestHTTP("https://gitlab.com/oauth/token?client_id=" ~ config.gitlab.id ~
                     "&client_secret=" ~ config.gitlab.secret ~ "&code=" ~ code ~ 
                     "&grant_type=authorization_code&redirect_uri=http://localhost:5000/login/gitlab/callback",
@@ -185,16 +210,39 @@ public class LoginWeb
 
         GitlabUser gluser = getGitlabUser(accessToken);
 
-        User user = createUser(UserType.Gitlab, gluser.id, gluser.username, gluser.avatarUrl);
+        if (req.session && req.session.isKeySet("user") && req.session.get!UserSession("user").loggedIn)
+        {
+            // already logged in, begin the account connection process
 
-        UserSession u;
-        u.loggedIn = true;
-        u.user = user;
-        u.token = accessToken;
-        req.session = res.startSession();
-        req.session.set("user", u);
+            UserSession session = req.session.get!UserSession("user");
 
-        // FIXME: issue#55
-        redirect("/#reload");
+            enforceHTTP(session.user.gitlabId.isNull(), HTTPStatus.badRequest,
+                "you already have gitlab connected to your account.");
+
+            update!User(["_id": session.user.id], ["$set": ["gitlabId": gluser.id]]);
+            session.user.gitlabId = gluser.id;
+            req.session.set("user", session);
+
+            const string msg = "successfully connected gitlab to your account, " ~
+                "you can now sign into this account with gitlab.";
+
+            render!("success.dt", msg, session);
+        }
+        else
+        {
+            // not logged in, start a session and redirect to home
+
+            User user = createUser(UserType.Gitlab, gluser.id, gluser.username, gluser.avatarUrl);
+
+            UserSession u;
+            u.loggedIn = true;
+            u.user = user;
+            u.token = accessToken;
+            req.session = res.startSession();
+            req.session.set("user", u);
+
+            // FIXME: issue#55
+            redirect("/#reload");
+        }    
     }
 }

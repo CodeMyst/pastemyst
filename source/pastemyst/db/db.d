@@ -100,6 +100,16 @@ public void insert(T)(T item)
 }
 
 /++
+ + updates an item in the db
+ +/
+public void update(T, S, U)(S selector, U update)
+{
+    MongoCollection collection = mongo[getCollectionName!T()];
+
+    collection.update(selector, update);
+}
+
+/++
  + Get the count of objects in the collection
  +/
 public ulong getCollectionCount(T)()

@@ -17,3 +17,9 @@
     color: var(--color-nanolightlight);
     margin-bottom: 20px;
 }
+
+#settings .settings-block p.disabled
+{
+    color: var(--color-mystlue);
+    display: inline;
+}

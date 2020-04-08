@@ -38,8 +38,12 @@ public class UserWeb
     @anyAuth
     public void getSettings(HTTPServerRequest req)
     {
+        import pastemyst.db : findOneById;
+
         UserSession session = req.session.get!UserSession("user");    
+        User user = findOneById!User(session.user.id).get();
+
         const title = session.user.username ~ " - settings";
-        render!("settings.dt", session, title);
+        render!("settings.dt", user, session, title);
     }
 }

@@ -1,6 +1,7 @@
 module pastemyst.web.login;
 
 import vibe.d;
+import vibe.web.auth;
 import pastemyst.data;
 import pastemyst.auth;
 import pastemyst.web;
@@ -8,14 +9,18 @@ import pastemyst.web;
 /++
  + web interface for logging in and out
  +/
+@requiresAuth
 public class LoginWeb
 {
+    mixin Auth;
+
     /++
      + GET /login
      +
      + login page
      +/
     @path("/login")
+    @noAuth
     public void getLogin(HTTPServerRequest req)
     {
         UserSession session = UserSession.init;
@@ -34,6 +39,7 @@ public class LoginWeb
      + logs the user out
      +/
     @path("/logout")
+    @anyAuth
     public void getLogout(HTTPServerRequest req)
     {
         // TODO: do this only if logged in
@@ -48,6 +54,7 @@ public class LoginWeb
      + login with github
      +/
     @path("/login/github")
+    @noAuth
     public void getGithub()
     {
         redirect("https://github.com/login/oauth/authorize?client_id=" ~ config.github.id ~ "&scope=read:user");
@@ -59,6 +66,7 @@ public class LoginWeb
      + login with gitlab
      +/
     @path("/login/gitlab")
+    @noAuth
     public void getGitlab()
     {
         redirect("https://gitlab.com/oauth/authorize?client_id=" ~ config.gitlab.id ~
@@ -93,14 +101,16 @@ public class LoginWeb
         }
     }
 
-    // TODO: merging existing accounts
     @noRoute
+    @noAuth
     private void loginService(Service service, string accessToken,
             HTTPServerRequest req, HTTPServerResponse res)
     {
         import std.uni : toLower;
         import std.conv : to;
-        import pastemyst.db : update, findOneById;
+        import pastemyst.db : update, findOneById, findOne;
+
+        string serviceName = service.to!string().toLower();
 
         ServiceUser serviceUser;
 
@@ -120,19 +130,29 @@ public class LoginWeb
 
             UserSession session = req.session.get!UserSession("user");
 
-            User user = findOneById!User(session.user.id).get();
+            string msg;
+            const string confirmLink = "/login/connect/confirm/" ~ serviceName;
+            const string cancelLink = "/login/connection/cancel";
 
-            string serviceName = service.to!string().toLower();
+            if (findOne!User(["serviceIds." ~ serviceName: ["$ne": null]]).isNull())
+            {
+                // there doesn't exist another account connected with that service
 
-            enforceHTTP(!(serviceName in user.serviceIds), HTTPStatus.badRequest,
-                    "you already have " ~ serviceName ~ " connected to your account.");
+                msg = "are you sure you want to connect " ~ serviceName ~
+                    " to your account?";
+            }
+            else
+            {
+                // there's already an account with that service
 
-            update!User(["_id": session.user.id], ["$set": ["serviceIds." ~ serviceName: serviceUser.id]]);
+                msg = "there already exists an account wtih " ~ serviceName ~
+                    " connected to it. if you continue all data from the second account will be merged into this one," ~
+                    " the settings will stay the same.";
+            }
 
-            const string msg = "successfully connected " ~ serviceName ~ " to your account, " ~
-                "you can now sign into this account with " ~ serviceName ~ ".";
+            req.session.set("connection_temp", serviceUser);
 
-            res.render!("success.dt", msg, session);
+            res.render!("confirm.dt", msg, confirmLink, cancelLink, session);
         }
         else
         {
@@ -153,12 +173,70 @@ public class LoginWeb
     }
 
     /++
+     + GET /login/connect/confirm
+     +/
+    @path("/login/connect/confirm/:serviceName")
+    @anyAuth
+    public void getConnectConfirm(string _serviceName, HTTPServerRequest req, HTTPServerResponse res)
+    {
+        import pastemyst.db : findOne, findOneById, update;
+
+        enforceHTTP(req.session.isKeySet("connection_temp"), HTTPStatus.badRequest);
+
+        enforceHTTP(req.session, HTTPStatus.badRequest);
+
+        UserSession session = req.session.get!UserSession("user");
+
+        ServiceUser serviceUser = req.session.get!ServiceUser("connection_temp");
+
+        if (findOne!User(["serviceIds." ~ _serviceName: ["$ne": null]]).isNull())
+        {
+            // there doesn't exist another account connected with that service
+
+            User user = findOneById!User(session.user.id).get();
+
+            enforceHTTP(!(_serviceName in user.serviceIds), HTTPStatus.badRequest,
+                    "you already have " ~ _serviceName ~ " connected to your account.");
+
+            update!User(["_id": session.user.id], ["$set": ["serviceIds." ~ _serviceName: serviceUser.id]]);
+
+            const string msg = "successfully connected " ~ _serviceName ~ " to your account, " ~
+                "you can now sign into this account with " ~ _serviceName ~ ".";
+
+            req.session.remove("connection_temp");
+
+            res.render!("success.dt", msg, session);
+        }
+        else
+        {
+            // there's already an account with that service
+            // TODO: merging accounts
+        }
+    }
+
+    /++
+     + GET /login/connection/cancel
+     +/
+    @path("/login/connection/cancel")
+    @anyAuth
+    public void getConnectCancel(HTTPServerRequest req)
+    {
+        if (req.session && req.session.isKeySet("connection_temp"))
+        {
+            req.session.remove("connection_temp");
+        }
+
+        redirect("/");
+    }
+
+    /++
      + GET /login/github/callback?code=
      +
      + github oauth callback
      +/
     @path("/login/github/callback")
     @queryParam("code", "code")
+    @noAuth
     public void getGithubCallback(string code, HTTPServerRequest req, HTTPServerResponse res)
     {
         string accessToken;
@@ -186,6 +264,7 @@ public class LoginWeb
      +/
     @path("/login/gitlab/callback")
     @queryParam("code", "code")
+    @noAuth
     public void getGitlabCallback(string code, HTTPServerRequest req, HTTPServerResponse res)
     {
         string accessToken;

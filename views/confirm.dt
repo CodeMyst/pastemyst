@@ -1,0 +1,9 @@
+extends baseLayout
+
+block body
+    .block
+        h3 confirm action
+
+        p= msg
+
+        p #[a(href=confirmLink) confirm]&nbsp;&nbsp;&nbsp;&nbsp;#[a(href=cancelLink) cancel]

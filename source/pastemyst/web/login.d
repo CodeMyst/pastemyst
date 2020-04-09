@@ -179,7 +179,7 @@ public class LoginWeb
     @anyAuth
     public void getConnectConfirm(string _serviceName, HTTPServerRequest req, HTTPServerResponse res)
     {
-        import pastemyst.db : findOne, findOneById, update;
+        import pastemyst.db : findOne, findOneById, update, find, removeOneById;
 
         enforceHTTP(req.session.isKeySet("connection_temp"), HTTPStatus.badRequest);
 
@@ -188,6 +188,8 @@ public class LoginWeb
         UserSession session = req.session.get!UserSession("user");
 
         ServiceUser serviceUser = req.session.get!ServiceUser("connection_temp");
+
+        string msg;
 
         if (findOne!User(["serviceIds." ~ _serviceName: ["$ne": null]]).isNull())
         {
@@ -200,18 +202,37 @@ public class LoginWeb
 
             update!User(["_id": session.user.id], ["$set": ["serviceIds." ~ _serviceName: serviceUser.id]]);
 
-            const string msg = "successfully connected " ~ _serviceName ~ " to your account, " ~
+            msg = "successfully connected " ~ _serviceName ~ " to your account, " ~
                 "you can now sign into this account with " ~ _serviceName ~ ".";
-
-            req.session.remove("connection_temp");
-
-            res.render!("success.dt", msg, session);
         }
         else
         {
-            // there's already an account with that service
-            // TODO: merging accounts
+            // there's already an account with that service, merge
+
+            User user = findOneById!User(session.user.id).get();
+            User secondUser = findOne!User(["serviceIds." ~ _serviceName: ["$ne": null]]).get();
+
+            enforceHTTP(!(_serviceName in user.serviceIds), HTTPStatus.badRequest,
+                    "you already have " ~ _serviceName ~ " connected to your account.");
+
+            update!User(["_id": session.user.id], ["$set": ["serviceIds." ~ _serviceName: serviceUser.id]]);
+
+            auto pastes = find!Paste(["ownerId": secondUser.id]);
+
+            foreach (paste; pastes)
+            {
+                update!Paste(["_id": paste.id], ["$set": ["ownerId": user.id]]);
+            }
+
+            removeOneById!User(secondUser.id);
+
+            msg = "successfully connected " ~ _serviceName ~ " to your account and " ~
+                "merged the data into this account. the old account is deleted. you can now " ~
+                "log into this account with " ~ _serviceName ~ " as well.";
         }
+
+        req.session.remove("connection_temp");
+        res.render!("success.dt", msg, session);
     }
 
     /++

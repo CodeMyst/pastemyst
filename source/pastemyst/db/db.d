@@ -119,6 +119,16 @@ public ulong getCollectionCount(T)()
     return collection.find().count();
 }
 
+/++
+ + finds all elements in the specified collection that match the query
+ +/
+public MongoCursor!R find(R, T)(T query) @safe
+{
+    MongoCollection collection = mongo[getCollectionName!R()];
+
+    return collection.find!R(query);
+}
+
 /++ 
  +
  + Gets one item from the Mongo DB.

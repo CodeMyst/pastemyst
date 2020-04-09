@@ -93,6 +93,7 @@ public class LoginWeb
         }
     }
 
+    // TODO: merging existing accounts
     @noRoute
     private void loginService(Service service, string accessToken,
             HTTPServerRequest req, HTTPServerResponse res)
@@ -156,7 +157,6 @@ public class LoginWeb
      +
      + github oauth callback
      +/
-    // TODO: handle existing accounts
     @path("/login/github/callback")
     @queryParam("code", "code")
     public void getGithubCallback(string code, HTTPServerRequest req, HTTPServerResponse res)

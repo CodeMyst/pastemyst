@@ -1,4 +1,9 @@
 extends baseLayout
 
 block body
-    p= msg
+    .block
+        h3 success
+
+        p= msg
+
+        p you can go back to the #[a(href="/") home page]

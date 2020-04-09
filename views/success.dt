@@ -2,10 +2,8 @@ extends baseLayout
 
 block body
     .block
-        h3 error #{error.code}
+        h3 success
 
-        p= error.message
-
-        p= errorDebug
+        p= msg
 
         p you can go back to the #[a(href="/") home page]

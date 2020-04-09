@@ -27,12 +27,27 @@ public struct User
     public string avatarUrl;
 
     /++
-     + github user id
+     + user ids for different services like github and gitlab
      +/
-    public Nullable!int githubId;
-
-    /++
-     + gitlab user id
-     +/
-    public Nullable!int gitlabId;
+    public string[string] serviceIds;
 }
+
+/++
+ + a user struct with minimal information, used for session storage
+ +/
+public struct MinimalUser
+{
+    ///
+    public string id;
+
+    ///
+    public string username;
+
+    ///
+    public string avatarUrl;
+}
+
+/++
+ + struct representing a service user (github, gitlab)
+ +/
+ alias ServiceUser = MinimalUser;

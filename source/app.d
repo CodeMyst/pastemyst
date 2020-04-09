@@ -10,14 +10,14 @@ void displayError(HTTPServerRequest req, HTTPServerResponse res, HTTPServerError
 	string errorDebug = "";
 	debug errorDebug = error.debugMessage;
 
-    UserSession userSession = UserSession.init;
+    UserSession session = UserSession.init;
 
     if (req.session)
     {
-        userSession = req.session.get!UserSession("user");
+        session = req.session.get!UserSession("user");
     }
 	
-	res.render!("error.dt", error, errorDebug, userSession);
+	res.render!("error.dt", error, errorDebug, session);
 }
 
 public void main()

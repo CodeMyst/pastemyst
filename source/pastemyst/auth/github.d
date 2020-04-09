@@ -1,24 +1,16 @@
 module pastemyst.auth.github;
 
 import vibe.d;
-
-///
-public struct GithubUser
-{
-    ///
-    public int id;
-    ///
-    public string username;
-    ///
-    public string avatarUrl;
-}
+import pastemyst.data;
 
 /++
  + gets the github user from an access token
  +/
-public GithubUser getGithubUser(string accessToken) @safe
+public ServiceUser getGithubUser(string accessToken) @safe
 {
-    GithubUser u;
+    import std.conv : to;
+
+    ServiceUser u;
 
     requestHTTP("https://api.github.com/user",
     (scope req)
@@ -29,7 +21,7 @@ public GithubUser getGithubUser(string accessToken) @safe
     {
         Json j = parseJsonString(res.bodyReader.readAllUTF8());
 
-        u.id = j["id"].get!int();
+        u.id = j["id"].get!int().to!string();
         u.username = j["login"].get!string();
         u.avatarUrl = j["avatar_url"].get!string();
     });

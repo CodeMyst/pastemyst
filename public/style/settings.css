@@ -1,0 +1,25 @@
+#settings .settings-block
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    margin-top: 20px;
+    padding: 0.5rem 1rem;
+}
+
+#settings .settings-block h3
+{
+    margin-bottom: 20px;
+}
+
+#settings .settings-block p.description
+{
+    font-size: var(--font-size-small);
+    color: var(--color-nanolightlight);
+    margin-bottom: 20px;
+}
+
+#settings .settings-block p.disabled
+{
+    color: var(--color-mystlue);
+    display: inline;
+}

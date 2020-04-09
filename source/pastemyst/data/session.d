@@ -15,7 +15,7 @@ public struct UserSession
     /++
      + user
      +/
-    public User user;
+    public MinimalUser user;
 
     /++
      + github token for the user

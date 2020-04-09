@@ -2,23 +2,28 @@ module pastemyst.web.root;
 
 import vibe.d;
 import pastemyst.data;
+import pastemyst.web;
 
 /++
  + web interface for the `/` endpoint.
  +/
 public class RootWeb
 {
-    /// user session
-    public SessionVar!(UserSession, "user") userSession;
-
     /++
      + GET /
      +
      + home page
      +/
     @path("/")
-    public void getHome()
+    public void getHome(HTTPServerRequest req)
     {
-		render!("home.dt", userSession);
+        UserSession session = UserSession.init;
+
+        if (req.session && req.session.isKeySet("user"))
+        {
+            session = req.session.get!UserSession("user");    
+        }
+
+		render!("home.dt", session);
     }
 }

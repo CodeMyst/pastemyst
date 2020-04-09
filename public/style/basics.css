@@ -32,3 +32,22 @@ a:hover
     max-width: 960px;
     box-sizing: border-box;
 }
+
+.block
+{
+    box-sizing: border-box;
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    margin-top: 20px;
+    padding: 0.5rem 1rem;
+}
+
+.block h3, .block p
+{
+    margin-bottom: 20px;
+}
+
+.block p:last-child
+{
+    margin-bottom: 0;
+}

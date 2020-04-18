@@ -43,7 +43,7 @@ html(lang="en")
                         li
                             a(href="/api-docs") api
                         li.no-delimiter
-                            a(href="https://ko-fi.com/codemyst", target="_blank") donate
+                            a(href="https://liberapay.com/codemyst", target="_blank") donate
             
             block body
 

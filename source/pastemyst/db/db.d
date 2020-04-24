@@ -14,7 +14,6 @@ version(unittest)
 public const string[] collectionNames = ["pastes", "users"];
 
 private MongoDatabase mongo;
-private RedisDatabase redis;
 
 /++ 
  + Connects to the databases.
@@ -29,10 +28,7 @@ public void connect()
     }
     else
     {
-        import pastemyst.data : config;
-        
         connectMongo("127.0.0.1", "pastemyst");
-        connectRedis(config.redis.host, config.redis.index);
     }
 }
 
@@ -68,19 +64,6 @@ unittest
 private void connectMongo(string host, string dbName)
 {
     mongo = connectMongoDB(host).getDatabase(dbName);
-}
-
-private void connectRedis(string host, ulong dbIndex)
-{
-    redis = vibe.db.redis.redis.connectRedis(host).getDatabase(dbIndex);
-}
-
-/++
- + sets a key-value in the redis db
- +/
-public void redisSet(T)(string key, T value)
-{
-    redis.set(key, value);
 }
 
 /++

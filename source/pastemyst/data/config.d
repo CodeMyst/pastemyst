@@ -16,16 +16,6 @@ public struct Config
      + gitlab config for oauth
      +/
     public Gitlab gitlab;
-
-    /++
-     + jwt config
-     +/
-    public Jwt jwt;
-
-    /++
-     + redis config
-     +/
-    public Redis redis;
 }
 
 /++
@@ -58,33 +48,6 @@ public struct Gitlab
      + gitlab client secret
      +/
     public string secret;
-}
-
-/++
- + struct holding the jwt secret
- +/
-public struct Jwt
-{
-    /++
-     + jwt secret
-     +/
-    public string secret;
-}
-
-/++
- + redis config
- +/
-public struct Redis
-{
-    /++
-     + redis host string
-     +/
-    public string host;
-
-    /++
-     + redis db index
-     +/
-    public ulong index;
 }
 
 /++
@@ -123,6 +86,8 @@ static this()
             throw new Exception("config.yaml: invalid or empty");
         }
 
+        // TODO: clean this up
+
         enforce(cfg.isValid(), "config.yaml: invalid");
 
         enforce(cfg.containsKey("github"), "config.yaml: missing github");
@@ -140,19 +105,5 @@ static this()
 
         _config.gitlab.id = cfg["gitlab"]["id"].as!string();
         _config.gitlab.secret = cfg["gitlab"]["secret"].as!string();
-
-        enforce(cfg.containsKey("jwt"), "config.yaml: missing jwt");
-
-        enforce(cfg["jwt"].containsKey("secret"), "config.yaml: missing jwt secret");
-
-        _config.jwt.secret = cfg["jwt"]["secret"].as!string();
-
-        enforce(cfg.containsKey("redis"), "config.yaml: missing redis");
-
-        enforce(cfg["redis"].containsKey("host"), "config.yaml: missing redis host");
-        enforce(cfg["redis"].containsKey("index"), "config.yaml: missing redis db index");
-
-        _config.redis.host = cfg["redis"]["host"].as!string();
-        _config.redis.index = cfg["redis"]["index"].as!ulong();
     }
 }

@@ -33,6 +33,10 @@ you also need a `config.yaml` file at the root of the project. it should look li
 github:
     id: <client id>
     secret: <client secret>
+
+gitlab:
+    id: <client id>
+    secret: <client secret>
 ```
 
 the github id and secret should be gotten from: [github applications](https://github.com/settings/applications), the homepage url should be: `http://localhost:5000/` and the authorization callback: `http://localhost:5000//login/github`.

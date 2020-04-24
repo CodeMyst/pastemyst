@@ -5,18 +5,31 @@ block body
         include components/userinfo
 
         .settings-block
-            h3 connect services
+            form(action="settings/save", method="POST", enctype="multipart/form-data")
+                h2 account settings
 
-            p.description you can connect more services to a single pastemyst account so logging in with different services will log you into the same account.
-            p.description connecting to a service already associated with a pastemyst account will prompt you to merge both accounts into one (the one you are currently logged in).
+                .username
+                    p change username
+                    input(type="text", value=user.username, name="username", autocomplete="off", spellcheck="false")
 
-            - if (!("github" in user.serviceIds))
-                a(href="/login/github") connect with github
-            - else
-                p.disabled connect with github (already connected)
-            br
+                .avatar
+                    p upload new avatar
+                    input(type="file", accept=".png,.jpg", name="avatar")
 
-            - if (!("gitlab" in user.serviceIds))
-                a(href="/login/gitlab") connect with gitlab
-            - else
-                p.disabled connect with gitlab (already connected)
+                input.save(type="submit", value="save")
+
+                h2 connect services
+
+                p.description you can connect more services to a single pastemyst account so logging in with different services will log you into the same account.
+                p.description connecting to a service already associated with a pastemyst account will prompt you to merge both accounts into one (the one you are currently logged in).
+
+                - if (!("github" in user.serviceIds))
+                    a(href="/login/github") connect with github
+                - else
+                    p.disabled connect with github (already connected)
+                br
+
+                - if (!("gitlab" in user.serviceIds))
+                    a(href="/login/gitlab") connect with gitlab
+                - else
+                    p.disabled connect with gitlab (already connected)

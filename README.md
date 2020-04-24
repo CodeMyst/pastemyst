@@ -37,6 +37,8 @@ github:
 gitlab:
     id: <client id>
     secret: <client secret>
+
+hostname: http://localhost:5000/
 ```
 
 the github id and secret should be gotten from: [github applications](https://github.com/settings/applications), the homepage url should be: `http://localhost:5000/` and the authorization callback: `http://localhost:5000//login/github`.

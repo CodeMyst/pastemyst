@@ -16,6 +16,11 @@ public struct Config
      + gitlab config for oauth
      +/
     public Gitlab gitlab;
+
+    /++
+     + hostname of the website
+     +/
+    public string hostname;
 }
 
 /++
@@ -105,5 +110,9 @@ static this()
 
         _config.gitlab.id = cfg["gitlab"]["id"].as!string();
         _config.gitlab.secret = cfg["gitlab"]["secret"].as!string();
+
+        enforce(cfg.containsKey("hostname"), "config.yaml: missing hostname");
+
+        _config.hostname = cfg["hostname"].as!string();
     }
 }

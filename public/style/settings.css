@@ -6,9 +6,28 @@
     padding: 0.5rem 1rem;
 }
 
-#settings .settings-block h3
+#settings .settings-block h2
 {
     margin-bottom: 20px;
+}
+
+#settings .settings-block .save
+{
+    background-color: var(--color-mystge);
+    color: var(--color-nano);
+    padding: 0.25rem 1rem;
+    margin-bottom: 20px;
+    display: inline-block;
+    border-radius: var(--border-radius);
+    outline: none;
+    border: none;
+    font-size: var(--font-size-normal);
+}
+
+#settings .settings-block .save:hover
+{
+    background-color: var(--color-mystlue);
+    cursor: pointer;
 }
 
 #settings .settings-block p.description
@@ -22,4 +41,43 @@
 {
     color: var(--color-mystlue);
     display: inline;
+}
+
+#settings .settings-block .username
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#settings .settings-block .username p
+{
+    margin-right: 20px;
+}
+
+#settings .settings-block .username input
+{
+    width: 250px;
+    box-sizing: border-box;
+    background-color: var(--color-nano);
+    color: var(--color-white);
+    border-radius: var(--border-radius);
+    border: none;
+    font-size: var(--font-size-normal);
+    padding: 0.25rem 0.5rem;
+    font-family: var(--font-stack);
+}
+
+#settings .settings-block .avatar
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#settings .settings-block .avatar p
+{
+    margin-right: 20px;
 }

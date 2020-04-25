@@ -3,3 +3,12 @@ extends baseLayout
 block body
     #profile
         include components/userinfo
+
+        .pastes
+            - foreach(paste; pastes)
+                a.paste(href="/" ~ paste.id)
+                    .title
+                        p= paste.title
+                    .info
+                        span.created-at paste.createdAt
+                        span.expires-in

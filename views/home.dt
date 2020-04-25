@@ -48,4 +48,4 @@ block body
             input(type="submit")
 
 block scripts
-    script(type="module", src="scripts/home.js")
+    script(type="module", src="/static/scripts/home.js")

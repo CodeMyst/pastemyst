@@ -23,10 +23,14 @@ public class UserWeb
     @anyAuth
     public void getProfile(HTTPServerRequest req)
     {
+        import pastemyst.db : find;
+
         UserSession session = req.session.get!UserSession("user");    
         const title = session.user.username ~ " - profile";
 
-        render!("profile.dt", session, title);
+        auto pastes = find!Paste(["ownerId": session.user.id]);
+
+        render!("profile.dt", pastes, session, title);
     }
 
     /++

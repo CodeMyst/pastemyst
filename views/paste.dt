@@ -26,8 +26,8 @@ block body
             p.created-at
                 span.highlight created at:
                 span.value
-            p.expires-at
-                span.highlight expires at:
+            p.expires-in
+                span.highlight expires in:
                 span.value
  
 block scripts

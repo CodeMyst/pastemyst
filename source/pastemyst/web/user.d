@@ -28,7 +28,12 @@ public class UserWeb
         UserSession session = req.session.get!UserSession("user");    
         const title = session.user.username ~ " - profile";
 
-        auto pastes = find!Paste(["ownerId": session.user.id]);
+        auto pastesRes = find!Paste(["ownerId": session.user.id]);
+        Paste[] pastes;
+        foreach (paste; pastesRes)
+        {
+            pastes ~= paste;
+        }
 
         render!("profile.dt", pastes, session, title);
     }
@@ -76,7 +81,7 @@ public class UserWeb
 
             string avatarPath = uploadAvatar(avatar.tempPath.toString(), avatar.filename.name);
 
-            string avatarUrl = chainPath(config.hostname, "assets/avatars/", avatarPath).array;
+            string avatarUrl = chainPath(config.hostname, "/static/assets/avatars/", avatarPath).array;
 
             User user = findOneById!User(session.user.id).get();
 

@@ -8,7 +8,20 @@ block body
             - foreach(paste; pastes)
                 a.paste(href="/" ~ paste.id)
                     .title
-                        p= paste.title
+                        - if (paste.title != "")
+                            p= paste.title
+                        - else
+                            p untitled
                     .info
-                        span.created-at paste.createdAt
-                        span.expires-in
+                        p.expires-in
+                        p.created-at
+
+block scripts
+    script.
+        var pastes = [];
+
+    - foreach(p; pastes)
+        script.
+            pastes.push({'createdAt': '#{p.createdAt}', 'expiresIn': '#{cast(string) p.expiresIn}'});
+
+    script(type="module", src="/static/scripts/profile.js")

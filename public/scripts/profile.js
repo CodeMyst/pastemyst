@@ -1,6 +1,6 @@
 window.addEventListener("load", async () =>
 {
-    for (let i = 0; i < pastes.length; i++)
+    for (let i = 0; i < pastes.length; i++) // jshint ignore:line
     {
         let pasteElement = document.querySelectorAll("#profile .pastes .paste")[i];
         let createdAtDate = new Date(pastes[i].createdAt * 1000); // jshint ignore:line

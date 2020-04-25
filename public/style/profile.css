@@ -1,1 +1,64 @@
+#profile .pastes
+{
+    margin-top: 20px;
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+}
 
+#profile .pastes .paste
+{
+    display: block;
+    border-bottom: 1px solid var(--color-nano);
+    padding: 0.5rem 1rem;
+}
+
+#profile .pastes .paste:last-child
+{
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+#profile .pastes .paste:hover .info
+{
+    color: white;
+}
+
+#profile .pastes .paste .info
+{
+    color: var(--color-nanolightlight);
+    font-size: var(--font-size-small);
+}
+
+#profile .pastes .paste .info p
+{
+    background-color: var(--color-nano);
+    border-radius: var(--border-radius);
+    padding: 0.25rem 1rem;
+    margin-top: 10px;
+}
+
+@media screen and (min-width: 720px)
+{
+    #profile .pastes .paste
+    {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    #profile .pastes .paste .info
+    {
+        margin-left: auto;
+        display: flex;
+        flex-direction: row;
+    }
+
+    #profile .pastes .paste .info p
+    {
+        margin: 0;
+    }
+
+    #profile .pastes .paste .info .expires-in
+    {
+        margin-right: 20px;
+    }
+}

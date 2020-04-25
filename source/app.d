@@ -27,14 +27,20 @@ public void main()
 	import pastemyst.db : connect;
 
 	URLRouter router = new URLRouter();
-	router.get("*", serveStaticFiles("public"));
+
+	router.registerRestInterface(new APIPaste());
+	router.registerRestInterface(new APITime());
+	router.registerRestInterface(new APIData());
+
 	router.registerWebInterface(new RootWeb());
 	router.registerWebInterface(new LoginWeb());
 	router.registerWebInterface(new UserWeb());
 	router.registerWebInterface(new PasteWeb());
-	router.registerRestInterface(new APIPaste());
-	router.registerRestInterface(new APITime());
-	router.registerRestInterface(new APIData());
+
+    auto fsettings = new HTTPFileServerSettings();
+    fsettings.serverPathPrefix = "/static";
+
+	router.get("/static/*", serveStaticFiles("public/", fsettings));
 
 	HTTPServerSettings serverSettings = new HTTPServerSettings();
 	serverSettings.bindAddresses = ["127.0.0.1"];

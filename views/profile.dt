@@ -3,3 +3,25 @@ extends baseLayout
 block body
     #profile
         include components/userinfo
+
+        .pastes
+            - foreach(paste; pastes)
+                a.paste(href="/" ~ paste.id)
+                    .title
+                        - if (paste.title != "")
+                            p= paste.title
+                        - else
+                            p untitled
+                    .info
+                        p.expires-in
+                        p.created-at
+
+block scripts
+    script.
+        var pastes = [];
+
+    - foreach(p; pastes)
+        script.
+            pastes.push({'createdAt': '#{p.createdAt}', 'expiresIn': '#{cast(string) p.expiresIn}'});
+
+    script(type="module", src="/static/scripts/profile.js")

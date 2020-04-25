@@ -40,4 +40,4 @@ block scripts
         script.
             langs.push("#{p.language}");
 
-    script(type="module", src="scripts/paste.js")
+    script(type="module", src="/static/scripts/paste.js")

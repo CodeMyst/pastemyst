@@ -1,3 +1,5 @@
+import { timeDifferenceToString } from "./time.js";
+
 window.addEventListener("load", async () =>
 {
     let textareas = document.querySelectorAll("textarea");
@@ -84,12 +86,13 @@ window.addEventListener("load", async () =>
 
     if (expiresAt !== 0)
     {
-        document.querySelector(".paste-meta .expires-at .value").textContent = " " + new Date(expiresAt * 1000).toString().toLowerCase();
+        let expiresIn = timeDifferenceToString(expiresAt * 1000 - new Date());
+        document.querySelector(".paste-meta .expires-in .value").textContent = " " + expiresIn;
     }
     else
     {
-        document.querySelector(".paste-meta .expires-at .highlight").textContent = "expires in:";
-        document.querySelector(".paste-meta .expires-at .value").textContent = " never";
+        let expiresInElem = document.querySelector(".paste-meta .expires-in");
+        expiresInElem.parentNode.removeChild(expiresInElem);
     }
 });
 

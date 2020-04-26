@@ -1,0 +1,7 @@
+extends baseLayout
+
+block body
+    #public-profile
+        .public-user-info
+            img.avatar(src=user.avatarUrl)
+            p.username= user.username

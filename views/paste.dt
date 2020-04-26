@@ -7,6 +7,11 @@ block body
                 p.title= paste.title
             -else
                 p.title.untitled (untitled)
+
+            -if(paste.ownerId != "" && session.user.id == paste.ownerId)
+                form.delete-paste(method="post", action="/" ~ paste.id ~ "/delete/", onsubmit="return confirm('are you sure you want to delete this paste? you won\\'t be able to recover it.');")
+                    button(type="submit")
+                        i.fas.fa-trash
  
         .paste-pasties
             -import std.conv : to;

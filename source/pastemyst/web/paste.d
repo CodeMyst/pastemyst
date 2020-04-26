@@ -42,6 +42,42 @@ public class PasteWeb
     }
 
     /++
+     + POST /:id/delete
+     +
+     + deletes a user's paste
+     +/
+    @path("/:id/delete")
+    public void postPasteDelete(string _id, HTTPServerRequest req)
+    {
+        import pastemyst.db : findOneById, removeOneById;
+
+        const auto res = findOneById!Paste(_id);
+
+        if (res.isNull)
+        {
+            return;
+        }
+
+        const Paste paste = res.get();
+
+        UserSession session = UserSession.init;
+
+        if (req.session && req.session.isKeySet("user"))
+        {
+            session = req.session.get!UserSession("user");
+
+            if (paste.ownerId != "" && paste.ownerId == session.user.id)
+            {
+                removeOneById!Paste(_id);
+                redirect("/user/profile");
+                return;
+            }
+        }
+
+        throw new HTTPStatusException(HTTPStatus.forbidden);
+    }
+
+    /++
      + POST /paste
      +
      + creates a paste

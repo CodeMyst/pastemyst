@@ -10,6 +10,36 @@
     padding: 0.5rem 1rem;
     font-size: var(--font-size-medium);
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+#paste .paste-header .title
+{
+    align-self: center;
+}
+
+#paste .paste-header .delete-paste
+{
+    margin-left: auto;
+    align-self: center;
+}
+
+#paste .paste-header .delete-paste button
+{
+    background-color: transparent;
+    border: none;
+}
+
+#paste .paste-header .delete-paste button:hover
+{
+    cursor: pointer;
+}
+
+#paste .paste-header .delete-paste .fa-trash
+{
+    color: var(--color-mysted);
+    font-size: var(--font-size-normal);
 }
 
 #paste .paste-pasties .pasty

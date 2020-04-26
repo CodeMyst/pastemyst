@@ -68,6 +68,26 @@
     color: white;
 }
 
+#profile .pastes .paste .title
+{
+    display: flex;
+}
+
+#profile .pastes .paste .title p
+{
+    align-self: center;
+}
+
+#profile .pastes .paste:hover .title p.untitled
+{
+    color: var(--color-mystlue);
+}
+
+#profile .pastes .paste .title p.untitled
+{
+    color: var(--color-nanolightlight);
+}
+
 #profile .pastes .paste .info
 {
     color: var(--color-nanolightlight);

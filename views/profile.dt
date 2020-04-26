@@ -24,7 +24,7 @@ block body
                         - if (paste.title != "")
                             p= paste.title
                         - else
-                            p untitled
+                            p.untitled (untitled)
                     .info
                         p.expires-in
                         p.created-at

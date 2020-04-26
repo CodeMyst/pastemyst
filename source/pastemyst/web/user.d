@@ -67,7 +67,7 @@ public class UserWeb
      +/
     @path("settings/save")
     @anyAuth
-    public void postSettingsSave(HTTPServerRequest req, string username)
+    public void postSettingsSave(HTTPServerRequest req, string username, bool publicProfile)
     {
         import std.conv : to;
         import pastemyst.db : uploadAvatar, update, findOneById;
@@ -79,6 +79,8 @@ public class UserWeb
 
         UserSession session = req.session.get!UserSession("user");
 
+        User user = findOneById!User(session.user.id).get();
+
         if ("avatar" in req.files)
         {
             auto avatar = "avatar" in req.files;
@@ -86,8 +88,6 @@ public class UserWeb
             string avatarPath = uploadAvatar(avatar.tempPath.toString(), avatar.filename.name);
 
             string avatarUrl = chainPath(config.hostname, "/static/assets/avatars/", avatarPath).array;
-
-            User user = findOneById!User(session.user.id).get();
 
             if (user.avatarUrl.startsWith(config.hostname))
             {
@@ -106,8 +106,13 @@ public class UserWeb
             update!User(["_id": session.user.id], ["$set": ["username": username]]);
         }
 
+        if (user.publicProfile != publicProfile)
+        {
+            update!User(["_id": session.user.id], ["$set": ["publicProfile": publicProfile]]);
+        }
+
         req.session.set("user", session);
 
-        redirect("/");
+        redirect("/user/settings");
     }
 }

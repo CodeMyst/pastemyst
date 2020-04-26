@@ -30,6 +30,11 @@ public struct User
      + user ids for different services like github and gitlab
      +/
     public string[string] serviceIds;
+
+    /++
+     + whether the user's profile is public for everyone to see
+     +/
+    public bool publicProfile;
 }
 
 /++

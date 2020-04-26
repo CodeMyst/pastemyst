@@ -1,3 +1,48 @@
+#profile form input[type=submit]
+{
+    display: none;
+}
+
+#profile .paste-search
+{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+}
+
+#profile .paste-search .label
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 0.5rem 1rem;
+}
+
+#profile .paste-search .label label
+{
+    background-color: var(--color-nano);
+    border-radius: var(--border-radius);
+    padding: 0.25rem 1rem;
+}
+
+#profile .paste-search input
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    border: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    color: white;
+    font-size: var(--font-size-normal);
+    width: 100%;
+}
+
+#profile .empty
+{
+    padding: 0.5rem 1rem;
+}
+
 #profile .pastes
 {
     margin-top: 20px;

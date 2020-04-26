@@ -4,7 +4,20 @@ block body
     #profile
         include components/userinfo
 
+        form(method="get", action="/user/profile")
+            .paste-search
+                .label
+                    label(for="search") search:
+                input#search(type="text", placeholder="...", name="search", value=search)
+            input(type="submit")
+
         .pastes
+            - if (pastes.length == 0)
+                - if (search == "")
+                    p.empty no pastes found on your profile
+                - else
+                    p.empty no pastes match the search query
+
             - foreach(paste; pastes)
                 a.paste(href="/" ~ paste.id)
                     .title

@@ -21,9 +21,10 @@ public class UserWeb
      +/
     @path("profile")
     @anyAuth
-    public void getProfile(HTTPServerRequest req)
+    public void getProfile(HTTPServerRequest req, string search="")
     {
         import pastemyst.db : find;
+        import std.algorithm : canFind;
 
         UserSession session = req.session.get!UserSession("user");    
         const title = session.user.username ~ " - profile";
@@ -32,10 +33,13 @@ public class UserWeb
         Paste[] pastes;
         foreach (paste; pastesRes)
         {
-            pastes ~= paste;
+            if (search == "" || paste.title.canFind(search))
+            {
+                pastes ~= paste;
+            }
         }
 
-        render!("profile.dt", pastes, session, title);
+        render!("profile.dt", pastes, search, session, title);
     }
 
     /++

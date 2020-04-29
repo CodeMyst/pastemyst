@@ -35,7 +35,7 @@ public class UsersWeb
             session = req.session.get!UserSession("user");    
         }
 
-        string title = user.username ~ " - public profile";
+        const title = user.username ~ " - public profile";
 
         render!("publicProfile.dt", session, title, user);
     }

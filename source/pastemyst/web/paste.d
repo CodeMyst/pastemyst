@@ -82,7 +82,8 @@ public class PasteWeb
      +
      + creates a paste
      +/
-    public void postPaste(string title, string expiresIn, bool isPrivate, bool isPublic, string pasties, HTTPServerRequest req)
+    public void postPaste(string title, string expiresIn, bool isPrivate, bool isPublic, string pasties,
+            HTTPServerRequest req)
     {
         import pastemyst.paste : createPaste;
         import pastemyst.db : insert;
@@ -113,7 +114,8 @@ public class PasteWeb
             }
             else
             {
-                throw new HTTPStatusException(HTTPStatus.forbidden, "you cant create a profile public paste if you are not logged in.");
+                throw new HTTPStatusException(HTTPStatus.forbidden,
+                        "you cant create a profile public paste if you are not logged in.");
             }
         }
 

@@ -42,6 +42,11 @@ public struct Paste
     public bool isPrivate;
 
     /++
+     + does the paste show up on the user's public profile?
+     +/
+    public bool isPublic;
+
+    /++
      + Pasties of the paste. A paste can have multiple pasties which are sort of like "files".
      +/
     public Pasty[] pasties;

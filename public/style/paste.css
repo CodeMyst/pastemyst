@@ -12,6 +12,7 @@
     margin-bottom: 20px;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 #paste .paste-header .title
@@ -19,9 +20,40 @@
     align-self: center;
 }
 
+#paste .paste-header .set-public-on-profile-paste
+{
+    align-self: center;
+    margin-right: 20px;
+}
+
+#paste .paste-header .set-public-on-profile-paste button
+{
+    background-color: transparent;
+    border: none;
+}
+
+#paste .paste-header .set-public-on-profile-paste button:hover
+{
+    cursor: pointer;
+}
+
+#paste .paste-header .set-public-on-profile-paste button .fa-eye
+{
+    font-size: var(--font-size-normal);
+}
+
+#paste .paste-header .set-public-on-profile-paste button.public .fa-eye
+{
+    color: var(--color-white);
+}
+
+#paste .paste-header .set-public-on-profile-paste button.private .fa-eye
+{
+    color: var(--color-nanolightlight);
+}
+
 #paste .paste-header .delete-paste
 {
-    margin-left: auto;
     align-self: center;
 }
 

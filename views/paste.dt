@@ -13,15 +13,18 @@ block body
                 -if(paste.ownerId != "" && session.user.id == paste.ownerId)
                     form.set-public-on-profile-paste(method="post", action="/" ~ paste.id ~ "/togglePublicOnProfile")
                         -if (paste.isPublic)
-                            button.public(type="submit")
+                            button.public.tooltip(type="submit")
                                 i.fas.fa-eye
+                                span.tooltip-text set to private on profile
                         -else
-                            button.private(type="submit")
+                            button.private.tooltip(type="submit")
                                 i.fas.fa-eye
+                                span.tooltip-text set to public on profile
 
                     form.delete-paste(method="post", action="/" ~ paste.id ~ "/delete", onsubmit="return confirm('are you sure you want to delete this paste? you won\\'t be able to recover it.');")
-                        button(type="submit")
+                        button.tooltip(type="submit")
                             i.fas.fa-trash
+                            span.tooltip-text delete paste
  
         .paste-pasties
             -import std.conv : to;

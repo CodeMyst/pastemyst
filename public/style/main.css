@@ -12,6 +12,7 @@
 @import url(libs/font-awesome/css/font-awesome.min.css);
 
 @import url(dropdown.css);
+@import url(tooltip.css);
 @import url(userinfo.css);
 
 @import url(home.css);

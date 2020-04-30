@@ -3,5 +3,10 @@
         img.avatar(src=session.user.avatarUrl)
         p.username= session.user.username
     .right
+        - import pastemyst.db : findOneById;
+        - import pastemyst.data : User;
+        - auto u= findOneById!User(session.user.id).get();
+        - if (u.publicProfile)
+            a(href="/users/" ~ u.username) public profile
         a(href="/user/settings") settings
         a(href="/logout") logout

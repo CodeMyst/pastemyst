@@ -1,4 +1,4 @@
-#public-profile .public-user-info
+.public-profile .public-user-info
 {
     background-color: var(--color-nanolight);
     border-radius: var(--border-radius);
@@ -7,7 +7,7 @@
     padding: 0.5rem 1rem;
 }
 
-#public-profile .public-user-info .avatar
+.public-profile .public-user-info .avatar
 {
     width: 50px;
     border-radius: var(--border-radius);
@@ -15,7 +15,7 @@
     margin-right: 20px;
 }
 
-#public-profile .public-user-info .username
+.public-profile .public-user-info .username
 {
     align-self: center;
 }

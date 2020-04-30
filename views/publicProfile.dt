@@ -1,7 +1,42 @@
 extends baseLayout
 
 block body
-    #public-profile
+    #profile.public-profile
         .public-user-info
             img.avatar(src=user.avatarUrl)
             p.username= user.username
+
+        form(method="get", action="/users/" ~ user.username)
+            .paste-search
+                .label
+                    label(for="search") search:
+                input#search(type="text", placeholder="...", name="search", value=search)
+            input(type="submit")
+
+        .pastes
+            - if (pastes.length == 0)
+                - if (search == "")
+                    p.empty this user has no pastes visible on their profile
+                - else
+                    p.empty no pastes match the search query
+
+            - foreach(paste; pastes)
+                a.paste(href="/" ~ paste.id)
+                    .title
+                        - if (paste.title != "")
+                            p= paste.title
+                        - else
+                            p.untitled (untitled)
+                    .info
+                        p.expires-in
+                        p.created-at
+
+block scripts
+    script.
+        var pastes = [];
+
+    - foreach(p; pastes)
+        script.
+            pastes.push({'createdAt': '#{p.createdAt}', 'expiresIn': '#{cast(string) p.expiresIn}'});
+
+    script(type="module", src="/static/scripts/profile.js")

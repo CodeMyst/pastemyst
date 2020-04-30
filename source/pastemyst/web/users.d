@@ -10,15 +10,16 @@ import pastemyst.data;
 public class UsersWeb
 {
     @path("/:username")
-    public void getUser(HTTPServerRequest req, string _username)
+    public void getUser(HTTPServerRequest req, string _username, string search = "")
     {
-        import pastemyst.db : findOne;
+        import pastemyst.db : findOne, find;
+        import std.algorithm : canFind;
 
         auto userRes = findOne!User(["username": _username]);
 
         if (userRes.isNull())
         {
-            return;
+            throw new HTTPStatusException(HTTPStatus.notFound, "user either not found or the profile isn't set to public.");
         }
 
         const user = userRes.get();
@@ -37,6 +38,21 @@ public class UsersWeb
 
         const title = user.username ~ " - public profile";
 
-        render!("publicProfile.dt", session, title, user);
+        auto res = find!Paste(
+            [
+                "ownerId": Bson(user.id),
+                "isPublic": Bson(true),
+            ]);
+
+        Paste[] pastes;
+        foreach (paste; res)
+        {
+            if (search == "" || paste.title.canFind(search))
+            {
+                pastes ~= paste;
+            }
+        }
+
+        render!("publicProfile.dt", session, title, user, search, pastes);
     }
 }

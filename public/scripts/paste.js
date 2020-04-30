@@ -1,6 +1,8 @@
 import { timeDifferenceToString } from "./time.js";
 
 let highlightExpr = /(\d)L(\d+)(?:-L(\d+))?/;
+let editors = [];
+let highlightedLines = [];
 
 window.addEventListener("load", async () =>
 {
@@ -71,6 +73,8 @@ window.addEventListener("load", async () =>
             }
         }
 
+        editors.push(editor);
+
         let lines = editor.getWrapperElement().getElementsByClassName("CodeMirror-linenumber");
 
         for (let j = 0; j < lines.length; j++)
@@ -106,9 +110,13 @@ window.addEventListener("load", async () =>
                         }
                     }
                 }
+
+                highlightLines();
             });
         }
     }
+
+    highlightLines();
 
     let createdAtDate = new Date(createdAt * 1000); // jshint ignore:line
 
@@ -135,6 +143,52 @@ window.addEventListener("load", async () =>
         expiresInElem.parentNode.removeChild(expiresInElem);
     }
 });
+
+function highlightLines()
+{
+    for (let i = 0; i < highlightedLines.length; i++)
+    {
+        highlightedLines[i].classList.remove("line-highlight");
+    }
+
+    let res = location.hash.match(highlightExpr);
+
+    if (res === null)
+    {
+        return;
+    }
+    else if (res[1] !== undefined)
+    {
+        // select the pasty
+        let editor = editors[res[1]];
+        
+        if (res[3] === undefined)
+        {
+            // single line highlight
+            let line = res[2];
+
+            highlightLine(editor, line);
+        }
+        else
+        {
+            let startLine = res[2];
+            let endLine = res[3];
+
+            for (let i = startLine; i <= endLine; i++)
+            {
+                highlightLine(editor, i);
+            }
+        }
+    }
+}
+
+function highlightLine(editor, lineNum)
+{
+    let lineNumElem = editor.getWrapperElement().getElementsByClassName("CodeMirror-linenumber")[lineNum-1];
+    let lineElem = lineNumElem.parentElement.parentElement;
+    lineElem.classList.add("line-highlight");
+    highlightedLines.push(lineElem);
+}
 
 /**
  * Figures out whether to use a white or black text colour based on the background colour.

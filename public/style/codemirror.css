@@ -2,3 +2,9 @@
 {
     cursor: pointer;
 }
+
+.CodeMirror .line-highlight .CodeMirror-linenumber,
+.CodeMirror .line-highlight .CodeMirror-line
+{
+    background-color: #073847;
+}

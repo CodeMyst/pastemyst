@@ -1,5 +1,8 @@
 import { timeDifferenceToString } from "./time.js";
 
+let highlights = [];
+let highlightExpr = /(\d)L(\d+)(?:-L(\d+))?/;
+
 window.addEventListener("load", async () =>
 {
     let textareas = document.querySelectorAll("textarea");
@@ -67,6 +70,44 @@ window.addEventListener("load", async () =>
             {
                 langTextElem.style.color = "black";
             }
+        }
+
+        let lines = editor.getWrapperElement().getElementsByClassName("CodeMirror-linenumber");
+
+        for (let j = 0; j < lines.length; j++)
+        {
+            lines[j].addEventListener("click", (e) =>
+            {
+                if (!e.shiftKey)
+                {
+                    // start marker
+                    location.hash = i + "L" + (j+1);
+                }
+                else
+                {
+                    // end marker
+                    let res = location.hash.match(highlightExpr);
+                    if (res === null)
+                    {
+                        location.hash = i + "L" + (j+1);
+                    }
+                    else if (res[3] !== undefined)
+                    {
+                        // there's already an end marker
+                    }
+                    else if (res[1] !== undefined)
+                    {
+                        if ((j+1) < res[2])
+                        {
+                            location.hash = res[1] + "L" + (j+1) + "-L" + res[2];
+                        }
+                        else
+                        {
+                            location.hash = res[1] + "L" + res[2] + "-L" + (j+1);
+                        }
+                    }
+                }
+            });
         }
     }
 

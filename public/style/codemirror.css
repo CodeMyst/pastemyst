@@ -1,0 +1,4 @@
+.CodeMirror .CodeMirror-linenumber:hover
+{
+    cursor: pointer;
+}

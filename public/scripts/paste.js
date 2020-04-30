@@ -1,6 +1,5 @@
 import { timeDifferenceToString } from "./time.js";
 
-let highlights = [];
 let highlightExpr = /(\d)L(\d+)(?:-L(\d+))?/;
 
 window.addEventListener("load", async () =>
@@ -76,7 +75,7 @@ window.addEventListener("load", async () =>
 
         for (let j = 0; j < lines.length; j++)
         {
-            lines[j].addEventListener("click", (e) =>
+            lines[j].addEventListener("click", (e) => // jshint ignore:line
             {
                 if (!e.shiftKey)
                 {

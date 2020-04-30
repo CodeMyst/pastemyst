@@ -60,7 +60,7 @@ public class UsersWeb
         Paste[] pastes;
         foreach (paste; res)
         {
-            if (search == "" || paste.title.canFind(search))
+            if (search == "" || paste.title.toLower().canFind(search.toLower()))
             {
                 pastes ~= paste;
             }

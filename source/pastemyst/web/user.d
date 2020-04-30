@@ -25,6 +25,7 @@ public class UserWeb
     {
         import pastemyst.db : find;
         import std.algorithm : canFind;
+        import std.uni : toLower;
 
         UserSession session = req.session.get!UserSession("user");    
         const title = session.user.username ~ " - profile";
@@ -33,7 +34,7 @@ public class UserWeb
         Paste[] pastes;
         foreach (paste; pastesRes)
         {
-            if (search == "" || paste.title.canFind(search))
+            if (search == "" || paste.title.toLower().canFind(search.toLower()))
             {
                 pastes ~= paste;
             }

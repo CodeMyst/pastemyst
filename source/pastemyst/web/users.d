@@ -12,17 +12,30 @@ public class UsersWeb
     @path("/:username")
     public void getUser(HTTPServerRequest req, string _username, string search = "")
     {
-        import pastemyst.db : findOne, find;
+        import pastemyst.db : getAll, find;
         import std.algorithm : canFind;
+        import std.typecons : Nullable;
+        import std.uni : toLower;
 
-        auto userRes = findOne!User(["username": _username]);
+        auto userRes = getAll!User();
 
-        if (userRes.isNull())
+        Nullable!User userTemp;
+        foreach (u; userRes)
         {
-            throw new HTTPStatusException(HTTPStatus.notFound, "user either not found or the profile isn't set to public.");
+            if (u.username.toLower() == _username.toLower())
+            {
+                userTemp = u;
+                break;
+            }
         }
 
-        const user = userRes.get();
+        if (userTemp.isNull())
+        {
+            throw new HTTPStatusException(HTTPStatus.notFound,
+                    "user either not found or the profile isn't set to public.");
+        }
+
+        const user = userTemp.get();
 
         if (!user.publicProfile)
         {

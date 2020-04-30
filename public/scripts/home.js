@@ -216,6 +216,7 @@ async function createPaste()
     form.querySelector("input[name=title]").value = document.querySelector(`.paste-options input[name="title"]`).value;
     form.querySelector("input[name=expiresIn]").value = expiresInDropdown.value;
     form.querySelector("input[name=isPrivate]").checked = false;
+    form.querySelector("input[name=isPublic]").checked = document.querySelector(".paste-options-bottom-options input#public").checked;
 
     const pasties = [];
 

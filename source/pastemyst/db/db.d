@@ -103,6 +103,16 @@ public ulong getCollectionCount(T)()
 }
 
 /++
+ + returns all documents inside the specified collection
+ +/
+public MongoCursor!R getAll(R)() @safe
+{
+    MongoCollection collection = mongo[getCollectionName!R()];
+
+    return collection.find!R();
+}
+
+/++
  + finds all elements in the specified collection that match the query
  +/
 public MongoCursor!R find(R, T)(T query) @safe

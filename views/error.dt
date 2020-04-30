@@ -2,9 +2,10 @@ extends baseLayout
 
 block body
     .block
+        - import std.uni : toLower;
         h3 error #{error.code}
 
-        p= error.message
+        p= error.message.toLower()
 
         p= errorDebug
 

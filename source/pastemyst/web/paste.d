@@ -42,6 +42,42 @@ public class PasteWeb
     }
 
     /++
+     + POST /:id/togglePublicOnProfile
+     +
+     + toggles whether the post is public on the user's profile
+     +/
+    @path("/:id/togglePublicOnProfile")
+    public void postTogglePublicOnProfile(string _id, HTTPServerRequest req)
+    {
+        import pastemyst.db : findOneById, update;
+
+        const auto res = findOneById!Paste(_id);
+
+        if (res.isNull)
+        {
+            return;
+        }
+
+        const Paste paste = res.get();
+
+        UserSession session = UserSession.init;
+
+        if (req.session && req.session.isKeySet("user"))
+        {
+            session = req.session.get!UserSession("user");
+
+            if (paste.ownerId != "" && paste.ownerId == session.user.id)
+            {
+                update!Paste(["_id": _id], ["$set": ["isPublic": !paste.isPublic]]);
+                redirect("/" ~ _id);
+                return;
+            }
+        }
+
+        throw new HTTPStatusException(HTTPStatus.forbidden);
+    }
+
+    /++
      + POST /:id/delete
      +
      + deletes a user's paste
@@ -82,7 +118,8 @@ public class PasteWeb
      +
      + creates a paste
      +/
-    public void postPaste(string title, string expiresIn, bool isPrivate, string pasties, HTTPServerRequest req)
+    public void postPaste(string title, string expiresIn, bool isPrivate, bool isPublic, string pasties,
+            HTTPServerRequest req)
     {
         import pastemyst.paste : createPaste;
         import pastemyst.db : insert;
@@ -91,9 +128,11 @@ public class PasteWeb
 
         string ownerId = "";
 
+        UserSession session = UserSession.init;
+
         if (req.session && req.session.isKeySet("user"))
         {
-            UserSession session = req.session.get!UserSession("user");
+            session = req.session.get!UserSession("user");
 
             if (session.loggedIn)
             {
@@ -102,6 +141,19 @@ public class PasteWeb
         }
 
         Paste paste = createPaste(title, expiresIn, deserializeJson!(Pasty[])(pasties), isPrivate, ownerId);
+
+        if (isPublic)
+        {
+            if (session.loggedIn)
+            {
+                paste.isPublic = isPublic;
+            }
+            else
+            {
+                throw new HTTPStatusException(HTTPStatus.forbidden,
+                        "you cant create a profile public paste if you are not logged in.");
+            }
+        }
 
         insert(paste);
 

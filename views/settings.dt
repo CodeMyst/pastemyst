@@ -16,7 +16,13 @@ block body
                     p upload new avatar
                     input(type="file", accept=".png,.jpg", name="avatar")
 
-                input.save(type="submit", value="save")
+                h2 visibility
+
+                input(type="checkbox", id="public-profile", name="publicProfile", checked=user.publicProfile)
+                label(for="public-profile") public profile
+                p.description whether your profile is public for everyone to see. your avatar and username will be visible including any pastes you marked to show on your profile.
+                - if (user.publicProfile)
+                    p.description your public profile is available here: #[a(href="/users/" ~ user.username) /users/#{user.username}]
 
                 h2 connect services
 
@@ -33,3 +39,6 @@ block body
                     a(href="/login/gitlab") connect with gitlab
                 - else
                     p.disabled connect with gitlab (already connected)
+
+                br
+                input.save(type="submit", value="save")

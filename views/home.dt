@@ -33,10 +33,21 @@ block body
                 textarea.editor(type="text", autocomplete="off", spellcheck="false")
         
         .paste-options-bottom
-            a.new-pasty-editor add editor
-            label.disabled private
-                input(type="checkbox", disabled)
-            a#create-paste create paste
+            .paste-buttons
+                a.new-pasty-editor add editor
+                a#create-paste create paste
+
+            .paste-options-bottom-options
+                div
+                    input(type="checkbox", id="private", disabled)
+                    label.disabled(for="private") private
+                div
+                    input(type="checkbox", id="encrypt", disabled)
+                    label.disabled(for="encrypt") encrypt
+                div
+                    input(type="checkbox", id="public", disabled=!session.loggedIn)
+                    label(for="public", class=session.loggedIn ? "" : "disabled") show on my profile
+
         //- this is used for detecting when the .paste-options-bottom is in fixed position to apply different styles
         .paste-options-bottom-1px
 
@@ -44,6 +55,7 @@ block body
             input(type="text", name="title")
             input(type="text", name="expiresIn")
             input(type="checkbox", name="isPrivate")
+            input(type="checkbox", name="isPublic")
             input(type="text", name="pasties")
             input(type="submit")
 

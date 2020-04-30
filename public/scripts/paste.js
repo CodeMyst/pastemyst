@@ -77,6 +77,9 @@ window.addEventListener("load", async () =>
 
         let lines = editor.getWrapperElement().getElementsByClassName("CodeMirror-linenumber");
 
+        let start;
+        let end;
+
         for (let j = 0; j < lines.length; j++)
         {
             lines[j].addEventListener("click", (e) => // jshint ignore:line
@@ -84,31 +87,38 @@ window.addEventListener("load", async () =>
                 if (!e.shiftKey)
                 {
                     // start marker
-                    location.hash = i + "L" + (j+1);
+                    start = j+1;
+                    end = undefined;
                 }
                 else
                 {
                     // end marker
                     let res = location.hash.match(highlightExpr);
-                    if (res === null)
+                    if (start === undefined)
                     {
-                        location.hash = i + "L" + (j+1);
+                        start = j+1;
                     }
-                    else if (res[3] !== undefined)
+                    else
                     {
-                        // there's already an end marker
-                    }
-                    else if (res[1] !== undefined)
-                    {
-                        if ((j+1) < res[2])
+                        if ((j+1) < start)
                         {
-                            location.hash = res[1] + "L" + (j+1) + "-L" + res[2];
+                            end = start;
+                            start = j+1;
                         }
                         else
                         {
-                            location.hash = res[1] + "L" + res[2] + "-L" + (j+1);
+                            end = j+1;
                         }
                     }
+                }
+
+                if (end !== undefined)
+                {
+                    location.hash = i + "L" + start + "-L" + end;
+                }
+                else
+                {
+                    location.hash = i + "L" + start;
                 }
 
                 highlightLines();
@@ -151,6 +161,8 @@ function highlightLines()
         highlightedLines[i].classList.remove("line-highlight");
     }
 
+    highlightedLines = [];
+
     let res = location.hash.match(highlightExpr);
 
     if (res === null)
@@ -174,7 +186,7 @@ function highlightLines()
             let startLine = res[2];
             let endLine = res[3];
 
-            for (let i = startLine; i <= endLine; i++)
+            for (let i = parseInt(startLine); i <= parseInt(endLine); i++)
             {
                 highlightLine(editor, i);
             }

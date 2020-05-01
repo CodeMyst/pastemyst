@@ -126,6 +126,7 @@ window.addEventListener("load", async () =>
     }
 
     highlightLines();
+    jumpToHighlight();
 
     let createdAtDate = new Date(createdAt * 1000); // jshint ignore:line
 
@@ -199,6 +200,16 @@ function highlightLine(editor, lineNum)
     let lineElem = lineNumElem.parentElement.parentElement;
     lineElem.classList.add("line-highlight");
     highlightedLines.push(lineElem);
+}
+
+function jumpToHighlight()
+{
+    if (highlightedLines.length === 0)
+    {
+        return;
+    }
+
+    highlightedLines[0].scrollIntoView();
 }
 
 /**

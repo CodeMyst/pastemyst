@@ -20,7 +20,7 @@ window.addEventListener("load", async () =>
             tabSize: 4,
             theme: "darcula",
             lineWrapping: true,
-            readOnly: "nocursor"
+            readOnly: true
         });
 
         let langMime;

@@ -93,7 +93,6 @@ window.addEventListener("load", async () =>
                 else
                 {
                     // end marker
-                    let res = location.hash.match(highlightExpr);
                     if (start === undefined)
                     {
                         start = j+1;

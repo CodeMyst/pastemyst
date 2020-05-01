@@ -11,6 +11,7 @@
 @import url(libs/darcula.css);
 @import url(libs/font-awesome/css/font-awesome.min.css);
 
+@import url(codemirror.css);
 @import url(dropdown.css);
 @import url(tooltip.css);
 @import url(userinfo.css);

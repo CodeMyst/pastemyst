@@ -111,6 +111,16 @@
     height: auto;
 }
 
+#paste .CodeMirror .CodeMirror-cursor
+{
+    display: none;
+}
+
+#paste .CodeMirror .CodeMirror-linenumber:hover
+{
+    cursor: pointer;
+}
+
 #paste .paste-meta
 {
     background-color: var(--color-nanolight);

@@ -1,0 +1,14 @@
+extends baseLayout
+
+block body
+    #api-docs
+        - import vibe.d;
+        - import std.file;
+        - import commonmarkd;
+        |!= convertMarkdownToHTML(readFileUTF8(NativePath("./public/docs/" ~ page ~ ".md")), MarkdownFlag.tablesExtension)
+
+block scripts
+    script(src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js")
+
+    script.
+        hljs.initHighlightingOnLoad();

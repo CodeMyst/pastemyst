@@ -22,7 +22,7 @@ void displayError(HTTPServerRequest req, HTTPServerResponse res, HTTPServerError
 
 public void main()
 {
-	import pastemyst.web : RootWeb, PasteWeb, LoginWeb, UserWeb, UsersWeb;
+	import pastemyst.web : RootWeb, PasteWeb, LoginWeb, UserWeb, UsersWeb, ApiDocsWeb;
 	import pastemyst.rest : APIPaste, APITime, APIData;
 	import pastemyst.db : connect;
 
@@ -33,6 +33,7 @@ public void main()
 	router.registerRestInterface(new APIData());
 
 	router.registerWebInterface(new RootWeb());
+	router.registerWebInterface(new ApiDocsWeb());
 	router.registerWebInterface(new LoginWeb());
 	router.registerWebInterface(new UserWeb());
 	router.registerWebInterface(new UsersWeb());

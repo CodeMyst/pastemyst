@@ -1,0 +1,82 @@
+#api-docs
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+}
+
+#api-docs h2,
+#api-docs h3,
+#api-docs h4
+{
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+#api-docs code
+{
+    background-color: var(--color-nano);
+    border-radius: var(--border-radius);
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 20px;
+}
+
+#api-docs p
+{
+    margin-bottom: 20px;
+    font-size: var(--font-size-small);
+}
+
+#api-docs ul
+{
+    padding-left: 20px;
+    margin-bottom: 20px;
+    font-size: var(--font-size-small);
+}
+
+#api-docs table
+{
+    background-color: var(--color-nano);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    margin-bottom: 20px;
+}
+
+#api-docs tr th
+{
+    padding-bottom: 20px;
+    color: var(--color-mystge);
+}
+
+#api-docs table th,
+#api-docs table td
+{
+    padding-right: 40px;
+    padding-bottom: 10px;
+}
+
+#api-docs table tbody tr td:first-child
+{
+    color: var(--color-mystlue);
+}
+
+#api-docs .method
+{
+    color: var(--color-mystge);
+    font-size: var(--font-size-medium);
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+#api-docs .method ~ code
+{
+    font-size: var(--font-size-small);
+    position: absolute;
+    margin-left: 10px;
+    margin-top: 2px;
+}
+
+#api-docs .method ~ code .var
+{
+    color: var(--color-mystge);
+}

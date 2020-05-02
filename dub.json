@@ -18,6 +18,7 @@
 	],
 	"copyright": "Copyright © 2019, CodeMyst",
 	"dependencies": {
+		"commonmark-d": "~>1.0.7",
 		"diet-ng": "~>1.6.1",
 		"dshould": "~>1.1.0",
 		"dyaml": "~>0.8.0",

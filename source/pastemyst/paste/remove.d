@@ -10,15 +10,6 @@ public void deleteExpiredPastes()
     import std.datetime : Clock;
     import vibe.d : Bson;
 
-   //  remove!Paste(
-   //      [
-   //          "$and":
-   //              [
-   //                  "deletesAt": Bson(["$ne": Bson("never")]),
-   //                  "deletesAt": Bson(["$lt": Bson(Clock.currTime().toUnixTime())])
-   //              ])
-   //       ]);
-
     remove!Paste([
         "$and": [
             Bson(["expiresIn": Bson(["$ne": Bson("never")])]),

@@ -147,9 +147,9 @@ public Nullable!R findOneById(R, T)(T id) @safe
 }
 
 /++
- + Removes one item from the DB, using the specified query
+ + Removes items from the DB, using the specified query
  +/
-public void removeOne(R, T)(T query) @safe
+public void remove(R, T)(T query) @safe
 {
     MongoCollection collection = mongo[getCollectionName!R()];
     collection.remove(query);
@@ -160,7 +160,7 @@ public void removeOne(R, T)(T query) @safe
  +/
 public void removeOneById(R, T)(T id) @safe
 {
-    removeOne!R(["_id": id]);
+    remove!R(["_id": id]);
 }
 
 version(unittest)

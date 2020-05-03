@@ -25,6 +25,7 @@ public void main()
 	import pastemyst.web : RootWeb, PasteWeb, LoginWeb, UserWeb, UsersWeb, ApiDocsWeb;
 	import pastemyst.rest : APIPaste, APITime, APIData;
 	import pastemyst.db : connect;
+	import pastemyst.util : deleteExpiredPastes;
 
 	URLRouter router = new URLRouter();
 
@@ -50,9 +51,11 @@ public void main()
     serverSettings.sessionStore = new MemorySessionStore();
 	serverSettings.errorPageHandler = toDelegate(&displayError);
 
-	listenHTTP(serverSettings, router);
-
 	connect();
+
+	setTimer(15.seconds, toDelegate(&deleteExpiredPastes), true);
+
+	listenHTTP(serverSettings, router);
 
 	runApplication();
 }

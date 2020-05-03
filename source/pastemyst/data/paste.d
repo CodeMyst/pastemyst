@@ -27,6 +27,11 @@ public struct Paste
     public ExpiresIn expiresIn;
 
     /++
+     + When the paste will get deleted, if `expiresIn` is set to never, this value is set to 0;
+     +/
+    public ulong deletesAt;
+
+    /++
      + Title of the paste.
      +/
     public string title;

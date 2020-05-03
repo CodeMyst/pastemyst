@@ -25,7 +25,7 @@ public void main()
 	import pastemyst.web : RootWeb, PasteWeb, LoginWeb, UserWeb, UsersWeb, ApiDocsWeb;
 	import pastemyst.rest : APIPaste, APITime, APIData;
 	import pastemyst.db : connect;
-	import pastemyst.util : deleteExpiredPastes;
+	import pastemyst.paste : deleteExpiredPastes;
 
 	URLRouter router = new URLRouter();
 

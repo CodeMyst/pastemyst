@@ -134,7 +134,7 @@ window.addEventListener("load", async () =>
 
     if (deletesAt !== 0) // jshint ignore:line
     {
-        let expiresIn = timeDifferenceToString(deletesAt * 1000 - new Date());
+        let expiresIn = timeDifferenceToString(deletesAt * 1000 - new Date()); // jshint ignore:line
         document.querySelector(".paste-meta .expires-in .value").textContent = " " + expiresIn;
     }
 

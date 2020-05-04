@@ -11,6 +11,10 @@ block body
 
             .right
                 -if(paste.ownerId != "" && session.user.id == paste.ownerId)
+                    a.tooltip(href="/" ~ paste.id ~ "/edit")
+                        i.fas.fa-edit
+                        span.tooltip-text edit paste
+
                     form.set-public-on-profile-paste(method="post", action="/" ~ paste.id ~ "/togglePublicOnProfile")
                         -if (paste.isPublic)
                             button.public.tooltip(type="submit")
@@ -44,18 +48,34 @@ block body
             p.created-at
                 span.highlight created at:
                 span.value
-            p.expires-in
-                span.highlight expires in:
-                span.value
+            -import pastemyst.data : ExpiresIn;
+            -if(paste.expiresIn != ExpiresIn.never)
+                p.expires-in
+                    span.highlight expires in:
+                    span.value
+            -if(paste.edits.length != 0)
+                p.edited-at
+                    span.highlight last edited at:
+                    span.value
+                p
+                    span.highlight edits: 
+                    span.value= paste.edits.length
  
 block scripts
     script.
         var createdAt = #{paste.createdAt};
         var expiresIn = "#{cast(string) paste.expiresIn}";
+        var deletesAt = #{paste.deletesAt};
+        var isEdited = #{paste.edits.length != 0};
+        var editedAt = 0;
         var langs = [];
 
     -foreach(p; paste.pasties)
         script.
             langs.push("#{p.language}");
+
+    -if(paste.edits.length != 0)
+        script.
+            editedAt = #{paste.edits[$-1].editedAt};
 
     script(type="module", src="/static/scripts/paste.js")

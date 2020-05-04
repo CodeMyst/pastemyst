@@ -55,6 +55,11 @@ public struct Paste
      + Pasties of the paste. A paste can have multiple pasties which are sort of like "files".
      +/
     public Pasty[] pasties;
+
+    /++
+     + array of paste edits
+     +/
+    public Edit[] edits;
 }
 
 

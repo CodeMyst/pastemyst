@@ -9,6 +9,7 @@ window.addEventListener("load", async () =>
 
         pasteElement.querySelector(".info .created-at").textContent = "created at: " + createdAtDate.toDateString().toLowerCase();
 
+        // TODO: this can be optimized, the pastes now hold information where they will get deleted
         const response = await fetch(`/api/time/expiresInToUnixTime?createdAt=${pastes[i].createdAt}&expiresIn=${pastes[i].expiresIn}`, // jshint ignore:line
         {
             headers:

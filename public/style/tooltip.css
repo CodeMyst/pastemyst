@@ -20,6 +20,7 @@
     margin-left: -60px;
     opacity: 0;
     transition: opacity 0.3s;
+    font-size: var(--font-size-small);
 }
 
 .tooltip .tooltip-text::after

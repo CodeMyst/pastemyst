@@ -20,6 +20,13 @@
     align-self: center;
 }
 
+#paste .paste-header .right a
+{
+    color: white;
+    font-size: var(--font-size-normal);
+    margin-right: 20px;
+}
+
 #paste .paste-header .set-public-on-profile-paste
 {
     align-self: center;

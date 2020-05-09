@@ -9,7 +9,7 @@ export function initEditors()
 
     for (let i = 0; i < editorElements.length; i++)
     {
-        let editor = new PastyEditor;
+        let editor = new PastyEditor();
 
         editor.index = i;
 
@@ -18,7 +18,7 @@ export function initEditors()
 
         let textarea = editor.rootElement.getElementsByClassName("editor")[0];
 
-        editor.editor = CodeMirror.fromTextArea(textarea,
+        editor.editor = CodeMirror.fromTextArea(textarea, // jshint ignore:line
         {
             indentUnit: 4,
             lineNumbers: true,
@@ -30,10 +30,7 @@ export function initEditors()
 
         editor.languageDropdown = setupLanguageDropdown(editor, false);
 
-        editor.rootElement.getElementsByClassName("pasty-editor-delete")[0].addEventListener("click", () =>
-        {
-            removeEditor(editor);
-        });
+        editor.rootElement.getElementsByClassName("pasty-editor-delete")[0].addEventListener("click", () => removeEditor(editor)); // jshint ignore:line
 
         editors.push(editor);
     }

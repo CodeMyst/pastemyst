@@ -140,7 +140,7 @@ window.addEventListener("load", async () =>
 
     let editedAtDate = new Date(editedAt * 1000); // jshint ignore:line
 
-    if (editedAt !== 0)
+    if (editedAt !== 0) // jshint ignore:line
     {
         document.querySelector(".paste-meta .edited-at .value").textContent = " " + editedAtDate.toString().toLowerCase();
     }

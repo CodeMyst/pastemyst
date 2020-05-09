@@ -15,9 +15,15 @@
     justify-content: space-between;
 }
 
+#paste .paste-header .left
+{
+    display: flex;
+}
+
 #paste .paste-header .title
 {
     align-self: center;
+    font-size: var(--font-size-normal);
 }
 
 #paste .paste-header .right a

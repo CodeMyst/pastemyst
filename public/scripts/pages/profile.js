@@ -1,4 +1,4 @@
-import { timeDifferenceToString } from "./time.js";
+import { timeDifferenceToString } from "../helpers/time.js";
 
 window.addEventListener("load", async () =>
 {

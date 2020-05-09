@@ -1,0 +1,28 @@
+.add-editor
+{
+    background-color: var(--color-mystlue);
+    display: flex;
+    flex-direction: row;
+    margin-top: -25px;
+    border-radius: var(--border-radius);
+    padding: 0.35rem 1rem;
+    padding-top: 0.5rem;
+    color: var(--color-nano);
+}
+
+.add-editor i
+{
+    margin-right: 10px;
+    align-self: center;
+}
+
+.add-editor p
+{
+    align-self: center;
+}
+
+.add-editor:hover
+{
+    background-color: var(--color-mystge);
+    color: var(--color-nano);
+}

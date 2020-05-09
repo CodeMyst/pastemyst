@@ -1,6 +1,7 @@
 module pastemyst.web.paste;
 
 import vibe.d;
+import vibe.web.auth;
 import pastemyst.data;
 import pastemyst.web;
 
@@ -9,14 +10,18 @@ import std.typecons : Nullable;
 /++
  + web interface for getting pastes
  +/
+@requiresAuth
 public class PasteWeb
 {
+    mixin Auth;
+
     /++
      + GET /:id
      +
      + gets the paste with the specified id
      +/
     @path("/:id")
+    @noAuth
     public void getPaste(string _id, HTTPServerRequest req)
     {
         import pastemyst.db : findOneById;
@@ -47,6 +52,7 @@ public class PasteWeb
      + toggles whether the post is public on the user's profile
      +/
     @path("/:id/togglePublicOnProfile")
+    @noAuth
     public void postTogglePublicOnProfile(string _id, HTTPServerRequest req)
     {
         import pastemyst.db : findOneById, update;
@@ -83,6 +89,7 @@ public class PasteWeb
      + deletes a user's paste
      +/
     @path("/:id/delete")
+    @noAuth
     public void postPasteDelete(string _id, HTTPServerRequest req)
     {
         import pastemyst.db : findOneById, removeOneById;
@@ -118,6 +125,7 @@ public class PasteWeb
      +
      + creates a paste
      +/
+    @noAuth
     public void postPaste(string title, string expiresIn, bool isPrivate, bool isPublic, string pasties,
             HTTPServerRequest req)
     {
@@ -160,7 +168,13 @@ public class PasteWeb
         redirect("/" ~ paste.id);
     }
 
+    /++
+     + GET /raw/:id/index
+     +
+     + gets the raw data of the pasty
+     +/
 	@path("/raw/:id/:index")
+    @noAuth
 	public void getRawPasty(string _id, int _index)
 	{
 		import pastemyst.db : findOneById;
@@ -177,5 +191,22 @@ public class PasteWeb
 		const string rawCode = pasty.code;
 
 		render!("raw.dt", title, rawCode);
+    }
+
+    /++
+     + GET /:id/edit
+     +
+     + page for editing the paste
+     +/
+    @path("/:id/edit")
+    @anyAuth
+    public void getPasteEdit(string _id, HTTPServerRequest req)
+    {
+        import pastemyst.db : findOneById;
+
+        UserSession session = req.session.get!UserSession("user");
+        const paste = findOneById!Paste(_id).get();
+
+        render!("editPaste.dt", session, paste);
     }
 }

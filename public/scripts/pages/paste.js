@@ -1,4 +1,4 @@
-import { timeDifferenceToString } from "./time.js";
+import { timeDifferenceToString } from "../helpers/time.js";
 
 let highlightExpr = /(\d)L(\d+)(?:-L(\d+))?/;
 let editors = [];
@@ -44,7 +44,7 @@ window.addEventListener("load", async () =>
 
             if (langData.mode !== "null")
             {
-                await import(`./libs/codemirror/${langData.mode}/${langData.mode}.js`).then(() => // jshint ignore:line
+                await import(`../libs/codemirror/${langData.mode}/${langData.mode}.js`).then(() => // jshint ignore:line
                 {
                     langMime = langData.mimes[0];
                 });
@@ -140,7 +140,10 @@ window.addEventListener("load", async () =>
 
     let editedAtDate = new Date(editedAt * 1000); // jshint ignore:line
 
-    document.querySelector(".paste-meta .edited-at .value").textContent = " " + editedAtDate.toString().toLowerCase();
+    if (editedAt !== 0)
+    {
+        document.querySelector(".paste-meta .edited-at .value").textContent = " " + editedAtDate.toString().toLowerCase();
+    }
 });
 
 function highlightLines()

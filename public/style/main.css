@@ -3,22 +3,26 @@
 
 @import url(basics.css);
 
-@import url(header.css);
-@import url(navigation.css);
-@import url(footer.css);
+@import url(components/header.css);
+@import url(components/navigation.css);
+@import url(components/footer.css);
 
 @import url(libs/codemirror.css);
 @import url(libs/darcula.css);
 @import url(libs/font-awesome/css/font-awesome.min.css);
 
-@import url(codemirror.css);
-@import url(dropdown.css);
-@import url(tooltip.css);
-@import url(userinfo.css);
+@import url(components/codemirror.css);
+@import url(components/dropdown.css);
+@import url(components/tooltip.css);
+@import url(components/userinfo.css);
+@import url(components/titleEditable.css);
+@import url(components/notices.css);
+@import url(components/pastyEditor.css);
+@import url(components/addEditorButton.css);
 
-@import url(home.css);
-@import url(apiDocs.css);
-@import url(paste.css);
-@import url(profile.css);
-@import url(publicProfile.css);
-@import url(settings.css);
+@import url(pages/home.css);
+@import url(pages/apiDocs.css);
+@import url(pages/paste.css);
+@import url(pages/profile.css);
+@import url(pages/publicProfile.css);
+@import url(pages/settings.css);

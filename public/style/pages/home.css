@@ -1,0 +1,72 @@
+#home .paste-options-bottom
+{
+    display: flex;
+    flex-wrap: wrap;
+    position: sticky;
+    bottom: 0;
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    z-index: 100;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#home .paste-options-bottom .paste-buttons
+{
+    display: flex;
+    flex-direction: column;
+}
+
+#home .paste-options-bottom .paste-buttons a
+{
+    display: block;
+}
+
+#home .paste-options-bottom .paste-buttons #create-paste
+{
+    background-color: var(--color-mystge);
+    color: var(--color-nano);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+}
+
+#home .paste-options-bottom .paste-buttons #create-paste:hover
+{
+    background-color: var(--color-mystlue);
+}
+
+#home .paste-options-bottom .paste-options-bottom-options
+{
+    display: flex;
+    flex-direction: column;
+}
+
+#home .paste-options-bottom .paste-options-bottom-options .disabled
+{
+    color: var(--color-nanolightlight);
+}
+
+#home .paste-options-bottom-sticky
+{
+    border: 2px solid var(--color-mystge);
+    border-bottom: none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#home .paste-options-bottom-1px
+{
+    height: 1px;
+    background-color: var(--color-nano);
+}
+
+#home .paste-options-bottom .new-pasty-editor
+{
+    flex: 1 0 50%;
+}
+
+#home #paste-create-form-hidden
+{
+    display: none;
+}

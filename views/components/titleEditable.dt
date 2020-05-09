@@ -1,0 +1,15 @@
+#title-editable
+    input(name="title", placeholder="paste title", type="text", autocomplete="off", spellcheck="false", value=titleValue)
+    #expires-in-dropdown.no-search
+        .label expires in:
+        include components/dropdown
+            block options
+                - import std.conv : to;
+                - import pastemyst.data : expireOptions;
+                - foreach (ulong i, exp; expireOptions)
+                    label.option
+                        - bool checked = false;
+                        - if (exp["value"] == defaultExpiresIn)
+                            - checked = true;
+                        input(type="radio", name="expires-in", value=exp["value"].to!string(), checked=checked)
+                        span= exp["pretty"].to!string()

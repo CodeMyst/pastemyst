@@ -78,4 +78,4 @@ block scripts
         script.
             editedAt = #{paste.edits[$-1].editedAt};
 
-    script(type="module", src="/static/scripts/paste.js")
+    script(type="module", src="/static/scripts/pages/paste.js")

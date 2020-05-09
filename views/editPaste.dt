@@ -1,0 +1,26 @@
+extends baseLayout
+
+block body
+    #edit-paste
+        .notice
+            i.fa.fa-exclamation-triangle
+            p editing a paste
+            a.save save
+            a.cancel(href="/" ~ paste.id) cancel
+
+        .paste-options
+            - string titleValue = paste.title;
+            - string defaultExpiresIn = paste.expiresIn;
+            include components/titleEditable
+
+        #pasty-editors
+            - foreach (pasty; paste.pasties)
+                - string pastyTitle = pasty.title;
+                - string pastyLang = pasty.language;
+                - string pastyCode = pasty.code;
+                include components/pastyEditor
+
+        include components/addEditorButton
+
+block scripts
+    script(type="module", src="/static/scripts/pages/editPaste.js")

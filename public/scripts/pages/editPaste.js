@@ -29,7 +29,7 @@ window.addEventListener("load", async() =>
 
             for (let d = 0; d < dropdownElements.length; d++)
             {
-                dropdownElements[d].setAttribute("disabled", "")
+                dropdownElements[d].setAttribute("disabled", "");
             }
 
             let textarea = editors[i].rootElement.querySelector("textarea.editor");

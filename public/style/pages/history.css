@@ -47,6 +47,26 @@
     margin-left: 10px;
 }
 
+@media screen and (max-width: 720px)
+{
+    #history .edit .title-change
+    {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #history .edit .title-change .arrow
+    {
+        transform: rotate(90deg);
+        width: 10px;
+    }
+
+    #history .edit .title-change .after
+    {
+        margin-left: 0px;
+    }
+}
+
 #history .edit .editedAt
 {
     margin-left: 20px;

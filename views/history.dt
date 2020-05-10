@@ -20,7 +20,7 @@ block body
                     - if (edit.editType == EditType.title)
                         p.change.title-change
                             span.before= edit.edit
-                            span ➝
+                            span.arrow ➝
                             span.after= i == 0 ? paste.title : edits[i-1].edit
                     p.editedAt= edit.editedAt
 

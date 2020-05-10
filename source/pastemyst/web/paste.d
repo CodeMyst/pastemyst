@@ -301,6 +301,10 @@ public class PasteWeb
         }
 
         Paste paste = res.get();
+        // TODO: this line is here because otherwise d-scanner
+        // complains that paste isn't changed anywhere and it can be
+        // declared const
+        paste.title = paste.title;
 
         UserSession session = UserSession.init;
 

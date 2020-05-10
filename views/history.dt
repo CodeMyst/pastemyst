@@ -1,0 +1,28 @@
+extends baseLayout
+
+block body
+    #history
+        - bool historyPage = true;
+        include components/pasteHeader
+
+        .block
+            - import std.algorithm : sort;
+            - import std.array : array;
+            - import pastemyst.data : Edit, EditType, editTypeDescription;
+            - Edit[] edits = sort!((a, b) => a.editedAt > b.editedAt)(paste.edits).array;
+            - foreach (ulong i, Edit edit; edits)
+                .edit
+                    .edit-header
+                        p.type ##{edits.length-i-1} #{editTypeDescription(edit.editType)}
+                        a.jump.tooltip
+                            span.jump jump
+                            span.tooltip-text jump to this point in history
+                    - if (edit.editType == EditType.title)
+                        p.change.title-change
+                            span.before= edit.edit
+                            span ➝
+                            span.after= i == 0 ? paste.title : edits[i-1].edit
+                    p.editedAt= edit.editedAt
+
+block scripts
+    script(type="module", src="/static/scripts/pages/history.js")

@@ -6,10 +6,11 @@
             block options
                 - import std.conv : to;
                 - import pastemyst.data : expireOptions;
+                input.hidden(type="text", name="expires-in")
                 - foreach (ulong i, exp; expireOptions)
                     label.option
                         - bool checked = false;
                         - if (exp["value"] == defaultExpiresIn)
                             - checked = true;
-                        input(type="radio", name="expires-in", value=exp["value"].to!string(), checked=checked)
+                        input(type="radio", name="expires-in-temp", value=exp["value"].to!string(), checked=checked)
                         span= exp["pretty"].to!string()

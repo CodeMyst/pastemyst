@@ -8,19 +8,21 @@ block body
             a.save save
             a.cancel(href="/" ~ paste.id) cancel
 
-        .paste-options
-            - string titleValue = paste.title;
-            - string defaultExpiresIn = paste.expiresIn;
-            include components/titleEditable
+        form(method="post", action="/" ~ paste.id ~ "/edit")
 
-        #pasty-editors
-            - foreach (pasty; paste.pasties)
-                - string pastyTitle = pasty.title;
-                - string pastyLang = pasty.language;
-                - string pastyCode = pasty.code;
-                include components/pastyEditor
+            .paste-options
+                - string titleValue = paste.title;
+                - string defaultExpiresIn = paste.expiresIn;
+                include components/titleEditable
 
-        include components/addEditorButton
+            #pasty-editors
+                - foreach (pasty; paste.pasties)
+                    - string pastyTitle = pasty.title;
+                    - string pastyLang = pasty.language;
+                    - string pastyCode = pasty.code;
+                    include components/pastyEditor
+
+            include components/addEditorButton
 
 block scripts
     script(type="module", src="/static/scripts/pages/editPaste.js")

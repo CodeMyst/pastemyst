@@ -4,10 +4,11 @@ export default class Dropdown
     {
         this.onValueChange = () => { };
         this.container = container;
-        this.search = container.querySelector(".select > input");
-        this.notFound = container.querySelector(".select > .not-found");
-        this.options = container.querySelectorAll(".select > .option");
-        this.value = container.querySelector("summary").textContent;
+        this.search = this.container.querySelector(".select > input");
+        this.notFound = this.container.querySelector(".select > .not-found");
+        this.options = this.container.querySelectorAll(".select > .option");
+        this.value = this.container.querySelector("summary").textContent;
+        this.checked = this.container.querySelector("input[checked]");
         this.mouseDown = false;
         this.addEventListeners();
         this.setAria();
@@ -172,11 +173,14 @@ export default class Dropdown
             return;
         }
 
+        this.checked.checked = false;
+
         const summary = this.container.querySelector("summary");
         const pos = [...this.options].indexOf(that.parentNode) + 1;
         summary.textContent = that.parentNode.textContent;
         summary.setAttribute("aria-label", `${that.value}, listbox ${pos} of ${this.options.length}`);
         this.value = that.value;
+        this.checked = this.container.querySelector("input[checked]");
 
         this.options.forEach((opt) =>
         {

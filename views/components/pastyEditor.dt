@@ -8,11 +8,12 @@
                 block options
                     - import std.conv : to;
                     - import pastemyst.data : languages;
+                    input.hidden(type="text", name="language")
                     - foreach (ulong i, lang; languages)
                         - bool checked = false;
                         - if (lang["name"] == pastyLang)
                             - checked = true;
                         label.option
-                            input(type="radio", name="language", value=lang["name"].to!string() ~ "," ~ lang["mode"].to!string() ~ "," ~ lang["mimes"][0].to!string(), checked=checked)
+                            input(type="radio", name="language-temp", value=lang["name"].to!string() ~ "," ~ lang["mode"].to!string() ~ "," ~ lang["mimes"][0].to!string(), checked=checked)
                             span= lang["name"].to!string()
     textarea.editor(type="text", autocomplete="off", spellcheck="false")= pastyCode

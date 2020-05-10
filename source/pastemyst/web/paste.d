@@ -205,8 +205,110 @@ public class PasteWeb
         import pastemyst.db : findOneById;
 
         UserSession session = req.session.get!UserSession("user");
-        const paste = findOneById!Paste(_id).get();
+        auto res = findOneById!Paste(_id);
+
+        if (res.isNull())
+        {
+            return;
+        }
+
+        const paste = res.get();
 
         render!("editPaste.dt", session, paste);
+    }
+
+    /++
+     + POST /:id/edit
+     +
+     + edit a paste
+     +/
+    @path("/:id/edit")
+    @method(HTTPMethod.POST)
+    @anyAuth
+    public void postPasteEdit(string _id, HTTPServerRequest req)
+    {
+        import pastemyst.db : findOneById, update;
+        import std.array : split;
+        import std.conv : to;
+        import std.datetime : Clock;
+
+        auto res = findOneById!Paste(_id);
+
+        if (res.isNull())
+        {
+            return;
+        }
+
+        Paste paste = res.get();
+
+        Paste editedPaste;
+        editedPaste.title = req.form["title"];
+        editedPaste.expiresIn = cast(ExpiresIn) req.form["expires-in"];
+        
+        int i = 0;
+        while(true)
+        {
+            Pasty pasty;
+            if (("title-" ~ i.to!string()) !in req.form)
+            {
+                break;
+            }
+
+            pasty.title = req.form["title-" ~ i.to!string()];
+            pasty.language = req.form["language-" ~ i.to!string()].split(",")[0];
+            pasty.code = req.form["code-" ~ i.to!string()];
+            editedPaste.pasties ~= pasty;
+
+            i++;
+        }
+
+        const editId = paste.edits.length;
+        const editedAt = Clock.currTime().toUnixTime();
+
+        if (paste.title != editedPaste.title)
+        {
+            Edit edit;
+            edit.id = editId;
+            edit.editType = EditType.title;
+            edit.edit = paste.title;
+            edit.editedAt = editedAt;
+
+            paste.title = editedPaste.title;
+            paste.edits ~= edit;
+        }
+
+        update!Paste(["_id": _id], paste);
+
+        redirect("/" ~ _id);
+    }
+
+    /++
+     + GET /:id/history
+     +
+     + get all the edits of a paste
+     +/
+    @path("/:id/history")
+    @noAuth
+    public void getPasteHistory(string _id, HTTPServerRequest req)
+    {
+        import pastemyst.db : findOneById;
+
+        auto res = findOneById!Paste(_id);
+
+        if (res.isNull())
+        {
+            return;
+        }
+
+        Paste paste = res.get();
+
+        UserSession session = UserSession.init;
+
+        if (req.session && req.session.isKeySet("user"))
+        {
+            session = req.session.get!UserSession("user");    
+        }
+
+        render!("history.dt", session, paste);
     }
 }

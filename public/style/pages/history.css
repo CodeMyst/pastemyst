@@ -1,0 +1,55 @@
+#history .edit
+{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#history .edit:first-child
+{
+    margin-top: 0;
+}
+
+#history .edit .edit-header
+{
+    background-color: var(--color-nano);
+    padding: 0.25rem 1rem;
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+
+#history .edit .edit-header .jump
+{
+    margin-left: auto;
+}
+
+#history .edit .edit-header .type
+{
+    margin-bottom: 0;
+}
+
+#history .edit .change
+{
+    margin-left: 20px;
+}
+
+#history .edit .title-change .before
+{
+    color: var(--color-mysted);
+    margin-right: 10px;
+}
+
+#history .edit .title-change .after
+{
+    color: var(--color-mysteen);
+    margin-left: 10px;
+}
+
+#history .edit .editedAt
+{
+    margin-left: 20px;
+    color: var(--color-nanolightlight);
+    font-size: var(--font-size-small);
+}

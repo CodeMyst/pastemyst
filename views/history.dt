@@ -13,14 +13,14 @@ block body
             - Edit[] edits = paste.edits.reverse.array();
             - foreach (ulong i, Edit edit; edits)
                 .edit
-                    .edit-header
-                        p ##{edits.length-i-1} | edited at
-                        span.editedAt= edit.editedAt
-                        a.jump.tooltip
-                            span.jump jump
-                            span.tooltip-text jump to this point in history
+                    - if (i == 0 || edits[i-1].editId != edit.editId)
+                        .edit-header
+                            p ##{edit.editId} | edited at
+                            span.editedAt= edit.editedAt
+                            a.jump.tooltip
+                                span.jump jump
+                                span.tooltip-text jump to this point in history
                     .subedit
-                        .subedit-header
                         .subedit-content
                             - if (edit.editType == EditType.title)
                                 - auto nextTitle = getNextTitle(paste, edit);

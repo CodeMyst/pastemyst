@@ -6,6 +6,9 @@ window.addEventListener("load", () =>
     {
         let dateUnix = editedAtElements[i].innerHTML;
         let date = new Date(dateUnix * 1000);
-        editedAtElements[i].innerHTML = date.toString().toLowerCase();
+        let dateText = date.toString().toLowerCase();
+        dateText = dateText.substring(0, dateText.indexOf("(")-1);
+        dateText = " " + dateText;
+        editedAtElements[i].textContent = dateText;
     }
 });

@@ -262,13 +262,18 @@ public class PasteWeb
             i++;
         }
 
-        const editId = paste.edits.length;
+        ulong editId = 0;
+        if (paste.edits.length > 0)
+        {
+            editId = paste.edits[$-1].editId + 1;
+        }
         const editedAt = Clock.currTime().toUnixTime();
 
         if (paste.title != editedPaste.title)
         {
             Edit edit;
-            edit.id = editId;
+            edit.uniqueId = generateUniqueEditId(paste);
+            edit.editId = editId;
             edit.editType = EditType.title;
             edit.edit = paste.title;
             edit.editedAt = editedAt;
@@ -277,9 +282,45 @@ public class PasteWeb
             paste.edits ~= edit;
         }
 
+        for (int j = 0; j < paste.pasties.length; j++)
+        {
+            Pasty oldPasty = paste.pasties[j];
+            Pasty newPasty = editedPaste.pasties[j];
+
+            if (oldPasty.title != newPasty.title)
+            {
+                Edit edit;
+                edit.uniqueId = generateUniqueEditId(paste);
+                edit.editId = editId;
+                edit.editType = EditType.pastyTitle;
+                edit.edit = oldPasty.title;
+                edit.metadata ~= j.to!string();
+                edit.editedAt = editedAt;
+
+                oldPasty.title = newPasty.title;
+                paste.pasties[j] = oldPasty;
+                paste.edits ~= edit;
+            }
+        }
+
         update!Paste(["_id": _id], paste);
 
         redirect("/" ~ _id);
+    }
+
+    private string generateUniqueEditId(Paste paste)
+    {
+        import pastemyst.encoding : randomBase36Id;
+        import std.algorithm : canFind;
+
+        string id;
+
+        do
+        {
+            id = randomBase36Id();
+        } while(paste.edits.canFind!((e) => e.uniqueId == id));
+
+        return id;
     }
 
     /++

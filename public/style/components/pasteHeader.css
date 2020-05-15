@@ -8,6 +8,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    height: 45px;
+    box-sizing: border-box;
 }
 
 .paste-header .left
@@ -36,6 +38,7 @@
     border-radius: var(--border-radius);
     padding: 0.25rem 1rem;
     margin-right: 0;
+    font-size: var(--font-size-small);
 }
 
 .paste-header .right a.history:hover

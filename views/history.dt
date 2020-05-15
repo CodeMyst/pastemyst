@@ -6,23 +6,35 @@ block body
         include components/pasteHeader
 
         .block
-            - import std.algorithm : sort;
+            - import pastemyst.data;
+            - import std.algorithm : reverse;
             - import std.array : array;
-            - import pastemyst.data : Edit, EditType, editTypeDescription;
-            - Edit[] edits = sort!((a, b) => a.editedAt > b.editedAt)(paste.edits).array;
+            - import std.conv : to;
+            - Edit[] edits = paste.edits.reverse.array();
             - foreach (ulong i, Edit edit; edits)
                 .edit
                     .edit-header
-                        p.type ##{edits.length-i-1} #{editTypeDescription(edit.editType)}
+                        p ##{edits.length-i-1} | edited at
+                        span.editedAt= edit.editedAt
                         a.jump.tooltip
                             span.jump jump
                             span.tooltip-text jump to this point in history
-                    - if (edit.editType == EditType.title)
-                        p.change.title-change
-                            span.before= edit.edit
-                            span.arrow ➝
-                            span.after= i == 0 ? paste.title : edits[i-1].edit
-                    p.editedAt= edit.editedAt
+                    .subedit
+                        .subedit-header
+                            p.type= editTypeDescription(edit)
+                        .subedit-content
+                            - if (edit.editType == EditType.title)
+                                - auto nextTitle = getNextTitle(paste, edit);
+                                p.change.title-change
+                                    span.before= nextTitle.previous
+                                    span.arrow ➝
+                                    span.after= nextTitle.next
+                            - if (edit.editType == EditType.pastyTitle)
+                                - auto nextTitle = getNextPastyTitle(paste, edit);
+                                p.change.title-change
+                                    span.before= nextTitle.previous
+                                    span.arrow ➝
+                                    span.after= nextTitle.next
 
 block scripts
     script(type="module", src="/static/scripts/pages/history.js")

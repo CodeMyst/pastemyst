@@ -25,9 +25,23 @@
     margin-left: auto;
 }
 
-#history .edit .edit-header .type
+#history .edit .edit-header p,
+#history .edit .edit-header span
 {
     margin-bottom: 0;
+    white-space: pre;
+}
+
+#history .edit .subedit
+{
+    margin-left: 20px;
+}
+
+#history .edit .subedit .type
+{
+    background-color: var(--color-nano);
+    border-radius: var(--border-radius);
+    padding: 0.25rem 1rem;
 }
 
 #history .edit .change
@@ -65,11 +79,4 @@
     {
         margin-left: 0px;
     }
-}
-
-#history .edit .editedAt
-{
-    margin-left: 20px;
-    color: var(--color-nanolightlight);
-    font-size: var(--font-size-small);
 }

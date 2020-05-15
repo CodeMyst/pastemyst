@@ -37,18 +37,6 @@
     margin-left: 20px;
 }
 
-#history .edit .subedit .type
-{
-    background-color: var(--color-nano);
-    border-radius: var(--border-radius);
-    padding: 0.25rem 1rem;
-}
-
-#history .edit .change
-{
-    margin-left: 20px;
-}
-
 #history .edit .title-change .before
 {
     color: var(--color-mysted);

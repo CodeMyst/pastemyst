@@ -285,7 +285,7 @@ public class PasteWeb
         for (int j = 0; j < paste.pasties.length; j++)
         {
             Pasty oldPasty = paste.pasties[j];
-            Pasty newPasty = editedPaste.pasties[j];
+            const Pasty newPasty = editedPaste.pasties[j];
 
             if (oldPasty.title != newPasty.title)
             {

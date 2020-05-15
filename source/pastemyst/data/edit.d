@@ -60,13 +60,13 @@ public string editTypeDescription(Edit edit)
     final switch (edit.editType)
     {
         case EditType.title:
-            return "changed title";
+            return "title";
         case EditType.pastyTitle:
-            return "changed title of pasty #" ~ edit.metadata[0];
+            return "title of pasty #" ~ edit.metadata[0];
         case EditType.pastyLanguage:
-            return "changed language of pasty #" ~ edit.metadata[0];
+            return "language of pasty #" ~ edit.metadata[0];
         case EditType.pastyContent:
-            return "changed content of pasty #" ~ edit.metadata[0];
+            return "contents of pasty #" ~ edit.metadata[0];
     }
 }
 

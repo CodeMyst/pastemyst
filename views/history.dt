@@ -21,17 +21,18 @@ block body
                             span.tooltip-text jump to this point in history
                     .subedit
                         .subedit-header
-                            p.type= editTypeDescription(edit)
                         .subedit-content
                             - if (edit.editType == EditType.title)
                                 - auto nextTitle = getNextTitle(paste, edit);
                                 p.change.title-change
+                                    span #{editTypeDescription(edit)}: 
                                     span.before= nextTitle.previous
                                     span.arrow ➝
                                     span.after= nextTitle.next
                             - if (edit.editType == EditType.pastyTitle)
                                 - auto nextTitle = getNextPastyTitle(paste, edit);
                                 p.change.title-change
+                                    span #{editTypeDescription(edit)}: 
                                     span.before= nextTitle.previous
                                     span.arrow ➝
                                     span.after= nextTitle.next

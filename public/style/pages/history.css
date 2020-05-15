@@ -49,6 +49,25 @@
     margin-left: 10px;
 }
 
+#history .edit .pasty-content-change .CodeMirror .CodeMirror-cursor
+{
+    display: none;
+}
+
+#history .edit .pasty-content-change .CodeMirror
+{
+    background-color: var(--color-nano);
+    border-radius: var(--border-radius);
+    height: auto;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+#history .edit .pasty-content-change .CodeMirror .CodeMirror-gutters
+{
+    background-color: var(--color-nano);
+}
+
 @media screen and (max-width: 720px)
 {
     #history .edit .title-change

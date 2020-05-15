@@ -11,4 +11,20 @@ window.addEventListener("load", () =>
         dateText = " " + dateText;
         editedAtElements[i].textContent = dateText;
     }
+
+    let textareas = document.querySelectorAll("textarea");
+
+    for (let i = 0; i < textareas.length; i++)
+    {
+        let editor = CodeMirror.fromTextArea(textareas[i], // jshint ignore:line
+        {
+            indentUnit: 4,
+            lineNumbers: true,
+            mode: "text/x-diff",
+            tabSize: 4,
+            theme: "darcula",
+            lineWrapping: true,
+            readOnly: true
+        });
+    }
 });

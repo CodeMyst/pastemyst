@@ -231,6 +231,7 @@ public class PasteWeb
         import std.array : split;
         import std.conv : to;
         import std.datetime : Clock;
+        import pastemyst.util : generateDiff;
 
         auto res = findOneById!Paste(_id);
 
@@ -313,6 +314,24 @@ public class PasteWeb
                 edit.editedAt = editedAt;
 
                 oldPasty.language = newPasty.language;
+                paste.pasties[j] = oldPasty;
+                paste.edits ~= edit;
+            }
+
+            if (oldPasty.code != newPasty.code)
+            {
+                Edit edit;
+                edit.uniqueId = generateUniqueEditId(paste);
+                edit.editId = editId;
+                edit.editType = EditType.pastyContent;
+                edit.metadata ~= j.to!string();
+                edit.editedAt = editedAt;
+
+                string diffId = paste.id ~ "-" ~ edit.uniqueId;
+
+                edit.edit = generateDiff(diffId, oldPasty.code, newPasty.code);
+
+                oldPasty.code = newPasty.code;
                 paste.pasties[j] = oldPasty;
                 paste.edits ~= edit;
             }

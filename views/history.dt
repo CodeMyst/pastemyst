@@ -43,5 +43,11 @@ block body
                                     span.before= nextLanguage.previous
                                     span.arrow ➝
                                     span.after= nextLanguage.next
+                            - if (edit.editType == EditType.pastyContent)
+                                - auto diff = getPastyDiff(paste, edit);
+                                p.change.pasty-content-change
+                                    span= editTypeDescription(edit)
+                                    textarea= diff
 block scripts
     script(type="module", src="/static/scripts/pages/history.js")
+    script(src="/static/scripts/libs/codemirror/diff/diff.js")

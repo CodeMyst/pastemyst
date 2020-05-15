@@ -192,3 +192,12 @@ public Tuple!(string, "previous", string, "next") getNextPastyLanguage(Paste pas
 
     return res;
 }
+
+public string getPastyDiff(Paste paste, Edit edit)
+{
+    import std.array : split, join;
+    import std.ascii : newline;
+
+    // remove the first 2 lines of metadata
+    return edit.edit.split(newline)[2..$-1].join(newline);
+}

@@ -170,3 +170,25 @@ public Tuple!(string, "previous", string, "next") getNextPastyTitle(Paste paste,
 
     return res;
 }
+
+public Tuple!(string, "previous", string, "next") getNextPastyLanguage(Paste paste, Edit edit)
+{
+    import std.conv : to;
+
+    const Edit nextEdit = getNextEdit(paste, edit.uniqueId);
+    Tuple!(string, "previous", string, "next") res;
+    res.previous = edit.edit;
+
+    ulong pastyIndex = edit.metadata[0].to!ulong();
+
+    if (nextEdit == Edit.init)
+    {
+        res.next = paste.pasties[pastyIndex].language;
+    }
+    else
+    {
+        res.next = nextEdit.edit;
+    }
+
+    return res;
+}

@@ -301,6 +301,21 @@ public class PasteWeb
                 paste.pasties[j] = oldPasty;
                 paste.edits ~= edit;
             }
+
+            if (oldPasty.language != newPasty.language)
+            {
+                Edit edit;
+                edit.uniqueId = generateUniqueEditId(paste);
+                edit.editId = editId;
+                edit.editType = EditType.pastyLanguage;
+                edit.edit = oldPasty.language;
+                edit.metadata ~= j.to!string();
+                edit.editedAt = editedAt;
+
+                oldPasty.language = newPasty.language;
+                paste.pasties[j] = oldPasty;
+                paste.edits ~= edit;
+            }
         }
 
         update!Paste(["_id": _id], paste);

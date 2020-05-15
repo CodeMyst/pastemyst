@@ -36,6 +36,12 @@ block body
                                     span.before= nextTitle.previous
                                     span.arrow ➝
                                     span.after= nextTitle.next
-
+                            - if (edit.editType == EditType.pastyLanguage)
+                                - auto nextLanguage = getNextPastyLanguage(paste, edit);
+                                p.change.title-change
+                                    span #{editTypeDescription(edit)}: 
+                                    span.before= nextLanguage.previous
+                                    span.arrow ➝
+                                    span.after= nextLanguage.next
 block scripts
     script(type="module", src="/static/scripts/pages/history.js")

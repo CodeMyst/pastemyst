@@ -193,7 +193,7 @@ public Tuple!(string, "previous", string, "next") getNextPastyLanguage(Paste pas
     return res;
 }
 
-public string getPastyDiff(Paste paste, Edit edit)
+public string getPastyDiff(Edit edit)
 {
     import std.array : split, join;
     import std.ascii : newline;

@@ -44,7 +44,7 @@ block body
                                     span.arrow ➝
                                     span.after= nextLanguage.next
                             - if (edit.editType == EditType.pastyContent)
-                                - auto diff = getPastyDiff(paste, edit);
+                                - auto diff = getPastyDiff(edit);
                                 p.change.pasty-content-change
                                     span= editTypeDescription(edit)
                                     textarea= diff

@@ -1,5 +1,8 @@
 module pastemyst.util.diff;
 
+/++
+ + generates a diff string between two pasty contents
+ +/
 public string generateDiff(string id, string before, string after)
 {
     import std.process : execute;

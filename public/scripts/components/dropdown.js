@@ -7,8 +7,8 @@ export default class Dropdown
         this.search = this.container.querySelector(".select > input");
         this.notFound = this.container.querySelector(".select > .not-found");
         this.options = this.container.querySelectorAll(".select > .option");
-        this.value = this.container.querySelector("summary").textContent;
         this.checked = this.container.querySelector("input[checked]");
+        this.value = this.container.querySelector("summary").textContent;
         this.mouseDown = false;
         this.addEventListeners();
         this.setAria();
@@ -198,6 +198,6 @@ export default class Dropdown
 
     resetValue()
     {
-        this.setValue(this.container.querySelector(".option input"));
+        this.setValue(this.checked);
     }
 }

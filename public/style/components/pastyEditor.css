@@ -82,6 +82,11 @@
     }
 }
 
+.pasty-editor textarea
+{
+    white-space: pre;
+}
+
 .pasty-editor .CodeMirror
 {
     height: 50vh;

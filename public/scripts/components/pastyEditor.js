@@ -28,7 +28,7 @@ export function initEditors()
             lineWrapping: true
         });
 
-        editor.languageDropdown = setupLanguageDropdown(editor, false);
+        editor.languageDropdown = setupLanguageDropdown(editor);
 
         editor.rootElement.getElementsByClassName("pasty-editor-delete")[0].addEventListener("click", () => removeEditor(editor)); // jshint ignore:line
 
@@ -78,7 +78,7 @@ export function addEditor()
         setupDeleteButton(editors[0]);
     }
 
-    editor.languageDropdown = setupLanguageDropdown(editor, true);
+    editor.languageDropdown = setupLanguageDropdown(editor);
 
     editor.rootElement.getElementsByClassName("pasty-editor-delete")[0].addEventListener("click", () =>
     {
@@ -127,14 +127,11 @@ function removeDeleteButton(editor)
     titleInput.style.borderTopLeftRadius = "0.3rem";
 }
 
-function setupLanguageDropdown(editor, reset)
+function setupLanguageDropdown(editor)
 {
     let languageDropdown = new Dropdown(editor.rootElement.querySelector(".language-dropdown .dropdown"));
 
-    if (reset)
-    {
-        languageDropdown.resetValue();
-    }
+    languageDropdown.resetValue();
 
     languageDropdown.onValueChange = (v) =>
     {

@@ -49,7 +49,8 @@ public enum EditType
     title,
     pastyTitle,
     pastyLanguage,
-    pastyContent
+    pastyContent,
+    pastyAdded,
 }
 
 /++
@@ -67,6 +68,8 @@ public string editTypeDescription(Edit edit)
             return "language of pasty #" ~ edit.metadata[0];
         case EditType.pastyContent:
             return "contents of pasty #" ~ edit.metadata[0];
+        case EditType.pastyAdded:
+            return "added pasty";
     }
 }
 
@@ -200,4 +203,15 @@ public string getPastyDiff(Edit edit)
 
     // remove the first 2 lines of metadata
     return edit.edit.split(newline)[2..$-1].join(newline);
+}
+
+public Pasty getAddedPasty(Edit edit)
+{
+    Pasty res;
+
+    res.title = edit.metadata[0];
+    res.language = edit.metadata[1];
+    res.code = edit.edit;
+
+    return res;
 }

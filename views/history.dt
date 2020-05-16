@@ -24,30 +24,42 @@ block body
                         .subedit-content
                             - if (edit.editType == EditType.title)
                                 - auto nextTitle = getNextTitle(paste, edit);
-                                p.change.title-change
+                                .change.title-change
                                     span #{editTypeDescription(edit)}: 
                                     span.before= nextTitle.previous
                                     span.arrow ➝
                                     span.after= nextTitle.next
                             - if (edit.editType == EditType.pastyTitle)
                                 - auto nextTitle = getNextPastyTitle(paste, edit);
-                                p.change.title-change
+                                .change.title-change
                                     span #{editTypeDescription(edit)}: 
                                     span.before= nextTitle.previous
                                     span.arrow ➝
                                     span.after= nextTitle.next
                             - if (edit.editType == EditType.pastyLanguage)
                                 - auto nextLanguage = getNextPastyLanguage(paste, edit);
-                                p.change.title-change
+                                .change.title-change
                                     span #{editTypeDescription(edit)}: 
                                     span.before= nextLanguage.previous
                                     span.arrow ➝
                                     span.after= nextLanguage.next
                             - if (edit.editType == EditType.pastyContent)
                                 - auto diff = getPastyDiff(edit);
-                                p.change.pasty-content-change
+                                .change.pasty-content-change
                                     span= editTypeDescription(edit)
-                                    textarea= diff
+                                    textarea.diff= diff
+                            - if (edit.editType == EditType.pastyAdded)
+                                - auto pasty = getAddedPasty(edit);
+                                .change.pasty-added
+                                    span= editTypeDescription(edit)
+                                    .pasty-added-header
+                                        - if (pasty.title != "")
+                                            p.title= pasty.title
+                                        - else
+                                            p.title.untitled (untitled)
+                                        span.lang= pasty.language
+                                    .pasty-added-content
+                                        textarea.added= pasty.code
 block scripts
     script(type="module", src="/static/scripts/pages/history.js")
     script(src="/static/scripts/libs/codemirror/diff/diff.js")

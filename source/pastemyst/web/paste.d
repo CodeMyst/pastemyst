@@ -337,6 +337,24 @@ public class PasteWeb
             }
         }
 
+        if (editedPaste.pasties.length > paste.pasties.length)
+        {
+            for (ulong j = paste.pasties.length; j < editedPaste.pasties.length; j++)
+            {
+                Edit edit;
+                edit.uniqueId = generateUniqueEditId(paste);
+                edit.editId = editId;
+                edit.editType = EditType.pastyAdded;
+                edit.edit = editedPaste.pasties[j].code;
+                edit.metadata ~= editedPaste.pasties[j].title;
+                edit.metadata ~= editedPaste.pasties[j].language;
+                edit.editedAt = editedAt;
+
+                paste.pasties ~= editedPaste.pasties[j];
+                paste.edits ~= edit;
+            }
+        }
+
         update!Paste(["_id": _id], paste);
 
         redirect("/" ~ _id);

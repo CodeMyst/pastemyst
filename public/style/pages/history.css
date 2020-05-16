@@ -49,12 +49,12 @@
     margin-left: 10px;
 }
 
-#history .edit .pasty-content-change .CodeMirror .CodeMirror-cursor
+#history .edit .change .CodeMirror .CodeMirror-cursor
 {
     display: none;
 }
 
-#history .edit .pasty-content-change .CodeMirror
+#history .edit .change .CodeMirror
 {
     background-color: var(--color-nano);
     border-radius: var(--border-radius);
@@ -63,9 +63,48 @@
     margin-left: 20px;
 }
 
-#history .edit .pasty-content-change .CodeMirror .CodeMirror-gutters
+#history .edit .change .CodeMirror .CodeMirror-gutters
 {
     background-color: var(--color-nano);
+}
+
+#history .edit .pasty-added-header
+{
+    margin-left: 20px;
+    margin-top: 10px;
+    background-color: var(--color-nano);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: 2px solid var(--color-mystlue);
+}
+
+#history .edit .pasty-added-header p
+{
+    margin-bottom: 0;
+}
+
+#history .edit .pasty-added-header .untitled
+{
+    color: var(--color-nanolightlight);
+}
+
+#history .edit .pasty-added-header .lang
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    padding: 0 0.5rem;
+}
+
+#history .edit .pasty-added-content .CodeMirror
+{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin-top: 0;
 }
 
 @media screen and (max-width: 720px)

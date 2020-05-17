@@ -5,6 +5,7 @@ block body
         .paste-options
             - string titleValue = "";
             - string defaultExpiresIn = "never";
+            - bool hideExpiresIn = false;
             include components/titleEditable
 
         #pasty-editors

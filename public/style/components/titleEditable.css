@@ -49,6 +49,11 @@
         border-bottom-right-radius: 0;
     }
 
+    #title-editable input.no-expires-in
+    {
+        border-radius: var(--border-radius);
+    }
+
     #title-editable #expires-in-dropdown
     {
         justify-content: initial;

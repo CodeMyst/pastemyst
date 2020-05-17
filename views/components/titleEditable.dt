@@ -1,16 +1,17 @@
 #title-editable
-    input(name="title", placeholder="paste title", type="text", autocomplete="off", spellcheck="false", value=titleValue)
-    #expires-in-dropdown.no-search
-        .label expires in:
-        include components/dropdown
-            block options
-                - import std.conv : to;
-                - import pastemyst.data : expireOptions;
-                input.hidden(type="text", name="expires-in")
-                - foreach (ulong i, exp; expireOptions)
-                    label.option
-                        - bool checked = false;
-                        - if (exp["value"] == defaultExpiresIn)
-                            - checked = true;
-                        input(type="radio", name="expires-in-temp", value=exp["value"].to!string(), checked=checked)
-                        span= exp["pretty"].to!string()
+    input(name="title", placeholder="paste title", type="text", autocomplete="off", spellcheck="false", value=titleValue, class=hideExpiresIn ? "no-expires-in" : "")
+    - if (!hideExpiresIn)
+        #expires-in-dropdown.no-search
+            .label expires in:
+            include components/dropdown
+                block options
+                    - import std.conv : to;
+                    - import pastemyst.data : expireOptions;
+                    input.hidden(type="text", name="expires-in")
+                    - foreach (ulong i, exp; expireOptions)
+                        label.option
+                            - bool checked = false;
+                            - if (exp["value"] == defaultExpiresIn)
+                                - checked = true;
+                            input(type="radio", name="expires-in-temp", value=exp["value"].to!string(), checked=checked)
+                            span= exp["pretty"].to!string()

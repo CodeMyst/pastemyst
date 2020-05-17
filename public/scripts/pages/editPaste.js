@@ -5,8 +5,6 @@ let expiresInDropdown;
 
 window.addEventListener("load", async() =>
 {
-    expiresInDropdown = new Dropdown(document.querySelector("#expires-in-dropdown .dropdown"));
-    expiresInDropdown.resetValue();
     initEditors();
 
     document.getElementsByClassName("add-editor")[0].addEventListener("click", addEditor);

@@ -34,6 +34,14 @@ export function initEditors()
 
         editors.push(editor);
     }
+
+    if (editors.length > 1)
+    {
+        for (let i = 0; i < editors.length; i++)
+        {
+            setupDeleteButton(editors[i]);
+        }
+    }
 }
 
 export function addEditor()
@@ -55,6 +63,11 @@ export function addEditor()
 
     let textArea = clone.getElementsByClassName("editor")[0];
     textArea.innerText = "";
+
+    let idInput = clone.querySelector("input[name=id]");
+    idInput.setAttribute("value", "");
+
+    console.log(idInput);
 
     // TODO: set initial mode
     editor.editor = CodeMirror.fromTextArea(textArea, // jshint ignore:line

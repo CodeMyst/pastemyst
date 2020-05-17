@@ -51,6 +51,7 @@ public enum EditType
     pastyLanguage,
     pastyContent,
     pastyAdded,
+    pastyRemoved,
 }
 
 /++
@@ -63,13 +64,15 @@ public string editTypeDescription(Edit edit)
         case EditType.title:
             return "title";
         case EditType.pastyTitle:
-            return "title of pasty #" ~ edit.metadata[0];
+            return "title of pasty";
         case EditType.pastyLanguage:
-            return "language of pasty #" ~ edit.metadata[0];
+            return "language of pasty";
         case EditType.pastyContent:
-            return "contents of pasty #" ~ edit.metadata[0];
+            return "contents of pasty";
         case EditType.pastyAdded:
             return "added pasty";
+        case EditType.pastyRemoved:
+            return "removed pasty";
     }
 }
 
@@ -213,5 +216,16 @@ public Pasty getAddedPasty(Edit edit)
     res.language = edit.metadata[1];
     res.code = edit.edit;
 
+    return res;
+}
+
+public Pasty getRemovedPasty(Edit edit)
+{
+    Pasty res;
+
+    res.title = edit.metadata[0];
+    res.language = edit.metadata[1];
+    res.code = edit.edit;
+    
     return res;
 }

@@ -20,6 +20,7 @@ block body
                     - string pastyTitle = pasty.title;
                     - string pastyLang = pasty.language;
                     - string pastyCode = pasty.code;
+                    - string pastyId = pasty.id;
                     include components/pastyEditor
 
             include components/addEditorButton

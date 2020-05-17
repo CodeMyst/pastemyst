@@ -12,6 +12,7 @@ window.addEventListener("load", () =>
     }
 
     expiresInDropdown = new Dropdown(document.querySelector("#expires-in-dropdown .dropdown"));
+    expiresInDropdown.resetValue();
 
     initEditors();
 

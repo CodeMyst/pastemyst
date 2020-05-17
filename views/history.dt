@@ -60,6 +60,18 @@ block body
                                         span.lang= pasty.language
                                     .pasty-added-content
                                         textarea.added= pasty.code
+                            - if (edit.editType == EditType.pastyRemoved)
+                                - auto pasty = getRemovedPasty(edit);
+                                .change.pasty-added.pasty-removed
+                                    span= editTypeDescription(edit)
+                                    .pasty-added-header
+                                        - if (pasty.title != "")
+                                            p.title= pasty.title
+                                        - else
+                                            p.title.untitled (untitled)
+                                        span.lang= pasty.language
+                                    .pasty-added-content
+                                        textarea.added= pasty.code
 block scripts
     script(type="module", src="/static/scripts/pages/history.js")
     script(src="/static/scripts/libs/codemirror/diff/diff.js")

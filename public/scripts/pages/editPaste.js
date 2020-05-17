@@ -47,6 +47,13 @@ window.addEventListener("load", async() =>
             langs[l].value = editors[l].languageDropdown.value;
         }
 
+        let ids = document.querySelectorAll("input[name=id]");
+
+        for (let i = 0; i < ids.length; i++)
+        {
+            ids[i].setAttribute("name", "id-" + i);
+        }
+
         let searches = document.querySelectorAll("input[name=search]");
 
         for (let i = 0; i < searches.length; i++)

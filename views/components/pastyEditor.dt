@@ -2,6 +2,7 @@
     .pasty-editor-options
         i.fas.fa-minus-square.pasty-editor-delete
         input.pasty-editor-title(placeholder="pasty title", type="text", autocomplete="off", spellcheck="false", value=pastyTitle)
+        input.hidden(type="text", name="id", value=pastyId)
         .language-dropdown
             .label language:
             include components/dropdown

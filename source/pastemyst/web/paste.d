@@ -232,6 +232,7 @@ public class PasteWeb
         import std.conv : to;
         import std.datetime : Clock;
         import pastemyst.util : generateDiff;
+        import std.algorithm : canFind, find, countUntil, remove;
 
         auto res = findOneById!Paste(_id);
 
@@ -255,6 +256,7 @@ public class PasteWeb
                 break;
             }
 
+            pasty.id = req.form["id-" ~ i.to!string()];
             pasty.title = req.form["title-" ~ i.to!string()];
             pasty.language = req.form["language-" ~ i.to!string()].split(",")[0];
             pasty.code = req.form["code-" ~ i.to!string()];
@@ -283,74 +285,96 @@ public class PasteWeb
             paste.edits ~= edit;
         }
 
-        for (int j = 0; j < paste.pasties.length; j++)
+        foreach (editedPasty; editedPaste.pasties)
         {
-            Pasty oldPasty = paste.pasties[j];
-            const Pasty newPasty = editedPaste.pasties[j];
-
-            if (oldPasty.title != newPasty.title)
+            if (paste.pasties.canFind!((p) => p.id == editedPasty.id))
             {
-                Edit edit;
-                edit.uniqueId = generateUniqueEditId(paste);
-                edit.editId = editId;
-                edit.editType = EditType.pastyTitle;
-                edit.edit = oldPasty.title;
-                edit.metadata ~= j.to!string();
-                edit.editedAt = editedAt;
+                ulong pastyIndex = paste.pasties.countUntil!((p) => p.id == editedPasty.id);
+                Pasty pasty = paste.pasties[pastyIndex];
 
-                oldPasty.title = newPasty.title;
-                paste.pasties[j] = oldPasty;
-                paste.edits ~= edit;
+                if (pasty.title != editedPasty.title)
+                {
+                    Edit edit;
+                    edit.uniqueId = generateUniqueEditId(paste);
+                    edit.editId = editId;
+                    edit.editType = EditType.pastyTitle;
+                    edit.edit = pasty.title;
+                    edit.metadata ~= pasty.id.to!string();
+                    edit.editedAt = editedAt;
+
+                    pasty.title = editedPasty.title;
+                    paste.pasties[pastyIndex] = pasty;
+                    paste.edits ~= edit;
+                }
+
+                if (pasty.language != editedPasty.language)
+                {
+                    Edit edit;
+                    edit.uniqueId = generateUniqueEditId(paste);
+                    edit.editId = editId;
+                    edit.editType = EditType.pastyLanguage;
+                    edit.edit = pasty.language;
+                    edit.metadata ~= pasty.id.to!string();
+                    edit.editedAt = editedAt;
+
+                    pasty.language = editedPasty.language;
+                    paste.pasties[pastyIndex] = pasty;
+                    paste.edits ~= edit;
+                }
+
+                if (pasty.code != editedPasty.code)
+                {
+                    Edit edit;
+                    edit.uniqueId = generateUniqueEditId(paste);
+                    edit.editId = editId;
+                    edit.editType = EditType.pastyContent;
+                    edit.metadata ~= pasty.id.to!string();
+                    edit.editedAt = editedAt;
+
+                    string diffId = paste.id ~ "-" ~ edit.uniqueId;
+
+                    edit.edit = generateDiff(diffId, pasty.code, editedPasty.code);
+
+                    pasty.code = editedPasty.code;
+                    paste.pasties[pastyIndex] = pasty;
+                    paste.edits ~= edit;
+                }
             }
+        }
 
-            if (oldPasty.language != newPasty.language)
+        foreach (pasty; paste.pasties)
+        {
+            if (!editedPaste.pasties.canFind!((p) => p.id == pasty.id))
             {
                 Edit edit;
                 edit.uniqueId = generateUniqueEditId(paste);
                 edit.editId = editId;
-                edit.editType = EditType.pastyLanguage;
-                edit.edit = oldPasty.language;
-                edit.metadata ~= j.to!string();
+                edit.editType = EditType.pastyRemoved;
+                edit.edit = pasty.code;
+                edit.metadata ~= pasty.title;
+                edit.metadata ~= pasty.language;
                 edit.editedAt = editedAt;
 
-                oldPasty.language = newPasty.language;
-                paste.pasties[j] = oldPasty;
-                paste.edits ~= edit;
-            }
-
-            if (oldPasty.code != newPasty.code)
-            {
-                Edit edit;
-                edit.uniqueId = generateUniqueEditId(paste);
-                edit.editId = editId;
-                edit.editType = EditType.pastyContent;
-                edit.metadata ~= j.to!string();
-                edit.editedAt = editedAt;
-
-                string diffId = paste.id ~ "-" ~ edit.uniqueId;
-
-                edit.edit = generateDiff(diffId, oldPasty.code, newPasty.code);
-
-                oldPasty.code = newPasty.code;
-                paste.pasties[j] = oldPasty;
+                paste.pasties = paste.pasties.remove!((p) => p.id == pasty.id);
                 paste.edits ~= edit;
             }
         }
 
-        if (editedPaste.pasties.length > paste.pasties.length)
+        foreach (editedPasty; editedPaste.pasties)
         {
-            for (ulong j = paste.pasties.length; j < editedPaste.pasties.length; j++)
+            if (editedPasty.id == "")
             {
                 Edit edit;
                 edit.uniqueId = generateUniqueEditId(paste);
                 edit.editId = editId;
                 edit.editType = EditType.pastyAdded;
-                edit.edit = editedPaste.pasties[j].code;
-                edit.metadata ~= editedPaste.pasties[j].title;
-                edit.metadata ~= editedPaste.pasties[j].language;
+                edit.edit = editedPasty.code;
+                edit.metadata ~= editedPasty.title;
+                edit.metadata ~= editedPasty.language;
                 edit.editedAt = editedAt;
 
-                paste.pasties ~= editedPaste.pasties[j];
+                editedPasty.id = generateUniquePastyId(paste);
+                paste.pasties ~= editedPasty;
                 paste.edits ~= edit;
             }
         }

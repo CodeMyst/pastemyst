@@ -3,6 +3,11 @@
     margin-bottom: 20px;
 }
 
+.pasty-editor .hidden
+{
+    display: none;
+}
+
 .pasty-editor .pasty-editor-options
 {
     border-bottom: 2px solid var(--color-mystge);

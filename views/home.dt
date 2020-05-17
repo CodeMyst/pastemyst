@@ -11,6 +11,7 @@ block body
             - string pastyTitle = "";
             - string pastyLang = "Autodetect";
             - string pastyCode = "";
+            - string pastyId = "";
             include components/pastyEditor
 
         include components/addEditorButton

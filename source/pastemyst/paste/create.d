@@ -61,8 +61,13 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
         title: title,
         ownerId: ownerId,
         isPrivate: isPrivate,
-        pasties: pasties
     };
+
+    foreach (pasty; pasties)
+    {
+        pasty.id = generateUniquePastyId(paste);
+        paste.pasties ~= pasty;
+    }
 
     return paste;
 }

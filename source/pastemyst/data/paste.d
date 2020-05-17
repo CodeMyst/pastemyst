@@ -69,6 +69,13 @@ public struct Paste
 public struct Pasty
 {
     /++
+     + id of the pasty
+     +/
+    @name("_id")
+    @optional
+    public string id;
+
+    /++
      + Title of the pasty.
      +/
     public string title;
@@ -82,4 +89,22 @@ public struct Pasty
      + Code of the pasty.
      +/
     public string code;
+}
+
+/++
+ + generates a unique pasty id
+ +/
+public string generateUniquePastyId(Paste paste) @safe
+{
+    import pastemyst.encoding : randomBase36Id;
+    import std.algorithm : canFind;
+
+    string id;
+
+    do
+    {
+        id = randomBase36Id();
+    } while(paste.pasties.canFind!((p) => p.id == id));
+
+    return id;
 }

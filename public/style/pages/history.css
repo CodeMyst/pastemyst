@@ -1,6 +1,5 @@
 #history .edit
 {
-    margin-top: 20px;
     display: flex;
     flex-direction: column;
 }
@@ -18,6 +17,12 @@
     display: flex;
     flex-direction: row;
     margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+#history .edit:first-child .edit-header
+{
+    margin-top: 0;
 }
 
 #history .edit .edit-header .jump
@@ -66,6 +71,11 @@
 #history .edit .change .CodeMirror .CodeMirror-gutters
 {
     background-color: var(--color-nano);
+}
+
+#history .edit .pasty-removed .pasty-added-header
+{
+    border-color: var(--color-mysted);
 }
 
 #history .edit .pasty-added-header

@@ -1,4 +1,3 @@
-import Dropdown from "../components/dropdown.js";
 import { initEditors, addEditor, editors } from "../components/pastyEditor.js";
 
 let expiresInDropdown;

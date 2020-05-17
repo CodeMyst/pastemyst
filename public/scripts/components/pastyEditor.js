@@ -67,8 +67,6 @@ export function addEditor()
     let idInput = clone.querySelector("input[name=id]");
     idInput.setAttribute("value", "");
 
-    console.log(idInput);
-
     // TODO: set initial mode
     editor.editor = CodeMirror.fromTextArea(textArea, // jshint ignore:line
     {

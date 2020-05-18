@@ -1,7 +1,5 @@
 import { initEditors, addEditor, editors } from "../components/pastyEditor.js";
 
-let expiresInDropdown;
-
 window.addEventListener("load", async() =>
 {
     initEditors();

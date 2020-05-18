@@ -17,6 +17,14 @@
     display: flex;
 }
 
+.paste-header .left .current-edit
+{
+    color: var(--color-nanolightlight);
+    margin-left: 20px;
+    font-size: var(--font-size-small);
+    align-self: center;
+}
+
 .paste-header .title
 {
     align-self: center;

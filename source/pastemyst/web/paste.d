@@ -245,7 +245,6 @@ public class PasteWeb
 
         Paste editedPaste;
         editedPaste.title = req.form["title"];
-        editedPaste.expiresIn = cast(ExpiresIn) req.form["expires-in"];
         
         int i = 0;
         while(true)
@@ -431,5 +430,83 @@ public class PasteWeb
         }
 
         render!("history.dt", session, paste);
+    }
+
+    /++
+     + GET /:pasteId/history/:editId
+     +
+     + gets the paste at the specific edit
+     +/
+    @path("/:pasteId/history/:editId")
+    @noAuth
+    public void getPasteRevision(string _pasteId, ulong _editId, HTTPServerRequest req)
+    {
+        import pastemyst.db : findOneById;
+        import std.algorithm : reverse, countUntil;
+        import std.stdio : writeln;
+
+        auto res = findOneById!Paste(_pasteId);
+
+        if (res.isNull)
+        {
+            return;
+        } 
+
+        Paste paste = res.get();
+
+        foreach (edit; paste.edits.reverse())
+        {
+            final switch (edit.editType)
+            {
+                case EditType.title:
+                {
+                    paste.title = edit.edit;
+                } break;
+
+                case EditType.pastyTitle:
+                {
+                    ulong pastyIndex = paste.pasties.countUntil!((p) => p.id == edit.metadata[0]);
+                    paste.pasties[pastyIndex].title = edit.edit;
+                } break;
+
+                case EditType.pastyLanguage:
+                {
+
+                    ulong pastyIndex = paste.pasties.countUntil!((p) => p.id == edit.metadata[0]);
+                    paste.pasties[pastyIndex].language = edit.edit;
+                } break;
+
+                case EditType.pastyContent:
+                {
+
+                } break;
+
+                case EditType.pastyAdded:
+                {
+
+                } break;
+
+                case EditType.pastyRemoved:
+                {
+
+                } break;
+            }
+
+            if (edit.editId > _editId)
+            {
+                break;
+            }
+        }
+
+        UserSession session = UserSession.init;
+
+        if (req.session && req.session.isKeySet("user"))
+        {
+            session = req.session.get!UserSession("user");    
+        }
+
+        const bool previousRevision = true;
+        const ulong currentEditId = _editId;
+        render!("paste.dt", session, paste, previousRevision, currentEditId);
     }
 }

@@ -4,11 +4,17 @@
             p.title= paste.title
         -else
             p.title.untitled (untitled)
+        - static if (is(typeof(previousRevision)))
+            - if (previousRevision)
+                p.current-edit (at edit ##{currentEditId})
 
     .right
         - if (historyPage)
             a.history(href="/" ~ paste.id) pasties
         - else
+            - static if (is(typeof(previousRevision)))
+                - if (previousRevision)
+                    a.history(href="/" ~ paste.id) current version
             - if (paste.edits.length > 0)
                 a.history(href="/" ~ paste.id ~ "/history") history
         -if(paste.ownerId != "" && session.user.id == paste.ownerId)

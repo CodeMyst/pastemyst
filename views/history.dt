@@ -17,9 +17,10 @@ block body
                         .edit-header
                             p ##{edit.editId} | edited at
                             span.editedAt= edit.editedAt
-                            a.jump.tooltip
+                            a.jump.tooltip(href="/" ~ paste.id ~ "/history/" ~ edit.editId.to!string())
                                 span.jump jump
                                 span.tooltip-text jump to this point in history
+
                     .subedit
                         .subedit-content
                             - if (edit.editType == EditType.title)
@@ -72,6 +73,7 @@ block body
                                         span.lang= pasty.language
                                     .pasty-added-content
                                         textarea.added= pasty.code
+
 block scripts
     script(type="module", src="/static/scripts/pages/history.js")
     script(src="/static/scripts/libs/codemirror/diff/diff.js")

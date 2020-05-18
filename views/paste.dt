@@ -33,8 +33,9 @@ block body
                     span.highlight last edited at:
                     span.value
                 p
+                    - import pastemyst.db : getNumberOfEdits;
                     span.highlight edits: 
-                    span.value= paste.edits.length
+                    span.value= getNumberOfEdits(paste)
  
 block scripts
     script.

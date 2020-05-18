@@ -148,12 +148,13 @@ public Tuple!(string, "previous", string, "next") getNextTitle(Paste paste, Edit
 public Tuple!(string, "previous", string, "next") getNextPastyTitle(Paste paste, Edit edit)
 {
     import std.conv : to;
+    import std.algorithm : countUntil;
 
     const Edit nextEdit = getNextEdit(paste, edit.uniqueId);
     Tuple!(string, "previous", string, "next") res;
     res.previous = edit.edit;
 
-    ulong pastyIndex = edit.metadata[0].to!ulong();
+    ulong pastyIndex = paste.pasties.countUntil!((p) => p.id == edit.metadata[0]);
 
     if (nextEdit == Edit.init)
     {
@@ -180,12 +181,13 @@ public Tuple!(string, "previous", string, "next") getNextPastyTitle(Paste paste,
 public Tuple!(string, "previous", string, "next") getNextPastyLanguage(Paste paste, Edit edit)
 {
     import std.conv : to;
+    import std.algorithm : countUntil;
 
     const Edit nextEdit = getNextEdit(paste, edit.uniqueId);
     Tuple!(string, "previous", string, "next") res;
     res.previous = edit.edit;
 
-    ulong pastyIndex = edit.metadata[0].to!ulong();
+    ulong pastyIndex = paste.pasties.countUntil!((p) => p.id == edit.metadata[0]);
 
     if (nextEdit == Edit.init)
     {

@@ -2,6 +2,7 @@ module pastemyst.db.db;
 
 import vibe.d;
 import std.typecons;
+import pastemyst.data;
 
 version(unittest)
 {
@@ -22,8 +23,6 @@ public void connect()
 {
     version(unittest)
     {
-        import pastemyst.data : Paste;
-
         connectMongo("127.0.0.1", "pastemyst-test");
     }
     else
@@ -37,8 +36,6 @@ public void connect()
  +/
 private string getCollectionName(T)() @safe
 {
-    import pastemyst.data : Paste, User;
-
     static if (is(T == Paste))
     {
         return "pastes";
@@ -56,8 +53,6 @@ private string getCollectionName(T)() @safe
 @("getting the collection name from a struct type")
 unittest
 {
-    import pastemyst.data : Paste;
-
     getCollectionName!Paste().should.equal("pastes");
 }
 
@@ -144,6 +139,16 @@ public Nullable!R findOne(R, T)(T query) @safe
 public Nullable!R findOneById(R, T)(T id) @safe
 {
     return findOne!R(["_id": id]);
+}
+
+public ulong getNumberOfEdits(const Paste paste) @safe
+{
+    import std.array : array;
+    import std.stdio : writeln;
+
+    MongoCollection collection = mongo[getCollectionName!Paste()];
+
+    return collection.distinct("edits.editId", ["_id": paste.id]).array.length;
 }
 
 /++

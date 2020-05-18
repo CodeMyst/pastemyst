@@ -10,15 +10,6 @@ window.addEventListener("load", async() =>
 
     document.querySelector(".notice .save").addEventListener("click", () =>
     {
-        document.querySelector("input[name=expires-in]").value = expiresInDropdown.value;
-
-        let temps = document.querySelectorAll("input[name=expires-in-temp]");
-
-        for (let i = 0; i < temps.length; i++)
-        {
-            temps[i].setAttribute("disabled", "");
-        }
-
         for (let i = 0; i < editors.length; i++)
         {
             editors[i].titleInput.name = "title-" + i;

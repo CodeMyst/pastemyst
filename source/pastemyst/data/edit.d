@@ -207,7 +207,7 @@ public string getPastyDiff(Edit edit)
     import std.ascii : newline;
 
     // remove the first 2 lines of metadata
-    return edit.edit.split(newline)[2..$-1].join(newline);
+    return edit.edit.split(newline)[2..$].join(newline);
 }
 
 public Pasty getAddedPasty(Edit edit)

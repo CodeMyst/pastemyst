@@ -444,6 +444,7 @@ public class PasteWeb
         import pastemyst.db : findOneById;
         import std.algorithm : reverse, countUntil;
         import std.stdio : writeln;
+        import pastemyst.util : patchDiff;
 
         auto res = findOneById!Paste(_pasteId);
 
@@ -471,14 +472,15 @@ public class PasteWeb
 
                 case EditType.pastyLanguage:
                 {
-
                     ulong pastyIndex = paste.pasties.countUntil!((p) => p.id == edit.metadata[0]);
                     paste.pasties[pastyIndex].language = edit.edit;
                 } break;
 
                 case EditType.pastyContent:
                 {
-
+                    ulong pastyIndex = paste.pasties.countUntil!((p) => p.id == edit.metadata[0]);
+                    string diffId = _pasteId ~ "-" ~ edit.uniqueId;
+                    paste.pasties[pastyIndex].code = patchDiff(diffId, paste.pasties[pastyIndex].code, edit.edit);
                 } break;
 
                 case EditType.pastyAdded:
@@ -492,7 +494,7 @@ public class PasteWeb
                 } break;
             }
 
-            if (edit.editId > _editId)
+            if (edit.editId == _editId)
             {
                 break;
             }

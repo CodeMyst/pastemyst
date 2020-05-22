@@ -458,6 +458,29 @@ public class PasteWeb
 
         Paste paste = res.get();
 
+        // if there are no edits, and the user is looking for the first edit
+        // redirect to the current version
+        if (_editId == 0 && paste.edits.length == 0)
+        {
+            redirect("/" ~ _pasteId);
+            return;
+        }
+        // check if the edit id is greater then the length of edits by one
+        // this means the user is looking for the current version
+        // this allows getting a permlink to the current version, even if more edits
+        // will be made in the future
+        else if (_editId > 0 && _editId == paste.edits.length)
+        {
+            redirect("/" ~ _pasteId);
+            return;
+        }
+
+        // check if edit id is invalid
+        if (_editId > 0 && _editId > paste.edits.length)
+        {
+            return;
+        }
+
         foreach (edit; paste.edits.reverse())
         {
             final switch (edit.editType)

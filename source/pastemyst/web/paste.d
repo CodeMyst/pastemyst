@@ -368,12 +368,15 @@ public class PasteWeb
                 edit.editId = editId;
                 edit.editType = EditType.pastyAdded;
                 edit.edit = editedPasty.code;
-                edit.metadata ~= editedPasty.title;
-                edit.metadata ~= editedPasty.language;
                 edit.editedAt = editedAt;
 
                 editedPasty.id = generateUniquePastyId(paste);
                 paste.pasties ~= editedPasty;
+
+                edit.metadata ~= editedPasty.id;
+                edit.metadata ~= editedPasty.title;
+                edit.metadata ~= editedPasty.language;
+
                 paste.edits ~= edit;
             }
         }
@@ -442,7 +445,7 @@ public class PasteWeb
     public void getPasteRevision(string _pasteId, ulong _editId, HTTPServerRequest req)
     {
         import pastemyst.db : findOneById;
-        import std.algorithm : reverse, countUntil;
+        import std.algorithm : reverse, countUntil, remove;
         import std.stdio : writeln;
         import pastemyst.util : patchDiff;
 
@@ -485,12 +488,18 @@ public class PasteWeb
 
                 case EditType.pastyAdded:
                 {
-
+                    paste.pasties = paste.pasties.remove!((p) => p.id == edit.metadata[0]);
                 } break;
 
                 case EditType.pastyRemoved:
                 {
-
+                    // TODO: this adds to the end of the list, while the paste might've been
+                    // removed from the middle of the list
+                    Pasty p;
+                    p.title = edit.metadata[0];
+                    p.language = edit.metadata[1];
+                    p.code = edit.edit;
+                    paste.pasties ~= p;
                 } break;
             }
 

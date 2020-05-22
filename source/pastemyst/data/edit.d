@@ -214,8 +214,9 @@ public Pasty getAddedPasty(Edit edit)
 {
     Pasty res;
 
-    res.title = edit.metadata[0];
-    res.language = edit.metadata[1];
+    res.id = edit.metadata[0];
+    res.title = edit.metadata[1];
+    res.language = edit.metadata[2];
     res.code = edit.edit;
 
     return res;

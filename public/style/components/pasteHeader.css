@@ -44,9 +44,8 @@
     background-color: var(--color-mystge);
     color: var(--color-nano);
     border-radius: var(--border-radius);
-    padding: 0.25rem 1rem;
+    padding: 0 0.5rem;
     margin-right: 0;
-    font-size: var(--font-size-small);
 }
 
 .paste-header .right a.history:hover

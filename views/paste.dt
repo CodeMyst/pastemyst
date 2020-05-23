@@ -6,7 +6,6 @@ block body
         include components/pasteHeader
 
         .paste-pasties
-            -import std.conv : to;
             -foreach(i, p; paste.pasties)
                 .pasty
                     .pasty-header
@@ -15,7 +14,11 @@ block body
                         -else
                             p.title.untitled (untitled)
                         span.lang= p.language
-                        a.raw(href="/raw/" ~ paste.id ~ "/" ~ i.to!string()) raw
+                        - static if (is(typeof(previousRevision)) && previousRevision)
+                            - import std.conv : to;
+                            a.raw(href="/raw/" ~ paste.id ~ "/" ~ p.id ~ "/" ~ currentEditId.to!string()) raw
+                        - else
+                            a.raw(href="/raw/" ~ paste.id ~ "/" ~ p.id) raw
                     .pasty-content
                         textarea=p.code
  

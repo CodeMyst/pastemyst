@@ -168,24 +168,57 @@ public class PasteWeb
         redirect("/" ~ paste.id);
     }
 
+    @path("/raw/:pasteId/:pastyId")
+    @noAuth
+    public void getRawPasty(string _pasteId, string _pastyId)
+    {
+        getRawPasty(_pasteId, _pastyId, -1);
+    }
+
     /++
      + GET /raw/:id/index
      +
      + gets the raw data of the pasty
      +/
-	@path("/raw/:id/:index")
+	@path("/raw/:pasteId/:pastyId/:editId")
     @noAuth
-	public void getRawPasty(string _id, int _index)
+	public void getRawPasty(string _pasteId, string _pastyId, long _editId)
 	{
 		import pastemyst.db : findOneById;
 		import pastemyst.data : Paste;
+        import std.algorithm : canFind, find;
 		
-		const auto paste = findOneById!Paste(_id);
-		enforceHTTP(!paste.isNull, HTTPStatus.notFound, "invalid paste id.");
-		enforceHTTP(!(_index + 1 > paste.get().pasties.length || _index < 0), HTTPStatus.notFound, "invalid pasty index.");
+		const auto res = findOneById!Paste(_pasteId);
 
-		const auto pasty = paste.get().pasties[_index];
-		const string pasteTitle = paste.get().title == "" ? "untitled" : paste.get().title;
+        if (res.isNull())
+        {
+            return;
+        }
+
+        if (_editId < -1)
+        {
+            return;
+        }
+
+        Paste paste;
+
+        if (_editId == -1)
+        {
+            paste = cast(Paste) res.get();
+        }
+        else
+        {
+            paste = pasteRevision(_pasteId, _editId);
+        }
+
+        if (!paste.pasties.canFind!((p) => p.id == _pastyId))
+        {
+            return;
+        }
+
+        Pasty pasty = paste.pasties.find!((p) => p.id == _pastyId)[0];
+
+		const string pasteTitle = paste.title == "" ? "untitled" : paste.title;
 		const string pastyTitle = pasty.title == "" ? "untitled" : pasty.title;
 		const string title = pasteTitle ~ " - " ~ pastyTitle;
 		const string rawCode = pasty.code;
@@ -350,6 +383,7 @@ public class PasteWeb
                 edit.editId = editId;
                 edit.editType = EditType.pastyRemoved;
                 edit.edit = pasty.code;
+                edit.metadata ~= pasty.id;
                 edit.metadata ~= pasty.title;
                 edit.metadata ~= pasty.language;
                 edit.editedAt = editedAt;
@@ -444,6 +478,27 @@ public class PasteWeb
     @noAuth
     public void getPasteRevision(string _pasteId, ulong _editId, HTTPServerRequest req)
     {
+        Paste paste = pasteRevision(_pasteId, _editId);
+
+        if (paste == Paste.init)
+        {
+            return;
+        }
+
+        UserSession session = UserSession.init;
+
+        if (req.session && req.session.isKeySet("user"))
+        {
+            session = req.session.get!UserSession("user");    
+        }
+
+        const bool previousRevision = true;
+        const ulong currentEditId = _editId;
+        render!("paste.dt", session, paste, previousRevision, currentEditId);
+    }
+
+    private Paste pasteRevision(string _pasteId, ulong _editId)
+    {
         import pastemyst.db : findOneById;
         import std.algorithm : reverse, countUntil, remove;
         import std.stdio : writeln;
@@ -453,7 +508,7 @@ public class PasteWeb
 
         if (res.isNull)
         {
-            return;
+            return Paste.init;
         } 
 
         Paste paste = res.get();
@@ -462,8 +517,7 @@ public class PasteWeb
         // redirect to the current version
         if (_editId == 0 && paste.edits.length == 0)
         {
-            redirect("/" ~ _pasteId);
-            return;
+            return paste;
         }
         // check if the edit id is greater then the length of edits by one
         // this means the user is looking for the current version
@@ -471,14 +525,13 @@ public class PasteWeb
         // will be made in the future
         else if (_editId > 0 && _editId == paste.edits.length)
         {
-            redirect("/" ~ _pasteId);
-            return;
+            return paste;
         }
 
         // check if edit id is invalid
         if (_editId > 0 && _editId > paste.edits.length)
         {
-            return;
+            return Paste.init;
         }
 
         foreach (edit; paste.edits.reverse())
@@ -519,8 +572,9 @@ public class PasteWeb
                     // TODO: this adds to the end of the list, while the paste might've been
                     // removed from the middle of the list
                     Pasty p;
-                    p.title = edit.metadata[0];
-                    p.language = edit.metadata[1];
+                    p.id = edit.metadata[0];
+                    p.title = edit.metadata[1];
+                    p.language = edit.metadata[2];
                     p.code = edit.edit;
                     paste.pasties ~= p;
                 } break;
@@ -532,15 +586,6 @@ public class PasteWeb
             }
         }
 
-        UserSession session = UserSession.init;
-
-        if (req.session && req.session.isKeySet("user"))
-        {
-            session = req.session.get!UserSession("user");    
-        }
-
-        const bool previousRevision = true;
-        const ulong currentEditId = _editId;
-        render!("paste.dt", session, paste, previousRevision, currentEditId);
+        return paste;
     }
 }

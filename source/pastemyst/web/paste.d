@@ -216,7 +216,7 @@ public class PasteWeb
             return;
         }
 
-        Pasty pasty = paste.pasties.find!((p) => p.id == _pastyId)[0];
+        const Pasty pasty = paste.pasties.find!((p) => p.id == _pastyId)[0];
 
 		const string pasteTitle = paste.title == "" ? "untitled" : paste.title;
 		const string pastyTitle = pasty.title == "" ? "untitled" : pasty.title;
@@ -478,7 +478,7 @@ public class PasteWeb
     @noAuth
     public void getPasteRevision(string _pasteId, ulong _editId, HTTPServerRequest req)
     {
-        Paste paste = pasteRevision(_pasteId, _editId);
+        const Paste paste = pasteRevision(_pasteId, _editId);
 
         if (paste == Paste.init)
         {

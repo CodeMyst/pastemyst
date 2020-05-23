@@ -22,14 +22,28 @@
     justify-content: space-between;
 }
 
-#paste .paste-pasties .pasty .pasty-header .lang
+#paste .paste-pasties .pasty .pasty-header .lang,
+#paste .paste-pasties .pasty .pasty-header a
 {
     margin-left: auto;
-    margin-right: 20px;
     border-radius: var(--border-radius);
     background-color: var(--color-nanonotsolight);
     color: white;
     padding: 0 0.5rem;
+}
+
+#paste .paste-pasties .pasty .pasty-header a
+{
+    margin-left: 20px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-mystge);
+    color: var(--color-nanolight);
+    padding: 0 0.5rem;
+}
+
+#paste .paste-pasties .pasty .pasty-header a:hover
+{
+    background-color: var(--color-mystlue);
 }
 
 #paste .CodeMirror

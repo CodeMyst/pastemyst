@@ -149,7 +149,7 @@ window.addEventListener("load", async () =>
 
     for (let i = 0; i < copyButtons.length; i++)
     {
-        copyButtons[i].addEventListener("click", () => copyCodeToClipboard(copyButtons[i]));
+        copyButtons[i].addEventListener("click", () => copyCodeToClipboard(copyButtons[i])); // jshint ignore:line
     }
 });
 
@@ -168,9 +168,7 @@ const copyToClipboard = str => {
   el.style.left = '-9999px';                      // Move outside the screen to make it invisible
   document.body.appendChild(el);                  // Append the <textarea> element to the HTML document
   const selected =            
-    document.getSelection().rangeCount > 0        // Check if there is any content selected previously
-      ? document.getSelection().getRangeAt(0)     // Store selection if found
-      : false;                                    // Mark as false to know no selection existed before
+    document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;                                    // Mark as false to know no selection existed before
   el.select();                                    // Select the <textarea> content
   document.execCommand('copy');                   // Copy - only works as a result of a user action (e.g. click events)
   document.body.removeChild(el);                  // Remove the <textarea> element

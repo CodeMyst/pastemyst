@@ -3,38 +3,22 @@ extends baseLayout
 block body
     #home
         .paste-options
-            input(name="title", placeholder="paste title", type="text", autocomplete="off", spellcheck="false")
-            #expires-in-dropdown.no-search
-                .label expires in:
-                include components/dropdown
-                    block options
-                        - import std.conv : to;
-                        - import pastemyst.data : expireOptions;
-                        - foreach (ulong i, exp; expireOptions)
-                            label.option
-                                input(type="radio", name="expires-in", value=exp ["value"].to!string (), checked=i == 0 ? true : false)
-                                span= exp ["pretty"].to!string ()
+            - string titleValue = "";
+            - string defaultExpiresIn = "never";
+            - bool hideExpiresIn = false;
+            include components/titleEditable
 
         #pasty-editors
-            .pasty-editor
-                .pasty-editor-options
-                    i.fas.fa-minus-square.pasty-editor-delete
-                    input.pasty-editor-title(placeholder="pasty title", type="text", autocomplete="off", spellcheck="false")
-                    #language-dropdown
-                        .label language:
-                        include components/dropdown
-                            block options
-                                - import std.conv : to;
-                                - import pastemyst.data : languages;
-                                - foreach (ulong i, lang; languages)
-                                    label.option
-                                        input(type="radio", name="language", value=lang ["name"].to!string () ~ "," ~ lang ["mode"].to!string () ~ "," ~ lang ["mimes"] [0].to!string (), checked=i == 0 ? true : false)
-                                        span= lang ["name"].to!string ()
-                textarea.editor(type="text", autocomplete="off", spellcheck="false")
+            - string pastyTitle = "";
+            - string pastyLang = "Autodetect";
+            - string pastyCode = "";
+            - string pastyId = "";
+            include components/pastyEditor
+
+        include components/addEditorButton
         
         .paste-options-bottom
             .paste-buttons
-                a.new-pasty-editor add editor
                 a#create-paste create paste
 
             .paste-options-bottom-options
@@ -60,4 +44,4 @@ block body
             input(type="submit")
 
 block scripts
-    script(type="module", src="/static/scripts/home.js")
+    script(type="module", src="/static/scripts/pages/home.js")

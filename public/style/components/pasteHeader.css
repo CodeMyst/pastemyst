@@ -1,0 +1,109 @@
+.paste-header
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    font-size: var(--font-size-medium);
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 45px;
+    box-sizing: border-box;
+}
+
+.paste-header .left
+{
+    display: flex;
+}
+
+.paste-header .left .current-edit
+{
+    color: var(--color-nanolightlight);
+    margin-left: 20px;
+    font-size: var(--font-size-small);
+    align-self: center;
+}
+
+.paste-header .title
+{
+    align-self: center;
+    font-size: var(--font-size-normal);
+}
+
+.paste-header .right a
+{
+    color: white;
+    font-size: var(--font-size-normal);
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.paste-header .right a.history
+{
+    background-color: var(--color-mystge);
+    color: var(--color-nano);
+    border-radius: var(--border-radius);
+    padding: 0.25rem 1rem;
+    margin-right: 0;
+    font-size: var(--font-size-small);
+}
+
+.paste-header .right a.history:hover
+{
+    background-color: var(--color-mystlue);
+}
+
+.paste-header .set-public-on-profile-paste
+{
+    align-self: center;
+    margin-right: 20px;
+}
+
+.paste-header .set-public-on-profile-paste button
+{
+    background-color: transparent;
+    border: none;
+}
+
+.paste-header .set-public-on-profile-paste button:hover
+{
+    cursor: pointer;
+}
+
+.paste-header .set-public-on-profile-paste button .fa-eye
+{
+    font-size: var(--font-size-normal);
+}
+
+.paste-header .set-public-on-profile-paste button.public .fa-eye
+{
+    color: var(--color-white);
+}
+
+.paste-header .set-public-on-profile-paste button.private .fa-eye
+{
+    color: var(--color-nanolightlight);
+}
+
+.paste-header .delete-paste
+{
+    align-self: center;
+}
+
+.paste-header .delete-paste button
+{
+    background-color: transparent;
+    border: none;
+}
+
+.paste-header .delete-paste button:hover
+{
+    cursor: pointer;
+}
+
+.paste-header .delete-paste .fa-trash
+{
+    color: var(--color-mysted);
+    font-size: var(--font-size-normal);
+}

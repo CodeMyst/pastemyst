@@ -37,4 +37,4 @@ block scripts
         script.
             pastes.push({'createdAt': '#{p.createdAt}', 'expiresIn': '#{cast(string) p.expiresIn}'});
 
-    script(type="module", src="/static/scripts/profile.js")
+    script(type="module", src="/static/scripts/pages/profile.js")

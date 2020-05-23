@@ -1,0 +1,100 @@
+.pasty-editor
+{
+    margin-bottom: 20px;
+}
+
+.pasty-editor .hidden
+{
+    display: none;
+}
+
+.pasty-editor .pasty-editor-options
+{
+    border-bottom: 2px solid var(--color-mystge);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.pasty-editor .pasty-editor-options .pasty-editor-delete
+{
+    padding: 0.5rem 1rem;
+    padding-right: 0;
+    background-color: var(--color-nanolight);
+    border-top-left-radius: var(--border-radius);
+    color: var(--color-mysted);
+    display: none;
+}
+
+.pasty-editor .pasty-editor-options .pasty-editor-delete:hover
+{
+    cursor: pointer;
+}
+
+.pasty-editor .pasty-editor-options .pasty-editor-title
+{
+    flex: 1 0 50%;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--color-nanolight);
+    color: var(--color-white);
+    border-top-right-radius: var(--border-radius);
+    border-top-left-radius: var(--border-radius);
+    border: none;
+    font-size: var(--font-size-normal);
+    padding: 0.5rem 1rem;
+    margin: 0;
+    font-family: var(--font-stack);
+}
+
+.pasty-editor .pasty-editor-options .language-dropdown
+{
+    flex-basis: 100%;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    background-color: var(--color-nanolight);
+}
+
+.pasty-editor .pasty-editor-options .language-dropdown .label
+{
+    display: inline-block;
+    background-color: var(--color-nanolight);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+}
+
+@media screen and (min-width: 640px)
+{
+    .pasty-editor .pasty-editor-options
+    {
+        flex-wrap: initial;
+    }
+
+    .pasty-editor .pasty-editor-options .pasty-editor-title
+    {
+        flex: initial;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .pasty-editor .pasty-editor-options .language-dropdown
+    {
+        flex: initial;
+        justify-content: initial;
+        width: auto;
+        flex-shrink: 0;
+        border-top-right-radius: var(--border-radius);
+    }
+}
+
+.pasty-editor textarea
+{
+    white-space: pre;
+}
+
+.pasty-editor .CodeMirror
+{
+    height: 50vh;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    padding-top: 0.5rem;
+}

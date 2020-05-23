@@ -2,32 +2,10 @@ extends baseLayout
  
 block body
     #paste
-        .paste-header
-            .left
-                -if(paste.title != "")
-                    p.title= paste.title
-                -else
-                    p.title.untitled (untitled)
+        - bool historyPage = false;
+        include components/pasteHeader
 
-            .right
-                -if(paste.ownerId != "" && session.user.id == paste.ownerId)
-                    form.set-public-on-profile-paste(method="post", action="/" ~ paste.id ~ "/togglePublicOnProfile")
-                        -if (paste.isPublic)
-                            button.public.tooltip(type="submit")
-                                i.fas.fa-eye
-                                span.tooltip-text set to private on profile
-                        -else
-                            button.private.tooltip(type="submit")
-                                i.fas.fa-eye
-                                span.tooltip-text set to public on profile
-
-                    form.delete-paste(method="post", action="/" ~ paste.id ~ "/delete", onsubmit="return confirm('are you sure you want to delete this paste? you won\\'t be able to recover it.');")
-                        button.tooltip(type="submit")
-                            i.fas.fa-trash
-                            span.tooltip-text delete paste
- 
         .paste-pasties
-            -import std.conv : to;
             -foreach(i, p; paste.pasties)
                 .pasty
                     .pasty-header
@@ -36,7 +14,11 @@ block body
                         -else
                             p.title.untitled (untitled)
                         span.lang= p.language
-                        a.raw(href="/raw/" ~ paste.id ~ "/" ~ i.to!string()) raw
+                        - static if (is(typeof(previousRevision)) && previousRevision)
+                            - import std.conv : to;
+                            a.raw(href="/raw/" ~ paste.id ~ "/" ~ p.id ~ "/" ~ currentEditId.to!string()) raw
+                        - else
+                            a.raw(href="/raw/" ~ paste.id ~ "/" ~ p.id) raw
                     .pasty-content
                         textarea=p.code
  
@@ -44,18 +26,35 @@ block body
             p.created-at
                 span.highlight created at:
                 span.value
-            p.expires-in
-                span.highlight expires in:
-                span.value
+            -import pastemyst.data : ExpiresIn;
+            -if(paste.expiresIn != ExpiresIn.never)
+                p.expires-in
+                    span.highlight expires in:
+                    span.value
+            -if(paste.edits.length != 0)
+                p.edited-at
+                    span.highlight last edited at:
+                    span.value
+                p
+                    - import pastemyst.db : getNumberOfEdits;
+                    span.highlight edits: 
+                    span.value= getNumberOfEdits(paste)
  
 block scripts
     script.
         var createdAt = #{paste.createdAt};
         var expiresIn = "#{cast(string) paste.expiresIn}";
+        var deletesAt = #{paste.deletesAt};
+        var isEdited = #{paste.edits.length != 0};
+        var editedAt = 0;
         var langs = [];
 
     -foreach(p; paste.pasties)
         script.
             langs.push("#{p.language}");
 
-    script(type="module", src="/static/scripts/paste.js")
+    -if(paste.edits.length != 0)
+        script.
+            editedAt = #{paste.edits[$-1].editedAt};
+
+    script(type="module", src="/static/scripts/pages/paste.js")

@@ -3,3 +3,4 @@ bin
 config.yaml
 public/assets/avatars/*
 !public/assets/avatars/.gitkeep
+tmp/

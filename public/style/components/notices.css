@@ -1,0 +1,37 @@
+.notice
+{
+    background-color: var(--color-mystge);
+    color: var(--color-nano);
+    padding: 0.5rem 1rem;
+    width: 100%;
+    border-radius: var(--border-radius);
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.notice i
+{
+    margin-right: 10px;
+    align-self: center;
+}
+
+.notice p
+{
+    align-self: center;
+}
+
+.notice .save
+{
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.notice .save,
+.notice .cancel
+{
+    background-color: var(--color-nano);
+    border-radius: var(--border-radius);
+    padding: 0.25rem 1rem;
+}

@@ -1,4 +1,4 @@
-import { timeDifferenceToString } from "./time.js";
+import { timeDifferenceToString } from "../helpers/time.js";
 
 let highlightExpr = /(\d)L(\d+)(?:-L(\d+))?/;
 let editors = [];
@@ -44,7 +44,7 @@ window.addEventListener("load", async () =>
 
             if (langData.mode !== "null")
             {
-                await import(`./libs/codemirror/${langData.mode}/${langData.mode}.js`).then(() => // jshint ignore:line
+                await import(`../libs/codemirror/${langData.mode}/${langData.mode}.js`).then(() => // jshint ignore:line
                 {
                     langMime = langData.mimes[0];
                 });
@@ -132,25 +132,17 @@ window.addEventListener("load", async () =>
 
     document.querySelector(".paste-meta .created-at .value").textContent = " " + createdAtDate.toString().toLowerCase();
 
-    const response = await fetch(`/api/time/expiresInToUnixTime?createdAt=${createdAt}&expiresIn=${expiresIn}`, // jshint ignore:line
+    if (deletesAt !== 0) // jshint ignore:line
     {
-        headers:
-        {
-            "Content-Type": "application/json"
-        }
-    });
-
-    let expiresAt = (await response.json()).result;
-
-    if (expiresAt !== 0)
-    {
-        let expiresIn = timeDifferenceToString(expiresAt * 1000 - new Date());
+        let expiresIn = timeDifferenceToString(deletesAt * 1000 - new Date()); // jshint ignore:line
         document.querySelector(".paste-meta .expires-in .value").textContent = " " + expiresIn;
     }
-    else
+
+    let editedAtDate = new Date(editedAt * 1000); // jshint ignore:line
+
+    if (editedAt !== 0) // jshint ignore:line
     {
-        let expiresInElem = document.querySelector(".paste-meta .expires-in");
-        expiresInElem.parentNode.removeChild(expiresInElem);
+        document.querySelector(".paste-meta .edited-at .value").textContent = " " + editedAtDate.toString().toLowerCase();
     }
 });
 

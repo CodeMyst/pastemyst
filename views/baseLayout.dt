@@ -28,5 +28,6 @@ html(lang="en")
         script(src="/static/scripts/libs/codemirror/simple.js")
         script(src="/static/scripts/libs/codemirror/overlay.js")
         script(src="/static/scripts/libs/codemirror/multiplex.js")
+        script(type="module", src="/static/scripts/main.js")
         
         block scripts

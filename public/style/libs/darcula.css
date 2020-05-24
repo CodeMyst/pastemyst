@@ -3,7 +3,7 @@
     From IntelliJ IDEA by JetBrains
  */
 
- .cm-s-darcula { font-family: var(--font-stack); }
+ .cm-s-darcula { font-family: var(--font-stack); font-size: var(--font-size-code); }
  .cm-s-darcula.CodeMirror { background: var(--color-nanolight); color: var(--color-white); }
  
  .cm-s-darcula span.cm-meta { color: #BBB529; }

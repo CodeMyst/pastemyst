@@ -33,6 +33,12 @@ a:hover
     box-sizing: border-box;
 }
 
+#container.fullwidth
+{
+    max-width: initial;
+    width: 96.5%;
+}
+
 .block
 {
     box-sizing: border-box;

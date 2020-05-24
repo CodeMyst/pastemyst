@@ -3,12 +3,22 @@ nav
     background-color: var(--color-nanolight);
     border-radius: var(--border-radius);
     font-size: var(--font-size-medium);
+    display: flex;
+    flex-direction: row;
+}
+
+nav .fullwidth
+{
+    margin-left: auto;
+    margin-right: 20px;
+    align-self: center;
 }
 
 nav ul
 {
     padding: 1rem;
     margin: 0;
+    margin-right: 20px;
 }
 
 nav ul li

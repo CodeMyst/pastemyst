@@ -15,3 +15,7 @@ nav
             a(href="/about") about
         li.no-delimiter
             a(href="/donate") donate
+    
+    a.tooltip.fullwidth
+        i.fas.fa-expand
+        span.tooltip-text toggle full width page

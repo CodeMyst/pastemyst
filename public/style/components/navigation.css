@@ -7,9 +7,15 @@ nav
     flex-direction: row;
 }
 
-nav .fullwidth
+nav .wordwrap
 {
     margin-left: auto;
+    align-self: center;
+}
+
+nav .fullwidth
+{
+    margin-left: 20px;
     margin-right: 20px;
     align-self: center;
 }

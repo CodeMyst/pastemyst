@@ -1,3 +1,5 @@
+import { getWordwrap } from "../helpers/options.js";
+
 window.addEventListener("load", async () =>
 {
     let editedAtElements = document.querySelectorAll(".editedAt");
@@ -23,7 +25,7 @@ window.addEventListener("load", async () =>
             mode: "text/x-diff",
             tabSize: 4,
             theme: "darcula",
-            lineWrapping: true,
+            lineWrapping: getWordwrap(),
             readOnly: true
         });
     }
@@ -41,7 +43,7 @@ window.addEventListener("load", async () =>
             mode: "text/plain",
             tabSize: 4,
             theme: "darcula",
-            lineWrapping: true,
+            lineWrapping: getWordwrap(),
             readOnly: true
         });
 

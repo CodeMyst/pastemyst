@@ -1,5 +1,6 @@
 import Dropdown from "../components/dropdown.js";
 import { PastyEditor } from "../data/editor.js";
+import { getWordwrap } from "../helpers/options.js";
 
 export let editors = [];
 
@@ -25,7 +26,7 @@ export function initEditors()
             mode: "text/plain",
             tabSize: 4,
             theme: "darcula",
-            lineWrapping: true
+            lineWrapping: getWordwrap()
         });
 
         editor.languageDropdown = setupLanguageDropdown(editor);
@@ -75,7 +76,7 @@ export function addEditor()
         mode: "text/plain",
         tabSize: 4,
         theme: "darcula",
-        lineWrapping: true
+        lineWrapping: getWordwrap()
     });
 
     document.getElementById("pasty-editors").appendChild(clone);

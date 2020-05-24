@@ -1,4 +1,5 @@
 import { timeDifferenceToString } from "../helpers/time.js";
+import { getWordwrap } from "../helpers/options.js";
 
 let highlightExpr = /(\d)L(\d+)(?:-L(\d+))?/;
 let editors = [];
@@ -19,7 +20,7 @@ window.addEventListener("load", async () =>
             mode: "text/plain",
             tabSize: 4,
             theme: "darcula",
-            lineWrapping: true,
+            lineWrapping: getWordwrap(),
             readOnly: true
         });
 

@@ -49,6 +49,7 @@ To build / run the project simply run `dub build` / `dub run`. To unit test the 
 
 ## API Wrappers
 
-| Language | URL                                      |
-|----------|------------------------------------------|
-| Python   | https://github.com/Dmunch04/PasteMyst.py |
+| Language           | URL                                                 | Author     |
+|--------------------|-----------------------------------------------------|------------|
+| Python             | https://github.com/Dmunch04/PasteMyst.py            | Dmuch04    |
+| C# (.NET Standard) | https://github.com/dentolos19/PasteMystNet          | dentolos19 |

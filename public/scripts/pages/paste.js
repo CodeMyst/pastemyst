@@ -152,6 +152,16 @@ window.addEventListener("load", async () =>
     {
         copyButtons[i].addEventListener("click", () => copyCodeToClipboard(copyButtons[i])); // jshint ignore:line
     }
+
+    let copyLinkButton = document.querySelector("#paste .paste-header .copy-link");
+    let copyLink = copyLinkButton.getAttribute("href");
+    copyLinkButton.addEventListener("click", () => copyLinkToClipboard(copyLink));
+    copyLinkButton.removeAttribute("href");
+
+    let copyLinkEditButton = document.querySelector("#paste .paste-header .copy-link-edit");
+    let copyEditLink = copyLinkEditButton.getAttribute("href");
+    copyLinkEditButton.addEventListener("click", () => copyLinkToClipboard(copyEditLink));
+    copyLinkEditButton.removeAttribute("href");
 });
 
 function copyCodeToClipboard(copyButton)
@@ -159,6 +169,13 @@ function copyCodeToClipboard(copyButton)
     let textarea = copyButton.parentElement.parentElement.querySelector("textarea");
 
     copyToClipboard(textarea.textContent);
+}
+
+function copyLinkToClipboard(link)
+{
+    let url = window.location.host + link;
+
+    copyToClipboard(url);
 }
 
 const copyToClipboard = str => {

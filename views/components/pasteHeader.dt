@@ -17,6 +17,19 @@
                     a.history(href="/" ~ paste.id) current version
             - if (paste.edits.length > 0)
                 a.history(href="/" ~ paste.id ~ "/history") history
+        a.tooltip.copy-link(href="/" ~ paste.id)
+            i.fas.fa-link
+            span.tooltip-text copy link
+        - string copyEditUrl = "/" ~ paste.id ~ "/history/";
+        - import std.conv : to;
+        - static if (is(typeof(previousRevision)))
+            - if (previousRevision)
+                - copyEditUrl ~= currentEditId.to!string();
+        - else
+            - copyEditUrl ~= (paste.edits[$-1].editId + 1).to!string();
+        a.tooltip.copy-link-edit(href=copyEditUrl)
+            i.fas.fa-anchor
+            span.tooltip-text copy link to this edit
         -if(paste.ownerId != "" && session.user.id == paste.ownerId)
             a.tooltip(href="/" ~ paste.id ~ "/edit")
                 i.fas.fa-edit

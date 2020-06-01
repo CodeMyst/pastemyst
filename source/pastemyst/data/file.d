@@ -135,3 +135,21 @@ private string getDataFilePath(string filename)
 
     return getcwd() ~ "/" ~ dataPath ~ "/" ~ filename;
 }
+
+/++
+ + checks if the provided language exists in the config file
+ +/
+public bool doesLanguageExist(string language) @safe
+{
+    import std.uni : toLower;
+
+    foreach (lang; languages.byValue())
+    {
+        if (lang["name"].get!string().toLower() == language.toLower())
+        {
+            return true;
+        }
+    }
+
+    return false;
+}

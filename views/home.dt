@@ -10,7 +10,7 @@ block body
 
         #pasty-editors
             - string pastyTitle = "";
-            - string pastyLang = "Autodetect";
+            - string pastyLang = user.defaultLang;
             - string pastyCode = "";
             - string pastyId = "";
             include components/pastyEditor

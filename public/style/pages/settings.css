@@ -9,6 +9,12 @@
 #settings .settings-block h2
 {
     margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+#settings .settings-block h2:first-child
+{
+    margin-top: 0;
 }
 
 #settings .settings-block .save
@@ -80,4 +86,21 @@
 #settings .settings-block .avatar p
 {
     margin-right: 20px;
+}
+
+#settings .settings-block .default-lang
+{
+    display: flex;
+    flex-direction: row;
+}
+
+#settings .settings-block .default-lang p
+{
+    margin-right: 20px;
+    align-self: center;
+}
+
+#settings .settings-block .default-lang .dropdown summary
+{
+    background-color: var(--color-nano);
 }

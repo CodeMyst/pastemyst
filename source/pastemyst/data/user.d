@@ -35,6 +35,11 @@ public struct User
      + whether the user's profile is public for everyone to see
      +/
     public bool publicProfile;
+
+    /++
+     + default language for creating pasties
+     +/
+    public string defaultLang = "Autodetect";
 }
 
 /++

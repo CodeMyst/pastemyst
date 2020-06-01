@@ -68,13 +68,13 @@ public class UserWeb
      +/
     @path("settings/save")
     @anyAuth
-    public void postSettingsSave(HTTPServerRequest req, string username, bool publicProfile)
+    public void postSettingsSave(HTTPServerRequest req, string username, bool publicProfile, string language)
     {
         import std.conv : to;
         import pastemyst.db : uploadAvatar, update, findOneById;
         import std.path : chainPath, baseName;
-        import std.array : array;
-        import pastemyst.data : config;
+        import std.array : array, split;
+        import pastemyst.data : config, doesLanguageExist;
         import std.file : remove;
         import std.algorithm : startsWith;
 
@@ -110,6 +110,13 @@ public class UserWeb
         if (user.publicProfile != publicProfile)
         {
             update!User(["_id": session.user.id], ["$set": ["publicProfile": publicProfile]]);
+        }
+
+        if (user.defaultLang != language)
+        {
+            string lang = language.split(",")[0];
+            enforceHTTP(doesLanguageExist(lang), HTTPStatus.badRequest, "invalid language");
+            update!User(["_id": session.user.id], ["$set": ["defaultLang": lang]]);
         }
 
         req.session.set("user", session);

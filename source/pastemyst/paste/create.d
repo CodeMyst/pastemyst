@@ -14,8 +14,7 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
     import std.typecons : Nullable;
     import std.datetime : Clock;
     import pastemyst.db : insert, findOneById;
-    import pastemyst.data.paste : Paste;
-    import pastemyst.data.file : languages;
+    import pastemyst.data : Paste, doesLanguageExist;
     import pastemyst.util : generateUniqueId;
     import std.uni : toLower;
     import pastemyst.time : expiresInToUnixTime;
@@ -30,17 +29,7 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
 
     foreach (pasty; pasties)
     {
-        bool languageFound = false;
-        foreach (language; languages.byValue ())
-        {
-            if (language["name"].get!string().toLower() == pasty.language.toLower())
-            {
-                languageFound = true;
-                break;
-            }
-        }
-
-        enforceHTTP(languageFound, HTTPStatus.badRequest, "invalid language value.");
+        enforceHTTP(doesLanguageExist(pasty.language), HTTPStatus.badRequest, "invalid language value.");
     }
 
     auto currentTime = Clock.currTime().toUnixTime();

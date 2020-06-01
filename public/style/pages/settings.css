@@ -104,3 +104,19 @@
 {
     background-color: var(--color-nano);
 }
+
+#settings .settings-block .delete-account i
+{
+    color: var(--color-mysted);
+    margin-right: 10px;
+}
+
+#settings .settings-block .delete-account a
+{
+    color: var(--color-mysted);
+}
+
+#settings .settings-block .delete-account a:hover
+{
+    color: var(--color-mystlue);
+}

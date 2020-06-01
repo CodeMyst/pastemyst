@@ -75,7 +75,7 @@ public class UserWeb
         import std.path : chainPath, baseName;
         import std.array : array, split;
         import pastemyst.data : config, doesLanguageExist;
-        import std.file : remove;
+        import std.file : remove, exists;
         import std.algorithm : startsWith;
 
         UserSession session = req.session.get!UserSession("user");
@@ -88,7 +88,7 @@ public class UserWeb
 
             string avatarPath = uploadAvatar(avatar.tempPath.toString(), avatar.filename.name);
 
-            string avatarUrl = chainPath(config.hostname, "/static/assets/avatars/", avatarPath).array;
+            string avatarUrl = chainPath(config.hostname, "static/assets/avatars/", avatarPath).array;
 
             if (user.avatarUrl.startsWith(config.hostname))
             {
@@ -122,5 +122,49 @@ public class UserWeb
         req.session.set("user", session);
 
         redirect("/user/settings");
+    }
+
+    /++
+     + GET /user/delete
+     +
+     + confirmation prompt for deleting the users account
+     +/
+    @path("/delete")
+    @anyAuth
+    public void getDelete(HTTPServerRequest req)
+    {
+        UserSession session = req.session.get!UserSession("user");
+
+        const string msg = "are you sure you want to completely delete your account? this action cannot be undone.";
+        const string confirmLink = "/user/delete/confirm";
+        const string cancelLink = "/user/settings";
+
+        render!("confirm.dt", msg, confirmLink, cancelLink, session);
+    }
+
+    @path("/delete/confirm")
+    @anyAuth
+    public void getDeleteConfirm(HTTPServerRequest req)
+    {
+        import pastemyst.db : remove, findOneById;
+        import std.algorithm : startsWith;
+        import std.path : baseName;
+        import file = std.file : remove;
+
+        UserSession session = req.session.get!UserSession("user");
+
+        User user = findOneById!User(session.user.id).get();
+
+        if (user.avatarUrl.startsWith(config.hostname))
+        {
+            file.remove("./public/assets/avatars/" ~ baseName(user.avatarUrl));
+        }
+
+        remove!Paste(["ownerId": session.user.id]);
+        remove!User(["_id": session.user.id]);
+
+        terminateSession();
+
+        redirect("/");
     }
 }

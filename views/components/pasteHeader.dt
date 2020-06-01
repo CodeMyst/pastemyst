@@ -26,7 +26,10 @@
             - if (previousRevision)
                 - copyEditUrl ~= currentEditId.to!string();
         - else
-            - copyEditUrl ~= (paste.edits[$-1].editId + 1).to!string();
+            - if (paste.edits.length > 0)
+                - copyEditUrl ~= (paste.edits[$-1].editId + 1).to!string();
+            - else
+                - copyEditUrl ~= "0";
         a.tooltip.copy-link-edit(href=copyEditUrl)
             i.fas.fa-anchor
             span.tooltip-text copy link to this edit

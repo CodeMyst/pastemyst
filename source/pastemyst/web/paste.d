@@ -43,7 +43,9 @@ public class PasteWeb
             session = req.session.get!UserSession("user");    
         }
 
-		render!("paste.dt", paste, session);
+        const title = paste.title != "" ? paste.title : "(untitled)";
+
+		render!("paste.dt", paste, title, session);
     }
 
     /++

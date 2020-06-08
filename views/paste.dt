@@ -21,7 +21,13 @@ block body
                         - else
                             a.raw(href="/raw/" ~ paste.id ~ "/" ~ p.id) raw
                     .pasty-content
-                        textarea=p.code
+                        - if (p.language == "Markdown" || p.language == "GitHub Flavored Markdown")
+                            .markdown-rendered
+                                - import commonmarkd;
+                                |!= convertMarkdownToHTML(p.code, MarkdownFlag.tablesExtension)
+                                textarea.hidden=p.code
+                        - else
+                            textarea=p.code
  
         .paste-meta
             p.created-at
@@ -59,3 +65,8 @@ block scripts
             editedAt = #{paste.edits[$-1].editedAt};
 
     script(type="module", src="/static/scripts/pages/paste.js")
+
+    script(src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js")
+
+    script.
+        hljs.initHighlightingOnLoad();

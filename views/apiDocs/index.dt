@@ -1,7 +1,7 @@
 extends baseLayout
 
 block body
-    #api-docs
+    #api-docs.markdown-rendered
         - import vibe.d;
         - import std.file;
         - import commonmarkd;

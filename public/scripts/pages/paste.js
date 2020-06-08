@@ -24,6 +24,11 @@ window.addEventListener("load", async () =>
             readOnly: true
         });
 
+        if (textareas[i].classList.length > 0)
+        {
+            editor.getWrapperElement().classList.add(textareas[i].classList);
+        }
+
         let langMime;
         let langColor;
 

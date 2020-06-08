@@ -1,0 +1,70 @@
+.markdown-rendered
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+}
+
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3,
+.markdown-rendered h4
+{
+    padding: 0;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.markdown-rendered h1,
+.markdown-rendered h2
+{
+    border-bottom: 1px solid var(--color-nanolightlight);
+    padding-bottom: 20px;
+}
+
+.markdown-rendered code
+{
+    background-color: var(--color-nano);
+    border-radius: var(--border-radius);
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 20px;
+}
+
+.markdown-rendered p
+{
+    margin-bottom: 20px;
+    font-size: var(--font-size-small);
+}
+
+.markdown-rendered ul
+{
+    padding-left: 20px;
+    margin-bottom: 20px;
+    font-size: var(--font-size-small);
+}
+
+.markdown-rendered table
+{
+    background-color: var(--color-nano);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    margin-bottom: 20px;
+}
+
+.markdown-rendered tr th
+{
+    padding-bottom: 20px;
+    color: var(--color-mystge);
+}
+
+.markdown-rendered table th,
+.markdown-rendered table td
+{
+    padding-right: 40px;
+    padding-bottom: 10px;
+}
+
+.markdown-rendered table tbody tr td:first-child
+{
+    color: var(--color-mystlue);
+}

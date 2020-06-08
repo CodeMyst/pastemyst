@@ -21,7 +21,7 @@ block body
                         - else
                             a.raw(href="/raw/" ~ paste.id ~ "/" ~ p.id) raw
                     .pasty-content
-                        - if (p.language == "Markdown")
+                        - if (p.language == "Markdown" || p.language == "GitHub Flavored Markdown")
                             .markdown-rendered
                                 - import commonmarkd;
                                 |!= convertMarkdownToHTML(p.code, MarkdownFlag.tablesExtension)

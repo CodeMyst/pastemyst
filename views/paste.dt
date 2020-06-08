@@ -25,6 +25,7 @@ block body
                             .markdown-rendered
                                 - import commonmarkd;
                                 |!= convertMarkdownToHTML(p.code, MarkdownFlag.tablesExtension)
+                                textarea.hidden=p.code
                         - else
                             textarea=p.code
  
@@ -64,3 +65,8 @@ block scripts
             editedAt = #{paste.edits[$-1].editedAt};
 
     script(type="module", src="/static/scripts/pages/paste.js")
+
+    script(src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js")
+
+    script.
+        hljs.initHighlightingOnLoad();

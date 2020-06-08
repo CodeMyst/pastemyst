@@ -76,3 +76,13 @@
 {
     color: var(--color-mystge);
 }
+
+#paste .markdown-rendered code
+{
+    display: block;
+}
+
+#paste .markdown-rendered .hidden
+{
+    display: none;
+}

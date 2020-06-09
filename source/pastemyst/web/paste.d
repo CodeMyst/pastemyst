@@ -128,11 +128,14 @@ public class PasteWeb
      + creates a paste
      +/
     @noAuth
-    public void postPaste(string title, string expiresIn, bool isPrivate, bool isPublic, string pasties,
-            HTTPServerRequest req)
+    public void postPaste(string title, string tags, string expiresIn, bool isPrivate, bool isPublic,
+            string pasties, HTTPServerRequest req)
     {
         import pastemyst.paste : createPaste;
         import pastemyst.db : insert;
+        import std.array : split, array;
+        import std.string : strip;
+        import std.algorithm : sort, uniq;
 
         // TODO: private pastes
 
@@ -162,6 +165,29 @@ public class PasteWeb
             {
                 throw new HTTPStatusException(HTTPStatus.forbidden,
                         "you cant create a profile public paste if you are not logged in.");
+            }
+        }
+
+        if (tags != "")
+        {
+            if (session.loggedIn)
+            {
+                string[] tagarray = tags.split(",");
+                string[] processed;
+                foreach (i, tag; tagarray)
+                {
+                    string processedTag = tag.strip();
+                    if (processedTag != "")
+                    {
+                        processed ~= processedTag;
+                    }
+                }
+                paste.tags = processed.sort.uniq.array;
+            }
+            else
+            {
+                throw new HTTPStatusException(HTTPStatus.forbidden,
+                        "you cant tag pastes if you are not logged in.");
             }
         }
 

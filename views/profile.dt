@@ -11,23 +11,31 @@ block body
                 input#search(type="text", placeholder="...", name="search", value=search)
             input(type="submit")
 
-        .pastes
-            - if (pastes.length == 0)
-                - if (search == "")
-                    p.empty no pastes found on your profile
-                - else
-                    p.empty no pastes match the search query
+        .tags-pastes
 
-            - foreach(paste; pastes)
-                a.paste(href="/" ~ paste.id)
-                    .title
-                        - if (paste.title != "")
-                            p= paste.title
-                        - else
-                            p.untitled (untitled)
-                    .info
-                        p.expires-in
-                        p.created-at
+            .tags
+                ul
+                    li: a.selected untagged
+                    li: a articles
+                    li: a game dev
+
+            .pastes
+                - if (pastes.length == 0)
+                    - if (search == "")
+                        p.empty no pastes found on your profile
+                    - else
+                        p.empty no pastes match the search query
+
+                - foreach(paste; pastes)
+                    a.paste(href="/" ~ paste.id)
+                        .title
+                            - if (paste.title != "")
+                                p= paste.title
+                            - else
+                                p.untitled (untitled)
+                        .info
+                            p.expires-in
+                            p.created-at
 
 block scripts
     script.

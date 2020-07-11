@@ -131,11 +131,8 @@ public class PasteWeb
     public void postPaste(string title, string tags, string expiresIn, bool isPrivate, bool isPublic,
             string pasties, HTTPServerRequest req)
     {
-        import pastemyst.paste : createPaste;
+        import pastemyst.paste : createPaste, tagsStringToArray;
         import pastemyst.db : insert;
-        import std.array : split, array;
-        import std.string : strip;
-        import std.algorithm : sort, uniq;
 
         // TODO: private pastes
 
@@ -170,25 +167,9 @@ public class PasteWeb
 
         if (tags != "")
         {
-            if (session.loggedIn)
-            {
-                string[] tagarray = tags.split(",");
-                string[] processed;
-                foreach (i, tag; tagarray)
-                {
-                    string processedTag = tag.strip();
-                    if (processedTag != "")
-                    {
-                        processed ~= processedTag;
-                    }
-                }
-                paste.tags = processed.sort.uniq.array;
-            }
-            else
-            {
-                throw new HTTPStatusException(HTTPStatus.forbidden,
-                        "you cant tag pastes if you are not logged in.");
-            }
+            enforceHTTP(session.loggedIn, HTTPStatus.forbidden, "you cant tag pastes if you are not logged in.");
+
+            paste.tags = tagsStringToArray(tags);
         }
 
         insert(paste);
@@ -289,11 +270,12 @@ public class PasteWeb
     public void postPasteEdit(string _id, HTTPServerRequest req)
     {
         import pastemyst.db : findOneById, update;
-        import std.array : split;
+        import std.array : split, join;
         import std.conv : to;
         import std.datetime : Clock;
         import pastemyst.util : generateDiff;
         import std.algorithm : canFind, find, countUntil, remove;
+        import pastemyst.paste : tagsStringToArray;
 
         auto res = findOneById!Paste(_id);
 
@@ -306,6 +288,9 @@ public class PasteWeb
 
         Paste editedPaste;
         editedPaste.title = req.form["title"];
+
+        string tagsString = req.form["tags"];
+        editedPaste.tags = tagsStringToArray(tagsString);
         
         int i = 0;
         while(true)
@@ -343,6 +328,11 @@ public class PasteWeb
 
             paste.title = editedPaste.title;
             paste.edits ~= edit;
+        }
+
+        if (paste.tags != editedPaste.tags)
+        {
+            paste.tags = editedPaste.tags;
         }
 
         foreach (editedPasty; editedPaste.pasties)

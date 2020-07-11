@@ -30,7 +30,7 @@ block body
                             textarea=p.code
  
         .paste-meta
-            - if (paste.ownerId == session.user.id)
+            - if (paste.ownerId == session.user.id && paste.tags.length > 0)
                 p.tags
                     - import std.uri : encodeComponent;
                     span.highlight tags:

@@ -70,16 +70,3 @@
 {
     display: none;
 }
-
-#home .tags-input
-{
-    width: 100%;
-    background-color: var(--color-nanolight);
-    border-radius: var(--border-radius);
-    padding: 0.5rem 1rem;
-    box-sizing: border-box;
-    border: none;
-    color: white;
-    font-size: var(--font-size-normal);
-    margin-bottom: 20px;
-}

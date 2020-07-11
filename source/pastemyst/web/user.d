@@ -21,26 +21,32 @@ public class UserWeb
      +/
     @path("profile")
     @anyAuth
-    public void getProfile(HTTPServerRequest req, string search="")
+    public void getProfile(HTTPServerRequest req, string search="", string tag="")
     {
         import pastemyst.db : find;
         import std.algorithm : canFind;
+        import std.container : redBlackTree;
         import std.uni : toLower;
 
-        UserSession session = req.session.get!UserSession("user");    
+        UserSession session = req.session.get!UserSession("user");
         const title = session.user.username ~ " - profile";
+
+        auto tags = redBlackTree!string();
 
         auto pastesRes = find!Paste(["ownerId": session.user.id]);
         Paste[] pastes;
         foreach (paste; pastesRes)
         {
-            if (search == "" || paste.title.toLower().canFind(search.toLower()))
+            if ((search == "" || paste.title.toLower().canFind(search.toLower())) &&
+                (tag == "" || paste.tags.canFind(tag.toLower()) || (tag == "untagged" && paste.tags.length == 0)))
             {
                 pastes ~= paste;
             }
+
+            tags.insert(paste.tags);
         }
 
-        render!("profile.dt", pastes, search, session, title);
+        render!("profile.dt", pastes, search, session, title, tag, tags);
     }
 
     /++
@@ -54,7 +60,7 @@ public class UserWeb
     {
         import pastemyst.db : findOneById;
 
-        UserSession session = req.session.get!UserSession("user");    
+        UserSession session = req.session.get!UserSession("user");
         User user = findOneById!User(session.user.id).get();
 
         const title = session.user.username ~ " - settings";

@@ -80,6 +80,13 @@
     color: var(--color-mystge);
 }
 
+#paste .paste-meta .tags .tag
+{
+    background-color: var(--color-nano);
+    border-radius: var(--border-radius);
+    padding: 0.25rem 0.5rem;
+}
+
 #paste .markdown-rendered code
 {
     display: block;

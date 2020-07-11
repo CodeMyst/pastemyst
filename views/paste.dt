@@ -30,6 +30,13 @@ block body
                             textarea=p.code
  
         .paste-meta
+            - if (paste.ownerId == session.user.id && paste.tags.length > 0)
+                p.tags
+                    - import std.uri : encodeComponent;
+                    span.highlight tags:
+                    span.value
+                        - foreach (t; paste.tags)
+                            a.tag(href="/user/profile?tag=" ~ encodeComponent(t))= t
             p.created-at
                 span.highlight created at:
                 span.value

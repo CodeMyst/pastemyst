@@ -46,6 +46,14 @@ async function createPaste()
     form.querySelector("input[name=isPrivate]").checked = false;
     form.querySelector("input[name=isPublic]").checked = document.querySelector(".paste-options-bottom-options input#public").checked;
 
+
+    let tagsinput = document.querySelector(".paste-options input[name=tags]");
+
+    if (tagsinput)
+    {
+        form.querySelector("input[name=tags]").value = tagsinput.value;
+    }
+
     const pasties = [];
 
     for (let i = 0; i < editors.length; i++)

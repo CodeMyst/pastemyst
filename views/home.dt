@@ -8,6 +8,9 @@ block body
             - bool hideExpiresIn = false;
             include components/titleEditable
 
+            - if (session.loggedIn)
+                input(name="tags", placeholder="tags (separated by commas)", type="text", autocomplete="off", spellcheck="false", class="tags-input")
+
         #pasty-editors
             - string pastyTitle = "";
             - string pastyLang = user.defaultLang;
@@ -37,6 +40,7 @@ block body
 
         form#paste-create-form-hidden(action="/paste", method="post")
             input(type="text", name="title")
+            input(type="text", name="tags")
             input(type="text", name="expiresIn")
             input(type="checkbox", name="isPrivate")
             input(type="checkbox", name="isPublic")

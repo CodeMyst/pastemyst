@@ -16,6 +16,9 @@ block body
                 - bool hideExpiresIn = true;
                 include components/titleEditable
 
+                - import std.array : join;
+                input(name="tags", placeholder="tags (separated by commas)", type="text", autocomplete="off", spellcheck="false", class="tags-input", value=paste.tags.join(", "))
+
             #pasty-editors
                 - foreach (pasty; paste.pasties)
                     - string pastyTitle = pasty.title;

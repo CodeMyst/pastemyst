@@ -43,11 +43,55 @@
     padding: 0.5rem 1rem;
 }
 
-#profile .pastes
+#profile .tags-pastes
 {
+    display: flex;
+    flex-direction: row;
     margin-top: 20px;
+}
+
+#profile .tags
+{
+    width: 30%;
     background-color: var(--color-nanolight);
     border-radius: var(--border-radius);
+    margin-right: 20px;
+    padding: 0.5rem 0;
+}
+
+#profile .tags ul
+{
+    list-style: none;
+}
+
+#profile .tags ul ul
+{
+    padding-left: 20px;
+}
+
+#profile .tags li a
+{
+    display: block;
+    padding: 0.25rem 1rem;
+}
+
+#profile .tags li a:hover
+{
+    background-color: var(--color-mystlue);
+    color: var(--color-nanolight);
+}
+
+#profile .tags li a.selected
+{
+    background-color: var(--color-mystge);
+    color: var(--color-nanolight);
+}
+
+#profile .pastes
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    width: 70%;
 }
 
 #profile .pastes .paste

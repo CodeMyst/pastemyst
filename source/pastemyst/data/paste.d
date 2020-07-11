@@ -60,6 +60,11 @@ public struct Paste
      + array of paste edits
      +/
     public Edit[] edits;
+
+    /++
+     + array of all tags for this paste
+     +/
+    public string[] tags;
 }
 
 

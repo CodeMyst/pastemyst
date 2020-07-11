@@ -9,25 +9,35 @@ block body
                 .label
                     label(for="search") search:
                 input#search(type="text", placeholder="...", name="search", value=search)
+                input(type="hidden", name="tag", value=tag)
             input(type="submit")
 
-        .pastes
-            - if (pastes.length == 0)
-                - if (search == "")
-                    p.empty no pastes found on your profile
-                - else
-                    p.empty no pastes match the search query
+        .tags-pastes
 
-            - foreach(paste; pastes)
-                a.paste(href="/" ~ paste.id)
-                    .title
-                        - if (paste.title != "")
-                            p= paste.title
-                        - else
-                            p.untitled (untitled)
-                    .info
-                        p.expires-in
-                        p.created-at
+            .tags
+                ul
+                    - import std.uri : encodeComponent, decodeComponent;
+                    li: a(href="/user/profile", class=tag==""?"selected":"") all
+                    li: a(href="/user/profile?tag=untagged&search=" ~ search, class=tag=="untagged"?"selected":"") untagged
+                    - foreach (t; tags)
+                        - if (t == "untagged") //- in case an actual untagged tag exists
+                            - continue;
+                        li: a(href="/user/profile?tag=" ~ encodeComponent(t) ~ "&search=" ~ search, class=tag==decodeComponent(t)?"selected":"")= t
+
+            .pastes
+                - if (pastes.length == 0)
+                    p.empty no pastes found
+
+                - foreach(paste; pastes)
+                    a.paste(href="/" ~ paste.id)
+                        .title
+                            - if (paste.title != "")
+                                p= paste.title
+                            - else
+                                p.untitled (untitled)
+                        .info
+                            p.expires-in
+                            p.created-at
 
 block scripts
     script.

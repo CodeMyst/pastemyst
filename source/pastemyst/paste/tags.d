@@ -1,5 +1,8 @@
 module pastemyst.paste.tags;
 
+/++
+ + converts a tags string from the frontend in a proper tag array
+ +/
 public string[] tagsStringToArray(string tags)
 {
     import std.array : split, array;

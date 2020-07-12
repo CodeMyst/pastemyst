@@ -40,6 +40,11 @@ public struct User
      + default language for creating pasties
      +/
     public string defaultLang = "Autodetect";
+
+    /++
+     + array of starred pastes
+     +/
+    public string[] stars;
 }
 
 /++

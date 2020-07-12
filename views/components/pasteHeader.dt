@@ -17,6 +17,22 @@
                     a.history(href="/" ~ paste.id) current version
             - if (paste.edits.length > 0)
                 a.history(href="/" ~ paste.id ~ "/history") history
+        - if (session.loggedIn)
+            form(method="post", action="/" ~ paste.id ~ "/star")
+                - import std.algorithm : canFind;
+                - import pastemyst.db : findOneById;
+                - import pastemyst.data : User;
+                - const user = findOneById!User(session.user.id).get();
+                - bool isStarred = user.stars.canFind(paste.id);
+                button.tooltip.star(type="submit")
+                    i.fas.fa-star(class=isStarred?"starred":"")
+                    span.amount= paste.stars
+                    span.tooltip-text star
+        - else
+            a.tooltip.star
+                i.fas.fa-star
+                span.amount= paste.stars
+                span.tooltip-text star
         a.tooltip.copy-link(href="/" ~ paste.id)
             i.fas.fa-link
             span.tooltip-text copy link

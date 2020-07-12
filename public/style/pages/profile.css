@@ -115,6 +115,7 @@
 #profile .pastes .paste .title
 {
     display: flex;
+    flex: 1;
 }
 
 #profile .pastes .paste .title p
@@ -159,6 +160,7 @@
         margin-left: auto;
         display: flex;
         flex-direction: row;
+        align-self: baseline;
     }
 
     #profile .pastes .paste .info p

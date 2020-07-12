@@ -14,7 +14,7 @@
         - else
             - static if (is(typeof(previousRevision)))
                 - if (previousRevision)
-                    a.history(href="/" ~ paste.id) current version
+                    a.history(href="/" ~ paste.id) present
             - if (paste.edits.length > 0)
                 a.history(href="/" ~ paste.id ~ "/history") history
         - if (session.loggedIn)

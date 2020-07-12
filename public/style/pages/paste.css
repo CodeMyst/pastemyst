@@ -25,6 +25,17 @@
     z-index: 9999999;
 }
 
+#paste .paste-pasties .pasty .pasty-header .title
+{
+    display: flex;
+    flex: 1;
+}
+
+#paste .paste-pasties .pasty .pasty-header .right
+{
+    align-self: baseline;
+}
+
 #paste .paste-pasties .pasty .pasty-header .lang,
 #paste .paste-pasties .pasty .pasty-header a
 {

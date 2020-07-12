@@ -8,27 +8,34 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    height: 45px;
     box-sizing: border-box;
 }
 
 .paste-header .left
 {
     display: flex;
+    flex: 1;
 }
 
 .paste-header .left .current-edit
 {
     color: var(--color-nanolightlight);
-    margin-left: 20px;
+    margin-right: 20px;
     font-size: var(--font-size-small);
     align-self: center;
+    flex-shrink: 0;
 }
 
 .paste-header .title
 {
     align-self: center;
     font-size: var(--font-size-normal);
+    margin-right: 20px;
+}
+
+.paste-header .right
+{
+    align-items: baseline;
 }
 
 .paste-header .right a
@@ -59,7 +66,6 @@
 
 .paste-header .set-public-on-profile-paste
 {
-    align-self: center;
     margin-right: 20px;
 }
 
@@ -87,11 +93,6 @@
 .paste-header .set-public-on-profile-paste button.private .fa-eye
 {
     color: var(--color-nanolightlight);
-}
-
-.paste-header .delete-paste
-{
-    align-self: center;
 }
 
 .paste-header .delete-paste button

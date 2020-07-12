@@ -13,13 +13,14 @@ block body
                             p.title= p.title
                         -else
                             p.title.untitled (untitled)
-                        span.lang= p.language
-                        a.copy copy
-                        - static if (is(typeof(previousRevision)) && previousRevision)
-                            - import std.conv : to;
-                            a.raw(href="/raw/" ~ paste.id ~ "/" ~ p.id ~ "/" ~ currentEditId.to!string()) raw
-                        - else
-                            a.raw(href="/raw/" ~ paste.id ~ "/" ~ p.id) raw
+                        .right
+                            span.lang= p.language
+                            a.copy copy
+                            - static if (is(typeof(previousRevision)) && previousRevision)
+                                - import std.conv : to;
+                                a.raw(href="/raw/" ~ paste.id ~ "/" ~ p.id ~ "/" ~ currentEditId.to!string()) raw
+                            - else
+                                a.raw(href="/raw/" ~ paste.id ~ "/" ~ p.id) raw
                     .pasty-content
                         - if (p.language == "Markdown" || p.language == "GitHub Flavored Markdown")
                             .markdown-rendered

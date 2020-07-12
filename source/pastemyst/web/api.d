@@ -43,6 +43,8 @@ public class ApiDocsWeb
             return;
         }
 
-        render!("apiDocs/index.dt", page, session);
+        const title = "api docs";
+
+        render!("apiDocs/index.dt", page, session, title);
     }
 }

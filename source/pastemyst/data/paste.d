@@ -65,6 +65,11 @@ public struct Paste
      + array of all tags for this paste
      +/
     public string[] tags;
+
+    /++
+     + number of stars
+     +/
+    public ulong stars;
 }
 
 

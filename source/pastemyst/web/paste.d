@@ -49,6 +49,49 @@ public class PasteWeb
     }
 
     /++
+     + POST /:id/star
+     +
+     + stars the paste
+     +/
+    @path("/:id/star")
+    @anyAuth
+    public void postStar(string _id, HTTPServerRequest req)
+    {
+        import pastemyst.db : findOneById, update;
+        import std.algorithm : canFind, remove, countUntil;
+
+        const auto res = findOneById!Paste(_id);
+
+        if (res.isNull)
+        {
+            return;
+        }
+
+        const Paste paste = res.get();
+
+        UserSession session = req.session.get!UserSession("user");
+
+        auto user = findOneById!User(session.user.id).get();
+
+        int incAmnt = 1;
+
+        if (user.stars.canFind(paste.id))
+        {
+            incAmnt = -1;
+            user.stars = user.stars.remove(user.stars.countUntil(paste.id));
+        }
+        else
+        {
+            user.stars ~= paste.id;
+        }
+
+        update!User(["_id": user.id], ["$set": ["stars": user.stars]]);
+        update!Paste(["_id": _id], ["$inc": ["stars": incAmnt]]);
+
+        redirect("/" ~ _id);
+    }
+
+    /++
      + POST /:id/togglePublicOnProfile
      +
      + toggles whether the post is public on the user's profile

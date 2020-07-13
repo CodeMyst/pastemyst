@@ -175,7 +175,7 @@ window.addEventListener("load", async () =>
 
 function copyCodeToClipboard(copyButton)
 {
-    let textarea = copyButton.parentElement.parentElement.querySelector("textarea");
+    let textarea = copyButton.closest(".pasty").querySelector("textarea");
 
     copyToClipboard(textarea.textContent);
 }

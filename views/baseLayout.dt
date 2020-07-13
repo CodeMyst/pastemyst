@@ -11,8 +11,6 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible", content="ie=edge")
 
         link(rel="stylesheet", href="/static/style/main.css")
-        link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css")
-        link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/darcula.min.css")
 
         block head
     

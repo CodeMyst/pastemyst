@@ -26,7 +26,11 @@ export function initEditors()
             mode: "text/plain",
             tabSize: 4,
             theme: "darcula",
-            lineWrapping: getWordwrap()
+            lineWrapping: getWordwrap(),
+            extraKeys:
+            {
+                Tab: (cm) => cm.execCommand("insertSoftTab")
+            }
         });
 
         editor.languageDropdown = setupLanguageDropdown(editor);
@@ -76,7 +80,11 @@ export function addEditor()
         mode: "text/plain",
         tabSize: 4,
         theme: "darcula",
-        lineWrapping: getWordwrap()
+        lineWrapping: getWordwrap(),
+        extraKeys:
+        {
+            Tab: (cm) => cm.execCommand("insertSoftTab")
+        }
     });
 
     document.getElementById("pasty-editors").appendChild(clone);

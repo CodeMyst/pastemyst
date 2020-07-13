@@ -21,7 +21,11 @@ window.addEventListener("load", async () =>
             tabSize: 4,
             theme: "darcula",
             lineWrapping: getWordwrap(),
-            readOnly: true
+            readOnly: true,
+            extraKeys:
+            {
+                Tab: (cm) => cm.execCommand("insertSoftTab")
+            }
         });
 
         if (textareas[i].classList.length > 0)

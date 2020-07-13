@@ -8,7 +8,7 @@ block body
         |!= convertMarkdownToHTML(readFileUTF8(NativePath("./public/docs/" ~ page ~ ".md")), MarkdownFlag.tablesExtension)
 
 block scripts
-    script(src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js")
+    script(src="/static/scripts/libs/highlight.pack.js")
 
     script.
         hljs.initHighlightingOnLoad();

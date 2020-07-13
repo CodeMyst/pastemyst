@@ -26,7 +26,11 @@ window.addEventListener("load", async () =>
             tabSize: 4,
             theme: "darcula",
             lineWrapping: getWordwrap(),
-            readOnly: true
+            readOnly: true,
+            extraKeys:
+            {
+                Tab: (cm) => cm.execCommand("insertSoftTab")
+            }
         });
     }
 
@@ -44,7 +48,11 @@ window.addEventListener("load", async () =>
             tabSize: 4,
             theme: "darcula",
             lineWrapping: getWordwrap(),
-            readOnly: true
+            readOnly: true,
+            extraKeys:
+            {
+                Tab: (cm) => cm.execCommand("insertSoftTab")
+            }
         });
 
         let lang = addedTextareas[i].parentElement.parentElement.querySelector("span.lang").textContent;

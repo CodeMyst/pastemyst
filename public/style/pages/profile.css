@@ -147,6 +147,12 @@
     margin-top: 10px;
 }
 
+#profile.public-profile .pastes
+{
+    width: 100%;
+    margin-top: 20px;
+}
+
 @media screen and (min-width: 720px)
 {
     #profile .pastes .paste

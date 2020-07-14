@@ -12,12 +12,23 @@ mixin template Auth()
     @noRoute
     public UserSession authenticate(scope HTTPServerRequest req, scope HTTPServerResponse res) @safe
     {
+        import pastemyst.db : findOneById;
+
         if (!req.session || !req.session.isKeySet("user") || !req.session.get!UserSession("user").loggedIn)
         {
             res.redirect("/login");
             return UserSession.init;
         }
 
-        return req.session.get!UserSession("user");
+        const ses = req.session.get!UserSession("user");
+
+        if (findOneById!User(ses.user.id).isNull)
+        {
+            res.terminateSession();
+            res.redirect("/login");
+            return UserSession.init;
+        }
+
+        return ses;
     }
 }

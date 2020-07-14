@@ -49,4 +49,46 @@ window.addEventListener("load", async() =>
 
         document.querySelector("form").submit();
     });
+
+    window.addEventListener("beforeunload", (e) =>
+    {
+        if (checkChange())
+        {
+            e.preventDefault();
+            e.returnValue = "";
+        }
+    });
 });
+
+function checkChange()
+{
+    if (document.querySelector(`.paste-options input[name="title"]`).value != "")
+    {
+        return true;
+    }
+
+    let tagsinput = document.querySelector(".paste-options input[name=tags]");
+
+    if (tagsinput)
+    {
+        if (tagsInput.value != "")
+        {
+            return true;
+        }
+    }
+
+    for (let i = 0; i < editors.length; i++)
+    {
+        if (editors[i].titleInput.value != "")
+        {
+            return true;
+        }
+
+        if (editors[i].editor.getValue() != "")
+        {
+            return true;
+        }
+    }
+
+    return false;
+}

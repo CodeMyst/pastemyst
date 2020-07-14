@@ -33,7 +33,49 @@ window.addEventListener("load", () =>
     pasteOptionsBottomObserver.observe(document.querySelector(".paste-options-bottom-1px"));
 
     document.getElementById("create-paste").addEventListener("click", async () => await createPaste());
+
+    window.addEventListener("beforeunload", (e) =>
+    {
+        if (checkChange())
+        {
+            e.preventDefault();
+            e.returnValue = "";
+        }
+    });
 });
+
+function checkChange()
+{
+    if (document.querySelector(`.paste-options input[name="title"]`).value != "")
+    {
+        return true;
+    }
+
+    let tagsinput = document.querySelector(".paste-options input[name=tags]");
+
+    if (tagsinput)
+    {
+        if (tagsInput.value != "")
+        {
+            return true;
+        }
+    }
+
+    for (let i = 0; i < editors.length; i++)
+    {
+        if (editors[i].titleInput.value != "")
+        {
+            return true;
+        }
+
+        if (editors[i].editor.getValue() != "")
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 async function createPaste()
 {
@@ -45,7 +87,6 @@ async function createPaste()
     form.querySelector("input[name=expiresIn]").value = expiresInDropdown.value;
     form.querySelector("input[name=isPrivate]").checked = false;
     form.querySelector("input[name=isPublic]").checked = document.querySelector(".paste-options-bottom-options input#public").checked;
-
 
     let tagsinput = document.querySelector(".paste-options input[name=tags]");
 

@@ -46,7 +46,7 @@ window.addEventListener("load", () =>
 
 function checkChange()
 {
-    if (document.querySelector(`.paste-options input[name="title"]`).value != "")
+    if (document.querySelector(`.paste-options input[name="title"]`).value !== "")
     {
         return true;
     }
@@ -55,7 +55,7 @@ function checkChange()
 
     if (tagsinput)
     {
-        if (tagsInput.value != "")
+        if (tagsinput.value !== "")
         {
             return true;
         }
@@ -63,12 +63,12 @@ function checkChange()
 
     for (let i = 0; i < editors.length; i++)
     {
-        if (editors[i].titleInput.value != "")
+        if (editors[i].titleInput.value !== "")
         {
             return true;
         }
 
-        if (editors[i].editor.getValue() != "")
+        if (editors[i].editor.getValue() !== "")
         {
             return true;
         }

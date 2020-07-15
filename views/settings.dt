@@ -11,6 +11,7 @@ block body
                 .username
                     p change username
                     input(type="text", value=user.username, name="username", autocomplete="off", spellcheck="false")
+                    span.available username available
 
                 .avatar
                     p upload new avatar
@@ -41,22 +42,6 @@ block body
                 - if (user.publicProfile)
                     p.description your public profile is available here: #[a(href="/users/" ~ user.username) /users/#{user.username}]
 
-                h2 connect services
-
-                p.description you can connect more services to a single pastemyst account so logging in with different services will log you into the same account.
-                p.description connecting to a service already associated with a pastemyst account will prompt you to merge both accounts into one (the one you are currently logged in).
-
-                - if (!("github" in user.serviceIds))
-                    a(href="/login/github") connect with github
-                - else
-                    p.disabled connect with github (already connected)
-                br
-
-                - if (!("gitlab" in user.serviceIds))
-                    a(href="/login/gitlab") connect with gitlab
-                - else
-                    p.disabled connect with gitlab (already connected)
-
                 h2 account deletion
 
                 p.description deleting your account will delete #[b everything] tied to your account (user data, pastes, stars, etc.)
@@ -67,7 +52,7 @@ block body
                     a(href="/user/delete") delete my account
 
                 br
-                input.save(type="submit", value="save")
+                button.save(type="button") save
 
 block scripts
     script(type="module", src="/static/scripts/pages/settings.js")

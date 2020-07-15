@@ -77,7 +77,7 @@ public class UserWeb
     public void postSettingsSave(HTTPServerRequest req, string username, bool publicProfile, string language)
     {
         import std.conv : to;
-        import pastemyst.db : uploadAvatar, update, findOneById;
+        import pastemyst.db : uploadAvatar, update, findOneById, findOne;
         import std.path : chainPath, baseName;
         import std.array : array, split;
         import pastemyst.data : config, doesLanguageExist;
@@ -109,6 +109,7 @@ public class UserWeb
 
         if (session.user.username != username)
         {
+            enforceHTTP(findOne!User(["$text": ["$search": username]]).isNull, HTTPStatus.badRequest, "username is taken");
             session.user.username = username;
             update!User(["_id": session.user.id], ["$set": ["username": username]]);
         }

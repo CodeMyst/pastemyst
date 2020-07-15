@@ -21,6 +21,8 @@ private MongoDatabase mongo;
  +/
 public void connect()
 {
+    import pastemyst.data : User;
+
     version(unittest)
     {
         connectMongo("127.0.0.1", "pastemyst-test");
@@ -29,6 +31,8 @@ public void connect()
     {
         connectMongo("127.0.0.1", "pastemyst");
     }
+
+    mongo[getCollectionName!User].createIndex(["username": "text"]);
 }
 
 /++

@@ -1,0 +1,15 @@
+extends baseLayout
+
+block body
+    #create-user
+        .block
+            h3 create a user
+
+            form(action="/login/create", method="post")
+                input(type="text", name="username", placeholder="username", value=serviceUsername)
+                span.available username available
+
+                p #[button(type="button") create]&nbsp;&nbsp;&nbsp;&nbsp;#[a(href="/") cancel]
+
+block scripts
+    script(type="module", src="/static/scripts/pages/createUser.js")

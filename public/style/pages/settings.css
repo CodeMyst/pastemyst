@@ -57,6 +57,16 @@
     margin-bottom: 20px;
 }
 
+#settings .settings-block .username .available
+{
+    color: var(--color-mysteen);
+}
+
+#settings .settings-block .username .not-available
+{
+    color: var(--color-mysted);
+}
+
 #settings .settings-block .username p
 {
     margin-right: 20px;
@@ -73,6 +83,7 @@
     font-size: var(--font-size-normal);
     padding: 0.25rem 0.5rem;
     font-family: var(--font-stack);
+    margin-right: 20px;
 }
 
 #settings .settings-block .avatar

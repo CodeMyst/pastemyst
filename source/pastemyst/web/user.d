@@ -109,7 +109,8 @@ public class UserWeb
 
         if (session.user.username != username)
         {
-            enforceHTTP(findOne!User(["$text": ["$search": username]]).isNull, HTTPStatus.badRequest, "username is taken");
+            enforceHTTP(findOne!User(["$text": ["$search": username]]).isNull,
+                    HTTPStatus.badRequest, "username is taken");
             session.user.username = username;
             update!User(["_id": session.user.id], ["$set": ["username": username]]);
         }

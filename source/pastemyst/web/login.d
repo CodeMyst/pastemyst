@@ -182,6 +182,11 @@ public class LoginWeb
         redirect("/#reload");
     }
 
+    /++
+     + GET /login/create
+     +
+     + page for creating the account
+     +/
     @path("/login/create")
     @noAuth
     public void postLoginCreate(string username, HTTPServerRequest req)
@@ -189,7 +194,10 @@ public class LoginWeb
         import pastemyst.util : generateUniqueId;
         import pastemyst.db : findOne, insert;
 
-        enforceHTTP(req.session && req.session.isKeySet("create_temp_type") && req.session.isKeySet("create_temp_user"), HTTPStatus.badRequest, "invalid request, can't create user");
+        enforceHTTP(req.session &&
+                    req.session.isKeySet("create_temp_type") &&
+                    req.session.isKeySet("create_temp_user"),
+                    HTTPStatus.badRequest, "invalid request, can't create user");
 
         const serviceName = req.session.get!string("create_temp_type");
         const serviceUser = req.session.get!ServiceUser("create_temp_user");

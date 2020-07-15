@@ -13,7 +13,7 @@ window.addEventListener("load", async () =>
 
     await check(usernameInput.value);
 
-    usernameInput.addEventListener("input", async (e) =>
+    usernameInput.addEventListener("input", async () =>
     {
         await check(usernameInput.value);
     });

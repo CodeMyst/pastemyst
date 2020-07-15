@@ -1,0 +1,35 @@
+#create-user input
+{
+    margin-bottom: 20px;
+    background-color: var(--color-nano);
+    border-radius: var(--border-radius);
+    border: none;
+    padding: 0.25rem 1rem;
+    color: var(--color-white);
+    font-size: var(--font-size-normal);
+    min-width: 25%;
+}
+
+#create-user button
+{
+    color: var(--color-mystge);
+    font-size: var(--font-size-normal);
+    background: transparent;
+    border: none;
+}
+
+#create-user button:hover
+{
+    color: var(--color-mystlue);
+    cursor: pointer;
+}
+
+#create-user .available
+{
+    color: var(--color-mysteen);
+}
+
+#create-user .not-available
+{
+    color: var(--color-mysted);
+}

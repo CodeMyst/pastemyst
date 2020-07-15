@@ -23,13 +23,14 @@ void displayError(HTTPServerRequest req, HTTPServerResponse res, HTTPServerError
 public void main()
 {
 	import pastemyst.web : RootWeb, PasteWeb, LoginWeb, UserWeb, UsersWeb, ApiDocsWeb;
-	import pastemyst.rest : APIPaste, APITime, APIData;
+	import pastemyst.rest : APIPaste, APITime, APIData, APIUser;
 	import pastemyst.db : connect;
 	import pastemyst.paste : deleteExpiredPastes;
 
 	URLRouter router = new URLRouter();
 
 	router.registerRestInterface(new APIPaste());
+	router.registerRestInterface(new APIUser());
 	router.registerRestInterface(new APITime());
 	router.registerRestInterface(new APIData());
 

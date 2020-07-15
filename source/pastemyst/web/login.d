@@ -42,8 +42,7 @@ public class LoginWeb
     @anyAuth
     public void getLogout(HTTPServerRequest req)
     {
-        // TODO: do this only if logged in
-        req.session.set("user", UserSession.init);
+        req.session.remove("user");
         terminateSession();
         redirect("/");
     }
@@ -70,37 +69,71 @@ public class LoginWeb
     public void getGitlab()
     {
         redirect("https://gitlab.com/oauth/authorize?client_id=" ~ config.gitlab.id ~
-                 "&redirect_uri=http://localhost:5000/login/gitlab/callback&response_type=code&scope=read_user+email");
+                 "&redirect_uri=" ~ config.hostname ~ "login/gitlab/callback&response_type=code&scope=read_user");
     }
 
-    @noRoute
-    private User createUser(Service type, ServiceUser serviceUser)
+    /++
+     + GET /login/github/callback?code=
+     +
+     + github oauth callback
+     +/
+    @path("/login/github/callback")
+    @queryParam("code", "code")
+    @noAuth
+    public void getGithubCallback(string code, HTTPServerRequest req, HTTPServerResponse res)
     {
-        import pastemyst.db : findOne, insert;
-        import pastemyst.util : generateUniqueId;
-        import std.typecons : Nullable;
-        import std.conv : to;
-        import std.uni : toLower;
+        string accessToken = "";
 
-        string serviceName = type.to!string().toLower();
+        requestHTTP("https://github.com/login/oauth/access_token?client_id=" ~ config.github.id ~
+                    "&client_secret=" ~ config.github.secret ~ "&code=" ~ code,
+        (scope req)
+        {
+            req.method = HTTPMethod.POST;
+            req.headers.addField("Accept", "application/json");
+        },
+        (scope res)
+        {
+            accessToken = parseJsonString(res.bodyReader.readAllUTF8())["access_token"].get!string();
+        });
 
-        Nullable!User u = findOne!User(["serviceIds." ~ serviceName: serviceUser.id]);
-        if (u.isNull())
-        {
-            User user;
-            user.id = generateUniqueId!User();
-            user.username = serviceUser.username;
-            user.avatarUrl = serviceUser.avatarUrl;
-            user.serviceIds[serviceName] = serviceUser.id;
-            insert(user);
-            return user;
-        }
-        else
-        {
-            return u.get();
-        }
+        enforceHTTP(accessToken != "", HTTPStatus.internalServerError, "failed getting the access token from github");
+
+        loginService(Service.Github, accessToken, req, res);
     }
 
+    /++
+     + GET /login/gitlab/callback
+     +
+     + gitlab oauth callback
+     +/
+    @path("/login/gitlab/callback")
+    @queryParam("code", "code")
+    @noAuth
+    public void getGitlabCallback(string code, HTTPServerRequest req, HTTPServerResponse res)
+    {
+        string accessToken = "";
+
+        requestHTTP("https://gitlab.com/oauth/token?client_id=" ~ config.gitlab.id ~
+                    "&client_secret=" ~ config.gitlab.secret ~ "&code=" ~ code ~ 
+                    "&grant_type=authorization_code&redirect_uri=" ~ config.hostname ~ "login/gitlab/callback",
+        (scope req)
+        {
+            req.method = HTTPMethod.POST;
+            req.headers.addField("Accept", "application/json");
+        },
+        (scope res)
+        {
+            accessToken = parseJsonString(res.bodyReader.readAllUTF8())["access_token"].get!string();
+        });
+
+        enforceHTTP(accessToken != "", HTTPStatus.internalServerError, "failed getting the access token from gitlab");
+
+        loginService(Service.Gitlab, accessToken, req, res);
+    }
+
+    /++
+     + login with a server
+     +/
     @noRoute
     @noAuth
     private void loginService(Service service, string accessToken,
@@ -124,186 +157,74 @@ public class LoginWeb
                 break;
         }
 
-        if (req.session && req.session.isKeySet("user") && req.session.get!UserSession("user").loggedIn)
+        const user = findOne!User(["serviceIds." ~ serviceName: serviceUser.id]);
+
+        req.session = res.startSession();
+
+        if (user.isNull)
         {
-            // already logged in, begin the account connection process
-
-            UserSession session = req.session.get!UserSession("user");
-
-            string msg;
-            const string confirmLink = "/login/connect/confirm/" ~ serviceName;
-            const string cancelLink = "/login/connection/cancel";
-
-            if (findOne!User(["serviceIds." ~ serviceName: ["$ne": null]]).isNull())
-            {
-                // there doesn't exist another account connected with that service
-
-                msg = "are you sure you want to connect " ~ serviceName ~
-                    " to your account?";
-            }
-            else
-            {
-                // there's already an account with that service
-
-                msg = "there already exists an account wtih " ~ serviceName ~
-                    " connected to it. if you continue all data from the second account will be merged into this one," ~
-                    " the settings will stay the same.";
-            }
-
-            req.session.set("connection_temp", serviceUser);
-
-            res.render!("confirm.dt", msg, confirmLink, cancelLink, session);
+            req.session.set("create_temp_type", serviceName);
+            req.session.set("create_temp_user", serviceUser);
+            const serviceUsername = serviceUser.username;
+            const session = UserSession.init;
+            res.render!("createUser.dt", serviceUsername, session);
+            return;
         }
-        else
-        {
-            // not logged in, start a session and redirect home
 
-            User user = createUser(service, serviceUser);
-            const MinimalUser muser = MinimalUser(user.id, user.username, user.avatarUrl);
-            UserSession u;
-            u.loggedIn = true;
-            u.user = muser;
-            u.token = accessToken;
-            req.session = res.startSession();
-            req.session.set("user", u);
+        const muser = MinimalUser(user.get().id, user.get().username, user.get().avatarUrl);
+        UserSession ses;
+        ses.loggedIn = true;
+        ses.user = muser;
+        ses.token = accessToken;
+        req.session.set("user", ses);
 
-            // FIXME: issue#55
-            redirect("/#reload");
-        }
+        // FIXME: issue#55
+        redirect("/#reload");
     }
 
     /++
-     + GET /login/connect/confirm
+     + GET /login/create
+     +
+     + page for creating the account
      +/
-    @path("/login/connect/confirm/:serviceName")
-    @anyAuth
-    public void getConnectConfirm(string _serviceName, HTTPServerRequest req, HTTPServerResponse res)
+    @path("/login/create")
+    @noAuth
+    public void postLoginCreate(string username, HTTPServerRequest req)
     {
-        import pastemyst.db : findOne, findOneById, update, find, removeOneById;
+        import pastemyst.util : generateUniqueId;
+        import pastemyst.db : findOne, insert;
 
-        enforceHTTP(req.session.isKeySet("connection_temp"), HTTPStatus.badRequest);
+        enforceHTTP(req.session &&
+                    req.session.isKeySet("create_temp_type") &&
+                    req.session.isKeySet("create_temp_user"),
+                    HTTPStatus.badRequest, "invalid request, can't create user");
 
-        enforceHTTP(req.session, HTTPStatus.badRequest);
+        const serviceName = req.session.get!string("create_temp_type");
+        const serviceUser = req.session.get!ServiceUser("create_temp_user");
 
-        UserSession session = req.session.get!UserSession("user");
+        const userCheck = findOne!User(["$text": ["$search": username]]);
 
-        ServiceUser serviceUser = req.session.get!ServiceUser("connection_temp");
-
-        string msg;
-
-        if (findOne!User(["serviceIds." ~ _serviceName: ["$ne": null]]).isNull())
+        if (!userCheck.isNull)
         {
-            // there doesn't exist another account connected with that service
-
-            User user = findOneById!User(session.user.id).get();
-
-            enforceHTTP(!(_serviceName in user.serviceIds), HTTPStatus.badRequest,
-                    "you already have " ~ _serviceName ~ " connected to your account.");
-
-            update!User(["_id": session.user.id], ["$set": ["serviceIds." ~ _serviceName: serviceUser.id]]);
-
-            msg = "successfully connected " ~ _serviceName ~ " to your account, " ~
-                "you can now sign into this account with " ~ _serviceName ~ ".";
-        }
-        else
-        {
-            // there's already an account with that service, merge
-
-            User user = findOneById!User(session.user.id).get();
-            User secondUser = findOne!User(["serviceIds." ~ _serviceName: ["$ne": null]]).get();
-
-            enforceHTTP(!(_serviceName in user.serviceIds), HTTPStatus.badRequest,
-                    "you already have " ~ _serviceName ~ " connected to your account.");
-
-            update!User(["_id": session.user.id], ["$set": ["serviceIds." ~ _serviceName: serviceUser.id]]);
-
-            auto pastes = find!Paste(["ownerId": secondUser.id]);
-
-            foreach (paste; pastes)
-            {
-                update!Paste(["_id": paste.id], ["$set": ["ownerId": user.id]]);
-            }
-
-            removeOneById!User(secondUser.id);
-
-            msg = "successfully connected " ~ _serviceName ~ " to your account and " ~
-                "merged the data into this account. the old account is deleted. you can now " ~
-                "log into this account with " ~ _serviceName ~ " as well.";
+            terminateSession();
+            throw new HTTPStatusException(HTTPStatus.badRequest, "username is already taken");
         }
 
-        req.session.remove("connection_temp");
-        res.render!("success.dt", msg, session);
-    }
+        User user;
+        user.id = generateUniqueId!User();
+        user.username = username;
+        user.avatarUrl = serviceUser.avatarUrl;
+        user.serviceIds[serviceName] = serviceUser.id;
+        insert(user);
 
-    /++
-     + GET /login/connection/cancel
-     +/
-    @path("/login/connection/cancel")
-    @anyAuth
-    public void getConnectCancel(HTTPServerRequest req)
-    {
-        if (req.session && req.session.isKeySet("connection_temp"))
-        {
-            req.session.remove("connection_temp");
-        }
+        UserSession ses;
+        ses.loggedIn = true;
+        ses.user = MinimalUser(user.id, user.username, user.avatarUrl);
+        
+        req.session.set("user", ses);
+        req.session.remove("create_temp_type");
+        req.session.remove("create_temp_user");
 
         redirect("/");
-    }
-
-    /++
-     + GET /login/github/callback?code=
-     +
-     + github oauth callback
-     +/
-    @path("/login/github/callback")
-    @queryParam("code", "code")
-    @noAuth
-    public void getGithubCallback(string code, HTTPServerRequest req, HTTPServerResponse res)
-    {
-        string accessToken;
-
-        // TODO: add handling in case the request of the token fails
-        requestHTTP("https://github.com/login/oauth/access_token?client_id=" ~ config.github.id ~
-                    "&client_secret=" ~ config.github.secret ~ "&code=" ~ code,
-        (scope req)
-        {
-            req.method = HTTPMethod.POST;
-            req.headers.addField("Accept", "application/json");
-        },
-        (scope res)
-        {
-            accessToken = parseJsonString(res.bodyReader.readAllUTF8())["access_token"].get!string();
-        });
-
-        loginService(Service.Github, accessToken, req, res);
-    }
-
-    /++
-     + GET /login/gitlab/callback
-     +
-     + gitlab oauth callback
-     +/
-    @path("/login/gitlab/callback")
-    @queryParam("code", "code")
-    @noAuth
-    public void getGitlabCallback(string code, HTTPServerRequest req, HTTPServerResponse res)
-    {
-        string accessToken;
-
-        // TODO: add handling in case the request of the token fails
-        requestHTTP("https://gitlab.com/oauth/token?client_id=" ~ config.gitlab.id ~
-                    "&client_secret=" ~ config.gitlab.secret ~ "&code=" ~ code ~ 
-                    "&grant_type=authorization_code&redirect_uri=http://localhost:5000/login/gitlab/callback",
-        (scope req)
-        {
-            req.method = HTTPMethod.POST;
-            req.headers.addField("Accept", "application/json");
-        },
-        (scope res)
-        {
-            accessToken = parseJsonString(res.bodyReader.readAllUTF8())["access_token"].get!string();
-        });
-
-        loginService(Service.Gitlab, accessToken, req, res);
     }
 }

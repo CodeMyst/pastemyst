@@ -2,6 +2,7 @@ import Dropdown from "../components/dropdown.js";
 import { initEditors, addEditor, editors } from "../components/pastyEditor.js";
 
 let expiresInDropdown;
+let createPressed = false;
 
 window.addEventListener("load", () =>
 {
@@ -36,7 +37,7 @@ window.addEventListener("load", () =>
 
     window.addEventListener("beforeunload", (e) =>
     {
-        if (checkChange())
+        if (checkChange() && !createPressed)
         {
             e.preventDefault();
             e.returnValue = "";
@@ -110,6 +111,8 @@ async function createPaste()
     }
 
     form.querySelector("input[name=pasties]").value = JSON.stringify(pasties);
+    
+    createPressed = true;
 
     form.submit();
 }

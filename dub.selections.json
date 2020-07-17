@@ -9,6 +9,7 @@
 		"dyaml": "0.8.1",
 		"eventcore": "0.9.6",
 		"fastjwt": "1.1.1",
+		"imagefmt": "2.1.0",
 		"libasync": "0.8.6",
 		"memutils": "1.0.4",
 		"mir-linux-kernel": "1.0.1",

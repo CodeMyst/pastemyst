@@ -83,6 +83,7 @@ public class UserWeb
         import pastemyst.data : config, doesLanguageExist;
         import std.file : remove, exists;
         import std.algorithm : startsWith;
+        import imagefmt : read_image;
 
         UserSession session = req.session.get!UserSession("user");
 
@@ -91,6 +92,10 @@ public class UserWeb
         if ("avatar" in req.files)
         {
             auto avatar = "avatar" in req.files;
+
+            const img = read_image(avatar.tempPath.toString());
+
+            enforceHTTP(!img.e, HTTPStatus.badRequest, "invalid or unsupported image uploaded");
 
             string avatarPath = uploadAvatar(avatar.tempPath.toString(), avatar.filename.name);
 

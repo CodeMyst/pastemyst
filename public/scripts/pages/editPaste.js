@@ -1,5 +1,7 @@
 import { initEditors, addEditor, editors } from "../components/pastyEditor.js";
 
+let savePressed = false;
+
 window.addEventListener("load", async() =>
 {
     initEditors();
@@ -47,12 +49,14 @@ window.addEventListener("load", async() =>
             searches[i].setAttribute("disabled", "");
         }
 
+        savePressed = true;
+
         document.querySelector("form").submit();
     });
 
     window.addEventListener("beforeunload", (e) =>
     {
-        if (checkChange())
+        if (checkChange() && !savePressed)
         {
             e.preventDefault();
             e.returnValue = "";

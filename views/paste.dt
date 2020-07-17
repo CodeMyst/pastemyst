@@ -54,14 +54,17 @@ block body
                     - import pastemyst.db : getNumberOfEdits;
                     span.highlight edits: 
                     span.value= getNumberOfEdits(paste)
-            - if (paste.ownerId != "" && paste.isPublic)
+            - if (paste.ownerId != "")
                 - import pastemyst.db : findOneById;
                 - import pastemyst.data : User;
                 - const user = findOneById!User(paste.ownerId).get();
                 p.pasted-by
                     span.highlight pasted by:
                     span.value
-                        a(href="/users/" ~ user.username)= user.username
+                        - if (paste.ownerId == session.user.id)
+                            span you
+                        - else if (paste.isPublic)
+                            a(href="/users/" ~ user.username)= user.username
  
 block scripts
     script.

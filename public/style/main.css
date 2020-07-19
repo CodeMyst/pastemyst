@@ -23,6 +23,7 @@
 @import url(components/addEditorButton.css);
 @import url(components/pasteHeader.css);
 @import url(components/markdownRendered.css);
+@import url(components/langStats.css);
 
 @import url(pages/home.css);
 @import url(pages/apiDocs.css);

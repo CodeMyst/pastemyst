@@ -1,0 +1,17 @@
+.lang-stats
+{
+    display: flex;
+}
+
+.lang-stats .lang
+{
+    height: 10px;
+    border-right: 2px solid var(--color-nano);
+    box-sizing: border-box;
+}
+
+.lang-stats .lang:last-child
+{
+    border-right: none;
+}
+

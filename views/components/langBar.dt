@@ -1,0 +1,12 @@
+- import pastemyst.data : languages;
+- import std.string : format;
+- import std.conv : to;
+.lang-stats
+    - foreach (stat; langStats)
+        - string color = "#ffffff";
+        - foreach (l; languages.byValue())
+            - if (l["name"].get!string() == stat.lang)
+                - if ("color" in l)
+                    - color = l["color"].get!string();
+        .lang.tooltip(style="background-color: " ~ color ~ "; width: " ~ stat.perc.to!string() ~ "%;")
+            span.tooltip-text= format!("%s %.1f%%")(stat.lang, stat.perc)

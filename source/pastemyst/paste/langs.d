@@ -2,9 +2,19 @@ module pastemyst.paste.langs;
 
 import pastemyst.data;
 
+/++
+ + holds the language stats for a paste for a single language
+ +/
 struct LangStat
 {
+    /++
+     + the name of the language
+     +/
     string lang;
+
+    /++
+     + the percentage the language has in the paste
+     +/
     float perc;
 }
 

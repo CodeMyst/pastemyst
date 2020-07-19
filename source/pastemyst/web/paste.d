@@ -212,7 +212,9 @@ public class PasteWeb
         {
             if (session.loggedIn)
             {
-                enforceHTTP(!isPrivate && !isPublic, HTTPStatus.badRequest, "the paste cant be private or shown on the profile if its anonymous");
+                enforceHTTP(!isPrivate && !isPublic,
+                        HTTPStatus.badRequest,
+                        "the paste cant be private or shown on the profile if its anonymous");
 
                 paste.ownerId = "";
             }

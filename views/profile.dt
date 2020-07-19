@@ -25,19 +25,25 @@ block body
                         li: a(href="/user/profile?tag=" ~ encodeComponent(t) ~ "&search=" ~ search, class=tag==decodeComponent(t)?"selected":"")= t
 
             .pastes
+                - import pastemyst.paste : pasteLangStats;
+
                 - if (pastes.length == 0)
                     p.empty no pastes found
 
                 - foreach(paste; pastes)
-                    a.paste(href="/" ~ paste.id)
-                        .title
-                            - if (paste.title != "")
-                                p= paste.title
-                            - else
-                                p.untitled (untitled)
-                        .info
-                            p.expires-in
-                            p.created-at
+                    - const langStats = pasteLangStats(paste);
+                    a.paste(href="/" ~ paste.id, class=langStats.length > 0 ? "" : "border-bottom")
+                        .top
+                            .title
+                                - if (paste.title != "")
+                                    p= paste.title
+                                - else
+                                    p.untitled (untitled)
+                            .info
+                                p.expires-in
+                                p.created-at
+                        - if (langStats.length > 0)
+                            include components/langBar
 
 block scripts
     script.

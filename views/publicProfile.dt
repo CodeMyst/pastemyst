@@ -14,6 +14,7 @@ block body
             input(type="submit")
 
         .pastes
+            - import pastemyst.paste : pasteLangStats;
             - if (pastes.length == 0)
                 - if (search == "")
                     p.empty this user has no pastes visible on their profile
@@ -21,7 +22,8 @@ block body
                     p.empty no pastes match the search query
 
             - foreach(paste; pastes)
-                a.paste(href="/" ~ paste.id)
+                - const langStats = pasteLangStats(paste);
+                a.paste(href="/" ~ paste.id, class=langStats.length > 0 ? "" : "border-bottom")
                     .title
                         - if (paste.title != "")
                             p= paste.title
@@ -30,6 +32,8 @@ block body
                     .info
                         p.expires-in
                         p.created-at
+                    - if (langStats.length > 0)
+                        include components/langBar
 
 block scripts
     script.

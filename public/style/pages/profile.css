@@ -96,86 +96,55 @@
 
 #profile .pastes .paste
 {
-    display: block;
-    border-bottom: 1px solid var(--color-nano);
-    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#profile .pastes .paste.border-bottom
+{
+    border-bottom: 2px solid var(--color-nano);
 }
 
 #profile .pastes .paste:last-child
 {
-    margin-bottom: 0;
     border-bottom: none;
-}
-
-#profile .pastes .paste:hover .info
-{
-    color: white;
 }
 
 #profile .pastes .paste .title
 {
-    display: flex;
-    flex: 1;
-}
-
-#profile .pastes .paste .title p
-{
-    align-self: center;
-}
-
-#profile .pastes .paste:hover .title p.untitled
-{
-    color: var(--color-mystlue);
-}
-
-#profile .pastes .paste .title p.untitled
-{
-    color: var(--color-nanolightlight);
+    padding: 0.5rem 1rem;
+    padding-bottom: 0;
+    margin-bottom: 5px;
 }
 
 #profile .pastes .paste .info
 {
-    color: var(--color-nanolightlight);
-    font-size: var(--font-size-small);
+    padding: 0 1rem;
+    margin-bottom: 5px;
 }
 
 #profile .pastes .paste .info p
 {
+    color: var(--color-nanolightlight);
+    font-size: var(--font-size-small);
     background-color: var(--color-nano);
+    display: inline-block;
     border-radius: var(--border-radius);
     padding: 0.25rem 1rem;
-    margin-top: 10px;
+}
+
+#profile .pastes .paste:last-child .lang-stats .lang:first-child
+{
+    border-bottom-left-radius: var(--border-radius);
+}
+
+#profile .pastes .paste:last-child .lang-stats .lang:last-child
+{
+    border-bottom-right-radius: var(--border-radius);
 }
 
 #profile.public-profile .pastes
 {
     width: 100%;
     margin-top: 20px;
-}
-
-@media screen and (min-width: 720px)
-{
-    #profile .pastes .paste
-    {
-        display: flex;
-        flex-direction: row;
-    }
-    
-    #profile .pastes .paste .info
-    {
-        margin-left: auto;
-        display: flex;
-        flex-direction: row;
-        align-self: baseline;
-    }
-
-    #profile .pastes .paste .info p
-    {
-        margin: 0;
-    }
-
-    #profile .pastes .paste .info .expires-in
-    {
-        margin-right: 20px;
-    }
 }

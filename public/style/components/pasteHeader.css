@@ -1,14 +1,23 @@
 .paste-header
 {
-    background-color: var(--color-nanolight);
-    border-radius: var(--border-radius);
-    padding: 0.5rem 1rem;
-    font-size: var(--font-size-medium);
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.paste-header .top
+{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    box-sizing: border-box;
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 0.5rem 1rem;
+    font-size: var(--font-size-medium);
 }
 
 .paste-header .left
@@ -136,4 +145,14 @@
 {
     color: var(--color-white);
     font-size: var(--font-size-normal);
+}
+
+.paste-header .lang-stats .lang:first-child
+{
+    border-bottom-left-radius: var(--border-radius);
+}
+
+.paste-header .lang-stats .lang:last-child
+{
+    border-bottom-right-radius: var(--border-radius);
 }

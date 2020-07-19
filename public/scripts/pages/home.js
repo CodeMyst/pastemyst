@@ -3,6 +3,12 @@ import { initEditors, addEditor, editors } from "../components/pastyEditor.js";
 
 let expiresInDropdown;
 let createPressed = false;
+let anonInput;
+let publicInput;
+let privateInput;
+let anonLabel;
+let publicLabel;
+let privateLabel;
 
 window.addEventListener("load", () =>
 {
@@ -18,6 +24,13 @@ window.addEventListener("load", () =>
     initEditors();
 
     document.getElementsByClassName("add-editor")[0].addEventListener("click", addEditor);
+
+    anonInput = document.querySelector("input#anonymous");
+    publicInput = document.querySelector("input#public");
+    privateInput = document.querySelector("input#private");
+    anonLabel = document.querySelector("label[for=anonymous]");
+    publicLabel = document.querySelector("label[for=public]");
+    privateLabel = document.querySelector("label[for=private]");
 
     let pasteOptionsBottomObserver = new IntersectionObserver((e) =>
     {
@@ -43,7 +56,37 @@ window.addEventListener("load", () =>
             e.returnValue = "";
         }
     });
+
+    if (anonInput)
+    {
+        checkAnon();
+
+        anonInput.addEventListener("click", () =>
+        {
+            checkAnon();
+        });
+    }
 });
+
+function checkAnon()
+{
+    if (anonInput.checked)
+    {
+        privateInput.checked = false;
+        publicInput.checked = false;
+        privateInput.disabled = true;
+        publicInput.disabled = true;
+        privateLabel.classList = "disabled";
+        publicLabel.classList = "disabled";
+    }
+    else
+    {
+        privateInput.disabled = false;
+        publicInput.disabled = false;
+        privateLabel.classList = "";
+        publicLabel.classList = "";
+    }
+}
 
 function checkChange()
 {
@@ -87,7 +130,11 @@ async function createPaste()
     form.querySelector("input[name=title]").value = document.querySelector(`.paste-options input[name="title"]`).value;
     form.querySelector("input[name=expiresIn]").value = expiresInDropdown.value;
     form.querySelector("input[name=isPrivate]").checked = false;
-    form.querySelector("input[name=isPublic]").checked = document.querySelector(".paste-options-bottom-options input#public").checked;
+    form.querySelector("input[name=isPublic]").checked = publicInput.checked;
+    if (anonInput)
+    {
+        form.querySelector("input[name=isAnonymous]").checked = anonInput.checked;
+    }
 
     let tagsinput = document.querySelector(".paste-options input[name=tags]");
 

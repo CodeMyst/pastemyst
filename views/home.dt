@@ -25,15 +25,23 @@ block body
                 a#create-paste create paste
 
             .paste-options-bottom-options
-                div
-                    input(type="checkbox", id="private", disabled)
-                    label.disabled(for="private") private
-                div
+                div.tooltip
+                    span.tooltip-text only you can view the paste
+                    input(type="checkbox", id="private", disabled=!session.loggedIn)
+                    label(for="private", class=session.loggedIn ? "" : "disabled") private
+                div.tooltip
+                    span.tooltip-text encrypts the paste with a password
                     input(type="checkbox", id="encrypt", disabled)
                     label.disabled(for="encrypt") encrypt
-                div
+                div.tooltip
+                    span.tooltip-text will be displayed on your public profile
                     input(type="checkbox", id="public", disabled=!session.loggedIn)
                     label(for="public", class=session.loggedIn ? "" : "disabled") show on my profile
+                - if (session.loggedIn)
+                    div.tooltip
+                        span.tooltip-text won't be associated with your account so it won't be on your private or public profile
+                        input(type="checkbox", id="anonymous")
+                        label(for="anonymous") anonymous
 
         //- this is used for detecting when the .paste-options-bottom is in fixed position to apply different styles
         .paste-options-bottom-1px
@@ -44,6 +52,7 @@ block body
             input(type="text", name="expiresIn")
             input(type="checkbox", name="isPrivate")
             input(type="checkbox", name="isPublic")
+            input(type="checkbox", name="isAnonymous")
             input(type="text", name="pasties")
             input(type="submit")
 

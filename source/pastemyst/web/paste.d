@@ -172,7 +172,7 @@ public class PasteWeb
      +/
     @noAuth
     public void postPaste(string title, string tags, string expiresIn, bool isPrivate, bool isPublic,
-            string pasties, HTTPServerRequest req)
+            bool isAnonymous, string pasties, HTTPServerRequest req)
     {
         import pastemyst.paste : createPaste, tagsStringToArray;
         import pastemyst.db : insert;
@@ -205,6 +205,18 @@ public class PasteWeb
             {
                 throw new HTTPStatusException(HTTPStatus.forbidden,
                         "you cant create a profile public paste if you are not logged in.");
+            }
+        }
+
+        if (isAnonymous)
+        {
+            if (session.loggedIn)
+            {
+                enforceHTTP(!isPrivate && !isPublic,
+                        HTTPStatus.badRequest,
+                        "the paste cant be private or shown on the profile if its anonymous");
+
+                paste.ownerId = "";
             }
         }
 

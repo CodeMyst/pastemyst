@@ -55,8 +55,43 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
     foreach (pasty; pasties)
     {
         pasty.id = generateUniquePastyId(paste);
+
+        if (pasty.language == "Autodetect")
+        {
+            pasty.language = autodetectLanguage(paste.id, pasty);
+        }
+
         paste.pasties ~= pasty;
     }
 
     return paste;
+}
+
+private string autodetectLanguage(string pasteId, Pasty pasty) @safe
+{
+    import std.file : write, remove, exists, mkdir;
+    import std.process : execute;
+    import std.string : strip;
+
+    if (!exists("tmp/"))
+    {
+        mkdir("tmp");
+    }
+
+    string filename = "tmp/" ~ pasteId ~ "-" ~ pasty.id ~ "-autodetect";
+
+    write(filename, pasty.code);
+
+    auto res = execute(["pastemyst-autodetect", filename]);
+
+    if (res.status != 0)
+    {
+        return "Plain Text";
+    }
+
+    const lang = res.output.strip();
+
+    remove(filename);
+
+    return lang;
 }

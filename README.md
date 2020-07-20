@@ -24,7 +24,7 @@ this is pretty much how the end result will look (at least for the home page), s
 
 ## building
 
-to build pastemyst you need `dmd`, `dub`, `libssl-dev` (1.1) and `mongodb`.
+to build and run pastemyst you need `dmd`, `dub`, `libssl-dev` (1.1), `mongodb` and [`pastemyst-autodetect`](https://github.com/codemyst/pastemyst-autodetect).
 
 run the mongodb server on `127.0.0.1` and create 2 databases, `pastemyst` and `pastemyst-test` (for unit testing).
 

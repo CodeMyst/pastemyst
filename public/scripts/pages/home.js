@@ -26,10 +26,10 @@ window.addEventListener("load", () =>
     document.getElementsByClassName("add-editor")[0].addEventListener("click", addEditor);
 
     anonInput = document.querySelector("input#anonymous");
-    publicInput = document.querySelector("input#public");
-    privateInput = document.querySelector("input#private");
     anonLabel = document.querySelector("label[for=anonymous]");
+    publicInput = document.querySelector("input#public");
     publicLabel = document.querySelector("label[for=public]");
+    privateInput = document.querySelector("input#private");
     privateLabel = document.querySelector("label[for=private]");
 
     let pasteOptionsBottomObserver = new IntersectionObserver((e) =>
@@ -57,34 +57,52 @@ window.addEventListener("load", () =>
         }
     });
 
-    if (anonInput)
+    if (privateInput)
     {
-        checkAnon();
+        checkOptions();
 
         anonInput.addEventListener("click", () =>
         {
-            checkAnon();
+            checkOptions();
+        });
+
+        privateInput.addEventListener("click", () =>
+        {
+            checkOptions();
         });
     }
 });
 
-function checkAnon()
+function disableInput(input, label)
 {
-    if (anonInput.checked)
+    input.checked = false;
+    input.disabled = true;
+    label.classList = "disabled";
+}
+
+function enableInput(input, label)
+{
+    input.disabled = false;
+    label.classList = "";
+}
+
+function checkOptions()
+{
+    if (privateInput.checked)
     {
-        privateInput.checked = false;
-        publicInput.checked = false;
-        privateInput.disabled = true;
-        publicInput.disabled = true;
-        privateLabel.classList = "disabled";
-        publicLabel.classList = "disabled";
+        disableInput(publicInput, publicLabel);
+        disableInput(anonInput, anonLabel);
+    }
+    else if (anonInput.checked)
+    {
+        disableInput(publicInput, publicLabel);
+        disableInput(privateInput, privateLabel);
     }
     else
     {
-        privateInput.disabled = false;
-        publicInput.disabled = false;
-        privateLabel.classList = "";
-        publicLabel.classList = "";
+        enableInput(publicInput, publicLabel);
+        enableInput(privateInput, privateLabel);
+        enableInput(anonInput, anonLabel);
     }
 }
 
@@ -129,10 +147,10 @@ async function createPaste()
 
     form.querySelector("input[name=title]").value = document.querySelector(`.paste-options input[name="title"]`).value;
     form.querySelector("input[name=expiresIn]").value = expiresInDropdown.value;
-    form.querySelector("input[name=isPrivate]").checked = false;
-    form.querySelector("input[name=isPublic]").checked = publicInput.checked;
-    if (anonInput)
+    if (privateInput)
     {
+        form.querySelector("input[name=isPrivate]").checked = privateInput.checked;
+        form.querySelector("input[name=isPublic]").checked = publicInput.checked;
         form.querySelector("input[name=isAnonymous]").checked = anonInput.checked;
     }
 

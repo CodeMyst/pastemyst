@@ -26,18 +26,18 @@ block body
 
             .paste-options-bottom-options
                 div.tooltip
-                    span.tooltip-text only you can view the paste
-                    input(type="checkbox", id="private", disabled=!session.loggedIn)
-                    label(for="private", class=session.loggedIn ? "" : "disabled") private
-                div.tooltip
                     span.tooltip-text encrypts the paste with a password
                     input(type="checkbox", id="encrypt", disabled)
                     label.disabled(for="encrypt") encrypt
-                div.tooltip
-                    span.tooltip-text will be displayed on your public profile
-                    input(type="checkbox", id="public", disabled=!session.loggedIn)
-                    label(for="public", class=session.loggedIn ? "" : "disabled") show on my profile
                 - if (session.loggedIn)
+                    div.tooltip
+                        span.tooltip-text only you can view the paste
+                        input(type="checkbox", id="private")
+                        label(for="private") private
+                    div.tooltip
+                        span.tooltip-text will be displayed on your public profile
+                        input(type="checkbox", id="public")
+                        label(for="public") show on my profile
                     div.tooltip
                         span.tooltip-text won't be associated with your account so it won't be on your private or public profile
                         input(type="checkbox", id="anonymous")

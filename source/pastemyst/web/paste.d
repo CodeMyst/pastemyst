@@ -25,27 +25,32 @@ public class PasteWeb
     public void getPaste(string _id, HTTPServerRequest req)
     {
         import pastemyst.db : findOneById;
-		import std.conv : to;
- 
-		const auto res = findOneById!Paste(_id);
- 
-		if (res.isNull)
-		{
-			return;
-		}
- 
-		const Paste paste = res.get();
- 
+        import std.conv : to;
+
+        const auto res = findOneById!Paste(_id);
+
+        if (res.isNull)
+        {
+            return;
+        }
+
+        const Paste paste = res.get();
+
         UserSession session = UserSession.init;
 
         if (req.session && req.session.isKeySet("user"))
         {
-            session = req.session.get!UserSession("user");    
+            session = req.session.get!UserSession("user");
+        }
+
+        if (paste.isPrivate && (paste.ownerId != session.user.id))
+        {
+            return;
         }
 
         const title = paste.title != "" ? paste.title : "(untitled)";
 
-		render!("paste.dt", paste, title, session);
+        render!("paste.dt", paste, title, session);
     }
 
     /++
@@ -71,6 +76,11 @@ public class PasteWeb
 
         UserSession session = req.session.get!UserSession("user");
 
+        if (paste.isPrivate && (paste.ownerId != session.user.id))
+        {
+            return;
+        }
+
         auto user = findOneById!User(session.user.id).get();
 
         int incAmnt = 1;
@@ -92,9 +102,46 @@ public class PasteWeb
     }
 
     /++
+     + POST /:id/togglePrivate
+     +
+     + toggles whether the paste is private
+     +/
+    @path("/:id/togglePrivate")
+    @noAuth
+    public void postTogglePrivate(string _id, HTTPServerRequest req)
+    {
+        import pastemyst.db : findOneById, update;
+
+        const auto res = findOneById!Paste(_id);
+
+        if (res.isNull)
+        {
+            return;
+        }
+
+        const Paste paste = res.get();
+
+        UserSession session = UserSession.init;
+
+        if (req.session && req.session.isKeySet("user"))
+        {
+            session = req.session.get!UserSession("user");
+
+            if (paste.ownerId != "" && paste.ownerId == session.user.id && !paste.isPublic)
+            {
+                update!Paste(["_id": _id], ["$set": ["isPrivate": !paste.isPrivate]]);
+                redirect("/" ~ _id);
+                return;
+            }
+        }
+
+        throw new HTTPStatusException(HTTPStatus.forbidden);
+    }
+
+    /++
      + POST /:id/togglePublicOnProfile
      +
-     + toggles whether the post is public on the user's profile
+     + toggles whether the paste is public on the user's profile
      +/
     @path("/:id/togglePublicOnProfile")
     @noAuth
@@ -117,7 +164,7 @@ public class PasteWeb
         {
             session = req.session.get!UserSession("user");
 
-            if (paste.ownerId != "" && paste.ownerId == session.user.id)
+            if (paste.ownerId != "" && paste.ownerId == session.user.id && !paste.isPrivate)
             {
                 update!Paste(["_id": _id], ["$set": ["isPublic": !paste.isPublic]]);
                 redirect("/" ~ _id);
@@ -208,15 +255,22 @@ public class PasteWeb
             }
         }
 
-        if (isAnonymous)
+        if (session.loggedIn)
         {
-            if (session.loggedIn)
+            if (isAnonymous)
             {
                 enforceHTTP(!isPrivate && !isPublic,
                         HTTPStatus.badRequest,
                         "the paste cant be private or shown on the profile if its anonymous");
 
                 paste.ownerId = "";
+            }
+
+            if (isPrivate)
+            {
+                enforceHTTP(!isAnonymous && !isPublic,
+                        HTTPStatus.badRequest,
+                        "the paste cant be anonymous or shown on the profile if its private");
             }
         }
 
@@ -244,17 +298,22 @@ public class PasteWeb
      +
      + gets the raw data of the pasty
      +/
-	@path("/raw/:pasteId/:pastyId/:editId")
+    @path("/raw/:pasteId/:pastyId/:editId")
     @noAuth
-	public void getRawPasty(string _pasteId, string _pastyId, long _editId)
-	{
-		import pastemyst.db : findOneById;
-		import pastemyst.data : Paste;
+    public void getRawPasty(string _pasteId, string _pastyId, long _editId)
+    {
+        import pastemyst.db : findOneById;
+        import pastemyst.data : Paste;
         import std.algorithm : canFind, find;
-		
-		const auto res = findOneById!Paste(_pasteId);
+
+        const auto res = findOneById!Paste(_pasteId);
 
         if (res.isNull())
+        {
+            return;
+        }
+
+        if (res.get().isPrivate)
         {
             return;
         }
@@ -282,12 +341,12 @@ public class PasteWeb
 
         const Pasty pasty = paste.pasties.find!((p) => p.id == _pastyId)[0];
 
-		const string pasteTitle = paste.title == "" ? "untitled" : paste.title;
-		const string pastyTitle = pasty.title == "" ? "untitled" : pasty.title;
-		const string title = pasteTitle ~ " - " ~ pastyTitle;
-		const string rawCode = pasty.code;
+        const string pasteTitle = paste.title == "" ? "untitled" : paste.title;
+        const string pastyTitle = pasty.title == "" ? "untitled" : pasty.title;
+        const string title = pasteTitle ~ " - " ~ pastyTitle;
+        const string rawCode = pasty.code;
 
-		render!("raw.dt", title, rawCode);
+        render!("raw.dt", title, rawCode);
     }
 
     /++
@@ -310,6 +369,11 @@ public class PasteWeb
         }
 
         const paste = res.get();
+
+        if (paste.ownerId != session.user.id)
+        {
+            return;
+        }
 
         render!("editPaste.dt", session, paste);
     }
@@ -339,14 +403,21 @@ public class PasteWeb
             return;
         }
 
+        auto session = req.session.get!UserSession("user");
+
         Paste paste = res.get();
+
+        if (paste.ownerId != session.user.id)
+        {
+            return;
+        }
 
         Paste editedPaste;
         editedPaste.title = req.form["title"];
 
         string tagsString = req.form["tags"];
         editedPaste.tags = tagsStringToArray(tagsString);
-        
+
         int i = 0;
         while(true)
         {
@@ -536,7 +607,12 @@ public class PasteWeb
 
         if (req.session && req.session.isKeySet("user"))
         {
-            session = req.session.get!UserSession("user");    
+            session = req.session.get!UserSession("user");
+        }
+
+        if (paste.isPrivate && paste.ownerId != session.user.id)
+        {
+            return;
         }
 
         render!("history.dt", session, paste);
@@ -562,7 +638,12 @@ public class PasteWeb
 
         if (req.session && req.session.isKeySet("user"))
         {
-            session = req.session.get!UserSession("user");    
+            session = req.session.get!UserSession("user");
+        }
+
+        if (paste.isPrivate && paste.ownerId != session.user.id)
+        {
+            return;
         }
 
         const bool previousRevision = true;
@@ -582,7 +663,7 @@ public class PasteWeb
         if (res.isNull)
         {
             return Paste.init;
-        } 
+        }
 
         Paste paste = res.get();
 

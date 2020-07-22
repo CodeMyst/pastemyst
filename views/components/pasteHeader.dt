@@ -57,15 +57,27 @@
                     i.fas.fa-edit
                     span.tooltip-text edit paste
 
-                form.set-public-on-profile-paste(method="post", action="/" ~ paste.id ~ "/togglePublicOnProfile")
-                    -if (paste.isPublic)
-                        button.public.tooltip(type="submit")
-                            i.fas.fa-eye
-                            span.tooltip-text set to private on profile
-                    -else
-                        button.private.tooltip(type="submit")
-                            i.fas.fa-eye
-                            span.tooltip-text set to public on profile
+                - if (!paste.isPrivate)
+                    form.set-public-on-profile-paste(method="post", action="/" ~ paste.id ~ "/togglePublicOnProfile")
+                        -if (paste.isPublic)
+                            button.public.tooltip(type="submit")
+                                i.fas.fa-eye
+                                span.tooltip-text set to private on profile
+                        -else
+                            button.not-public.tooltip(type="submit")
+                                i.fas.fa-eye
+                                span.tooltip-text set to public on profile
+
+                - if (!paste.isPublic)
+                    form.set-private-paste(method="post", action="/" ~ paste.id ~ "/togglePrivate")
+                        - if (paste.isPrivate)
+                            button.private.tooltip(type="submit")
+                                i.fas.fa-lock
+                                span.tooltip-text set to public
+                        - else
+                            button.not-private.tooltip(type="submit")
+                                i.fas.fa-lock
+                                span.tooltip-text set to private
 
                 form.delete-paste(method="post", action="/" ~ paste.id ~ "/delete", onsubmit="return confirm('are you sure you want to delete this paste? you won\\'t be able to recover it.');")
                     button.tooltip(type="submit")

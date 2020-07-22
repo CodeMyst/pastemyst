@@ -73,6 +73,11 @@
     background-color: var(--color-mystlue);
 }
 
+.paste-header .set-private-paste
+{
+    margin-right: 20px;
+}
+
 .paste-header .set-public-on-profile-paste
 {
     margin-right: 20px;
@@ -94,12 +99,22 @@
     font-size: var(--font-size-normal);
 }
 
-.paste-header .set-public-on-profile-paste button.public .fa-eye
+.paste-header .set-private-paste button.private .fas
 {
-    color: var(--color-white);
+    color: var(--color-mystge);
 }
 
-.paste-header .set-public-on-profile-paste button.private .fa-eye
+.paste-header .set-private-paste button.not-private .fas
+{
+    color: var(--color-nanolightlight);
+}
+
+.paste-header .set-public-on-profile-paste button.public .fas
+{
+    color: var(--color-mystge);
+}
+
+.paste-header .set-public-on-profile-paste button.not-public .fas
 {
     color: var(--color-nanolightlight);
 }

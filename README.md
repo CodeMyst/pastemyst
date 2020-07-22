@@ -38,7 +38,13 @@ gitlab:
     id: <client id>
     secret: <client secret>
 
+# has to end with a trailing /
 hostname: http://localhost:5000/
+
+# shows a message at the top of the page to
+# indicate that this instance is a development one
+# and users shouldnt expect it to always work
+development_instance: true
 ```
 
 the github id and secret should be gotten from: [github applications](https://github.com/settings/applications), the homepage url should be: `http://localhost:5000/` and the authorization callback: `http://localhost:5000//login/github`.

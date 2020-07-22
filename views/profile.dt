@@ -40,8 +40,16 @@ block body
                                 - else
                                     p.untitled (untitled)
                             .info
-                                p.expires-in
+                                - if (paste.isPrivate)
+                                    span.tooltip
+                                        i.fas.fa-lock
+                                        span.tooltip-text private
+                                - else if (paste.isPublic)
+                                    span.tooltip
+                                        i.fas.fa-eye
+                                        span.tooltip-text on your public profile
                                 p.created-at
+                                p.expires-in
                         - if (langStats.length > 0)
                             include components/langBar
 

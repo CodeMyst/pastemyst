@@ -114,7 +114,6 @@
 {
     padding: 0.5rem 1rem;
     padding-bottom: 0;
-    margin-bottom: 5px;
 }
 
 #profile .pastes .paste .info
@@ -131,6 +130,15 @@
     display: inline-block;
     border-radius: var(--border-radius);
     padding: 0.25rem 1rem;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+#profile .pastes .paste .info .fas
+{
+    margin-right: 10px;
+    width: 20px;
+    color: var(--color-mystlue);
 }
 
 #profile .pastes .paste:last-child .lang-stats .lang:first-child

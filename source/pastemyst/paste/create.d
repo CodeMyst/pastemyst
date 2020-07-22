@@ -56,7 +56,7 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
     {
         pasty.id = generateUniquePastyId(paste);
 
-        if (pasty.language == "Autodetect")
+        if (pasty.language.toLower() == "autodetect")
         {
             pasty.language = autodetectLanguage(paste.id, pasty);
         }

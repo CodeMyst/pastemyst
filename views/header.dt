@@ -12,6 +12,6 @@
 
     - if (config.devInstance)
         p.warning
-            | this is a development instance, stuff may break, data might be deleted and it might not always be online
+            | this is a development instance, stuff might break, data might be deleted and it might not always be online
 
     include navigation

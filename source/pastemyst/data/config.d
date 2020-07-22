@@ -21,6 +21,11 @@ public struct Config
      + hostname of the website
      +/
     public string hostname;
+
+    /++
+     + is the current instance a development one
+     +/
+    public bool devInstance;
 }
 
 /++
@@ -113,6 +118,8 @@ static this()
 
         enforce(cfg.containsKey("hostname"), "config.yaml: missing hostname");
 
-        _config.hostname = cfg["hostname"].as!string();
+        enforce(cfg.containsKey("development_instance"), "config.yaml: missing development_instance");
+
+        _config.devInstance = cfg["development_instance"].as!bool();
     }
 }

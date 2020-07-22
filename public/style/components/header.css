@@ -32,3 +32,12 @@
     padding: 2px 4px;
     color: var(--color-nano);
 }
+
+#header .warning
+{
+    background-color: var(--color-mysted);
+    padding: 0.5rem 1rem;
+    margin-bottom: 20px;
+    color: var(--color-nano);
+    border-radius: var(--border-radius);
+}

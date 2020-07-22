@@ -1,3 +1,5 @@
+- import pastemyst.data : config;
+
 #header
     h1
         img.icon(src="/static/assets/icons/pastemyst.svg")
@@ -7,5 +9,9 @@
     p.description
         | a simple website for sharing code.
         | version 2.0.0 #[span.alpha alpha] (#[a(href="#") changelog]).
+
+    - if (config.devInstance)
+        p.warning
+            | this is a development instance, stuff may break, data might be deleted and it might not always be online
 
     include navigation

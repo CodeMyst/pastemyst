@@ -26,8 +26,9 @@ public interface IAPIPaste
      +
      + Fetches the paste.
      +/
+    @headerParam("auth", "Authorization")
     @path("/paste/:id")
-    Json get(string _id) @safe;
+    Json get(string _id, string auth = "") @safe;
 }
 
 /++ 
@@ -57,7 +58,7 @@ public class APIPaste : IAPIPaste
      +
      + Fetches the paste.
      +/
-    public Json get(string _id) @safe
+    public Json get(string _id, string auth = "") @safe
     {
         import pastemyst.db : findOneById;
 
@@ -65,6 +66,17 @@ public class APIPaste : IAPIPaste
 
         enforceHTTP(!res.isNull, HTTPStatus.notFound);
 
-        return serializeToJson(res.get());
+        const paste = res.get();
+
+        if (paste.isPrivate)
+        {
+            enforceHTTP(auth != "", HTTPStatus.notFound);
+
+            string desiredToken = findOneById!ApiKey(paste.ownerId).get().key;
+
+            enforceHTTP(auth == desiredToken, HTTPStatus.notFound);
+        }
+
+        return serializeToJson(paste);
     }
 }

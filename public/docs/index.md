@@ -2,10 +2,16 @@
 
 the base endpoint for the api is `https://paste.myst.rs/api`.
 
-you don't need any api keys to access the api. the api is rate limited to 5 requests per second, after exceeding the rate limit your requests will get a `429 (too many requests)` response code. if you need to do more requests than that contact me.
+you don't need any api keys to access the api, unless you need to access pastes or features that require an account. the api is rate limited to 5 requests per second, after exceeding the rate limit your requests will get a `429 (too many requests)` response code. if you need to do more requests than that contact me.
+
+to get private pastes, edit pastes, or anything like that you need to use a token. you can get your token on your profile settings page. make sure you don't give it to anyone, but if you do you can always regenerate it.
+
+to use the token you simply have to provide it as an `Authorization` header to all requests requiring it. the docs will usually point out which endpoints and in which cases would need an `Authorization` header set.
 
 ### list of endpoints
 
 * [/data](/api-docs/data) - getting various simple data
 * [/time](/api-docs/time) - useful time operations
 * [/paste](/api-docs/paste) - creating and fetching pastes, and more
+
+and all of the objects that are needed for api requests: [objects](/api-docs/objects)

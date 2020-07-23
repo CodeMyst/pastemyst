@@ -1,7 +1,7 @@
 #api-docs .method
 {
     color: var(--color-mystge);
-    font-size: var(--font-size-medium);
+    font-size: var(--font-size-normal);
     display: inline-block;
     margin-bottom: 20px;
 }

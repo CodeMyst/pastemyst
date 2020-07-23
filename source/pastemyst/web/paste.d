@@ -176,6 +176,48 @@ public class PasteWeb
     }
 
     /++
+     + POST /:id/anon
+     +
+     + makes the paste anonymous
+     +/
+    @path("/:id/anon")
+    @noAuth
+    public void postPasteAnon(string _id, HTTPServerRequest req)
+    {
+        import pastemyst.db : findOneById, update;
+
+        auto res = findOneById!Paste(_id);
+
+        if (res.isNull)
+        {
+            return;
+        }
+
+        auto paste = res.get();
+
+        UserSession session = UserSession.init;
+
+        if (req.session && req.session.isKeySet("user"))
+        {
+            session = req.session.get!UserSession("user");
+
+            if (paste.ownerId != "" && paste.ownerId == session.user.id)
+            {
+                paste.ownerId = "";
+                paste.isPrivate = false;
+                paste.isPublic = false;
+                paste.tags.length = 0;
+                paste.edits.length = 0;
+                update!Paste(["_id": _id], paste);
+                redirect("/" ~ _id);
+                return;
+            }
+        }
+
+        throw new HTTPStatusException(HTTPStatus.forbidden);
+    }
+
+    /++
      + POST /:id/delete
      +
      + deletes a user's paste

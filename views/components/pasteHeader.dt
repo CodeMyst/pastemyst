@@ -79,6 +79,11 @@
                                 i.fas.fa-lock
                                 span.tooltip-text set to private
 
+                form.set-anon-paste(method="post", action="/" ~ paste.id ~ "/anon", onsubmit="return confirm('are you sure you want to make the paste anonymous? this action can\\'t be undone.');")
+                    button.tooltip(type="submit")
+                        img(src="/static/assets/icons/ghostmyst.svg")
+                        span.tooltip-text make paste anonymous
+
                 form.delete-paste(method="post", action="/" ~ paste.id ~ "/delete", onsubmit="return confirm('are you sure you want to delete this paste? you won\\'t be able to recover it.');")
                     button.tooltip(type="submit")
                         i.fas.fa-trash

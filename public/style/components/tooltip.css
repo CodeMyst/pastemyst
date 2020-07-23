@@ -11,13 +11,13 @@
     background-color: black;
     color: #fff;
     text-align: center;
-    padding: 10px 20px;
+    padding: 10px 10px;
     border-radius: var(--border-radius);
     position: absolute;
     z-index: 1;
     bottom: 125%;
     left: 50%;
-    margin-left: -60px;
+    margin-left: -90px;
     margin-bottom: 10px;
     opacity: 0;
     transition: opacity 0.3s;
@@ -30,7 +30,7 @@
     position: absolute;
     top: 100%;
     left: 50%;
-    margin-left: -30px;
+    margin-left: 10px;
     border-width: 10px;
     border-style: solid;
     border-color: black transparent transparent transparent;

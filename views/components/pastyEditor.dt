@@ -11,6 +11,8 @@
                     - import pastemyst.data : languages;
                     input.hidden(type="text", name="language")
                     - foreach (ulong i, lang; languages)
+                        - if (!autodetect && lang["name"] == "Autodetect")
+                            - continue;
                         - bool checked = false;
                         - if (lang["name"] == pastyLang)
                             - checked = true;

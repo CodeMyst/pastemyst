@@ -122,6 +122,12 @@
     margin-bottom: 5px;
 }
 
+#profile .pastes .paste .info .created-at .tooltip-text
+{
+    width: 350px;
+    margin-left: -150px;
+}
+
 #profile .pastes .paste .info p
 {
     color: var(--color-nanolightlight);

@@ -99,6 +99,20 @@
     font-size: var(--font-size-normal);
 }
 
+.paste-header .set-anon-paste
+{
+    margin-right: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.paste-header .set-anon-paste img
+{
+    width: 25px;
+    position: relative;
+    top: 5px;
+}
+
 .paste-header .set-private-paste button.private .fas
 {
     color: var(--color-mystge);

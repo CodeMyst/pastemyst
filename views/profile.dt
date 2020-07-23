@@ -48,7 +48,9 @@ block body
                                     span.tooltip
                                         i.fas.fa-eye
                                         span.tooltip-text on your public profile
-                                p.created-at
+                                p.created-at.tooltip
+                                    span.tooltip-text
+                                    span.value
                                 p.expires-in
                         - if (langStats.length > 0)
                             include components/langBar

@@ -30,8 +30,10 @@ block body
                         - else
                             p.untitled (untitled)
                     .info
+                        p.created-at.tooltip
+                            span.value
+                            span.tooltip-text
                         p.expires-in
-                        p.created-at
                     - if (langStats.length > 0)
                         include components/langBar
 

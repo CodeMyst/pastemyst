@@ -12,7 +12,7 @@ version(unittest)
 /++
  + List of all collections in the mongo db.
  +/
-public const string[] collectionNames = ["pastes", "users"];
+public const string[] collectionNames = ["pastes", "users", "api-keys"];
 
 private MongoDatabase mongo;
 
@@ -46,7 +46,11 @@ private string getCollectionName(T)() @safe
     }
     else static if (is(T == User))
     {
-	    return "users";
+        return "users";
+    }
+    else static if (is(T == ApiKey))
+    {
+        return "api-keys";
     }
     else
     {

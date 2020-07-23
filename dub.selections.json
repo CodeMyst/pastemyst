@@ -4,6 +4,7 @@
 		"botan": "1.12.18",
 		"botan-math": "1.0.3",
 		"commonmark-d": "1.0.7",
+		"csprng": "1.1.1",
 		"diet-ng": "1.6.1",
 		"dshould": "1.1.0",
 		"dyaml": "0.8.1",

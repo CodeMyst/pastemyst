@@ -116,6 +116,21 @@
     background-color: var(--color-nano);
 }
 
+#settings .settings-block .token
+{
+    background-color: var(--color-nano);
+    color: var(--color-white);
+    padding: 0.25rem 1rem;
+    border-radius: var(--border-radius);
+    margin-right: 20px;
+}
+
+#settings .settings-block .regen
+{
+    display: inline-block;
+    margin-top: 20px;
+}
+
 #settings .settings-block .delete-account i
 {
     color: var(--color-mysted);

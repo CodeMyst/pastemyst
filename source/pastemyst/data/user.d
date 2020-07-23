@@ -65,4 +65,17 @@ public struct MinimalUser
 /++
  + struct representing a service user (github, gitlab)
  +/
- alias ServiceUser = MinimalUser;
+alias ServiceUser = MinimalUser;
+
+/++
+ + struct holding an api key of a user
+ +/
+public struct ApiKey
+{
+    ///
+    @name("_id")
+    public string id;
+
+    ///
+    public string key;
+}

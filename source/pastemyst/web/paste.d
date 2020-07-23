@@ -266,8 +266,6 @@ public class PasteWeb
         import pastemyst.paste : createPaste, tagsStringToArray;
         import pastemyst.db : insert;
 
-        // TODO: private pastes
-
         string ownerId = "";
 
         UserSession session = UserSession.init;

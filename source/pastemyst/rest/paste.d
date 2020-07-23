@@ -18,8 +18,11 @@ public interface IAPIPaste
     @bodyParam("expiresIn", "expiresIn")
     @bodyParam("isPrivate", "isPrivate")
     @bodyParam("pasties", "pasties")
+    @bodyParam("isPublic", "isPublic")
+    @bodyParam("tags", "tags")
+    @headerParam("auth", "Authorization")
     @path("/paste")
-    Json post(Pasty[] pasties, string title = "", string expiresIn = "never", bool isPrivate = false) @safe;
+    Json post(Pasty[] pasties, string title = "", string expiresIn = "never", bool isPrivate = false, string tags = "", bool isPublic = false, string auth = "") @safe;
 
     /++ 
      + GET /paste/:id
@@ -41,12 +44,41 @@ public class APIPaste : IAPIPaste
      +
      + Creates a paste.
      +/
-    public Json post(Pasty[] pasties, string title = "", string expiresIn = "never", bool isPrivate = false) @safe
+    public Json post(Pasty[] pasties, string title = "", string expiresIn = "never", bool isPrivate = false, string tags = "", bool isPublic = false, string auth = "") @safe
     {
-        import pastemyst.paste : createPaste;
-        import pastemyst.db : insert;
+        import pastemyst.paste : createPaste, tagsStringToArray;
+        import pastemyst.db : insert, findOne;
 
-        Paste paste = createPaste(title, expiresIn, pasties, isPrivate, "");
+        string ownerId = "";
+
+        if (auth != "")
+        {
+            auto apiKey = findOne!ApiKey(["key": auth]);
+
+            if (!apiKey.isNull)
+            {
+                ownerId = apiKey.get().id;
+            }
+        }
+
+        if (isPublic || isPrivate || tags != "")
+        {
+            enforceHTTP(ownerId != "", HTTPStatus.forbidden, "can't create a paste using account features without providing a valid Authorization header.");
+        }
+
+        Paste paste = createPaste(title, expiresIn, pasties, isPrivate, ownerId);
+
+        paste.isPublic = isPublic;
+        paste.isPrivate = isPrivate;
+        paste.tags = tagsStringToArray(tags);
+
+        if (ownerId != "")
+        {
+            if (isPrivate)
+            {
+                enforceHTTP(!isPublic, HTTPStatus.badRequest, "the paste can't be private and shown on the profile");
+            }
+        }
 
         insert(paste);
 

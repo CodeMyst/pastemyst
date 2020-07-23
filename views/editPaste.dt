@@ -25,6 +25,7 @@ block body
                     - string pastyLang = pasty.language;
                     - string pastyCode = pasty.code;
                     - string pastyId = pasty.id;
+                    - bool autodetect = false;
                     include components/pastyEditor
 
             include components/addEditorButton

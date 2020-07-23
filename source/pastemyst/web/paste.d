@@ -527,6 +527,10 @@ public class PasteWeb
 
                 if (pasty.language != editedPasty.language)
                 {
+                    enforceHTTP(editedPasty.language.toLower() != "auotedect",
+                                HTTPStatus.badRequest,
+                                "can't edit a pasty to have an autodetect language.");
+
                     Edit edit;
                     edit.uniqueId = generateUniqueEditId(paste);
                     edit.editId = editId;

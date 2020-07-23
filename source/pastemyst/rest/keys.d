@@ -1,5 +1,8 @@
 module pastemyst.rest.keys;
 
+/++
+ + generates an api key
+ +/
 public string generateApiKey()
 {
     import pastemyst.db : find;

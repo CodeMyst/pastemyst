@@ -46,6 +46,15 @@ public interface IAPIPaste
     @path("/paste/:id")
     Json patch(string _id, Nullable!string title, Nullable!bool isPrivate, Nullable!bool isPublic,
             Nullable!string tags, Nullable!(Pasty[]) pasties, Nullable!string auth) @safe;
+
+    /++
+     + DELETE /paste/:id
+     +
+     + deletes a paste
+     +/
+    @headerParam("auth", "Authorization")
+    @path("/paste/:id")
+    void deletePaste(string _id, Nullable!string auth) @safe;
 }
 
 /++ 
@@ -317,5 +326,31 @@ public class APIPaste : IAPIPaste
         update!Paste(["_id": _id], paste);
 
         return serializeToJson(paste);
+    }
+
+    /++
+     + DELETE /paste/:id
+     +
+     + deletes a paste
+     +/
+    void deletePaste(string _id, Nullable!string auth) @safe
+    {
+        import pastemyst.db : findOneById, removeOneById;
+
+        auto res = findOneById!Paste(_id);
+
+        enforceHTTP(!res.isNull, HTTPStatus.notFound);
+
+        auto paste = res.get();
+
+        enforceHTTP(paste.ownerId != "", HTTPStatus.notFound);
+
+        enforceHTTP(!auth.isNull, HTTPStatus.notFound);
+
+        string desiredToken = findOneById!ApiKey(paste.ownerId).get().key;
+
+        enforceHTTP(auth.get() == desiredToken, HTTPStatus.notFound);
+
+        removeOneById!Paste(paste.id);
     }
 }

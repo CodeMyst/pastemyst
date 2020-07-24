@@ -181,7 +181,7 @@ public class APIPaste : IAPIPaste
 
         if (!tags.isNull)
         {
-            string[] tagsArr = tagsStringToArray(tags.get());
+            const string[] tagsArr = tagsStringToArray(tags.get());
 
             if (paste.tags != tagsArr)
             {

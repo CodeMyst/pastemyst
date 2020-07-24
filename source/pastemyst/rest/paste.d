@@ -185,7 +185,7 @@ public class APIPaste : IAPIPaste
 
             if (paste.tags != tagsArr)
             {
-                paste.tags = tagsArr;
+                paste.tags = tagsArr.dup;
             }
         }
 

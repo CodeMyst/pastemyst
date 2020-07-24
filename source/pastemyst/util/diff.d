@@ -3,7 +3,7 @@ module pastemyst.util.diff;
 /++
  + generates a diff string between two pasty contents
  +/
-public string generateDiff(string id, string before, string after)
+public string generateDiff(string id, string before, string after) @trusted
 {
     import std.process : execute;
     import std.file : write, mkdir, remove, exists;
@@ -42,7 +42,7 @@ public string generateDiff(string id, string before, string after)
 /++
  + generated a string from patching a diff
  +/
-public string patchDiff(string id, string current, string diff)
+public string patchDiff(string id, string current, string diff) @safe
 {
     import std.process : executeShell;
     import std.file : write, mkdir, remove, exists, readText;

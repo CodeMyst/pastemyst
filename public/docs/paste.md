@@ -32,3 +32,25 @@ required JSON body:
 | pasties   |  no       | pasty[] | list of pasties                                                                        |
 
 check out [[objects docs]](/api-docs/objects) for the `pasty` object.
+
+### edit a paste
+
+<p class="method">PATCH</p> <code>/paste/<span class="var">{id}</span></code>
+
+[comment]: <> (`PATCH /paste/:id`)
+
+you can only edit pastes on your account, so you must provide the `Authorization` header.
+
+it returns a full paste object. [[objects docs]](/api-docs/objects)
+
+to edit a paste you need to provide only the values you are editing in the JSON body.
+
+these are the values you can edit:
+
+* title
+* isPrivate
+* isPublic
+* tags
+* pasties
+
+to edit a single pasty you will need to provide all of the original pasties changing the fields you want. it's not possible to update a single pasty without providing all of the pasties.

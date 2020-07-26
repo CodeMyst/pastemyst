@@ -5,7 +5,7 @@ import vibe.d;
 /++
  + API interface for doing time stuff. `/api/time` endpoint.
  +/
-@path("/api")
+@path("/api/v2")
 public interface IAPITime
 {
     /++

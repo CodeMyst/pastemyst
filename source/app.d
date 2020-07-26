@@ -7,8 +7,8 @@ void displayError(HTTPServerRequest req, HTTPServerResponse res, HTTPServerError
 {
     import pastemyst.data : UserSession;
 
-	string errorDebug = "";
-	debug errorDebug = error.debugMessage;
+    string errorDebug = "";
+    debug errorDebug = error.debugMessage;
 
     UserSession session = UserSession.init;
 
@@ -16,8 +16,17 @@ void displayError(HTTPServerRequest req, HTTPServerResponse res, HTTPServerError
     {
         session = req.session.get!UserSession("user");
     }
-	
-	res.render!("error.dt", error, errorDebug, session);
+    
+    import std.stdio : writeln;
+
+    if (req.requestPath.startsWith(InetPath("/api")))
+    {
+        res.contentType = "application/json";
+        res.writeBody(`{"statusMessage": "` ~ error.message ~ `"}`);
+        return;
+    }
+
+    res.render!("error.dt", error, errorDebug, session);
 }
 
 public void main()
@@ -41,15 +50,15 @@ public void main()
 	router.registerWebInterface(new UsersWeb());
 	router.registerWebInterface(new PasteWeb());
 
-    auto fsettings = new HTTPFileServerSettings();
-    fsettings.serverPathPrefix = "/static";
+        auto fsettings = new HTTPFileServerSettings();
+        fsettings.serverPathPrefix = "/static";
 
 	router.get("/static/*", serveStaticFiles("public/", fsettings));
 
 	HTTPServerSettings serverSettings = new HTTPServerSettings();
 	serverSettings.bindAddresses = ["127.0.0.1"];
 	serverSettings.port = 5000;
-    serverSettings.sessionStore = new MemorySessionStore();
+        serverSettings.sessionStore = new MemorySessionStore();
 	serverSettings.errorPageHandler = toDelegate(&displayError);
 
 	connect();

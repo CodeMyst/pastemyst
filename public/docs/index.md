@@ -1,6 +1,8 @@
 ## api docs
 
-the base endpoint for the api is `https://paste.myst.rs/api`.
+the base endpoint for the api is `https://paste.myst.rs/api/v2`.
+
+the old v1 api is still available and works at `https://paste.myst.rs/api/` so that means that old applications don't need to change anything to use the api but we strongly suggest you upgrade to the v2 api as the old one might stop working.
 
 you don't need any api keys to access the api, unless you need to access pastes or features that require an account. the api is rate limited to 5 requests per second, after exceeding the rate limit your requests will get a `429 (too many requests)` response code. if you need to do more requests than that contact me.
 

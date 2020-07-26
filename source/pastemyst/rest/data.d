@@ -5,7 +5,7 @@ import vibe.d;
 /++
  + API interface for getting various simple data. `/api/data` endpoint.
  +/
-@path("/api")
+@path("/api/v2")
 public interface IAPIData
 {
     /++

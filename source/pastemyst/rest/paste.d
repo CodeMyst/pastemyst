@@ -7,7 +7,7 @@ import std.typecons;
 /++
  + API interface for the `/api/paste` endpoint.
  +/
-@path("/api")
+@path("/api/v2")
 public interface IAPIPaste
 {
     /++

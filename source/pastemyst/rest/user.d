@@ -5,7 +5,7 @@ import vibe.d;
 /++
  + api interface for the `/api/user` endpoint
  +/
-@path("/api/user")
+@path("/api/v2/user")
 public interface IAPIUser
 {
     /++

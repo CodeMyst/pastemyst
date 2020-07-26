@@ -3,7 +3,7 @@
 	"versions": {
 		"botan": "1.12.18",
 		"botan-math": "1.0.3",
-		"commonmark-d": "1.0.7",
+		"commonmark-d": "1.0.8",
 		"csprng": "1.1.1",
 		"diet-ng": "1.6.1",
 		"dshould": "1.1.0",
@@ -22,6 +22,6 @@
 		"tinyendian": "0.2.0",
 		"unit-threaded": "0.10.8",
 		"vibe-core": "1.9.2",
-		"vibe-d": "0.9.0-rc.1"
+		"vibe-d": "0.9.0"
 	}
 }

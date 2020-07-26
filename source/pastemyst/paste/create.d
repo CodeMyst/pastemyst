@@ -18,6 +18,7 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
     import pastemyst.util : generateUniqueId;
     import std.uni : toLower;
     import pastemyst.time : expiresInToUnixTime;
+    import std.array : replace;
 
     enforceHTTP(!pasties.length == 0, HTTPStatus.badRequest, "pasties arrays has to have at least one element.");
 
@@ -33,7 +34,7 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
     }
 
     auto currentTime = Clock.currTime().toUnixTime();
-    
+
     ulong deletesAt = 0;
 
     if (expires.get() != ExpiresIn.never)
@@ -60,6 +61,8 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
         {
             pasty.language = autodetectLanguage(paste.id, pasty);
         }
+
+        pasty.code = pasty.code.replace("\r\n", "\n");
 
         paste.pasties ~= pasty;
     }

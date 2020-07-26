@@ -19,7 +19,7 @@ public string generateDiff(string id, string before, string after) @trusted
     write("tmp/" ~ id ~ "-before", before.replace("\r\n", "\n"));
     write("tmp/" ~ id ~ "-after", after.replace("\r\n", "\n"));
 
-    auto diff = execute(["diff", "-u", "tmp/" ~ id ~ "-before", "tmp/" ~ id ~ "-after"]);
+    const diff = execute(["diff", "-u", "tmp/" ~ id ~ "-before", "tmp/" ~ id ~ "-after"]);
 
     remove("tmp/" ~ id ~ "-before");
     remove("tmp/" ~ id ~ "-after");

@@ -42,7 +42,7 @@
     margin-left: auto;
     border-radius: var(--border-radius);
     background-color: var(--color-nanonotsolight);
-    color: white;
+    color: var(--color-white);
     padding: 0 0.5rem;
 }
 
@@ -117,7 +117,7 @@
     padding: 0.5rem 1rem;
     box-sizing: border-box;
     border: none;
-    color: white;
+    color: var(--color-white);
     font-size: var(--font-size-normal);
     margin-bottom: 20px;
 }

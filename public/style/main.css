@@ -4,6 +4,7 @@
 @import url(theme-monokai.css);
 @import url(theme-dracula.css);
 @import url(theme-solarized.css);
+@import url(theme-base16-light.css);
 
 @import url(basics.css);
 
@@ -16,6 +17,7 @@
 @import url(libs/codemirror-monokai.css);
 @import url(libs/codemirror-dracula.css);
 @import url(libs/codemirror-solarized.css);
+@import url(libs/codemirror-base16-light.css);
 @import url(libs/font-awesome/css/font-awesome.min.css);
 @import url(libs/highlightjs-default.css);
 @import url(libs/highlightjs-darcula.css);

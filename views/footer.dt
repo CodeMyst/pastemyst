@@ -9,6 +9,7 @@ footer
         label(for="theme") theme:
         select(name="theme", id="theme-picker")
             option(value="myst") myst
+            option(value="base16-light") base16-light
             option(value="dracula") dracula
             option(value="monokai") monokai
             option(value="solarized") solarized

@@ -49,7 +49,7 @@
 
 .paste-header .right a
 {
-    color: white;
+    color: var(--color-white);
     font-size: var(--font-size-normal);
     margin-right: 20px;
 }

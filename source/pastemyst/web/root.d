@@ -28,6 +28,6 @@ public class RootWeb
             user = findOneById!User(session.user.id);
         }
 
-		render!("home.dt", session, user);
+        render!("home.dt", session, user);
     }
 }

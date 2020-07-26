@@ -5,9 +5,10 @@ module pastemyst.util.diff;
  +/
 public string generateDiff(string id, string before, string after) @trusted
 {
-    import std.process : execute;
+    import std.process : execute, executeShell;
     import std.file : write, mkdir, remove, exists;
     import std.algorithm : endsWith, remove;
+    import std.array : replace;
     import algo = std.algorithm : remove;
 
     if (!exists("tmp/"))
@@ -15,26 +16,17 @@ public string generateDiff(string id, string before, string after) @trusted
         mkdir("tmp");
     }
 
-    write("tmp/" ~ id ~ "-before", before);
-    write("tmp/" ~ id ~ "-after", after);
+    write("tmp/" ~ id ~ "-before", before.replace("\r\n", "\n"));
+    write("tmp/" ~ id ~ "-after", after.replace("\r\n", "\n"));
 
-    auto diff = execute(["diff", "-u", "tmp/" ~ id ~ "-before", "tmp/" ~ id ~ "-after"]);
+    const diff = execute(["diff", "-u", "tmp/" ~ id ~ "-before", "tmp/" ~ id ~ "-after"]);
 
     remove("tmp/" ~ id ~ "-before");
     remove("tmp/" ~ id ~ "-after");
 
     char[] diffOutput = cast(char[]) diff.output;
 
-    if (diff.output.endsWith("\r\n"))
-    {
-        const ulong len = diff.output.length;
-        diffOutput = algo.remove(diffOutput, len-2, len-1);
-    }
-    else if (diff.output.endsWith("\n"))
-    {
-        const ulong len = diff.output.length;
-        diffOutput = algo.remove(diffOutput, len-1);
-    }
+    write("tmp/" ~ id ~ "-diff", diffOutput);
 
     return cast(string) diffOutput;
 }
@@ -46,14 +38,15 @@ public string patchDiff(string id, string current, string diff) @safe
 {
     import std.process : executeShell;
     import std.file : write, mkdir, remove, exists, readText;
+    import std.array : replace;
 
     if (!exists("tmp/"))
     {
         mkdir("tmp");
     }
 
-    write("tmp/" ~ id ~ "-current", current);
-    write("tmp/" ~ id ~ "-diff", diff);
+    write("tmp/" ~ id ~ "-current", current.replace("\r\n", "\n"));
+    write("tmp/" ~ id ~ "-diff", diff.replace("\r\n", "\n"));
 
     executeShell("patch -R tmp/" ~ id ~ "-current < tmp/" ~ id ~ "-diff");
 

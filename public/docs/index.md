@@ -13,5 +13,6 @@ to use the token you simply have to provide it as an `Authorization` header to a
 * [/data](/api-docs/data) - getting various simple data
 * [/time](/api-docs/time) - useful time operations
 * [/paste](/api-docs/paste) - creating and fetching pastes, and more
+* [/user](/api-docs/user) - getting users
 
 and all of the objects that are needed for api requests: [objects](/api-docs/objects)

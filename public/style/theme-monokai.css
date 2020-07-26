@@ -1,0 +1,24 @@
+html.monokai
+{
+    --color-nano: #181915;
+    --color-nanonotsolight: #3e3f39;
+    --color-nanolight: #272822;
+    --color-nanolightlight: #a4a59d;
+    --color-white: #F8F8F2;
+    --color-mystge: #fd971f;
+    --color-mystlue: #66d9ef;
+    --color-mysted: #f92672;
+    --color-mysteen: #a6e22e;
+
+    --font-size-code: 1rem;
+    --font-size-small: 1rem;
+    --font-size-normal: 1.2rem;
+    --font-size-medium: 1.5rem;
+    --font-size-big: 3rem;
+
+    --border-radius: 0.3rem;
+
+    --break-small: 640px;
+
+    --font-stack: 'UbuntuMono', monospace;
+}

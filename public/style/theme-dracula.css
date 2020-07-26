@@ -1,0 +1,24 @@
+html.dracula
+{
+    --color-nano: #16171e;
+    --color-nanonotsolight: #44475a;
+    --color-nanolight: #282a36;
+    --color-nanolightlight: #777777;
+    --color-white: #f8f8f2;
+    --color-mystge: #ffb86c;
+    --color-mystlue: #8be9fd;
+    --color-mysted: #ff5555;
+    --color-mysteen: #50fa7b;
+
+    --font-size-code: 1rem;
+    --font-size-small: 1rem;
+    --font-size-normal: 1.2rem;
+    --font-size-medium: 1.5rem;
+    --font-size-big: 3rem;
+
+    --border-radius: 0.3rem;
+
+    --break-small: 640px;
+
+    --font-stack: 'UbuntuMono', monospace;
+}

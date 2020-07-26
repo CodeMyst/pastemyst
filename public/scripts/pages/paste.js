@@ -1,5 +1,5 @@
 import { timeDifferenceToString } from "../helpers/time.js";
-import { getWordwrap } from "../helpers/options.js";
+import { getWordwrap, getTheme } from "../helpers/options.js";
 
 let highlightExpr = /(\d)L(\d+)(?:-L(\d+))?/;
 let editors = [];
@@ -19,7 +19,7 @@ window.addEventListener("load", async () =>
             lineNumbers: true,
             mode: "text/plain",
             tabSize: 4,
-            theme: "darcula",
+            theme: getTheme(),
             lineWrapping: getWordwrap(),
             readOnly: true,
             extraKeys:
@@ -42,7 +42,7 @@ window.addEventListener("load", async () =>
         }
         else
         {
-            let res = await fetch(`/api/data/language?name=${encodeURIComponent(langs[i])}`, // jshint ignore:line
+            let res = await fetch(`/api/v2/data/language?name=${encodeURIComponent(langs[i])}`, // jshint ignore:line
             {
                 headers:
                 {

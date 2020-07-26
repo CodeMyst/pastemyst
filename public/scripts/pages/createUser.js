@@ -26,7 +26,7 @@ window.addEventListener("load", async () =>
 
 async function check(username)
 {
-    await fetch(`/api/user/${username}/exists`).then((res) =>
+    await fetch(`/api/v2/user/${username}/exists`).then((res) =>
     {
         if (res.ok)
         {

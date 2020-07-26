@@ -1,4 +1,4 @@
-import { getWordwrap } from "../helpers/options.js";
+import { getWordwrap, getTheme } from "../helpers/options.js";
 
 window.addEventListener("load", async () =>
 {
@@ -24,7 +24,7 @@ window.addEventListener("load", async () =>
             lineNumbers: true,
             mode: "text/x-diff",
             tabSize: 4,
-            theme: "darcula",
+            theme: getTheme(),
             lineWrapping: getWordwrap(),
             readOnly: true,
             extraKeys:
@@ -46,7 +46,7 @@ window.addEventListener("load", async () =>
             lineNumbers: true,
             mode: "text/plain",
             tabSize: 4,
-            theme: "darcula",
+            theme: getTheme(),
             lineWrapping: getWordwrap(),
             readOnly: true,
             extraKeys:

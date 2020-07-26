@@ -1,5 +1,8 @@
 @import url(fonts.css);
-@import url(variables.css);
+
+@import url(theme-myst.css);
+@import url(theme-monokai.css);
+@import url(theme-dracula.css);
 
 @import url(basics.css);
 
@@ -8,7 +11,9 @@
 @import url(components/footer.css);
 
 @import url(libs/codemirror.css);
-@import url(libs/codemirror-darcula.css);
+@import url(libs/codemirror-myst.css);
+@import url(libs/codemirror-monokai.css);
+@import url(libs/codemirror-dracula.css);
 @import url(libs/font-awesome/css/font-awesome.min.css);
 @import url(libs/highlightjs-default.css);
 @import url(libs/highlightjs-darcula.css);

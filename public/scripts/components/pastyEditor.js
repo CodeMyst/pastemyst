@@ -1,6 +1,6 @@
 import Dropdown from "../components/dropdown.js";
 import { PastyEditor } from "../data/editor.js";
-import { getWordwrap } from "../helpers/options.js";
+import { getWordwrap, getTheme } from "../helpers/options.js";
 
 export let editors = [];
 
@@ -25,7 +25,7 @@ export function initEditors()
             lineNumbers: true,
             mode: "text/plain",
             tabSize: 4,
-            theme: "darcula",
+            theme: getTheme(),
             lineWrapping: getWordwrap(),
             extraKeys:
             {
@@ -72,14 +72,13 @@ export function addEditor()
     let idInput = clone.querySelector("input[name=id]");
     idInput.setAttribute("value", "");
 
-    // TODO: set initial mode
     editor.editor = CodeMirror.fromTextArea(textArea, // jshint ignore:line
     {
         indentUnit: 4,
         lineNumbers: true,
         mode: "text/plain",
         tabSize: 4,
-        theme: "darcula",
+        theme: getTheme(),
         lineWrapping: getWordwrap(),
         extraKeys:
         {

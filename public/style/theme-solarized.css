@@ -1,0 +1,24 @@
+html.solarized
+{
+    --color-nano: #002b36;
+    --color-nanonotsolight: #001a21;
+    --color-nanolight: #073642;
+    --color-nanolightlight: #586e75;
+    --color-white: #eee8d5;
+    --color-mystge: #cb4b16;
+    --color-mystlue: #268bd2;
+    --color-mysted: #d30102;
+    --color-mysteen: #859900;
+
+    --font-size-code: 1rem;
+    --font-size-small: 1rem;
+    --font-size-normal: 1.2rem;
+    --font-size-medium: 1.5rem;
+    --font-size-big: 3rem;
+
+    --border-radius: 0.3rem;
+
+    --break-small: 640px;
+
+    --font-stack: 'UbuntuMono', monospace;
+}

@@ -57,3 +57,14 @@ a:hover
 {
     margin-bottom: 0;
 }
+
+select
+{
+    border-radius: var(--border-radius);
+    background-color: var(--color-nano);
+    color: var(--color-white);
+    font-size: var(--font-size-normal);
+    padding: 0.1rem 1rem;
+    outline: none;
+    border: none;
+}

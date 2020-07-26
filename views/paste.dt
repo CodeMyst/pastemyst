@@ -55,7 +55,7 @@ block body
                     - import pastemyst.db : getNumberOfEdits;
                     span.highlight edits: 
                     span.value= getNumberOfEdits(paste)
-            - if (paste.ownerId != "")
+            - if (paste.ownerId != "" && (paste.ownerId == session.user.id || paste.isPublic))
                 - import pastemyst.db : findOneById;
                 - import pastemyst.data : User;
                 - const user = findOneById!User(paste.ownerId).get();

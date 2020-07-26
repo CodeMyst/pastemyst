@@ -5,4 +5,12 @@ footer
     - import pastemyst.data : Paste;
     - string year = Clock.currTime().year.to!string();
     .copyright copyright &copy; #[a(href="https://github.com/codemyst", target="_blank") codemyst] #{year}
+    .theme
+        label(for="theme") theme:
+        select(name="theme", id="theme-picker")
+            option(value="myst") myst
+            option(value="base16-light") base16-light
+            option(value="dracula") dracula
+            option(value="monokai") monokai
+            option(value="solarized") solarized
     .paste-amount #{getCollectionCount!Paste()} currently active pastes 

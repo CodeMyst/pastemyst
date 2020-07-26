@@ -19,3 +19,8 @@ export function getFullwidth()
 
     return fullwidth;
 }
+
+export function getTheme()
+{
+    return localStorage.getItem("theme");
+}

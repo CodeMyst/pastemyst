@@ -6,6 +6,10 @@
   height: 300px;
   color: black;
   direction: ltr;
+  font-family: var(--font-stack);
+  font-size: var(--font-size-code);
+  background-color: var(--color-nanolight) !important;
+  color: var(--color-white);
 }
 
 /* PADDING */
@@ -28,6 +32,7 @@
   border-right: 1px solid #ddd;
   background-color: #f7f7f7;
   white-space: nowrap;
+  background-color: var(--color-nanolight) !important;
 }
 .CodeMirror-linenumbers {}
 .CodeMirror-linenumber {

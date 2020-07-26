@@ -11,7 +11,7 @@ window.addEventListener("load", async () =>
         pasteElement.querySelector(".info .created-at .tooltip-text").textContent = createdAtDate.toString().toLowerCase();
 
         // TODO: this can be optimized, the pastes now hold information where they will get deleted
-        const response = await fetch(`/api/time/expiresInToUnixTime?createdAt=${pastes[i].createdAt}&expiresIn=${pastes[i].expiresIn}`, // jshint ignore:line
+        const response = await fetch(`/api/v2/time/expiresInToUnixTime?createdAt=${pastes[i].createdAt}&expiresIn=${pastes[i].expiresIn}`, // jshint ignore:line
         {
             headers:
             {

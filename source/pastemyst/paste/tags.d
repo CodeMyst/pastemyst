@@ -3,7 +3,7 @@ module pastemyst.paste.tags;
 /++
  + converts a tags string from the frontend in a proper tag array
  +/
-public string[] tagsStringToArray(string tags)
+public string[] tagsStringToArray(string tags) @safe
 {
     import std.array : split, array;
     import std.string : strip;

@@ -180,4 +180,21 @@ public class UserWeb
 
         redirect("/");
     }
+
+    /++
+     + regenerates the token
+     +/
+    @path("settings/regen")
+    @anyAuth
+    public void getRegen(HTTPServerRequest req)
+    {
+        import pastemyst.db : update;
+        import pastemyst.rest : generateApiKey;
+
+        auto session = req.session.get!UserSession("user");
+
+        update!ApiKey(["_id": session.user.id], ["$set": ["key": generateApiKey()]]);
+
+        redirect("/user/settings");
+    }
 }

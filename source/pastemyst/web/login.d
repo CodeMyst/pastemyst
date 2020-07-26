@@ -193,6 +193,7 @@ public class LoginWeb
     {
         import pastemyst.util : generateUniqueId;
         import pastemyst.db : findOne, insert;
+        import pastemyst.rest : generateApiKey;
 
         enforceHTTP(req.session &&
                     req.session.isKeySet("create_temp_type") &&
@@ -216,6 +217,10 @@ public class LoginWeb
         user.avatarUrl = serviceUser.avatarUrl;
         user.serviceIds[serviceName] = serviceUser.id;
         insert(user);
+
+        auto key = ApiKey(user.id, generateApiKey());
+
+        insert(key);
 
         UserSession ses;
         ses.loggedIn = true;

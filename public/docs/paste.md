@@ -2,90 +2,55 @@
 
 endpoint for creating and fetching pastes, and more.
 
+### get a paste
+
+<p class="method">GET</p> <code>/paste/<span class="var">{id}</span></code>
+
+[comment]: <> (`GET /paste/:id`)
+
+if you're accessing a private paste you need to provide the `Authorization` header.
+
+it returns a full paste object. [[objects docs]](/api-docs/objects)
+
 ### create a paste
 
 <p class="method">POST</p> <code>/paste</code>
 
 [comment]: <> (`POST /paste`)
 
-#### json body parameters
+if you want the paste to be tied to your account, or create a private/public paste, or want to use tags you need to provide the `Authorization` header.
 
-| field     | type         | description                  | optional?              |
-|-----------|--------------|------------------------------|------------------------|
-| title     | string       | title of the paste           | yes                    |
-| expiresIn | string       | when a paste expires         | yes, defaults to never |
-| isPrivate | bool         | whether the paste is private | yes, defaults to false |
-| pasties   | object array | list of pasties              | no                     |
+required JSON body:
 
-**pasty object**
+| field     |  optional | type    | description                                                                            |
+|-----------|-----------|---------|----------------------------------------------------------------------------------------|
+| title     |  yes      | string  | title of the paste                                                                     |
+| expiresIn |  yes      | string  | when the paste will expire, possible values are never, 1h, 2h, 10h, 1d, 2d, 1w, 1m, 1y |
+| isPrivate |  yes      | bool    | if it's private it's only accessible by the owner                                      |
+| isPublic  |  yes      | bool    | is it displayed on the owner's public profile                                          |
+| tags      |  yes      | string  | list of tags, comma separated                                                          |
+| pasties   |  no       | pasty[] | list of pasties                                                                        |
 
-| field    | type   | description           | optional? |
-|----------|--------|-----------------------|-----------|
-| title    | string | title of the pasty    | yes       |
-| language | string | language of the pasty | yes       |
-| code     | string | contents of the pasty | no        |
+check out [[objects docs]](/api-docs/objects) for the `pasty` object.
 
-#### returns
+### edit a paste
 
-| field     | type         | description                                  |
-|-----------|--------------|----------------------------------------------|
-| _id       | string       | unique id of the paste                       |
-| ownerId   | string       | user id of the user that created the paste   |
-| createdAt | number       | unix timestamp of when the paste was created |
-| title     | string       | title of the paste                           |
-| expiresIn | string       | when a paste expires                         |
-| isPrivate | bool         | whether the paste is private                 |
-| pasties   | object array | list of pasties                              |
+<p class="method">PATCH</p> <code>/paste/<span class="var">{id}</span></code>
 
-#### example request
+[comment]: <> (`PATCH /paste/:id`)
 
-<p class="method">POST</p> <code>/paste</code>
+you can only edit pastes on your account, so you must provide the `Authorization` header.
 
-**json body:**
+it returns a full paste object. [[objects docs]](/api-docs/objects)
 
-```json
-{
-  "title": "example paste",
-  "expiresIn": "never",
-  "isPrivate": false,
-  "pasties":
-  [
-    {
-      "title": "first pasty",
-      "language": "plain text",
-      "code": "first pasty contents"
-    },
-    {
-      "title": "second pasty",
-      "language": "plain text",
-      "code": "second pasty contents"
-    }
-  ]
-}
-```
+to edit a paste you need to provide only the values you are editing in the JSON body.
 
-**result:**
+these are the values you can edit:
 
-```json
-{
-  "ownerId": "",
-  "isPublic": false,
-  "expiresIn": "never",
-  "createdAt": 1588442362,
-  "isPrivate": false,
-  "title": "example paste",
-  "_id": "gsgbdyf6",
-  "pasties": [
-    {
-      "language": "plain text",
-      "title": "first pasty",
-      "code": "first pasty contents"
-    },
-    {
-      "language": "plain text",
-      "title": "second pasty",
-      "code": "second pasty contents"
-    }
-  ]
-}
-```
+* title
+* isPrivate
+* isPublic
+* tags
+* pasties
+
+to edit a single pasty you will need to provide all of the original pasties changing the fields you want. it's not possible to update a single pasty without providing all of the pasties.

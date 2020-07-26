@@ -42,6 +42,21 @@ block body
                 - if (user.publicProfile)
                     p.description your public profile is available here: #[a(href="/users/" ~ user.username) /users/#{user.username}]
 
+                h2 api
+                - import pastemyst.db : findOneById;
+                - import pastemyst.data : ApiKey;
+                - auto key = findOneById!ApiKey(user.id).get().key;
+
+                p.description this is a token which you can use to get information which can only be fetched with your account. to see how to use the token read the #[a(href="/api-docs") api docs].
+                p.description you should keep this token a secret, but you can regenerate it if needed.
+
+                span.token= key
+                a.token-copy copy
+                
+                br
+
+                a.regen(href="settings/regen") regenerate
+
                 h2 account deletion
 
                 p.description deleting your account will delete #[b everything] tied to your account (user data, pastes, stars, etc.)

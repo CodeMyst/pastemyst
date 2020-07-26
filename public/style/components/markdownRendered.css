@@ -26,8 +26,13 @@
 {
     background-color: var(--color-nano);
     border-radius: var(--border-radius);
-    padding: 0.25rem 0.5rem;
+    padding: 0 0.25rem;
     margin-bottom: 20px;
+}
+
+.markdown-rendered pre code
+{
+    padding: 0.5rem;
 }
 
 .markdown-rendered p
@@ -49,12 +54,16 @@
     border-radius: var(--border-radius);
     padding: 0.5rem 1rem;
     margin-bottom: 20px;
+    font-size: var(--font-size-small);
+    width: 100%;
+    overflow-x: auto;
 }
 
 .markdown-rendered tr th
 {
     padding-bottom: 20px;
     color: var(--color-mystge);
+    text-align: left;
 }
 
 .markdown-rendered table th,
@@ -66,5 +75,10 @@
 
 .markdown-rendered table tbody tr td:first-child
 {
-    color: var(--color-mystlue);
+    color: var(--color-mystge);
+}
+
+.markdown-rendered table tbody tr td:last-child
+{
+    width: 100%;
 }

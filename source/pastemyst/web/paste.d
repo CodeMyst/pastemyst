@@ -266,8 +266,6 @@ public class PasteWeb
         import pastemyst.paste : createPaste, tagsStringToArray;
         import pastemyst.db : insert;
 
-        // TODO: private pastes
-
         string ownerId = "";
 
         UserSession session = UserSession.init;
@@ -434,7 +432,7 @@ public class PasteWeb
         import std.array : split, join;
         import std.conv : to;
         import std.datetime : Clock;
-        import pastemyst.util : generateDiff;
+        import pastemyst.util : generateDiff, generateUniqueEditId;
         import std.algorithm : canFind, find, countUntil, remove;
         import pastemyst.paste : tagsStringToArray;
 
@@ -531,6 +529,10 @@ public class PasteWeb
                                 HTTPStatus.badRequest,
                                 "can't edit a pasty to have an autodetect language.");
 
+                    enforceHTTP(doesLanguageExist(editedPasty.language),
+                                HTTPStatus.badRequest,
+                                "invalid pasty language.");
+
                     Edit edit;
                     edit.uniqueId = generateUniqueEditId(paste);
                     edit.editId = editId;
@@ -608,21 +610,6 @@ public class PasteWeb
         update!Paste(["_id": _id], paste);
 
         redirect("/" ~ _id);
-    }
-
-    private string generateUniqueEditId(Paste paste)
-    {
-        import pastemyst.encoding : randomBase36Id;
-        import std.algorithm : canFind;
-
-        string id;
-
-        do
-        {
-            id = randomBase36Id();
-        } while(paste.edits.canFind!((e) => e.uniqueId == id));
-
-        return id;
     }
 
     /++

@@ -13,15 +13,9 @@ converts an `expiresIn` value to a specific time when a paste should expire.
 * `createdAt` - unix timestamp of a creation date
 * `expiresIn` - when a paste expires
 
-[comment]: <> (TODO: list all possible `expiresIn` values.)
+list of possible `expiresIn` values: never, 1h, 2h, 10h, 1d, 2d, 1w, 1m, 1y.
 
-#### returns
-
-| field  | type   | description                |
-|--------|--------|----------------------------|
-| result | number | when a paste should expire |
-
-#### example request
+example request:
 
 <p class="method">GET</p> <code>/time/expiresInToUnixTime?createdAt=<span class="var">1588441258</span>&expiresIn=<span class="var">1w</span></code>
 

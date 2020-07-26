@@ -2,6 +2,8 @@
 
 endpoint for creating and fetching pastes, and more.
 
+the list of all languages supported can be found in the github repo in the `data/languages.json` file.
+
 ### get a paste
 
 <p class="method">GET</p> <code>/paste/<span class="var">{id}</span></code>

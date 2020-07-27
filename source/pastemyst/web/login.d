@@ -191,7 +191,8 @@ public class LoginWeb
     @noAuth
     public void postLoginCreate(string username, HTTPServerRequest req)
     {
-        import pastemyst.util : generateUniqueId, usernameHasSpecialChars, usernameStartsWithSymbol, usernameEndsWithSymbol;
+        import pastemyst.util : generateUniqueId, usernameHasSpecialChars, usernameStartsWithSymbol,
+                                usernameEndsWithSymbol;
         import pastemyst.db : findOne, insert;
         import pastemyst.rest : generateApiKey;
 

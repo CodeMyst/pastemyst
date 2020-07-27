@@ -84,6 +84,7 @@ public class UserWeb
         import std.file : remove, exists;
         import std.algorithm : startsWith;
         import imagefmt : read_image;
+        import pastemyst.util : usernameHasSpecialChars;
 
         UserSession session = req.session.get!UserSession("user");
 
@@ -115,7 +116,11 @@ public class UserWeb
         if (session.user.username != username)
         {
             enforceHTTP(findOne!User(["$text": ["$search": username]]).isNull,
-                    HTTPStatus.badRequest, "username is taken");
+                        HTTPStatus.badRequest, "username is taken");
+
+            enforceHTTP(!usernameHasSpecialChars(username),
+                        HTTPStatus.badRequest, "username cannot contain special characters");
+
             session.user.username = username;
             update!User(["_id": session.user.id], ["$set": ["username": username]]);
         }

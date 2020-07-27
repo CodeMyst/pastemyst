@@ -1,4 +1,5 @@
 import Dropdown from "../components/dropdown.js";
+import { usernameHasSpecialChars } from "../helpers/username.js";
 
 let msg;
 let available;
@@ -12,10 +13,12 @@ window.addEventListener("load", async () =>
     msg = document.querySelector(".settings-block .username .available");
 
     await check(usernameInput.value);
+    checkUsernameSpecialChars(usernameInput.value);
 
     usernameInput.addEventListener("input", async () =>
     {
         await check(usernameInput.value);
+        checkUsernameSpecialChars(usernameInput.value);
     });
 
     document.querySelector("button.save").addEventListener("click", () =>
@@ -35,6 +38,16 @@ window.addEventListener("load", async () =>
         copyToClipboard(document.querySelector(".token").textContent);
     });
 });
+
+function checkUsernameSpecialChars(username)
+{
+    if (usernameHasSpecialChars(username))
+    {
+        msg.className = "not-valid";
+        msg.textContent = "username is invalid (cannot contain special characters)";
+        available = false;
+    }
+}
 
 async function check(username)
 {

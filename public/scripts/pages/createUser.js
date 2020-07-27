@@ -1,3 +1,5 @@
+import { usernameHasSpecialChars } from "../helpers/username.js";
+
 let msg;
 let available;
 
@@ -9,10 +11,12 @@ window.addEventListener("load", async () =>
     msg = document.querySelector(".available");
 
     await check(input.value);
+    checkUsernameSpecialChars(input.value);
 
     input.addEventListener("input", async () =>
     {
         await check(input.value);
+        checkUsernameSpecialChars(input.value);
     });
 
     button.addEventListener("click", () =>
@@ -23,6 +27,16 @@ window.addEventListener("load", async () =>
         }
     });
 });
+
+function checkUsernameSpecialChars(username)
+{
+    if (usernameHasSpecialChars(username))
+    {
+        msg.className = "not-valid";
+        msg.textContent = "username is invalid (cannot contain special characters)";
+        available = false;
+    }
+}
 
 async function check(username)
 {

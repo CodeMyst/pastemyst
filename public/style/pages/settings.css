@@ -67,6 +67,11 @@
     color: var(--color-mysted);
 }
 
+#settings .settings-block .username .not-valid
+{
+    color: var(--color-mysted);
+}
+
 #settings .settings-block .username p
 {
     margin-right: 20px;

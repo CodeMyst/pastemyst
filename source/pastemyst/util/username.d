@@ -4,7 +4,7 @@ import std.string;
 
 private const(string) alpha = "abcdefghijklmnopqrstuvwxyz";
 private const(string) nums = "0123456789";
-private const(string) symbols = "-_.";
+private const(string) symbols = "-_";
 private const(string) alphanumerics = alpha ~ nums ~ symbols;
 
 /++

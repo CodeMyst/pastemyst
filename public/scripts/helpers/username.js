@@ -1,6 +1,6 @@
 let alpha = "abcdefghijklmnopqrstuvwxyz";
 let nums = "0123456789";
-let symbols = "-_.";
+let symbols = "-_";
 let alphanumerics = alpha + nums + symbols;
 
 export function usernameHasSpecialChars(username)

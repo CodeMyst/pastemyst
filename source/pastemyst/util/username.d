@@ -47,7 +47,7 @@ public bool usernameEndsWithSymbol(string username)
 {
     import std.algorithm : count;
 
-    if (count(alphanums, username[username.length - 1].toLower()) != 1)
+    if (count(alphanums, username[username.length - cast(uint) 1].toLower()) != 1)
         return true;
 
     return false;

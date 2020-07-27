@@ -28,7 +28,6 @@ http://ethanschoonover.com/solarized/img/solarized-palette.png
 /* Color scheme for code-mirror */
 
 .cm-s-solarized {
-  line-height: 1.45em;
   color-profile: sRGB;
   rendering-intent: auto;
 }
@@ -130,9 +129,6 @@ http://ethanschoonover.com/solarized/img/solarized-palette.png
 }
 
 /* Common */
-.cm-s-solarized .CodeMirror-linenumber {
-  padding: 0 5px;
-}
 .cm-s-solarized .CodeMirror-guttermarker-subtle { color: #586e75; }
 .cm-s-solarized.cm-s-dark .CodeMirror-guttermarker { color: #ddd; }
 .cm-s-solarized.cm-s-light .CodeMirror-guttermarker { color: #cb4b16; }

@@ -84,7 +84,7 @@ public class UserWeb
         import std.file : remove, exists;
         import std.algorithm : startsWith;
         import imagefmt : read_image;
-        import pastemyst.util : usernameHasSpecialChars;
+        import pastemyst.util : usernameHasSpecialChars, usernameStartsWithSymbol, usernameEndsWithSymbol;
 
         UserSession session = req.session.get!UserSession("user");
 
@@ -120,6 +120,12 @@ public class UserWeb
 
             enforceHTTP(!usernameHasSpecialChars(username),
                         HTTPStatus.badRequest, "username cannot contain special characters");
+
+            enforceHTTP(!usernameStartsWithSymbol(username),
+                    HTTPStatus.badRequest, "username cannot start with a symbol");
+
+            enforceHTTP(!usernameEndsWithSymbol(username),
+                    HTTPStatus.badRequest, "username cannot end with a symbol");
 
             session.user.username = username;
             update!User(["_id": session.user.id], ["$set": ["username": username]]);

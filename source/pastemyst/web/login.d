@@ -191,7 +191,7 @@ public class LoginWeb
     @noAuth
     public void postLoginCreate(string username, HTTPServerRequest req)
     {
-        import pastemyst.util : generateUniqueId, usernameHasSpecialChars;
+        import pastemyst.util : generateUniqueId, usernameHasSpecialChars, usernameStartsWithSymbol, usernameEndsWithSymbol;
         import pastemyst.db : findOne, insert;
         import pastemyst.rest : generateApiKey;
 
@@ -202,6 +202,12 @@ public class LoginWeb
 
         enforceHTTP(!usernameHasSpecialChars(username),
                     HTTPStatus.badRequest, "username cannot contain special characters");
+
+        enforceHTTP(!usernameStartsWithSymbol(username),
+                    HTTPStatus.badRequest, "username cannot start with a symbol");
+
+        enforceHTTP(!usernameEndsWithSymbol(username),
+                    HTTPStatus.badRequest, "username cannot end with a symbol");
 
         const serviceName = req.session.get!string("create_temp_type");
         const serviceUser = req.session.get!ServiceUser("create_temp_user");

@@ -19,6 +19,7 @@
 	"copyright": "Copyright © 2019, CodeMyst",
 	"dependencies": {
 		"commonmark-d": "~>1.0.7",
+		"crypto": "~>0.2.13",
 		"csprng": "~>1.1.1",
 		"diet-ng": "~>1.6.1",
 		"dshould": "~>1.1.0",

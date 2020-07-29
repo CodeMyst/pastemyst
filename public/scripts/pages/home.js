@@ -71,6 +71,24 @@ window.addEventListener("load", () =>
             checkOptions();
         });
     }
+
+    const encryptCheckbox = document.getElementById("encrypt");
+    const encryptOptions = document.getElementById("encrypt-options");
+    const encryptPassword = document.getElementById("encrypt-password");
+
+    if (encryptCheckbox.checked)
+    {
+        encryptOptions.classList.remove("hidden");
+    }
+    else
+    {
+        encryptOptions.classList.add("hidden");
+    }
+
+    encryptCheckbox.addEventListener("click", () =>
+    {
+        encryptOptions.classList.toggle("hidden");
+    });
 });
 
 function disableInput(input, label)

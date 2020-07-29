@@ -36,6 +36,9 @@
                     i.fas.fa-star
                     span.amount= paste.stars
                     span.tooltip-text star
+            a.tooltip(href="/?id=" ~ paste.id)
+                i.fas.fa-clone
+                span.tooltip-text clone
             a.tooltip.copy-link(href="/" ~ paste.id)
                 i.fas.fa-link
                 span.tooltip-text copy link

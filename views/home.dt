@@ -4,6 +4,9 @@ block body
     #home
         .paste-options
             - string titleValue = "";
+            - static if (is(typeof(paste)))
+                span value #{paste.title}
+                - titleValue = paste.title;
             - string defaultExpiresIn = "never";
             - bool hideExpiresIn = false;
             include components/titleEditable

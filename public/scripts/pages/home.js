@@ -74,7 +74,6 @@ window.addEventListener("load", () =>
 
     const encryptCheckbox = document.getElementById("encrypt");
     const encryptOptions = document.getElementById("encrypt-options");
-    const encryptPassword = document.getElementById("encrypt-password");
 
     if (encryptCheckbox.checked)
     {

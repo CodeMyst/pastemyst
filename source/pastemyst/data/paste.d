@@ -70,6 +70,11 @@ public struct Paste
      + number of stars
      +/
     public ulong stars;
+
+    /++
+     + is the paste encrytped? should be false for this struct, use EncryptedPaste instead
+     +/
+    public bool encrypted;
 }
 
 
@@ -99,6 +104,85 @@ public struct Pasty
      + Code of the pasty.
      +/
     public string code;
+}
+
+/++
+ + struct for an encrypted paste
+ +/
+public struct EncryptedPaste
+{
+    /++
+     + id of the paste
+     +/
+    @name("_id")
+    public string id;
+
+    /++
+     + When the paste is created, using unix time.
+     +/
+    public ulong createdAt;
+
+    /++
+     + When the paste expires.
+     +/
+    public ExpiresIn expiresIn;
+
+    /++
+     + When the paste will get deleted, if `expiresIn` is set to never, this value is set to 0;
+     +/
+    public ulong deletesAt;
+
+    /++
+     + Owner of the paste. If no owner then this value should be `null`.
+     +/
+    public string ownerId;
+
+    /++
+     + If the paste is private.
+     +/
+    public bool isPrivate;
+
+    /++
+     + does the paste show up on the user's public profile?
+     +/
+    public bool isPublic;
+
+    /++
+     + This holds the list of Pasty objects and the title serialized to json and encrypted.
+     +/
+    public string encryptedData;
+
+    /++
+     + The key used to encrypt the data (encrypted).
+     +/
+    public string encryptedKey;
+
+    /++
+     + array of all tags for this paste
+     +/
+    public string[] tags;
+
+    /++
+     + number of stars
+     +/
+    public ulong stars;
+
+    /++
+     + is the paste encrypted. should be true for this struct, use Paste if not encrypted.
+     +/
+    public bool encrypted;
+}
+
+/++
+ + struct for easier serialization of paste data
+ +/
+public struct EncryptedPasteData
+{
+    ///
+    public string title;
+
+    ///
+    public Pasty[] pasties;
 }
 
 /++

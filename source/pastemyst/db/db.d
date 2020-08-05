@@ -40,7 +40,7 @@ public void connect()
  +/
 private string getCollectionName(T)() @safe
 {
-    static if (is(T == Paste))
+    static if (is(T == Paste) || is(T == EncryptedPaste))
     {
         return "pastes";
     }

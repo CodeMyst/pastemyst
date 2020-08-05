@@ -18,6 +18,7 @@
 	],
 	"copyright": "Copyright © 2019, CodeMyst",
 	"dependencies": {
+		"botan": "~>1.12.18",
 		"commonmark-d": "~>1.0.7",
 		"crypto": "~>0.2.13",
 		"csprng": "~>1.1.1",

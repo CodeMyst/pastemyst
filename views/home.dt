@@ -60,6 +60,8 @@ block body
             input(type="checkbox", name="isPublic")
             input(type="checkbox", name="isAnonymous")
             input(type="text", name="pasties")
+            input(type="checkbox", name="encrypt")
+            input(type="password", name="password")
             input(type="submit")
 
 block scripts

@@ -261,9 +261,9 @@ public class PasteWeb
      +/
     @noAuth
     public void postPaste(string title, string tags, string expiresIn, bool isPrivate, bool isPublic,
-            bool isAnonymous, string pasties, HTTPServerRequest req)
+            bool isAnonymous, bool encrypt, string password, string pasties, HTTPServerRequest req)
     {
-        import pastemyst.paste : createPaste, tagsStringToArray;
+        import pastemyst.paste : createPaste, createEncryptedPaste, tagsStringToArray;
         import pastemyst.db : insert;
 
         string ownerId = "";
@@ -280,13 +280,24 @@ public class PasteWeb
             }
         }
 
-        Paste paste = createPaste(title, expiresIn, deserializeJson!(Pasty[])(pasties), isPrivate, ownerId);
+        Paste paste;
+        EncryptedPaste encryptedPaste;
+
+        if (!encrypt)
+        {
+            paste = createPaste(title, expiresIn, deserializeJson!(Pasty[])(pasties), isPrivate, ownerId);
+        }
+        else
+        {
+            encryptedPaste = createEncryptedPaste(title, expiresIn, deserializeJson!(Pasty[])(pasties), isPrivate, ownerId, password);
+        }
 
         if (isPublic)
         {
             if (session.loggedIn)
             {
                 paste.isPublic = isPublic;
+                encryptedPaste.isPublic = isPublic;
             }
             else
             {
@@ -304,6 +315,7 @@ public class PasteWeb
                         "the paste cant be private or shown on the profile if its anonymous");
 
                 paste.ownerId = "";
+                encryptedPaste.ownerId = "";
             }
 
             if (isPrivate)
@@ -319,11 +331,19 @@ public class PasteWeb
             enforceHTTP(session.loggedIn, HTTPStatus.forbidden, "you cant tag pastes if you are not logged in.");
 
             paste.tags = tagsStringToArray(tags);
+            encryptedPaste.tags = tagsStringToArray(tags);
         }
 
-        insert(paste);
-
-        redirect("/" ~ paste.id);
+        if (!encrypt)
+        {
+            insert(paste);
+            redirect("/" ~ paste.id);
+        }
+        else
+        {
+            insert(encryptedPaste);
+            redirect("/" ~ encryptedPaste.id);
+        }
     }
 
     @path("/raw/:pasteId/:pastyId")

@@ -12,6 +12,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '10.x'
+      - name: Install libscrypt
+        run: |
+          sudo apt-get install libscrypt0
+          sudo apt-get install libscrypt-dev
       - name: Checkout submodules
         uses: srt32/git-actions@v0.0.3
         with:

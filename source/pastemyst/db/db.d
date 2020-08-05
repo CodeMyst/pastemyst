@@ -149,6 +149,23 @@ public Nullable!R findOneById(R, T)(T id) @safe
     return findOne!R(["_id": id]);
 }
 
+/++
+ + gets one item from the mongo db with the specified id;
+ +
+ + tries to get the item, if it fails for any reason it returns null
+ +/
+public Nullable!R tryFindOneById(R, T)(T id) @safe
+{
+    try
+    {
+        return findOneById!R(id);
+    }
+    catch (Exception e)
+    {
+        return Nullable!R.init;
+    }
+}
+
 public ulong getNumberOfEdits(const Paste paste) @safe
 {
     import std.array : array;

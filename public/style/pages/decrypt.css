@@ -1,0 +1,25 @@
+#decrypt-paste input
+{
+    background-color: var(--color-nano);
+    color: var(--color-white);
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: var(--font-size-normal);
+    border-radius: var(--border-radius);
+    min-width: 25%;
+    margin-bottom: 20px;
+}
+
+#decrypt-paste button
+{
+    color: var(--color-mystge);
+    font-size: var(--font-size-normal);
+    background: transparent;
+    border: none;
+}
+
+#decrypt-paste button:hover
+{
+    color: var(--color-mystlue);
+    cursor: pointer;
+}

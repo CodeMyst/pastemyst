@@ -24,17 +24,8 @@ public class PasteWeb
     @noAuth
     public void getPaste(string _id, HTTPServerRequest req)
     {
-        import pastemyst.db : findOneById;
+        import pastemyst.db : findOneById, tryFindOneById;
         import std.conv : to;
-
-        const auto res = findOneById!Paste(_id);
-
-        if (res.isNull)
-        {
-            return;
-        }
-
-        const Paste paste = res.get();
 
         UserSession session = UserSession.init;
 
@@ -42,6 +33,32 @@ public class PasteWeb
         {
             session = req.session.get!UserSession("user");
         }
+
+        const auto res = tryFindOneById!Paste(_id);
+
+        if (res.isNull)
+        {
+            auto enc = tryFindOneById!EncryptedPaste(_id);
+
+            if (enc.isNull)
+            {
+                return;
+            }
+
+            const encPaste = enc.get();
+
+            if (encPaste.isPrivate && (encPaste.ownerId != session.user.id))
+            {
+                return;
+            }
+
+            const id = encPaste.id;
+
+            render!("decrypt.dt", id, session);
+            return;
+        }
+
+        const Paste paste = res.get();
 
         if (paste.isPrivate && (paste.ownerId != session.user.id))
         {
@@ -51,6 +68,82 @@ public class PasteWeb
         const title = paste.title != "" ? paste.title : "(untitled)";
 
         render!("paste.dt", paste, title, session);
+    }
+
+    /++
+     + POST /:id/decrypt
+     +
+     + decrypts the paste
+     +/
+
+    @path("/:id/decrypt")
+    @noAuth
+    public void postDecrypt(string _id, string password, HTTPServerRequest req)
+    {
+        import pastemyst.db : tryFindOneById;
+        import crypto.aes : AESUtils, AES256;
+        import crypto.padding : PaddingMode;
+        import scrypt.password : genScryptPasswordHash, SCRYPT_OUTPUTLEN_DEFAULT, SCRYPT_R_DEFAULT, SCRYPT_P_DEFAULT;
+
+        UserSession session = UserSession.init;
+
+        if (req.session && req.session.isKeySet("user"))
+        {
+            session = req.session.get!UserSession("user");
+        }
+
+        const auto res = tryFindOneById!EncryptedPaste(_id);
+
+        enforceHTTP(!res.isNull, HTTPStatus.badRequest, "paste not found or is not encrypted");
+
+        const encryptedPaste = res.get();
+
+        if (encryptedPaste.isPrivate && (encryptedPaste.ownerId != session.user.id))
+        {
+            return;
+        }
+
+        Paste paste;
+        paste.id = encryptedPaste.id;
+        paste.createdAt = encryptedPaste.createdAt;
+        paste.expiresIn = encryptedPaste.expiresIn;
+        paste.deletesAt = encryptedPaste.deletesAt;
+        paste.ownerId = encryptedPaste.ownerId;
+        paste.isPrivate = encryptedPaste.isPrivate;
+        paste.isPublic = encryptedPaste.isPublic;
+        paste.tags = encryptedPaste.tags.dup;
+        paste.stars = encryptedPaste.stars;
+        paste.encrypted = true;
+
+        string passwordHash = genScryptPasswordHash(password, encryptedPaste.salt, SCRYPT_OUTPUTLEN_DEFAULT,
+                1_048_576, SCRYPT_R_DEFAULT, SCRYPT_P_DEFAULT);
+
+        string jsonData;
+
+        try
+        {
+            ubyte[16] iv = 0;
+            string key = cast(string) AESUtils.decrypt!AES256(cast(const(ubyte[])) encryptedPaste.encryptedKey,
+                    passwordHash, iv, PaddingMode.PKCS5);
+
+            jsonData = cast(string) AESUtils.decrypt!AES256(cast(const(ubyte[])) encryptedPaste.encryptedData,
+                    key, iv, PaddingMode.PKCS5);
+        }
+        catch (Exception e)
+        {
+            enforceHTTP(false, HTTPStatus.forbidden, "incorrect password");
+        }
+
+        const data = deserializeJson!EncryptedPasteData(jsonData);
+
+        paste.title = data.title;
+        paste.pasties = data.pasties.dup;
+
+        const title = paste.title != "" ? paste.title : "(untitled)";
+
+        render!("paste.dt", paste, title, session);
+
+        return;
     }
 
     /++
@@ -289,7 +382,8 @@ public class PasteWeb
         }
         else
         {
-            encryptedPaste = createEncryptedPaste(title, expiresIn, deserializeJson!(Pasty[])(pasties), isPrivate, ownerId, password);
+            encryptedPaste = createEncryptedPaste(title, expiresIn, deserializeJson!(Pasty[])(pasties),
+                    isPrivate, ownerId, password);
         }
 
         if (isPublic)

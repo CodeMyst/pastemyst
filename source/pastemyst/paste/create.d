@@ -74,7 +74,8 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
 /++
  + creates an encrypted pastes
  +/
-public EncryptedPaste createEncryptedPaste(string title, string expiresIn, Pasty[] pasties, bool isPrivate, string ownerId, string password) @trusted
+public EncryptedPaste createEncryptedPaste(string title, string expiresIn, Pasty[] pasties, bool isPrivate,
+        string ownerId, string password) @trusted
 {
     
     import pastemyst.encoding : randomBase36Id;
@@ -89,9 +90,7 @@ public EncryptedPaste createEncryptedPaste(string title, string expiresIn, Pasty
     import crypto.aes : AESUtils, AES256;
     import crypto.padding : PaddingMode;
     import csprng.system : CSPRNG;
-    import botan.passhash.bcrypt : generateBcrypt, checkBcrypt;
-    import botan.rng.auto_rng : AutoSeededRNG;
-    import memutils.unique : Unique;
+    import scrypt.password : genScryptPasswordHash, SCRYPT_OUTPUTLEN_DEFAULT, SCRYPT_R_DEFAULT, SCRYPT_P_DEFAULT;
 
     enforceHTTP(!pasties.length == 0, HTTPStatus.badRequest, "pasties array has to have at least one element.");
 
@@ -160,8 +159,12 @@ public EncryptedPaste createEncryptedPaste(string title, string expiresIn, Pasty
 
     paste.encryptedData = cast(string) encryptedData;
 
-    Unique!AutoSeededRNG rng = new AutoSeededRNG();
-    auto passwordHash = generateBcrypt(password, *rng, 10);
+    string salt = cast(string) (new CSPRNG).getBytes(16);
+
+    paste.salt = salt;
+
+    string passwordHash = genScryptPasswordHash(password, salt, SCRYPT_OUTPUTLEN_DEFAULT,
+            1_048_576, SCRYPT_R_DEFAULT, SCRYPT_P_DEFAULT);
 
     auto encryptedKey = AESUtils.encrypt!AES256(key, passwordHash, iv, PaddingMode.PKCS5);
 

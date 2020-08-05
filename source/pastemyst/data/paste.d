@@ -158,6 +158,11 @@ public struct EncryptedPaste
     public string encryptedKey;
 
     /++
+     + salt
+     +/
+    public string salt;
+
+    /++
      + array of all tags for this paste
      +/
     public string[] tags;

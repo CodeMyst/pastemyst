@@ -7,13 +7,15 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout submodules
-        uses: textbook/git-checkout-submodule-action@2.1.1
       - uses: actions/checkout@v1
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: '10.x'
+      - name: Checkout submodules
+        uses: srt32/git-actions@v0.0.3
+        with:
+          args: git submodule update --init --recursive
       - name: Lint JavaScript
         run: |
           sudo npm install -g jshint

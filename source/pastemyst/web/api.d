@@ -43,7 +43,7 @@ public class ApiDocsWeb
             return;
         }
 
-        const title = "api docs";
+        const title = "api docs - " ~ page;
 
         render!("apiDocs/index.dt", page, session, title);
     }

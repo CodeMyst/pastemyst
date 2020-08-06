@@ -118,9 +118,9 @@ public class APIPaste : IAPIPaste
      +/
     public Json get(string _id, string auth = "") @safe
     {
-        import pastemyst.db : findOneById;
+        import pastemyst.db : findOneById, tryFindOneById;
 
-        auto res = findOneById!Paste(_id);
+        auto res = tryFindOneById!Paste(_id);
 
         enforceHTTP(!res.isNull, HTTPStatus.notFound);
 
@@ -146,14 +146,14 @@ public class APIPaste : IAPIPaste
     public Json patch(string _id, Nullable!string title, Nullable!bool isPrivate, Nullable!bool isPublic,
             Nullable!string tags, Nullable!(Pasty[]) pasties, Nullable!string auth) @safe
     {
-        import pastemyst.db : findOneById, update;
+        import pastemyst.db : findOneById, update, tryFindOneById;
         import std.datetime : Clock;
         import std.algorithm : canFind, countUntil, remove;
         import std.conv : to;
         import pastemyst.util : generateUniqueEditId, generateDiff;
         import pastemyst.paste : tagsStringToArray;
 
-        auto res = findOneById!Paste(_id);
+        auto res = tryFindOneById!Paste(_id);
 
         enforceHTTP(!res.isNull, HTTPStatus.notFound);
 
@@ -335,9 +335,9 @@ public class APIPaste : IAPIPaste
      +/
     void deletePaste(string _id, Nullable!string auth) @safe
     {
-        import pastemyst.db : findOneById, removeOneById;
+        import pastemyst.db : findOneById, removeOneById, tryFindOneById;
 
-        auto res = findOneById!Paste(_id);
+        auto res = tryFindOneById!Paste(_id);
 
         enforceHTTP(!res.isNull, HTTPStatus.notFound);
 

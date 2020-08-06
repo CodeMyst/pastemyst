@@ -14,7 +14,10 @@ block body
             input(type="submit")
 
         .pastes
-            - import pastemyst.paste : pasteLangStats;
+            - import pastemyst.paste : pasteLangStats, LangStat;
+            - import pastemyst.db : findOneById;
+            - import pastemyst.data : Paste;
+
             - if (pastes.length == 0)
                 - if (search == "")
                     p.empty this user has no pastes visible on their profile
@@ -22,14 +25,27 @@ block body
                     p.empty no pastes match the search query
 
             - foreach(paste; pastes)
-                - const langStats = pasteLangStats(paste);
+                - LangStat[] langStats;
+                - Paste properPaste;
+                - if (!paste.encrypted)
+                    - properPaste = findOneById!Paste(paste.id);
+                    - langStats = pasteLangStats(properPaste);
                 a.paste(href="/" ~ paste.id, class=langStats.length > 0 ? "" : "border-bottom")
                     .title
-                        - if (paste.title != "")
-                            p= paste.title
+                        - string pasteTitle;
+                        - if (paste.encrypted)
+                            - pasteTitle = "(encrypted)";
+                        - else
+                            - pasteTitle = properPaste.title;
+                        - if (pasteTitle != "")
+                            p= pasteTitle
                         - else
                             p.untitled (untitled)
                     .info
+                        - if (paste.encrypted)
+                            span.tooltip
+                                i.fas.fa-key
+                                span.tooltip-text encrypted
                         p.created-at.tooltip
                             span.value
                             span.tooltip-text

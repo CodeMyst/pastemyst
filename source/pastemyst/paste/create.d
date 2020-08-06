@@ -42,17 +42,15 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
         deletesAt = expiresInToUnixTime(currentTime, expires.get());
     }
 
-    Paste paste =
-    {
-        id: generateUniqueId!Paste(),
-        createdAt: currentTime,
-        expiresIn: expires.get(),
-        deletesAt: deletesAt,
-        title: title,
-        ownerId: ownerId,
-        isPrivate: isPrivate,
-        encrypted: false,
-    };
+    Paste paste;
+    paste.id = generateUniqueId!Paste();
+    paste.createdAt = currentTime;
+    paste.expiresIn = expires.get();
+    paste.deletesAt = deletesAt;
+    paste.title = title;
+    paste.ownerId = ownerId;
+    paste.isPrivate = isPrivate;
+    paste.encrypted = false;
 
     foreach (pasty; pasties)
     {
@@ -114,22 +112,18 @@ public EncryptedPaste createEncryptedPaste(string title, string expiresIn, Pasty
         deletesAt = expiresInToUnixTime(currentTime, expires.get());
     }
 
-    EncryptedPaste paste =
-    {
-        id: generateUniqueId!Paste(),
-        createdAt: currentTime,
-        expiresIn: expires.get(),
-        deletesAt: deletesAt,
-        ownerId: ownerId,
-        isPrivate: isPrivate,
-        encrypted: true,
-    };
+    EncryptedPaste paste;
+    paste.id = generateUniqueId!Paste();
+    paste.createdAt = currentTime;
+    paste.expiresIn = expires.get();
+    paste.deletesAt = deletesAt;
+    paste.ownerId = ownerId;
+    paste.isPrivate = isPrivate;
+    paste.encrypted = true;
 
     // used so we can generate unique ids for pasties
-    Paste mockPaste =
-    {
-        id: paste.id
-    };
+    Paste mockPaste;
+    mockPaste.id = paste.id;
 
     EncryptedPasteData data;
 

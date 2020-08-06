@@ -6,9 +6,9 @@ import vibe.data.bson;
 import vibe.data.serialization;
 
 /++
- + Struct representing a paste.
+ + base paste
  +/
-public struct Paste
+template BasePasteTmpl()
 {
     /++
      + Paste ID. Name attribute is set to _id because in MongoDB the IDs begin with _.
@@ -32,11 +32,6 @@ public struct Paste
     public ulong deletesAt;
 
     /++
-     + Title of the paste.
-     +/
-    public string title;
-
-    /++
      + Owner of the paste. If no owner then this value should be `null`.
      +/
     public string ownerId;
@@ -51,15 +46,6 @@ public struct Paste
      +/
     public bool isPublic;
 
-    /++
-     + Pasties of the paste. A paste can have multiple pasties which are sort of like "files".
-     +/
-    public Pasty[] pasties;
-
-    /++
-     + array of paste edits
-     +/
-    public Edit[] edits;
 
     /++
      + array of all tags for this paste
@@ -72,9 +58,40 @@ public struct Paste
     public ulong stars;
 
     /++
-     + is the paste encrytped? should be false for this struct, use EncryptedPaste instead
+     + is the paste encrytped?
      +/
     public bool encrypted;
+}
+
+/++
+ + base paste
+ +/
+public struct BasePaste
+{
+    mixin BasePasteTmpl;
+}
+
+/++
+ + Struct representing a paste.
+ +/
+public struct Paste
+{
+    mixin BasePasteTmpl;
+
+    /++
+     + Title of the paste.
+     +/
+    public string title;
+
+    /++
+     + Pasties of the paste. A paste can have multiple pasties which are sort of like "files".
+     +/
+    public Pasty[] pasties;
+
+    /++
+     + array of paste edits
+     +/
+    public Edit[] edits;
 }
 
 
@@ -111,41 +128,7 @@ public struct Pasty
  +/
 public struct EncryptedPaste
 {
-    /++
-     + id of the paste
-     +/
-    @name("_id")
-    public string id;
-
-    /++
-     + When the paste is created, using unix time.
-     +/
-    public ulong createdAt;
-
-    /++
-     + When the paste expires.
-     +/
-    public ExpiresIn expiresIn;
-
-    /++
-     + When the paste will get deleted, if `expiresIn` is set to never, this value is set to 0;
-     +/
-    public ulong deletesAt;
-
-    /++
-     + Owner of the paste. If no owner then this value should be `null`.
-     +/
-    public string ownerId;
-
-    /++
-     + If the paste is private.
-     +/
-    public bool isPrivate;
-
-    /++
-     + does the paste show up on the user's public profile?
-     +/
-    public bool isPublic;
+    mixin BasePasteTmpl;
 
     /++
      + This holds the list of Pasty objects and the title serialized to json and encrypted.
@@ -161,21 +144,6 @@ public struct EncryptedPaste
      + salt
      +/
     public string salt;
-
-    /++
-     + array of all tags for this paste
-     +/
-    public string[] tags;
-
-    /++
-     + number of stars
-     +/
-    public ulong stars;
-
-    /++
-     + is the paste encrypted. should be true for this struct, use Paste if not encrypted.
-     +/
-    public bool encrypted;
 }
 
 /++

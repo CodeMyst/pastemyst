@@ -12,7 +12,7 @@ public class UsersWeb
     @path("/:username")
     public void getUser(HTTPServerRequest req, string _username, string search = "")
     {
-        import pastemyst.db : getAll, find;
+        import pastemyst.db : getAll, find, findOneById;
         import std.algorithm : canFind;
         import std.typecons : Nullable;
         import std.uni : toLower;
@@ -51,16 +51,27 @@ public class UsersWeb
 
         const title = user.username ~ " - public profile";
 
-        auto res = find!Paste(
+        auto res = find!BasePaste(
             [
                 "ownerId": Bson(user.id),
                 "isPublic": Bson(true),
             ]);
 
-        Paste[] pastes;
+        BasePaste[] pastes;
         foreach (paste; res)
         {
-            if (search == "" || paste.title.toLower().canFind(search.toLower()))
+            string pasteTitle;
+
+            if (paste.encrypted)
+            {
+                pasteTitle = "(encrypted)";
+            }
+            else
+            {
+                pasteTitle = findOneById!Paste(paste.id).get().title;
+            }
+
+            if (search == "" || pasteTitle.toLower().canFind(search.toLower()))
             {
                 pastes ~= paste;
             }

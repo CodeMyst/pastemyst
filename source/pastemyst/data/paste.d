@@ -6,9 +6,9 @@ import vibe.data.bson;
 import vibe.data.serialization;
 
 /++
- + Struct representing a paste.
+ + template that paste and encrypted paste use as a mixin to achieve polymorphism.
  +/
-public struct Paste
+template BasePasteTmpl()
 {
     /++
      + Paste ID. Name attribute is set to _id because in MongoDB the IDs begin with _.
@@ -32,11 +32,6 @@ public struct Paste
     public ulong deletesAt;
 
     /++
-     + Title of the paste.
-     +/
-    public string title;
-
-    /++
      + Owner of the paste. If no owner then this value should be `null`.
      +/
     public string ownerId;
@@ -51,15 +46,6 @@ public struct Paste
      +/
     public bool isPublic;
 
-    /++
-     + Pasties of the paste. A paste can have multiple pasties which are sort of like "files".
-     +/
-    public Pasty[] pasties;
-
-    /++
-     + array of paste edits
-     +/
-    public Edit[] edits;
 
     /++
      + array of all tags for this paste
@@ -70,6 +56,42 @@ public struct Paste
      + number of stars
      +/
     public ulong stars;
+
+    /++
+     + is the paste encrytped?
+     +/
+    public bool encrypted;
+}
+
+/++
+ + base paste
+ +/
+public struct BasePaste
+{
+    mixin BasePasteTmpl;
+}
+
+/++
+ + Struct representing a paste.
+ +/
+public struct Paste
+{
+    mixin BasePasteTmpl;
+
+    /++
+     + Title of the paste.
+     +/
+    public string title;
+
+    /++
+     + Pasties of the paste. A paste can have multiple pasties which are sort of like "files".
+     +/
+    public Pasty[] pasties;
+
+    /++
+     + array of paste edits
+     +/
+    public Edit[] edits;
 }
 
 
@@ -99,6 +121,41 @@ public struct Pasty
      + Code of the pasty.
      +/
     public string code;
+}
+
+/++
+ + struct for an encrypted paste
+ +/
+public struct EncryptedPaste
+{
+    mixin BasePasteTmpl;
+
+    /++
+     + This holds the list of Pasty objects and the title serialized to json and encrypted.
+     +/
+    public string encryptedData;
+
+    /++
+     + The key used to encrypt the data (encrypted).
+     +/
+    public string encryptedKey;
+
+    /++
+     + salt
+     +/
+    public string salt;
+}
+
+/++
+ + struct for easier serialization of paste data
+ +/
+public struct EncryptedPasteData
+{
+    ///
+    public string title;
+
+    ///
+    public Pasty[] pasties;
 }
 
 /++

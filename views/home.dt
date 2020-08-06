@@ -25,11 +25,16 @@ block body
             .paste-buttons
                 a#create-paste create paste
 
+                #encrypt-options.hidden
+                    input(type="password", id="encrypt-password", placeholder="password")
+                    p make sure to use a strong password!
+                    p it's impossible to get your paste back if you forget the password! unless you have a lot of time (and can keep the universe alive while you do it)
+
             .paste-options-bottom-options
                 div.tooltip
                     span.tooltip-text encrypts the paste with a password
-                    input(type="checkbox", id="encrypt", disabled)
-                    label.disabled(for="encrypt") encrypt
+                    input(type="checkbox", id="encrypt")
+                    label(for="encrypt") encrypt
                 - if (session.loggedIn)
                     div.tooltip
                         span.tooltip-text only you can view the paste
@@ -55,6 +60,8 @@ block body
             input(type="checkbox", name="isPublic")
             input(type="checkbox", name="isAnonymous")
             input(type="text", name="pasties")
+            input(type="checkbox", name="encrypt")
+            input(type="password", name="password")
             input(type="submit")
 
 block scripts

@@ -16,11 +16,7 @@
 {
     display: flex;
     flex-direction: column;
-}
-
-#home .paste-options-bottom .paste-buttons a
-{
-    display: block;
+    width: 70%;
 }
 
 #home .paste-options-bottom .paste-buttons #create-paste
@@ -29,6 +25,9 @@
     color: var(--color-nano);
     border-radius: var(--border-radius);
     padding: 0.5rem 1rem;
+    margin-bottom: 20px;
+    width: 30%;
+    text-align: center;
 }
 
 #home .paste-options-bottom .paste-buttons #create-paste:hover
@@ -69,4 +68,26 @@
 #home #paste-create-form-hidden
 {
     display: none;
+}
+
+#home #encrypt-options.hidden
+{
+    display: none;
+}
+
+#home #encrypt-options p
+{
+    font-size: var(--font-size-small);
+    margin-top: 10px;
+}
+
+#home #encrypt-options input
+{
+    background-color: var(--color-nano);
+    border: none;
+    color: var(--color-white);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-normal);
+    width: 30%;
 }

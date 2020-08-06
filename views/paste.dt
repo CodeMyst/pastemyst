@@ -16,7 +16,7 @@ block body
                         .right
                             span.lang= p.language
                             a.copy copy
-                            - if (!paste.isPrivate)
+                            - if (!paste.isPrivate && !paste.encrypted)
                                 - static if (is(typeof(previousRevision)) && previousRevision)
                                     - import std.conv : to;
                                     a.raw(href="/raw/" ~ paste.id ~ "/" ~ p.id ~ "/" ~ currentEditId.to!string()) raw

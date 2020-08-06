@@ -1,0 +1,11 @@
+extends baseLayout
+
+block body
+    #decrypt-paste
+        .block
+            h3 decrypt paste
+
+            form(action="/" ~ id, method="post")
+                input(type="password", name="password", placeholder="password", autofocus)
+
+                p #[button(type="submit") decrypt]&nbsp;&nbsp;&nbsp;&nbsp;#[a(href="/") cancel]

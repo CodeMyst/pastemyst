@@ -54,7 +54,9 @@ public class PasteWeb
 
             const id = encPaste.id;
 
-            render!("decrypt.dt", id, session);
+            const title = "encrypted paste";
+
+            render!("decrypt.dt", id, session, title);
             return;
         }
 
@@ -223,7 +225,7 @@ public class PasteWeb
         }
         catch (Exception e)
         {
-            enforceHTTP(false, HTTPStatus.forbidden, "incorrect password");
+            redirect("/" ~ _id);
         }
 
         const data = deserializeJson!EncryptedPasteData(jsonData);

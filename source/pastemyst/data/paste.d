@@ -6,7 +6,7 @@ import vibe.data.bson;
 import vibe.data.serialization;
 
 /++
- + base paste
+ + template that paste and encrypted paste use as a mixin to achieve polymorphism.
  +/
 template BasePasteTmpl()
 {

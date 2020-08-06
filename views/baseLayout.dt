@@ -3,8 +3,23 @@ html(lang="en")
     head
         - static if(is(typeof(title)))
             title pastemyst | #{title}
+            meta(name="title", content="pastemyst | " ~ title)
+            meta(property="og:title", content="pastemyst | " ~ title)
+            meta(property="twitter:title", content="pastemyst | " ~ title)
         - else
             title pastemyst
+            meta(name="title", content="pastemyst")
+            meta(property="og:title", content="pastemyst")
+            meta(property="twitter:title", content="pastemyst")
+
+        meta(name="description", content="a powerful website for storing and sharing text and code snippets. completely free and open source.")
+
+        meta(property="og:type", content="website")
+        meta(property="og:url", content="https://paste.myst.rs/")
+        meta(property="og:description", content="a powerful website for storing and sharing text and code snippets. completely free and open source.")
+
+        meta(property="twitter:url", content="https://paste.myst.rs/")
+        meta(property="twitter:description", content="a powerful website for storing and sharing text and code snippets. completely free and open source.")
 
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")

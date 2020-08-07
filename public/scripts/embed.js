@@ -90,9 +90,9 @@ const sendPostMessage = () =>
         height = document.querySelector(".pastemyst-embed").offsetHeight;
         window.parent.postMessage({
             frameHeight: height
-    }, '*');
-  }
-}
+        }, '*');
+    }
+};
 
 
 /**

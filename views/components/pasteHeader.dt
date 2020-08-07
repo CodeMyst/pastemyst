@@ -60,7 +60,7 @@
                     - import pastemyst.data : config;
                     i.fas.fa-pager
                     span.tooltip-text copy embed script
-                    input(type="text", class="embed-script", value="<iframe class='pastemyst-embed' src='#{config.hostname}qcs5tyw6/embed' style='width:80%;border:none;' id='pastemyst-embed-#{paste.id}'></iframe><script>window.onmessage=e=>{e.data.hasOwnProperty('frameHeight')&&(document.getElementById('pastemyst-embed-#{paste.id}').style.height=e.data.frameHeight+30 + 'px')}</script>")
+                    input(type="text", class="embed-script", value="<iframe src='#{config.hostname}#{paste.id}/embed' scrolling='no' style='width:80%;border:none;'></iframe><script src='#{config.hostname}static/scripts/libs/iframeResizer.js'></script><script>iFrameResize();</script>")
 
             -if(paste.ownerId != "" && session.user.id == paste.ownerId)
                 - if (!paste.encrypted)

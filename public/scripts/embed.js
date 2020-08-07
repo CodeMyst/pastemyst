@@ -78,9 +78,6 @@ window.addEventListener("load", async () =>
     }
 });
 
-window.onload = () => sendPostMessage();
-window.onresize = () => sendPostMessage();
-
 let height;
 
 const sendPostMessage = () =>

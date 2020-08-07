@@ -7,7 +7,10 @@ html(lang="en", class="myst")
         - static if (is(typeof(paste)))
             div(id="pastemyst-" ~ paste.id, class="pastemyst-embed")
                 .pastemyst-title
-                    a(href="/" ~ paste.id, target="_blank")= paste.title
+                    - if (paste.title != "")
+                        a(href="/" ~ paste.id, target="_blank")= paste.title
+                    - else
+                        a(href="/" ~ paste.id, target="_blank") (untitled)
                     p powered by #[a(href="https://paste.myst.rs", target="_blank") pastemyst]
                 
                 -foreach(pasty; paste.pasties)
@@ -35,5 +38,6 @@ html(lang="en", class="myst")
                     langs.push("#{p.language}");
 
             script(type="module", src="/static/scripts/embed.js")
+            script(src="/static/scripts/libs/iframeResizer.contentWindow.js")
         - else
             p.invalid this pastemyst embed is broken. this could be due to the paste being deleted, private or encrypted.

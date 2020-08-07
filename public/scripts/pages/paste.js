@@ -171,6 +171,10 @@ window.addEventListener("load", async () =>
     let copyEditLink = copyLinkEditButton.getAttribute("href");
     copyLinkEditButton.addEventListener("click", () => copyLinkToClipboard(copyEditLink));
     copyLinkEditButton.removeAttribute("href");
+
+    const embedScriptCopy = document.querySelector(".embed-script-copy");
+    const embedScript = document.querySelector(".embed-script");
+    embedScriptCopy.addEventListener("click", () => copyToClipboard(embedScript.value));
 });
 
 function copyCodeToClipboard(copyButton)

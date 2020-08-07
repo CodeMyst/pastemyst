@@ -1,0 +1,43 @@
+doctype html
+html(lang="en", class="myst")
+    head
+        link(rel="stylesheet", href="/static/style/embed.css")
+
+    body
+        - static if (is(typeof(paste)))
+            div(id="pastemyst-" ~ paste.id, class="pastemyst-embed")
+                .pastemyst-title
+                    - if (paste.title != "")
+                        a(href="/" ~ paste.id, target="_blank")= paste.title
+                    - else
+                        a(href="/" ~ paste.id, target="_blank") (untitled)
+                    p powered by #[a(href="https://paste.myst.rs", target="_blank") pastemyst]
+                
+                -foreach(pasty; paste.pasties)
+                    .pastemyst-pasty
+                        .pastemyst-pasty-title
+                            - if (pasty.title != "")
+                                p= pasty.title
+                            - else
+                                p.untitled (untitled)
+                            .right
+                                span.lang= pasty.language
+                        .pastemyst-pasty-content
+                            textarea= pasty.code
+
+            script(src="/static/scripts/libs/codemirror/codemirror.js")
+            script(src="/static/scripts/libs/codemirror/simple.js")
+            script(src="/static/scripts/libs/codemirror/overlay.js")
+            script(src="/static/scripts/libs/codemirror/multiplex.js")
+
+            script.
+                var langs = [];
+
+            - foreach (p; paste.pasties)
+                script.
+                    langs.push("#{p.language}");
+
+            script(type="module", src="/static/scripts/embed.js")
+            script(src="/static/scripts/libs/iframeResizer.contentWindow.js")
+        - else
+            p.invalid this pastemyst embed is broken. this could be due to the paste being deleted, private or encrypted.

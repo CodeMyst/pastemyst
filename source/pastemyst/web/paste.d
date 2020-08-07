@@ -859,6 +859,25 @@ public class PasteWeb
         render!("paste.dt", session, paste, previousRevision, currentEditId);
     }
 
+    @path("/:id/embed")
+    @noAuth
+    public void getPasteEmbed(string _id)
+    {
+        import pastemyst.db : tryFindOneById;
+
+        auto res = tryFindOneById!Paste(_id);
+
+        if (res.isNull || res.get().isPrivate)
+        {
+            render!("embed.dt");
+            return;
+        }
+
+        const paste = res.get();
+
+        render!("embed.dt", paste);
+    }
+
     private Paste pasteRevision(string _pasteId, ulong _editId)
     {
         import pastemyst.db : findOneById, tryFindOneById;

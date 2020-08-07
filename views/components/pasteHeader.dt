@@ -54,6 +54,14 @@
                 a.tooltip.copy-link-edit(href=copyEditUrl)
                     i.fas.fa-anchor
                     span.tooltip-text copy link to this edit
+
+            - if (!paste.isPrivate && !paste.encrypted)
+                a.tooltip.embed-script-copy
+                    - import pastemyst.data : config;
+                    i.fas.fa-pager
+                    span.tooltip-text copy embed script
+                    input(type="text", class="embed-script", value="<iframe src='#{config.hostname}#{paste.id}/embed' scrolling='no' style='width:80%;border:none;'></iframe><script src='#{config.hostname}static/scripts/libs/iframeResizer.js'></script><script>iFrameResize();</script>")
+
             -if(paste.ownerId != "" && session.user.id == paste.ownerId)
                 - if (!paste.encrypted)
                     a.tooltip(href="/" ~ paste.id ~ "/edit")

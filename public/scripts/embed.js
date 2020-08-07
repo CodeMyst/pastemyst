@@ -78,20 +78,6 @@ window.addEventListener("load", async () =>
     }
 });
 
-let height;
-
-const sendPostMessage = () =>
-{
-    if (height !== document.querySelector(".pastemyst-embed").offsetHeight)
-    {
-        height = document.querySelector(".pastemyst-embed").offsetHeight;
-        window.parent.postMessage({
-            frameHeight: height
-        }, '*');
-    }
-};
-
-
 /**
  * Figures out whether to use a white or black text colour based on the background colour.
  * The colour should be in a #RRGGBB format, # is needed!

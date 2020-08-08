@@ -32,9 +32,9 @@ window.addEventListener("load", async () =>
             expiresInElem.parentNode.removeChild(expiresInElem);
         }
 
-        if (pastes[i].editedAt !== 0)
+        if (pastes[i].editedAt !== 0) // jshint ignore:line
         {
-            let editedAt = new Date(pastes[i].editedAt * 1000);
+            let editedAt = new Date(pastes[i].editedAt * 1000); // jshint ignore:line
 
             pasteElement.querySelector(".info .edited-at .value").textContent = "edited at: " + editedAt.toDateString().toLowerCase();
             pasteElement.querySelector(".info .edited-at .tooltip-text").textContent = editedAt.toString().toLowerCase();

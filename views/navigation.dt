@@ -12,10 +12,8 @@ nav
         li
             a(href="/api-docs") api
         li
-            a(href="/about") about
-        li
             a(href="/changelog") changelog
-        li.no-delimiter
+        li.no-delimiter.donate
             a(href="/donate") donate
 
     a.tooltip.wordwrap

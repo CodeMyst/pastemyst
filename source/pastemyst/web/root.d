@@ -81,4 +81,19 @@ public class RootWeb
 
         render!("changelog.dt", session, title);
     }
+
+    @path("/donate")
+    public void getDonate(HTTPServerRequest req)
+    {
+        UserSession session = UserSession.init;
+
+        if (req.session && req.session.isKeySet("user"))
+        {
+            session = req.session.get!UserSession("user");    
+        }
+
+        const title = "donate";
+
+        render!("donate.dt", session, title);
+    }
 }

@@ -13,6 +13,8 @@ nav
             a(href="/api-docs") api
         li
             a(href="/about") about
+        li
+            a(href="/changelog") changelog
         li.no-delimiter
             a(href="/donate") donate
 

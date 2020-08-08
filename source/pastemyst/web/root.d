@@ -66,4 +66,19 @@ public class RootWeb
 
         render!("home.dt", session, user, paste);
     }
+
+    @path("/changelog")
+    public void getChangelog(HTTPServerRequest req)
+    {
+        UserSession session = UserSession.init;
+
+        if (req.session && req.session.isKeySet("user"))
+        {
+            session = req.session.get!UserSession("user");    
+        }
+
+        const title = "changelog";
+
+        render!("changelog.dt", session, title);
+    }
 }

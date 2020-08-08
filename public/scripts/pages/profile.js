@@ -31,5 +31,18 @@ window.addEventListener("load", async () =>
             let expiresInElem = pasteElement.querySelector(".info .expires-in");
             expiresInElem.parentNode.removeChild(expiresInElem);
         }
+
+        if (pastes[i].editedAt !== 0)
+        {
+            let editedAt = new Date(pastes[i].editedAt * 1000);
+
+            pasteElement.querySelector(".info .edited-at .value").textContent = "edited at: " + editedAt.toDateString().toLowerCase();
+            pasteElement.querySelector(".info .edited-at .tooltip-text").textContent = editedAt.toString().toLowerCase();
+        }
+        else
+        {
+            let editedAtElem = pasteElement.querySelector(".info .edited-at");
+            editedAtElem.parentNode.removeChild(editedAtElem);
+        }
     }
 });

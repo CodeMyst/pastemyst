@@ -50,20 +50,25 @@ block body
                                     p= pasteTitle
                                 - else
                                     p.untitled (untitled)
+
+                                .info-icons
+                                    - if (paste.encrypted)
+                                        span.tooltip
+                                            i.fas.fa-key
+                                            span.tooltip-text encrypted
+                                    - if (paste.isPrivate)
+                                        span.tooltip
+                                            i.fas.fa-lock
+                                            span.tooltip-text private
+                                    - else if (paste.isPublic)
+                                        span.tooltip
+                                            i.fas.fa-eye
+                                            span.tooltip-text on your public profile
                             .info
-                                - if (paste.encrypted)
-                                    span.tooltip
-                                        i.fas.fa-key
-                                        span.tooltip-text encrypted
-                                - if (paste.isPrivate)
-                                    span.tooltip
-                                        i.fas.fa-lock
-                                        span.tooltip-text private
-                                - else if (paste.isPublic)
-                                    span.tooltip
-                                        i.fas.fa-eye
-                                        span.tooltip-text on your public profile
                                 p.created-at.tooltip
+                                    span.tooltip-text
+                                    span.value
+                                p.edited-at.tooltip
                                     span.tooltip-text
                                     span.value
                                 p.expires-in
@@ -76,6 +81,16 @@ block scripts
 
     - foreach(p; pastes)
         script.
-            pastes.push({'createdAt': '#{p.createdAt}', 'expiresIn': '#{cast(string) p.expiresIn}'});
+            var pastetmp = {'createdAt': '#{p.createdAt}', 'expiresIn': '#{cast(string) p.expiresIn}'};
+            pastetmp.editedAt = 0;
+
+        - if (!p.encrypted)
+            - auto properPaste = findOneById!Paste(p.id).get();
+            - if (properPaste.edits.length != 0)
+                script.
+                    pastetmp.editedAt = #{properPaste.edits[$-1].editedAt};
+
+        script.
+            pastes.push(pastetmp);
 
     script(type="module", src="/static/scripts/pages/profile.js")

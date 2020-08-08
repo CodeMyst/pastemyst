@@ -36,9 +36,8 @@ public class RootWeb
      +
      + home page with the specified paste auto filled in (clone)
      +/
-    @queryParam("id", "id")
-    @path("/")
-    public void getHome(string id, HTTPServerRequest req)
+    @path("/clone/:id")
+    public void getHome(string _id, HTTPServerRequest req)
     {
         import pastemyst.db : findOneById;
 
@@ -51,7 +50,7 @@ public class RootWeb
             user = findOneById!User(session.user.id);
         }
 
-        const pasteRes = findOneById!Paste(id);
+        const pasteRes = findOneById!Paste(_id);
 
         if (pasteRes.isNull)
         {

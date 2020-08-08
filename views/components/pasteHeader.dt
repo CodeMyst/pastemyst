@@ -1,7 +1,7 @@
 .paste-header
     - import pastemyst.paste : pasteLangStats;
     - const langStats = pasteLangStats(paste);
-    .top
+    .top(class=langStats.length == 0 ? "all-border-rads" : "")
         .left
             -if(paste.title != "")
                 p.title= paste.title
@@ -20,21 +20,15 @@
                         a.history(href="/" ~ paste.id) present
                 - if (paste.edits.length > 0)
                     a.history(href="/" ~ paste.id ~ "/history") history
-            - if (!paste.encrypted)
-                - if (session.loggedIn)
-                    form(method="post", action="/" ~ paste.id ~ "/star")
-                        - import std.algorithm : canFind;
-                        - import pastemyst.db : findOneById;
-                        - import pastemyst.data : User;
-                        - const user = findOneById!User(session.user.id).get();
-                        - bool isStarred = user.stars.canFind(paste.id);
-                        button.tooltip.star(type="submit")
-                            i.fas.fa-star(class=isStarred?"starred":"")
-                            span.amount= paste.stars
-                            span.tooltip-text star
-                - else
-                    a.tooltip.star
-                        i.fas.fa-star
+            - if (session.loggedIn)
+                form(method="post", action="/" ~ paste.id ~ "/star")
+                    - import std.algorithm : canFind;
+                    - import pastemyst.db : findOneById;
+                    - import pastemyst.data : User;
+                    - const user = findOneById!User(session.user.id).get();
+                    - bool isStarred = user.stars.canFind(paste.id);
+                    button.tooltip.star(type="submit")
+                        i.fas.fa-star(class=isStarred?"starred":"")
                         span.amount= paste.stars
                         span.tooltip-text star
             - else
@@ -61,7 +55,7 @@
                     span.tooltip-text copy link to this edit
 
             - if (!paste.isPrivate && !paste.encrypted)
-                a.tooltip(href="/?id=" ~ paste.id)
+                a.tooltip(href="/clone/" ~ paste.id)
                     i.fas.fa-clone
                     span.tooltip-text clone
 

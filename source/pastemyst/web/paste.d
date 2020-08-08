@@ -252,14 +252,14 @@ public class PasteWeb
         import pastemyst.db : findOneById, update, tryFindOneById;
         import std.algorithm : canFind, remove, countUntil;
 
-        const auto res = tryFindOneById!Paste(_id);
+        const auto res = findOneById!BasePaste(_id);
 
         if (res.isNull)
         {
             return;
         }
 
-        const Paste paste = res.get();
+        const paste = res.get();
 
         UserSession session = req.session.get!UserSession("user");
 
@@ -283,7 +283,7 @@ public class PasteWeb
         }
 
         update!User(["_id": user.id], ["$set": ["stars": user.stars]]);
-        update!Paste(["_id": _id], ["$inc": ["stars": incAmnt]]);
+        update!BasePaste(["_id": _id], ["$inc": ["stars": incAmnt]]);
 
         redirect("/" ~ _id);
     }

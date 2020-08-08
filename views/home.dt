@@ -5,7 +5,6 @@ block body
         .paste-options
             - string titleValue = "";
             - static if (is(typeof(paste)))
-                span value #{paste.title}
                 - titleValue = paste.title;
             - string defaultExpiresIn = "never";
             - bool hideExpiresIn = false;
@@ -15,12 +14,21 @@ block body
                 input(name="tags", placeholder="tags (separated by commas)", type="text", autocomplete="off", spellcheck="false", class="tags-input")
 
         #pasty-editors
-            - string pastyTitle = "";
-            - string pastyLang = user.defaultLang;
-            - string pastyCode = "";
-            - string pastyId = "";
-            - bool autodetect = true;
-            include components/pastyEditor
+            - static if (is(typeof(paste)))
+                - foreach (pasty; paste.pasties)
+                    - string pastyTitle = pasty.title;
+                    - string pastyLang = pasty.language;
+                    - string pastyCode = pasty.code;
+                    - string pastyId = "";
+                    - bool autodetect = true;
+                    include components/pastyEditor
+            - else
+                - string pastyTitle = "";
+                - string pastyLang = user.defaultLang;
+                - string pastyCode = "";
+                - string pastyId = "";
+                - bool autodetect = true;
+                include components/pastyEditor
 
         include components/addEditorButton
         

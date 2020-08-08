@@ -20,6 +20,11 @@
     font-size: var(--font-size-medium);
 }
 
+.paste-header .top.all-border-rads
+{
+    border-radius: var(--border-radius);
+}
+
 .paste-header .left
 {
     display: flex;

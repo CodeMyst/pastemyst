@@ -71,6 +71,23 @@ window.addEventListener("load", () =>
             checkOptions();
         });
     }
+
+    const encryptCheckbox = document.getElementById("encrypt");
+    const encryptOptions = document.getElementById("encrypt-options");
+
+    if (encryptCheckbox.checked)
+    {
+        encryptOptions.classList.remove("hidden");
+    }
+    else
+    {
+        encryptOptions.classList.add("hidden");
+    }
+
+    encryptCheckbox.addEventListener("click", () =>
+    {
+        encryptOptions.classList.toggle("hidden");
+    });
 });
 
 function disableInput(input, label)
@@ -141,8 +158,6 @@ function checkChange()
 
 async function createPaste()
 {
-    // TODO: add isPrivate field
-    
     let form = document.getElementById("paste-create-form-hidden");
 
     form.querySelector("input[name=title]").value = document.querySelector(`.paste-options input[name="title"]`).value;
@@ -160,6 +175,9 @@ async function createPaste()
     {
         form.querySelector("input[name=tags]").value = tagsinput.value;
     }
+
+    form.querySelector("input[name=encrypt]").checked = document.getElementById("encrypt").checked;
+    form.querySelector("input[name=password]").value = document.getElementById("encrypt-password").value;
 
     const pasties = [];
 

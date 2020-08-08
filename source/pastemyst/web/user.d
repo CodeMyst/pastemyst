@@ -23,7 +23,7 @@ public class UserWeb
     @anyAuth
     public void getProfile(HTTPServerRequest req, string search="", string tag="")
     {
-        import pastemyst.db : find;
+        import pastemyst.db : find, findOneById;
         import std.algorithm : canFind;
         import std.container : redBlackTree;
         import std.uni : toLower;
@@ -33,11 +33,22 @@ public class UserWeb
 
         auto tags = redBlackTree!string();
 
-        auto pastesRes = find!Paste(["ownerId": session.user.id]);
-        Paste[] pastes;
+        auto pastesRes = find!BasePaste(["ownerId": session.user.id]);
+        BasePaste[] pastes;
         foreach (paste; pastesRes)
         {
-            if ((search == "" || paste.title.toLower().canFind(search.toLower())) &&
+            string pasteTitle;
+
+            if (paste.encrypted)
+            {
+                pasteTitle = "(encrypted)";
+            }
+            else
+            {
+                pasteTitle = findOneById!Paste(paste.id).get().title;
+            }
+
+            if ((search == "" || pasteTitle.toLower().canFind(search.toLower())) &&
                 (tag == "" || paste.tags.canFind(tag.toLower()) || (tag == "untagged" && paste.tags.length == 0)))
             {
                 pastes ~= paste;

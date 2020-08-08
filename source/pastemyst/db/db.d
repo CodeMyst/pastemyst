@@ -40,7 +40,7 @@ public void connect()
  +/
 private string getCollectionName(T)() @safe
 {
-    static if (is(T == Paste))
+    static if (is(T == Paste) || is(T == EncryptedPaste) || is(T == BasePaste))
     {
         return "pastes";
     }
@@ -147,6 +147,23 @@ public Nullable!R findOne(R, T)(T query) @safe
 public Nullable!R findOneById(R, T)(T id) @safe
 {
     return findOne!R(["_id": id]);
+}
+
+/++
+ + gets one item from the mongo db with the specified id;
+ +
+ + tries to get the item, if it fails for any reason it returns null
+ +/
+public Nullable!R tryFindOneById(R, T)(T id) @safe
+{
+    try
+    {
+        return findOneById!R(id);
+    }
+    catch (Exception e)
+    {
+        return Nullable!R.init;
+    }
 }
 
 public ulong getNumberOfEdits(const Paste paste) @safe

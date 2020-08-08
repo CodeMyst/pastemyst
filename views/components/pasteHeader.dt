@@ -20,15 +20,21 @@
                         a.history(href="/" ~ paste.id) present
                 - if (paste.edits.length > 0)
                     a.history(href="/" ~ paste.id ~ "/history") history
-            - if (session.loggedIn)
-                form(method="post", action="/" ~ paste.id ~ "/star")
-                    - import std.algorithm : canFind;
-                    - import pastemyst.db : findOneById;
-                    - import pastemyst.data : User;
-                    - const user = findOneById!User(session.user.id).get();
-                    - bool isStarred = user.stars.canFind(paste.id);
-                    button.tooltip.star(type="submit")
-                        i.fas.fa-star(class=isStarred?"starred":"")
+            - if (!paste.encrypted)
+                - if (session.loggedIn)
+                    form(method="post", action="/" ~ paste.id ~ "/star")
+                        - import std.algorithm : canFind;
+                        - import pastemyst.db : findOneById;
+                        - import pastemyst.data : User;
+                        - const user = findOneById!User(session.user.id).get();
+                        - bool isStarred = user.stars.canFind(paste.id);
+                        button.tooltip.star(type="submit")
+                            i.fas.fa-star(class=isStarred?"starred":"")
+                            span.amount= paste.stars
+                            span.tooltip-text star
+                - else
+                    a.tooltip.star
+                        i.fas.fa-star
                         span.amount= paste.stars
                         span.tooltip-text star
             - else
@@ -36,9 +42,6 @@
                     i.fas.fa-star
                     span.amount= paste.stars
                     span.tooltip-text star
-            a.tooltip(href="/?id=" ~ paste.id)
-                i.fas.fa-clone
-                span.tooltip-text clone
             a.tooltip.copy-link(href="/" ~ paste.id)
                 i.fas.fa-link
                 span.tooltip-text copy link
@@ -52,13 +55,27 @@
                     - copyEditUrl ~= (paste.edits[$-1].editId + 1).to!string();
                 - else
                     - copyEditUrl ~= "0";
-            a.tooltip.copy-link-edit(href=copyEditUrl)
-                i.fas.fa-anchor
-                span.tooltip-text copy link to this edit
+            - if (!paste.encrypted)
+                a.tooltip.copy-link-edit(href=copyEditUrl)
+                    i.fas.fa-anchor
+                    span.tooltip-text copy link to this edit
+
+            - if (!paste.isPrivate && !paste.encrypted)
+                a.tooltip(href="/?id=" ~ paste.id)
+                    i.fas.fa-clone
+                    span.tooltip-text clone
+
+                a.tooltip.embed-script-copy
+                    - import pastemyst.data : config;
+                    i.fas.fa-pager
+                    span.tooltip-text copy embed script
+                    input(type="text", class="embed-script", value="<iframe src='#{config.hostname}#{paste.id}/embed' scrolling='no' style='width:80%;border:none;'></iframe><script src='#{config.hostname}static/scripts/libs/iframeResizer.js'></script><script>iFrameResize();</script>")
+
             -if(paste.ownerId != "" && session.user.id == paste.ownerId)
-                a.tooltip(href="/" ~ paste.id ~ "/edit")
-                    i.fas.fa-edit
-                    span.tooltip-text edit paste
+                - if (!paste.encrypted)
+                    a.tooltip(href="/" ~ paste.id ~ "/edit")
+                        i.fas.fa-edit
+                        span.tooltip-text edit paste
 
                 - if (!paste.isPrivate)
                     form.set-public-on-profile-paste(method="post", action="/" ~ paste.id ~ "/togglePublicOnProfile")

@@ -9,3 +9,21 @@ footer
     flex-direction: row;
     justify-content: space-between;
 }
+
+@media screen and (max-width: 880px)
+{
+    footer
+    {
+        flex-direction: column;
+    }
+
+    footer .copyright
+    {
+        margin-bottom: 20px;
+    }
+
+    footer .theme
+    {
+        margin-bottom: 20px;
+    }
+}

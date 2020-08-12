@@ -4,7 +4,9 @@ footer
     - import pastemyst.db : getCollectionCount;
     - import pastemyst.data : Paste;
     - string year = Clock.currTime().year.to!string();
-    .copyright copyright &copy; #[a(href="https://github.com/codemyst", target="_blank") codemyst] #{year}
+    .copyright
+        p copyright &copy; #[a(href="https://github.com/codemyst", target="_blank") codemyst] #{year}
+        p contact: code at myst.rs
     .theme
         label(for="theme") theme:
         select(name="theme", id="theme-picker")

@@ -210,7 +210,7 @@ public class PasteWeb
         paste.encrypted = true;
 
         string passwordHash = genScryptPasswordHash(password, encryptedPaste.salt, SCRYPT_OUTPUTLEN_DEFAULT,
-                1_048_576, SCRYPT_R_DEFAULT, SCRYPT_P_DEFAULT);
+               524288, SCRYPT_R_DEFAULT, SCRYPT_P_DEFAULT);
 
         string jsonData;
 

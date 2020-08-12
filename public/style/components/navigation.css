@@ -56,3 +56,12 @@ nav ul li.donate a:hover
 {
     background-color: var(--color-mystlue);
 }
+
+@media screen and (max-width: 860px)
+{
+    nav ul li.donate
+    {
+        position: relative;
+        top: 5px;
+    }
+}

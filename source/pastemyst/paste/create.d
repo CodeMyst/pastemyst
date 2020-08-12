@@ -158,7 +158,7 @@ public EncryptedPaste createEncryptedPaste(string title, string expiresIn, Pasty
     paste.salt = salt;
 
     string passwordHash = genScryptPasswordHash(password, salt, SCRYPT_OUTPUTLEN_DEFAULT,
-           524288, SCRYPT_R_DEFAULT, SCRYPT_P_DEFAULT);
+           524_288, SCRYPT_R_DEFAULT, SCRYPT_P_DEFAULT);
 
     auto encryptedKey = AESUtils.encrypt!AES256(key, passwordHash, iv, PaddingMode.PKCS5);
 

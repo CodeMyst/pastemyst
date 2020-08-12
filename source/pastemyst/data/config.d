@@ -26,6 +26,21 @@ public struct Config
      + is the current instance a development one
      +/
     public bool devInstance;
+
+    /++
+     + ip on where to host pastemyst
+     +/
+    public string hostIp;
+
+    /++
+     + on which port to host pastemyst
+     +/
+    public ushort hostPort;
+
+    /++
+     + mongodb connection string
+     +/
+    public string mongoConnection;
 }
 
 /++
@@ -123,5 +138,17 @@ static this()
         enforce(cfg.containsKey("development_instance"), "config.yaml: missing development_instance");
 
         _config.devInstance = cfg["development_instance"].as!bool();
+
+        enforce(cfg.containsKey("host_ip"), "config.yaml: missing host_ip");
+
+        _config.hostIp = cfg["host_ip"].as!string();
+
+        enforce(cfg.containsKey("host_port"), "config.yaml: missing host_port");
+
+        _config.hostPort = cfg["host_port"].as!ushort();
+
+        enforce(cfg.containsKey("mongo_connection"), "config.yaml: missing mongo_connection");
+
+        _config.mongoConnection = cfg["mongo_connection"].as!string();
     }
 }

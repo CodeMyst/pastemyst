@@ -45,9 +45,16 @@ hostname: http://localhost:5000/
 # indicate that this instance is a development one
 # and users shouldnt expect it to always work
 development_instance: true
+
+# where to host pastemyst
+host_ip: 127.0.0.1
+host_port: 5000
+
+# mongo connection string
+mongo_connection: 127.0.0.1
 ```
 
-the github id and secret should be gotten from: [github applications](https://github.com/settings/applications), the homepage url should be: `http://localhost:5000/` and the authorization callback: `http://localhost:5000//login/github`.
+the github id and secret should be gotten from: [github applications](https://github.com/settings/applications), the homepage url should be: `http://localhost:5000/` and the authorization callback: `http://localhost:5000/login/github/callback`. same with gitlab, just replace `github` with `gitlab`.
 
 now simply run `dub run` and everything should work fine.
 

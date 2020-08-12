@@ -35,6 +35,7 @@ public void main()
 	import pastemyst.rest : APIPaste, APITime, APIData, APIUser, APIV1Paste;
 	import pastemyst.db : connect;
 	import pastemyst.paste : deleteExpiredPastes;
+        import pastemyst.data : config;
 
 	URLRouter router = new URLRouter();
 
@@ -57,8 +58,8 @@ public void main()
 	router.get("/static/*", serveStaticFiles("public/", fsettings));
 
 	HTTPServerSettings serverSettings = new HTTPServerSettings();
-	serverSettings.bindAddresses = ["127.0.0.1"];
-	serverSettings.port = 5000;
+	serverSettings.bindAddresses = [config.hostIp];
+	serverSettings.port = config.hostPort;
         serverSettings.sessionStore = new MemorySessionStore();
 	serverSettings.errorPageHandler = toDelegate(&displayError);
 

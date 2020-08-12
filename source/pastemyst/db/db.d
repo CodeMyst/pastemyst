@@ -21,15 +21,15 @@ private MongoDatabase mongo;
  +/
 public void connect()
 {
-    import pastemyst.data : User;
+    import pastemyst.data : User, config;
 
     version(unittest)
     {
-        connectMongo("127.0.0.1", "pastemyst-test");
+        connectMongo(config.mongoConnection, "pastemyst-test");
     }
     else
     {
-        connectMongo("127.0.0.1", "pastemyst");
+        connectMongo(config.mongoConnection, "pastemyst");
     }
 
     mongo[getCollectionName!User].createIndex(["username": "text"]);

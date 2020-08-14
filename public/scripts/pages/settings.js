@@ -1,4 +1,5 @@
 import Dropdown from "../components/dropdown.js";
+import { usernameHasSpecialChars, usernameStartsWithSymbol, usernameEndsWithSymbol } from "../helpers/username.js";
 
 let msg;
 let available;
@@ -12,10 +13,16 @@ window.addEventListener("load", async () =>
     msg = document.querySelector(".settings-block .username .available");
 
     await check(usernameInput.value);
+    checkUsernameSpecialChars(usernameInput.value);
+    checkUsernameSymbolSides(usernameInput.value);
+    checkUsernameLength(usernameInput.value);
 
     usernameInput.addEventListener("input", async () =>
     {
         await check(usernameInput.value);
+        checkUsernameSpecialChars(usernameInput.value);
+        checkUsernameSymbolSides(usernameInput.value);
+        checkUsernameLength(usernameInput.value);
     });
 
     document.querySelector("button.save").addEventListener("click", () =>
@@ -35,6 +42,36 @@ window.addEventListener("load", async () =>
         copyToClipboard(document.querySelector(".token").textContent);
     });
 });
+
+function checkUsernameSpecialChars(username)
+{
+    if (usernameHasSpecialChars(username))
+    {
+        msg.className = "not-available";
+        msg.textContent = "username is invalid (cannot contain special characters)";
+        available = false;
+    }
+}
+
+function checkUsernameSymbolSides(username)
+{
+    if (usernameStartsWithSymbol(username) || usernameEndsWithSymbol(username))
+    {
+        msg.className = "not-available";
+        msg.textContent = "username is invalid (cannot start or end with symbol)";
+        available = false;
+    }
+}
+
+function checkUsernameLength(username)
+{
+    if (username.length <= 0)
+    {
+        msg.className = "not-available";
+        msg.textContent = "username is invalid (cannot be empty)";
+        available = false;
+    }
+}
 
 async function check(username)
 {

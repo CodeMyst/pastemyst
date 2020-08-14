@@ -33,3 +33,8 @@
 {
     color: var(--color-mysted);
 }
+
+#create-user .not-valid
+{
+    color: var(--color-mysted);
+}

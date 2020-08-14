@@ -95,6 +95,8 @@ public class UserWeb
         import std.file : remove, exists;
         import std.algorithm : startsWith;
         import imagefmt : read_image;
+        import pastemyst.util : usernameHasSpecialChars, usernameStartsWithSymbol,
+            usernameEndsWithSymbol, usernameRemoveDuplicateSymbols;
 
         UserSession session = req.session.get!UserSession("user");
 
@@ -125,9 +127,24 @@ public class UserWeb
 
         if (session.user.username != username)
         {
+            enforceHTTP(username.length > 0, HTTPStatus.badRequest, "username cannot be empty");
+
+            username = usernameRemoveDuplicateSymbols(username); 
+
             enforceHTTP(findOne!User(["$text": ["$search": username]]).isNull,
-                    HTTPStatus.badRequest, "username is taken");
+                        HTTPStatus.badRequest, "username is taken");
+
+            enforceHTTP(!usernameHasSpecialChars(username),
+                        HTTPStatus.badRequest, "username cannot contain special characters");
+
+            enforceHTTP(!usernameStartsWithSymbol(username),
+                    HTTPStatus.badRequest, "username cannot start with a symbol");
+
+            enforceHTTP(!usernameEndsWithSymbol(username),
+                    HTTPStatus.badRequest, "username cannot end with a symbol");
+
             session.user.username = username;
+
             update!User(["_id": session.user.id], ["$set": ["username": username]]);
         }
 

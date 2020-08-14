@@ -13,12 +13,14 @@ window.addEventListener("load", async () =>
     await check(input.value);
     checkUsernameSpecialChars(input.value);
     checkUsernameSymbolSides(input.value);
+    checkLength(input.value);
 
     input.addEventListener("input", async () =>
     {
         await check(input.value);
         checkUsernameSpecialChars(input.value);
         checkUsernameSymbolSides(input.value);
+        checkLength(input.value);
     });
 
     button.addEventListener("click", () =>
@@ -34,7 +36,7 @@ function checkUsernameSpecialChars(username)
 {
     if (usernameHasSpecialChars(username))
     {
-        msg.className = "not-valid";
+        msg.className = "not-available";
         msg.textContent = "username is invalid (cannot contain special characters)";
         available = false;
     }
@@ -44,8 +46,18 @@ function checkUsernameSymbolSides(username)
 {
     if (usernameStartsWithSymbol(username) || usernameEndsWithSymbol(username))
     {
-        msg.className = "not-valid";
+        msg.className = "not-available";
         msg.textContent = "username is invalid (cannot start or end with symbol)";
+        available = false;
+    }
+}
+
+function checkLength(username)
+{
+    if (username.length <= 0)
+    {
+        msg.className = "not-available";
+        msg.textContent = "username is invalid (cannot be empty)";
         available = false;
     }
 }

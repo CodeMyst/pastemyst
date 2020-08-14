@@ -53,6 +53,42 @@ public bool usernameEndsWithSymbol(string username)
     return false;
 }
 
+/++
+ + removes any duplicate subsequent symbols from the username
+ +/
+public string usernameRemoveDuplicateSymbols(string username)
+{
+    import std.algorithm : canFind;
+
+    if (username.length < 2)
+    {
+        return username;
+    }
+
+    string copy;
+
+    foreach (i, c; username)
+    {
+        if (i >= username.length-2)
+        {
+            copy ~= c;
+            continue;
+        }
+
+        if (symbols.canFind(c))
+        {
+            if (symbols.canFind(username[i+1]))
+            {
+                continue;
+            }
+        }
+
+        copy ~= c;
+    }
+
+    return copy;
+}
+
 @("finding special characters in username")
 unittest
 {
@@ -64,4 +100,12 @@ unittest
     assert(usernameEndsWithSymbol("hello_") == true);
     assert(usernameEndsWithSymbol("hello.") == true);
     assert(usernameEndsWithSymbol("hello9") == false);
+
+    assert(usernameRemoveDuplicateSymbols("c") == "c");
+    assert(usernameRemoveDuplicateSymbols("co") == "co");
+    assert(usernameRemoveDuplicateSymbols("codemyst") == "codemyst");
+    assert(usernameRemoveDuplicateSymbols("code__myst") == "code_myst");
+    assert(usernameRemoveDuplicateSymbols("code--myst") == "code-myst");
+    assert(usernameRemoveDuplicateSymbols("code__--myst") == "code-myst");
+    assert(usernameRemoveDuplicateSymbols("code__--..myst") == "code.myst");
 }

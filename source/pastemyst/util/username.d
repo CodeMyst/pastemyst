@@ -67,9 +67,11 @@ public string usernameRemoveDuplicateSymbols(string username)
 
     string copy;
 
+    int len = cast(int) username.length;
+
     foreach (i, c; username)
     {
-        if (i >= username.length-2)
+        if (i >= len-2)
         {
             copy ~= c;
             continue;

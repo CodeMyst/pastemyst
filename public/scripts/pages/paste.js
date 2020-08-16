@@ -63,7 +63,7 @@ window.addEventListener("load", async () =>
             else
             {
                 langMime = "text/plain";
-                langCache.set(langs[i], ["text/plain", "#ffffff"]);
+                langCache.set(langs[i], ["text/plain", "#ffffff"]); // jshint ignore:line
             }
         }
 

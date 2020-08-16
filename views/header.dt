@@ -5,10 +5,9 @@
         img.icon(src="/static/assets/icons/pastemyst.svg")
         a(href="/") pastemyst
 
-    //- TODO: Add a proper changelog link.
     p.description
         | a simple website for sharing code.
-        | version 2.0.0 #[span.alpha alpha] (#[a(href="#") changelog]).
+        | version 2.0.0 #[span.alpha alpha] (#[a(href="/changelog") changelog]).
 
     - if (config.devInstance)
         p.warning

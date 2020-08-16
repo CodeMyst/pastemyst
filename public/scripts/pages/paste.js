@@ -54,12 +54,11 @@ window.addEventListener("load", async () =>
 
             if (langData.mode && langData.mode !== "null")
             {
-                await import(`../libs/codemirror/${langData.mode}/${langData.mode}.js`) // jshint ignore:line
-                    .then(() =>
-                        {
-                            langMime = langData.mimes[0];
-                            langCache.set(langs[i], [langData.mimes[0], langData.color]); // jshint ignore:line
-                        });
+                await import(`../libs/codemirror/${langData.mode}/${langData.mode}.js`).then(() => // jshint ignore:line
+                {
+                    langMime = langData.mimes[0];
+                    langCache.set(langs[i], [langData.mimes[0], langData.color]); // jshint ignore:line
+                });
             }
             else
             {

@@ -52,15 +52,19 @@ window.addEventListener("load", async () =>
 
             let langData = await res.json();
 
-            if (langData.mode !== "null")
+            if (langData.mode && langData.mode !== "null")
             {
                 await import(`../libs/codemirror/${langData.mode}/${langData.mode}.js`).then(() => // jshint ignore:line
                 {
                     langMime = langData.mimes[0];
+                    langCache.set(langs[i], [langData.mimes[0], langData.color]); // jshint ignore:line
                 });
             }
-
-            langCache.set(langs[i], [langData.mimes[0], langData.color]); // jshint ignore:line
+            else
+            {
+                langMime = "text/plain";
+                langCache.set(langs[i], ["text/plain", "#ffffff"]); // jshint ignore:line
+            }
         }
 
         editor.setOption("mode", langMime);

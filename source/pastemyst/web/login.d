@@ -99,7 +99,8 @@ public class LoginWeb
             }
             catch (Exception e)
             {
-                throw new HTTPStatusException(HTTPStatus.badRequest, "invalid request. you probably refreshed the page while creating the account.");
+                throw new HTTPStatusException(HTTPStatus.badRequest,
+                    "invalid request. you probably refreshed the page while creating the account.");
             }
         });
 

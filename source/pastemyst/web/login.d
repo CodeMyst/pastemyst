@@ -93,7 +93,15 @@ public class LoginWeb
         },
         (scope res)
         {
-            accessToken = parseJsonString(res.bodyReader.readAllUTF8())["access_token"].get!string();
+            try
+            {
+                accessToken = parseJsonString(res.bodyReader.readAllUTF8())["access_token"].get!string();
+            }
+            catch (Exception e)
+            {
+                throw new HTTPStatusException(HTTPStatus.badRequest,
+                    "invalid request. you probably refreshed the page while creating the account.");
+            }
         });
 
         enforceHTTP(accessToken != "", HTTPStatus.internalServerError, "failed getting the access token from github");

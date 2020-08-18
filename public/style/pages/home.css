@@ -10,6 +10,11 @@
     z-index: 100;
     justify-content: space-between;
     margin-top: 20px;
+    -webkit-transition: all 250ms ease-in-out;
+    -moz-transition: all 250ms ease-in-out;
+    -ms-transition: all 250ms ease-in-out;
+    -o-transition: all 250ms ease-in-out;
+    transition: all 250ms ease-in-out;
 }
 
 #home .paste-options-bottom .paste-buttons
@@ -48,7 +53,9 @@
 
 #home .paste-options-bottom-sticky
 {
-    border: 2px solid var(--color-mystge);
+    -webkit-box-shadow: 0px -4px 13px 1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px -4px 13px 1px rgba(0,0,0,0.75);
+    box-shadow: 0px -4px 13px 1px rgba(0,0,0,0.75);
     border-bottom: none;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;

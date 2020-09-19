@@ -4,10 +4,14 @@ import { usernameHasSpecialChars, usernameStartsWithSymbol, usernameEndsWithSymb
 let msg;
 let available;
 let originalUsername;
+let langDropdown;
+let originalLanguage;
+let savePressed = false;
 
 window.addEventListener("load", async () =>
 {
-    let langDropdown = new Dropdown(document.querySelector(".default-lang .dropdown"));
+    langDropdown = new Dropdown(document.querySelector(".default-lang .dropdown"));
+    originalLanguage = langDropdown.value;
     const usernameInput = document.querySelector(".settings-block .username input");
     originalUsername = usernameInput.value;
     msg = document.querySelector(".settings-block .username .available");
@@ -27,6 +31,8 @@ window.addEventListener("load", async () =>
 
     document.querySelector("button.save").addEventListener("click", () =>
     {
+        savePressed = true;
+
         let langInput = document.querySelector(".default-lang input[name=language]");
     
         langInput.value = langDropdown.value;
@@ -41,7 +47,47 @@ window.addEventListener("load", async () =>
     {
         copyToClipboard(document.querySelector(".token").textContent);
     });
+
+    window.addEventListener("beforeunload", (e) =>
+    {
+        if (checkChange() && !savePressed)
+        {
+            e.preventDefault();
+            e.returnValue = "";
+        }
+    });
 });
+
+function checkChange()
+{
+    let usernameInput = document.querySelector("input[name=username]");
+
+    if (usernameInput.defaultValue !== usernameInput.value)
+    {
+        return true;
+    }
+
+    let avatarInput = document.querySelector("input[name=avatar]");
+
+    if (avatarInput.files.length !== 0)
+    {
+        return true;
+    }
+
+    if (langDropdown.value !== originalLanguage)
+    {
+        return true;
+    }
+
+    let publicProfileInput = document.querySelector("input[name=publicProfile]");
+
+    if (publicProfileInput.defaultChecked !== publicProfileInput.checked)
+    {
+        return true;
+    }
+
+    return false;
+}
 
 function checkUsernameSpecialChars(username)
 {

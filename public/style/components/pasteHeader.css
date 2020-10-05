@@ -1,3 +1,8 @@
+*:focus
+{
+    outline: none;   
+}
+
 .paste-header
 {
     margin-bottom: 20px;

@@ -2,6 +2,9 @@ extends baseLayout
 
 block body
     #home
+        #drop-area.hidden
+            p drop text files here
+
         .paste-options
             - string titleValue = "";
             - static if (is(typeof(paste)))

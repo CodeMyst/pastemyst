@@ -41,3 +41,25 @@
     color: var(--color-nano);
     border-radius: var(--border-radius);
 }
+
+#header .top
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#header .donate
+{
+    align-self: center;
+    background-color: var(--color-mystge);
+    color: var(--color-nano);
+    border-radius: var(--border-radius);
+    padding: 0.25rem 0.5rem;
+    font-size: var(--font-size-medium);
+}
+
+#header .donate:hover
+{
+    background-color: var(--color-mystlue);
+}

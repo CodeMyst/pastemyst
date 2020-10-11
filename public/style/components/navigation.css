@@ -42,26 +42,3 @@ nav ul li.no-delimiter::after
     content: "\A";
     white-space: pre;
 }
-
-nav ul li.donate a
-{
-    font-weight: bold;
-    background-color: var(--color-mystge);
-    color: var(--color-nanolight);
-    padding: 0.25rem 0.5rem;
-    border-radius: var(--border-radius);
-}
-
-nav ul li.donate a:hover
-{
-    background-color: var(--color-mystlue);
-}
-
-@media screen and (max-width: 860px)
-{
-    nav ul li.donate
-    {
-        position: relative;
-        top: 5px;
-    }
-}

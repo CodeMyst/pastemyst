@@ -1,10 +1,15 @@
 extends baseLayout
 
 block body
-    //- TODO: this page is incomplete
-    //- TODO: specify which information is stored about the user
-    //- TODO: issue#56
+    #login
+        h2 login
 
-    a(href="/login/github") login with github
-    br
-    a(href="/login/gitlab") login with gitlab
+        p information stored per user in the database: id, username, service (github, gitlab) id, starred pastes, url to the avatar, whether your profile is public or not, the default language and the api key.
+
+        a.login-button(href="/login/github")
+            i.fab.fa-github
+            span github
+
+        a.login-button(href="/login/gitlab")
+            i.fab.fa-gitlab
+            span gitlab

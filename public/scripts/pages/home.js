@@ -109,12 +109,12 @@ function preventDefaults(e)
     e.stopPropagation();
 }
 
-function ondragstart(e)
+function ondragstart()
 {
     document.getElementById("drop-area").classList.remove("hidden");
 }
 
-function ondragend(e)
+function ondragend()
 {
     document.getElementById("drop-area").classList.add("hidden");
 }
@@ -133,8 +133,8 @@ async function ondragdrop(e)
 
         if (!type.startsWith("text/") && type !== "")
         {
-            continue;
             nfiles--;
+            continue;
         }
 
         filesProcessed.push(files[i]);
@@ -165,7 +165,7 @@ async function ondragdrop(e)
 
             for (let j = 0; j < langs.length; j++)
             {
-                if (langs[j].querySelector("span").textContent == langData.name)
+                if (langs[j].querySelector("span").textContent === langData.name)
                 {
                     langs[j].querySelector("input").checked = true;
                     break;
@@ -175,7 +175,7 @@ async function ondragdrop(e)
             editors[i].languageDropdown.updateValue();
         }
 
-        filesProcessed[i].text().then(text => editors[i].editor.setValue(text));
+        filesProcessed[i].text().then(text => editors[i].editor.setValue(text)); // jshint ignore:line
     }
 }
 

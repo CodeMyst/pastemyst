@@ -88,7 +88,96 @@ window.addEventListener("load", () =>
     {
         encryptOptions.classList.toggle("hidden");
     });
+
+    document.body.addEventListener("dragenter", ondragstart, false);
+    document.body.addEventListener("dragover", ondragstart, false);
+
+    document.body.addEventListener("dragleave", ondragend, false);
+    document.body.addEventListener("drop", ondragend, false);
+
+    document.body.addEventListener("dragenter", preventDefaults, false);
+    document.body.addEventListener("dragover", preventDefaults, false);
+    document.body.addEventListener("dragleave", preventDefaults, false);
+    document.body.addEventListener("drop", preventDefaults, false);
+
+    document.body.addEventListener("drop", ondragdrop, false);
 });
+
+function preventDefaults(e)
+{
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+function ondragstart(e)
+{
+    document.getElementById("drop-area").classList.remove("hidden");
+}
+
+function ondragend(e)
+{
+    document.getElementById("drop-area").classList.add("hidden");
+}
+
+async function ondragdrop(e)
+{
+    let dt = e.dataTransfer;
+    let files = dt.files;
+
+    let nfiles = files.length;
+    let filesProcessed = [];
+
+    for (let i = 0; i < files.length; i++)
+    {
+        let type = files[i].type;
+
+        if (!type.startsWith("text/") && type !== "")
+        {
+            continue;
+            nfiles--;
+        }
+
+        filesProcessed.push(files[i]);
+    }
+
+    if (Math.abs(nfiles - editors.length) > 0)
+    {
+        for (let i = 1; i < nfiles; i++)
+        {
+            addEditor();
+        }
+    }
+
+    for (let i = 0; i < nfiles; i++)
+    {
+        editors[i].titleInput.value = filesProcessed[i].name;
+
+        let ext = filesProcessed[i].name.split(".").pop();
+
+        let res = await fetch(`/api/v2/data/languageExt?extension=${ext}`);
+
+        let langData = await res.json();
+
+        if (langData.name !== undefined)
+        {
+            let langs = editors[i].languageDropdown.container.querySelectorAll("label.option");
+            editors[i].languageDropdown.checked.checked = false;
+
+            for (let j = 0; j < langs.length; j++)
+            {
+                if (langs[j].querySelector("span").textContent == langData.name)
+                {
+                    langs[j].querySelector("input").checked = true;
+                    break;
+                }
+            }
+
+            editors[i].languageDropdown.updateValue();
+        }
+
+        filesProcessed[i].text().then(text => editors[i].editor.setValue(text));
+    }
+}
 
 function disableInput(input, label)
 {

@@ -23,54 +23,7 @@ window.addEventListener("load", () =>
     }
 
     setTheme();
-
-    document.body.addEventListener("dragenter", ondragstart, false);
-    document.body.addEventListener("dragover", ondragstart, false);
-
-    document.body.addEventListener("dragleave", ondragend, false);
-    document.body.addEventListener("drop", ondragend, false);
-
-    document.body.addEventListener("dragenter", preventDefaults, false);
-    document.body.addEventListener("dragover", preventDefaults, false);
-    document.body.addEventListener("dragleave", preventDefaults, false);
-    document.body.addEventListener("drop", preventDefaults, false);
-
-    document.body.addEventListener("drop", ondragdrop, false);
 });
-
-function preventDefaults(e)
-{
-    e.preventDefault();
-    e.stopPropagation();
-}
-
-function ondragstart(e)
-{
-    document.getElementById("drop-area").classList.remove("hidden");
-}
-
-function ondragend(e)
-{
-    document.getElementById("drop-area").classList.add("hidden");
-}
-
-function ondragdrop(e)
-{
-    let dt = e.dataTransfer;
-    let files = dt.files;
-
-    for (let i = 0; i < files.length; i++)
-    {
-        let type = files[i].type;
-
-        if (!type.startsWith("text/") && type !== "")
-        {
-            continue;
-        }
-
-        files[i].text().then(text => console.log(`${files[i].name} - ${text}`));
-    }
-}
 
 function toggleFullwidth()
 {

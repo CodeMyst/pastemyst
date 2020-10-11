@@ -2,7 +2,7 @@
 
 this endpoint is for getting various simple data.
 
-### get a language
+### get a language by name
 
 <p class="method">GET</p> <code>/data/language?name=<span class="var">{language}</span></code>
 
@@ -29,5 +29,13 @@ get the language information for a specific language, returns a `404` status if 
   ]
 }
 ```
+
+### get a language by extension
+
+<p class="method">GET</p> <code>/data/languageExt?extension=<span class="var">{extension}</span></code>
+
+get the language information for a specific language found by the extension, returns a `404` status if the language couldn't be found.
+
+returns the same object as getting the language by name.
 
 [comment]: <> (TODO: how to get all possible language values? and should they use the name, mode or mime?)

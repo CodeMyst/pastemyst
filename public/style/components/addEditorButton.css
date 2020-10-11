@@ -1,6 +1,6 @@
 .add-editor
 {
-    background-color: var(--color-mystlue);
+    background-color: var(--color-mystge);
     display: flex;
     flex-direction: row;
     margin-top: -25px;
@@ -23,6 +23,6 @@
 
 .add-editor:hover
 {
-    background-color: var(--color-mystge);
+    background-color: var(--color-mystlue);
     color: var(--color-nano);
 }

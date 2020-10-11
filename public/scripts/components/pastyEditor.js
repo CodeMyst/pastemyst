@@ -27,6 +27,7 @@ export function initEditors()
             tabSize: 4,
             theme: getTheme(),
             lineWrapping: getWordwrap(),
+            dragDrop: false,
             extraKeys:
             {
                 Tab: (cm) => cm.execCommand("insertSoftTab")
@@ -80,6 +81,7 @@ export function addEditor()
         tabSize: 4,
         theme: getTheme(),
         lineWrapping: getWordwrap(),
+        dragDrop: false,
         extraKeys:
         {
             Tab: (cm) => cm.execCommand("insertSoftTab")

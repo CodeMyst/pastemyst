@@ -98,3 +98,26 @@
     font-size: var(--font-size-normal);
     width: 30%;
 }
+
+#home #drop-area
+{
+    z-index: 99999;
+    position: absolute;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    box-sizing: border-box;
+    background-color: var(--color-mystlue);
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    font-size: var(--font-size-big);
+}
+
+#home #drop-area.hidden
+{
+    display: none;
+}

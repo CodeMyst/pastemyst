@@ -1,0 +1,39 @@
+#login
+{
+    background-color: var(--color-nanolight);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    padding-bottom: 20px;
+}
+
+#login h2
+{
+    margin-bottom: 20px;
+}
+
+#login p
+{
+    margin-bottom: 40px;
+    font-size: var(--font-size-small);
+}
+
+#login .login-button
+{
+    background-color: var(--color-mystge);
+    color: var(--color-nano);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    margin-right: 20px;
+    box-sizing: border-box;
+    font-size: var(--font-size-normal);
+}
+
+#login .login-button:hover
+{
+    background-color: var(--color-mystlue);
+}
+
+#login .login-button i
+{
+    margin-right: 10px;
+}

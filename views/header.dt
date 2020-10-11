@@ -1,9 +1,11 @@
 - import pastemyst.data : config;
 
 #header
-    h1
-        img.icon(src="/static/assets/icons/pastemyst.svg")
-        a(href="/") pastemyst
+    .top
+        h1
+            img.icon(src="/static/assets/icons/pastemyst.svg")
+            a(href="/") pastemyst
+        a.donate(href="/donate") donate
 
     p.description
         | a simple website for sharing code.

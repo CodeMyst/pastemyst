@@ -43,9 +43,14 @@ window.addEventListener("load", async () =>
         }
     });
 
-    document.querySelector(".token-copy").addEventListener("click", () =>
+    let tokenCopyButton = document.querySelector(".token-copy");
+
+    tokenCopyButton.addEventListener("click", () =>
     {
         copyToClipboard(document.querySelector(".token").textContent);
+        let originalText = tokenCopyButton.textContent;
+        tokenCopyButton.textContent = "copied";
+        setTimeout(function(){ tokenCopyButton.textContent = originalText; }, 2000);
     });
 
     window.addEventListener("beforeunload", (e) =>

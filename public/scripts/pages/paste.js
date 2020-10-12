@@ -168,31 +168,52 @@ window.addEventListener("load", async () =>
 
     let copyLinkButton = document.querySelector("#paste .paste-header .copy-link");
     let copyLink = copyLinkButton.getAttribute("href");
-    copyLinkButton.addEventListener("click", () => copyLinkToClipboard(copyLink));
+    copyLinkButton.addEventListener("click", () => copyLinkToClipboard(copyLinkButton, copyLink));
     copyLinkButton.removeAttribute("href");
 
     let copyLinkEditButton = document.querySelector("#paste .paste-header .copy-link-edit");
     let copyEditLink = copyLinkEditButton.getAttribute("href");
-    copyLinkEditButton.addEventListener("click", () => copyLinkToClipboard(copyEditLink));
+    copyLinkEditButton.addEventListener("click", () => copyLinkToClipboard(copyLinkEditButton, copyEditLink));
     copyLinkEditButton.removeAttribute("href");
 
     const embedScriptCopy = document.querySelector(".embed-script-copy");
     const embedScript = document.querySelector(".embed-script");
-    embedScriptCopy.addEventListener("click", () => copyToClipboard(embedScript.value));
+    embedScriptCopy.addEventListener("click", () =>
+    {
+        copyToClipboard(embedScript.value);
+        let textElem = embedScriptCopy.querySelector(".tooltip-text");
+        let originalText = textElem.textContent;
+        textElem.textContent = "copied";
+        setTimeout(function(){ textElem.textContent = originalText; }, 2000);
+    });
 });
 
 function copyCodeToClipboard(copyButton)
 {
     let textarea = copyButton.closest(".pasty").querySelector("textarea");
 
+    let originalText = copyButton.textContent;
+
     copyToClipboard(textarea.textContent);
+
+    copyButton.textContent = "copied";
+
+    setTimeout(function(){ copyButton.textContent = originalText; }, 2000);
 }
 
-function copyLinkToClipboard(link)
+function copyLinkToClipboard(button, link)
 {
     let url = window.location.host + link;
 
     copyToClipboard(url);
+
+    let textElem = button.querySelector(".tooltip-text");
+
+    let originalText = textElem.textContent;
+
+    textElem.textContent = "copied";
+
+    setTimeout(function(){ textElem.textContent = originalText; }, 2000);
 }
 
 const copyToClipboard = str => {

@@ -25,6 +25,8 @@ html(lang="en", class="myst")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         meta(http-equiv="X-UA-Compatible", content="ie=edge")
 
+        meta(name="theme-color", content="#ee720d")
+
         link(rel="shortcut icon", type="image/x-icon", href="/static/assets/icons/favicon.ico")
 
         link(rel="stylesheet", href="/static/style/main.css")

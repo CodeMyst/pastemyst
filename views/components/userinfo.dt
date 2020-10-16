@@ -1,11 +1,15 @@
 .user-info
+    - import pastemyst.db : findOneById;
+    - import pastemyst.data : User;
+    - auto u= findOneById!User(session.user.id).get();
     .left
         img.avatar(src=session.user.avatarUrl)
         p.username= session.user.username
+        - if (u.supporterLength > 0)
+            .supporter-badge.tooltip
+                i.fas.fa-life-ring
+                span.tooltip-text supporter for #{u.supporterLength} months
     .right
-        - import pastemyst.db : findOneById;
-        - import pastemyst.data : User;
-        - auto u= findOneById!User(session.user.id).get();
         - if (u.publicProfile)
             a(href="/users/" ~ u.username) public profile
         a(href="/user/settings") settings

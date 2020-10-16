@@ -171,3 +171,10 @@
     width: 100%;
     margin-top: 20px;
 }
+
+#profile .supporter-badge
+{
+    margin-left: 20px;
+    align-self: center;
+    color: var(--color-mystge);
+}

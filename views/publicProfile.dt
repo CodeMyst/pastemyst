@@ -5,6 +5,10 @@ block body
         .public-user-info
             img.avatar(src=user.avatarUrl)
             p.username= user.username
+            - if (user.supporterLength > 0)
+                .supporter-badge.tooltip
+                    i.fas.fa-life-ring
+                    span.tooltip-text supporter for #{user.supporterLength} months
 
         form(method="get", action="/users/" ~ user.username)
             .paste-search

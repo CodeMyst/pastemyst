@@ -15,7 +15,7 @@
     align-items: center;
 }
 
-.user-info .left *
+.user-info .left .avatar
 {
     margin-right: 20px;
 }

@@ -45,6 +45,11 @@ public struct User
      + array of starred pastes
      +/
     public string[] stars;
+
+    /++
+     + how long is the user a supporter for (in months). 0 if not a supporter
+     +/
+    @optional public uint supporterLength = 0;
 }
 
 /++

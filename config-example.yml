@@ -1,0 +1,22 @@
+github:
+    id: <client id>
+    secret: <client secret>
+
+gitlab:
+    id: <client id>
+    secret: <client secret>
+
+# has to end with a trailing /
+hostname: http://localhost:5000/
+
+# shows a message at the top of the page to
+# indicate that this instance is a development one
+# and users shouldnt expect it to always work
+development_instance: true
+
+# where to host pastemyst
+host_ip: 0.0.0.0
+host_port: 5000
+
+# mongo connection string
+mongo_connection: root:root@db.docker.local

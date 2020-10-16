@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+
+  db:
+    image: mongo:4.4.1
+    volumes:
+      - ./db-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    restart: unless-stopped
+
+  app:
+    build:
+      context: ./
+    restart: unless-stopped
+    depends_on:
+      - db
+    links:
+      - db:db.docker.local
+    ports:
+      - 5000:5000
+    user: ${CURRENT_UID}
+    volumes:
+      - .:/app

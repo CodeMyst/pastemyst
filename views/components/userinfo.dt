@@ -9,6 +9,11 @@
             .supporter-badge.tooltip
                 i.fas.fa-life-ring
                 span.tooltip-text supporter for #{u.supporterLength} months
+        - if (u.contributor)
+            .contributor-badge.tooltip
+                i.fas.fa-code-branch
+                span.tooltip-text contributor
+
     .right
         - if (u.publicProfile)
             a(href="/users/" ~ u.username) public profile

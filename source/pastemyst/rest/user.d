@@ -70,7 +70,6 @@ public class APIUser : IAPIUser
         {
             string _id;
             string username;
-            string[] stars;
             string avatarUrl;
             bool publicProfile;
             string defaultLang;
@@ -78,7 +77,7 @@ public class APIUser : IAPIUser
 
         const user = res.get();
 
-        return serializeToJson(MinUser(user.id, user.username, user.stars.dup,
+        return serializeToJson(MinUser(user.id, user.username,
                     user.avatarUrl, user.publicProfile, user.defaultLang));
     }
 }

@@ -195,3 +195,8 @@
 {
     border-bottom-right-radius: var(--border-radius);
 }
+
+.paste-header .embed-script
+{
+    display: none;
+}

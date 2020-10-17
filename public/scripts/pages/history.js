@@ -106,7 +106,64 @@ window.addEventListener("load", async () =>
             }
         }
     }
+
+    let copyLinkButton = document.querySelector(".paste-header .copy-link");
+    let copyLink = copyLinkButton.getAttribute("href");
+    copyLinkButton.addEventListener("click", () => copyLinkToClipboard(copyLinkButton, copyLink));
+    copyLinkButton.removeAttribute("href");
+
+    let copyLinkEditButton = document.querySelector(".paste-header .copy-link-edit");
+    let copyEditLink = copyLinkEditButton.getAttribute("href");
+    copyLinkEditButton.addEventListener("click", () => copyLinkToClipboard(copyLinkEditButton, copyEditLink));
+    copyLinkEditButton.removeAttribute("href");
+
+    const embedScriptCopy = document.querySelector(".embed-script-copy");
+    const embedScript = document.querySelector(".embed-script");
+    if (embedScriptCopy)
+    {
+        embedScriptCopy.addEventListener("click", () =>
+        {
+            copyToClipboard(embedScript.value);
+            let textElem = embedScriptCopy.querySelector(".tooltip-text");
+            let originalText = textElem.textContent;
+            textElem.textContent = "copied";
+            setTimeout(function(){ textElem.textContent = originalText; }, 2000);
+        });
+    }
 });
+
+function copyLinkToClipboard(button, link)
+{
+    let url = window.location.host + link;
+
+    copyToClipboard(url);
+
+    let textElem = button.querySelector(".tooltip-text");
+
+    let originalText = textElem.textContent;
+
+    textElem.textContent = "copied";
+
+    setTimeout(function(){ textElem.textContent = originalText; }, 2000);
+}
+
+const copyToClipboard = str => {
+  const el = document.createElement('textarea');  // Create a <textarea> element
+  el.value = str;                                 // Set its value to the string that you want copied
+  el.setAttribute('readonly', '');                // Make it readonly to be tamper-proof
+  el.style.position = 'absolute';                 
+  el.style.left = '-9999px';                      // Move outside the screen to make it invisible
+  document.body.appendChild(el);                  // Append the <textarea> element to the HTML document
+  const selected =            
+    document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;                                    // Mark as false to know no selection existed before
+  el.select();                                    // Select the <textarea> content
+  document.execCommand('copy');                   // Copy - only works as a result of a user action (e.g. click events)
+  document.body.removeChild(el);                  // Remove the <textarea> element
+  if (selected) {                                 // If a selection existed before copying
+    document.getSelection().removeAllRanges();    // Unselect everything on the HTML document
+    document.getSelection().addRange(selected);   // Restore the original selection
+  }
+};
 
 /**
  * Figures out whether to use a white or black text colour based on the background colour.

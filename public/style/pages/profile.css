@@ -172,7 +172,8 @@
     margin-top: 20px;
 }
 
-#profile .supporter-badge
+#profile .supporter-badge,
+#profile .contributor-badge
 {
     margin-left: 20px;
     align-self: center;

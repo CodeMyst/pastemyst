@@ -88,36 +88,58 @@ window.addEventListener("load", () =>
     {
         encryptOptions.classList.toggle("hidden");
     });
+    
+    // counter of how many times the dragenter and dragleave events have been fired
+    // as on some browsers the dragleave event is fired when the drop is over the children
+    // if this counter is at 0 it means it should hide the drop area text
+    let ddcounter = 0;
 
-    document.body.addEventListener("dragenter", ondragstart, false);
-    document.body.addEventListener("dragover", ondragstart, false);
+    document.body.addEventListener("dragover", function(e)
+    {
+        e.stopPropagation();
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "copy";
+    });
+    
+    document.body.addEventListener("dragenter", function(e)
+    {
+        e.stopPropagation();
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "copy";
+        ddcounter++;
 
-    document.body.addEventListener("dragleave", ondragend, false);
-    document.body.addEventListener("drop", ondragend, false);
+        if (e.dataTransfer.types.includes("Files"))
+        {
+            document.getElementById("drop-area").classList.remove("hidden");
+        }
+    });
 
-    document.body.addEventListener("dragenter", preventDefaults, false);
-    document.body.addEventListener("dragover", preventDefaults, false);
-    document.body.addEventListener("dragleave", preventDefaults, false);
-    document.body.addEventListener("drop", preventDefaults, false);
+    document.body.addEventListener("dragleave", function(e)
+    {
+        e.stopPropagation();
+        e.preventDefault();
+        ddcounter--;
 
-    document.body.addEventListener("drop", ondragdrop, false);
+        if (ddcounter === 0 && e.dataTransfer.types.includes("Files"))
+        {
+            document.getElementById("drop-area").classList.add("hidden");
+        }
+    });
+
+    document.body.addEventListener("drop", function(e)
+    {
+        e.stopPropagation();
+        e.preventDefault();
+
+        if (e.dataTransfer.types.includes("Files"))
+        {
+            document.getElementById("drop-area").classList.add("hidden");
+            ddcounter = 0;
+        }
+
+        ondragdrop(e);
+    });
 });
-
-function preventDefaults(e)
-{
-    e.preventDefault();
-    e.stopPropagation();
-}
-
-function ondragstart()
-{
-    document.getElementById("drop-area").classList.remove("hidden");
-}
-
-function ondragend()
-{
-    document.getElementById("drop-area").classList.add("hidden");
-}
 
 async function ondragdrop(e)
 {

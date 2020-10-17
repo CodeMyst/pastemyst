@@ -132,19 +132,6 @@ window.addEventListener("load", async () =>
     }
 });
 
-function copyCodeToClipboard(copyButton)
-{
-    let textarea = copyButton.closest(".pasty").querySelector("textarea");
-
-    let originalText = copyButton.textContent;
-
-    copyToClipboard(textarea.textContent);
-
-    copyButton.textContent = "copied";
-
-    setTimeout(function(){ copyButton.textContent = originalText; }, 2000);
-}
-
 function copyLinkToClipboard(button, link)
 {
     let url = window.location.host + link;

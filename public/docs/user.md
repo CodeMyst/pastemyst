@@ -26,6 +26,5 @@ returned JSON body:
 | username        | string   | username of the user                                             |
 | avatarUrl       | string   | url of their avatar image                                        |
 | defaultLang     | string   | the default language                                             |
-| stars           | string[] | list of paste id's that they stared                              |
 | publicProfile   | bool     | if they have a public profile                                    |
 | supporterLength | uint     | how long has the user been a supporter for, 0 if not a supporter |

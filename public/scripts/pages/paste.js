@@ -178,14 +178,17 @@ window.addEventListener("load", async () =>
 
     const embedScriptCopy = document.querySelector(".embed-script-copy");
     const embedScript = document.querySelector(".embed-script");
-    embedScriptCopy.addEventListener("click", () =>
+    if (embedScriptCopy)
     {
-        copyToClipboard(embedScript.value);
-        let textElem = embedScriptCopy.querySelector(".tooltip-text");
-        let originalText = textElem.textContent;
-        textElem.textContent = "copied";
-        setTimeout(function(){ textElem.textContent = originalText; }, 2000);
-    });
+        embedScriptCopy.addEventListener("click", () =>
+        {
+            copyToClipboard(embedScript.value);
+            let textElem = embedScriptCopy.querySelector(".tooltip-text");
+            let originalText = textElem.textContent;
+            textElem.textContent = "copied";
+            setTimeout(function(){ textElem.textContent = originalText; }, 2000);
+        });
+    }
 });
 
 function copyCodeToClipboard(copyButton)

@@ -173,9 +173,12 @@
 }
 
 #profile .supporter-badge,
-#profile .contributor-badge
+#profile .contributor-badge,
+#settings .supporter-badge,
+#settings .contributor-badge
 {
     margin-left: 20px;
     align-self: center;
-    color: var(--color-mystge);
+    color: var(--color-mysteen);
+    font-size: var(--font-size-medium);
 }

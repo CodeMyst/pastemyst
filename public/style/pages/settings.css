@@ -151,3 +151,27 @@
 {
     color: var(--color-mystlue);
 }
+
+#settings input[type="file"]
+{
+    display: none;
+}
+
+#settings .avatar-upload-label
+{
+    background-color: var(--color-nano);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-small);
+}
+
+#settings .avatar-upload-label i
+{
+    margin-right: 20px;
+}
+
+#settings .avatar-upload-label:hover
+{
+    cursor: pointer;
+    color: var(--color-mystlue);
+}

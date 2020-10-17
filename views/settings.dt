@@ -14,8 +14,11 @@ block body
                     span.available username available
 
                 .avatar
-                    p upload new avatar
-                    input(type="file", accept=".png,.jpg", name="avatar")
+                    p upload a new avatar
+                    label(for="avatar-upload", class="avatar-upload-label")
+                        i.fas.fa-upload
+                        span upload
+                    input(type="file", accept=".png,.jpg", name="avatar", id="avatar-upload")
 
                 h2 behaviour
 

@@ -7,11 +7,11 @@ block body
             p.username= user.username
             - if (user.supporterLength > 0)
                 .supporter-badge.tooltip
-                    i.fas.fa-life-ring
+                    i.fas.fa-user-astronaut
                     span.tooltip-text supporter for #{user.supporterLength} months
             - if (user.contributor)
                 .contributor-badge.tooltip
-                    i.fas.fa-code-branch
+                    i.fas.fa-user-ninja
                     span.tooltip-text contributor
 
         form(method="get", action="/users/" ~ user.username)

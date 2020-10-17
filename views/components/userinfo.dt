@@ -7,11 +7,11 @@
         p.username= session.user.username
         - if (u.supporterLength > 0)
             .supporter-badge.tooltip
-                i.fas.fa-life-ring
+                i.fas.fa-user-astronaut
                 span.tooltip-text supporter for #{u.supporterLength} months
         - if (u.contributor)
             .contributor-badge.tooltip
-                i.fas.fa-code-branch
+                i.fas.fa-user-ninja
                 span.tooltip-text contributor
 
     .right

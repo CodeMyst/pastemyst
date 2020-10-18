@@ -1,5 +1,6 @@
 .dub
 bin
+config.yml
 config.yaml
 public/assets/avatars/*
 !public/assets/avatars/.gitkeep

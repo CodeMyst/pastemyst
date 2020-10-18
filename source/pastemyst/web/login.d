@@ -23,12 +23,7 @@ public class LoginWeb
     @noAuth
     public void getLogin(HTTPServerRequest req)
     {
-        UserSession session = UserSession.init;
-
-        if (req.session && req.session.isKeySet("user"))
-        {
-            session = req.session.get!UserSession("user");    
-        }
+        const session = getSession(req);
 
         render!("login.dt", session);
     }
@@ -40,10 +35,9 @@ public class LoginWeb
      +/
     @path("/logout")
     @anyAuth
-    public void getLogout(HTTPServerRequest req)
+    public void getLogout(HTTPServerRequest req, HTTPServerResponse res)
     {
-        req.session.remove("user");
-        terminateSession();
+        endSession(req, res);
         redirect("/");
     }
 
@@ -167,24 +161,21 @@ public class LoginWeb
 
         const user = findOne!User(["serviceIds." ~ serviceName: serviceUser.id]);
 
-        req.session = res.startSession();
-
         if (user.isNull)
         {
+            req.session = res.startSession();
             req.session.set("create_temp_type", serviceName);
             req.session.set("create_temp_user", serviceUser);
             const serviceUsername = serviceUser.username;
-            const session = UserSession.init;
+            const session = pastemyst.auth.session.Session.init;
             res.render!("createUser.dt", serviceUsername, session);
             return;
         }
 
         const muser = MinimalUser(user.get().id, user.get().username, user.get().avatarUrl);
-        UserSession ses;
-        ses.loggedIn = true;
-        ses.user = muser;
-        ses.token = accessToken;
-        req.session.set("user", ses);
+        pastemyst.auth.session.Session session;
+        session.user = muser;
+        startSession(req, res, session);
 
         // FIXME: issue#55
         redirect("/#reload");
@@ -197,7 +188,7 @@ public class LoginWeb
      +/
     @path("/login/create")
     @noAuth
-    public void postLoginCreate(string username, HTTPServerRequest req)
+    public void postLoginCreate(string username, HTTPServerRequest req, HTTPServerResponse res)
     {
         import pastemyst.util : generateUniqueId, usernameHasSpecialChars, usernameStartsWithSymbol,
                                 usernameEndsWithSymbol, usernameRemoveDuplicateSymbols;
@@ -230,6 +221,7 @@ public class LoginWeb
         if (!userCheck.isNull)
         {
             terminateSession();
+            endSession(req, res);
             throw new HTTPStatusException(HTTPStatus.badRequest, "username is already taken");
         }
 
@@ -244,13 +236,15 @@ public class LoginWeb
 
         insert(key);
 
-        UserSession ses;
-        ses.loggedIn = true;
-        ses.user = MinimalUser(user.id, user.username, user.avatarUrl);
+        pastemyst.auth.session.Session session;
+        session.user = MinimalUser(user.id, user.username, user.avatarUrl);
         
-        req.session.set("user", ses);
         req.session.remove("create_temp_type");
         req.session.remove("create_temp_user");
+
+        terminateSession();
+
+        startSession(req, res, session);
 
         redirect("/");
     }

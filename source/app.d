@@ -1,23 +1,15 @@
 import vibe.d;
+import pastemyst.auth;
 
 /++
  + Renders an error page, everytime an error occured
  +/
 void displayError(HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
 {
-    import pastemyst.data : UserSession;
-
     string errorDebug = "";
     debug errorDebug = error.debugMessage;
 
-    UserSession session = UserSession.init;
-
-    if (req.session)
-    {
-        session = req.session.get!UserSession("user");
-    }
-    
-    import std.stdio : writeln;
+    const session = getSession(req);
 
     if (req.requestPath.startsWith(InetPath("/api")))
     {

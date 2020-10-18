@@ -8,27 +8,27 @@ import vibe.d;
 mixin template Auth()
 {
     import pastemyst.data;
+    import pastemyst.auth;
 
     @noRoute
-    public UserSession authenticate(scope HTTPServerRequest req, scope HTTPServerResponse res) @safe
+    public Session authenticate(scope HTTPServerRequest req, scope HTTPServerResponse res) @safe
     {
-        import pastemyst.db : findOneById;
+        const session = getSession(req);
+        const user = getSessionUser(session);
 
-        if (!req.session || !req.session.isKeySet("user") || !req.session.get!UserSession("user").loggedIn)
+        if (session == Session.init)
         {
             res.redirect("/login");
-            return UserSession.init;
+            return session;
         }
 
-        const ses = req.session.get!UserSession("user");
-
-        if (findOneById!User(ses.user.id).isNull)
+        if (user == cast(const User) User.init)
         {
-            res.terminateSession();
+            endSession(req, res);
             res.redirect("/login");
-            return UserSession.init;
+            return session;
         }
 
-        return ses;
+        return session;
     }
 }

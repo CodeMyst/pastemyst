@@ -2,6 +2,7 @@ module pastemyst.web.api;
 
 import vibe.d;
 import pastemyst.data;
+import pastemyst.auth;
 
 /++
  + web interface for the /api-docs endpoint
@@ -29,12 +30,7 @@ public class ApiDocsWeb
     {
         import std.file: exists;
 
-        UserSession session = UserSession.init;
-
-        if (req.session && req.session.isKeySet("user"))
-        {
-            session = req.session.get!UserSession("user");    
-        }
+        const session = getSession(req);
 
         const page = _page;
 

@@ -79,6 +79,7 @@ public struct Gitlab
  + app config
  +/
 @property
+@safe
 public Config config() { return _config; }
 private Config _config;
 

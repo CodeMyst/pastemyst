@@ -4,6 +4,7 @@ import vibe.d;
 import vibe.web.auth;
 import pastemyst.data;
 import pastemyst.web;
+import pastemyst.auth;
 
 /++
  + web interface for the /user endpoint
@@ -28,7 +29,7 @@ public class UserWeb
         import std.container : redBlackTree;
         import std.uni : toLower;
 
-        UserSession session = req.session.get!UserSession("user");
+        auto session = getSession(req);
         const title = session.user.username ~ " - profile";
 
         auto tags = redBlackTree!string();
@@ -71,8 +72,8 @@ public class UserWeb
     {
         import pastemyst.db : findOneById;
 
-        UserSession session = req.session.get!UserSession("user");
-        User user = findOneById!User(session.user.id).get();
+        const session = getSession(req);
+        const user = getSessionUser(session);
 
         const title = session.user.username ~ " - settings";
         render!("settings.dt", user, session, title);
@@ -85,7 +86,8 @@ public class UserWeb
      +/
     @path("settings/save")
     @anyAuth
-    public void postSettingsSave(HTTPServerRequest req, string username, bool publicProfile, string language)
+    public void postSettingsSave(HTTPServerRequest req, HTTPServerResponse res,
+        string username, bool publicProfile, string language)
     {
         import std.conv : to;
         import pastemyst.db : uploadAvatar, update, findOneById, findOne;
@@ -98,9 +100,8 @@ public class UserWeb
         import pastemyst.util : usernameHasSpecialChars, usernameStartsWithSymbol,
             usernameEndsWithSymbol, usernameRemoveDuplicateSymbols;
 
-        UserSession session = req.session.get!UserSession("user");
-
-        User user = findOneById!User(session.user.id).get();
+        auto session = getSession(req);
+        auto user = getSessionUser(session);
 
         if ("avatar" in req.files)
         {
@@ -160,7 +161,7 @@ public class UserWeb
             update!User(["_id": session.user.id], ["$set": ["defaultLang": lang]]);
         }
 
-        req.session.set("user", session);
+        setSession(req, res, session);
 
         redirect("/user/settings");
     }
@@ -174,7 +175,7 @@ public class UserWeb
     @anyAuth
     public void getDelete(HTTPServerRequest req)
     {
-        UserSession session = req.session.get!UserSession("user");
+        const session = getSession(req);
 
         const string msg = "are you sure you want to completely delete your account? this action cannot be undone.";
         const string confirmLink = "/user/delete/confirm";
@@ -192,9 +193,8 @@ public class UserWeb
         import std.path : baseName;
         import file = std.file : remove;
 
-        UserSession session = req.session.get!UserSession("user");
-
-        User user = findOneById!User(session.user.id).get();
+        auto session = getSession(req);
+        auto user = getSessionUser(session);
 
         if (user.avatarUrl.startsWith(config.hostname))
         {
@@ -219,7 +219,7 @@ public class UserWeb
         import pastemyst.db : update;
         import pastemyst.rest : generateApiKey;
 
-        auto session = req.session.get!UserSession("user");
+        auto session = getSession(req);
 
         update!ApiKey(["_id": session.user.id], ["$set": ["key": generateApiKey()]]);
 

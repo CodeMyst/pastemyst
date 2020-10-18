@@ -6,4 +6,3 @@ public import pastemyst.data.paste;
 public import pastemyst.data.edit;
 public import pastemyst.data.config;
 public import pastemyst.data.user;
-public import pastemyst.data.session;

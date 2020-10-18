@@ -4,6 +4,7 @@ import vibe.d;
 import vibe.web.auth;
 import pastemyst.data;
 import pastemyst.web;
+import pastemyst.auth;
 
 import std.typecons : Nullable;
 
@@ -27,12 +28,7 @@ public class PasteWeb
         import pastemyst.db : findOneById, tryFindOneById;
         import std.conv : to;
 
-        UserSession session = UserSession.init;
-
-        if (req.session && req.session.isKeySet("user"))
-        {
-            session = req.session.get!UserSession("user");
-        }
+        const session = getSession(req);
 
         const auto res = tryFindOneById!Paste(_id);
 
@@ -86,16 +82,11 @@ public class PasteWeb
 
         string ownerId = "";
 
-        UserSession session = UserSession.init;
+        const session = getSession(req);
 
-        if (req.session && req.session.isKeySet("user"))
+        if (session.loggedIn)
         {
-            session = req.session.get!UserSession("user");
-
-            if (session.loggedIn)
-            {
-                ownerId = session.user.id;
-            }
+            ownerId = session.user.id;
         }
 
         Paste paste;
@@ -139,16 +130,13 @@ public class PasteWeb
 
             if (isPrivate)
             {
-                enforceHTTP(!isAnonymous && !isPublic,
-                        HTTPStatus.badRequest,
-                        "the paste cant be anonymous or shown on the profile if its private");
-            }
+                enforceHTTP(!isAnonymous && !isPublic, HTTPStatus.badRequest,
+                    "the paste cant be anonymous or shown on the profile if its private");
+            } 
         }
-
         if (tags != "")
         {
             enforceHTTP(session.loggedIn, HTTPStatus.forbidden, "you cant tag pastes if you are not logged in.");
-
             paste.tags = tagsStringToArray(tags);
             encryptedPaste.tags = tagsStringToArray(tags);
         }
@@ -179,12 +167,7 @@ public class PasteWeb
         import crypto.padding : PaddingMode;
         import scrypt.password : genScryptPasswordHash, SCRYPT_OUTPUTLEN_DEFAULT, SCRYPT_R_DEFAULT, SCRYPT_P_DEFAULT;
 
-        UserSession session = UserSession.init;
-
-        if (req.session && req.session.isKeySet("user"))
-        {
-            session = req.session.get!UserSession("user");
-        }
+        const session = getSession(req);
 
         const auto res = tryFindOneById!EncryptedPaste(_id);
 
@@ -261,14 +244,14 @@ public class PasteWeb
 
         const paste = res.get();
 
-        UserSession session = req.session.get!UserSession("user");
+        const session = getSession(req);
 
         if (paste.isPrivate && (paste.ownerId != session.user.id))
         {
             return;
         }
 
-        auto user = findOneById!User(session.user.id).get();
+        auto user = getSessionUser(session);
 
         int incAmnt = 1;
 
@@ -299,12 +282,10 @@ public class PasteWeb
     {
         import pastemyst.db : findOneById, update, tryFindOneById;
 
-        UserSession session = UserSession.init;
+        const session = getSession(req);
 
-        if (req.session && req.session.isKeySet("user"))
+        if (session.loggedIn)
         {
-            session = req.session.get!UserSession("user");
-
             const auto res = tryFindOneById!Paste(_id);
 
             if (res.isNull)
@@ -350,12 +331,10 @@ public class PasteWeb
     {
         import pastemyst.db : findOneById, update, tryFindOneById;
 
-        UserSession session = UserSession.init;
+        const session = getSession(req);
 
-        if (req.session && req.session.isKeySet("user"))
+        if (session.loggedIn)
         {
-            session = req.session.get!UserSession("user");
-
             const auto res = tryFindOneById!Paste(_id);
 
             if (res.isNull)
@@ -400,13 +379,11 @@ public class PasteWeb
     public void postPasteAnon(string _id, HTTPServerRequest req)
     {
         import pastemyst.db : findOneById, update, tryFindOneById;
+        
+        const session = getSession(req);
 
-        UserSession session = UserSession.init;
-
-        if (req.session && req.session.isKeySet("user"))
+        if (session.loggedIn)
         {
-            session = req.session.get!UserSession("user");
-
             auto res = tryFindOneById!Paste(_id);
 
             if (res.isNull)
@@ -461,12 +438,10 @@ public class PasteWeb
     {
         import pastemyst.db : findOneById, removeOneById, tryFindOneById;
 
-        UserSession session = UserSession.init;
+        const session = getSession(req);
 
-        if (req.session && req.session.isKeySet("user"))
+        if (session.loggedIn)
         {
-            session = req.session.get!UserSession("user");
-
             const auto res = tryFindOneById!Paste(_id);
 
             if (res.isNull)
@@ -575,7 +550,7 @@ public class PasteWeb
     {
         import pastemyst.db : findOneById, tryFindOneById;
 
-        UserSession session = req.session.get!UserSession("user");
+        const session = getSession(req);
         auto res = tryFindOneById!Paste(_id);
 
         if (res.isNull())
@@ -618,7 +593,7 @@ public class PasteWeb
             return;
         }
 
-        auto session = req.session.get!UserSession("user");
+        const session = getSession(req);
 
         Paste paste = res.get();
 
@@ -811,12 +786,7 @@ public class PasteWeb
         // declared const
         paste.title = paste.title;
 
-        UserSession session = UserSession.init;
-
-        if (req.session && req.session.isKeySet("user"))
-        {
-            session = req.session.get!UserSession("user");
-        }
+        const session = getSession(req);
 
         if (paste.isPrivate && paste.ownerId != session.user.id)
         {
@@ -842,12 +812,7 @@ public class PasteWeb
             return;
         }
 
-        UserSession session = UserSession.init;
-
-        if (req.session && req.session.isKeySet("user"))
-        {
-            session = req.session.get!UserSession("user");
-        }
+        const session = getSession(req);
 
         if (paste.isPrivate && paste.ownerId != session.user.id)
         {

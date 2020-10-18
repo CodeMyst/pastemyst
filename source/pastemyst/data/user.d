@@ -49,7 +49,7 @@ public struct User
     /++
      + how long is the user a supporter for (in months). 0 if not a supporter
      +/
-    @optional public uint supporterLength = 0;
+    @optional public ulong supporterLength = 0;
 
     /++
      + is the user a contributor to pastemyst

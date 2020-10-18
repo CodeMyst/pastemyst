@@ -3,6 +3,7 @@ module pastemyst.web.root;
 import vibe.d;
 import pastemyst.data;
 import pastemyst.web;
+import pastemyst.auth;
 
 /++
  + web interface for the `/` endpoint.
@@ -17,16 +18,8 @@ public class RootWeb
     @path("/")
     public void getHome(HTTPServerRequest req)
     {
-        import pastemyst.db : findOneById;
-
-        UserSession session = UserSession.init;
-        User user = User.init;
-
-        if (req.session && req.session.isKeySet("user"))
-        {
-            session = req.session.get!UserSession("user");    
-            user = findOneById!User(session.user.id);
-        }
+        const session = getSession(req);
+        const user = getSessionUser(session);
 
         render!("home.dt", session, user);
     }
@@ -41,14 +34,8 @@ public class RootWeb
     {
         import pastemyst.db : findOneById;
 
-        UserSession session = UserSession.init;
-        User user = User.init;
-
-        if (req.session && req.session.isKeySet("user"))
-        {
-            session = req.session.get!UserSession("user");    
-            user = findOneById!User(session.user.id);
-        }
+        const session = getSession(req);
+        const user = getSessionUser(session);
 
         const pasteRes = findOneById!Paste(_id);
 
@@ -70,12 +57,7 @@ public class RootWeb
     @path("/changelog")
     public void getChangelog(HTTPServerRequest req)
     {
-        UserSession session = UserSession.init;
-
-        if (req.session && req.session.isKeySet("user"))
-        {
-            session = req.session.get!UserSession("user");    
-        }
+        const session = getSession(req);
 
         const title = "changelog";
 
@@ -85,12 +67,7 @@ public class RootWeb
     @path("/donate")
     public void getDonate(HTTPServerRequest req)
     {
-        UserSession session = UserSession.init;
-
-        if (req.session && req.session.isKeySet("user"))
-        {
-            session = req.session.get!UserSession("user");    
-        }
+        const session = getSession(req);
 
         const title = "donate";
 

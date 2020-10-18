@@ -2,6 +2,7 @@ module pastemyst.web.users;
 
 import vibe.d;
 import pastemyst.data;
+import pastemyst.auth;
 
 /++
  + web interface for the /users endpoint
@@ -42,12 +43,7 @@ public class UsersWeb
             return;
         }
 
-        UserSession session = UserSession.init;
-
-        if (req.session && req.session.isKeySet("user"))
-        {
-            session = req.session.get!UserSession("user");    
-        }
+        const session = getSession(req);
 
         const title = user.username ~ " - public profile";
 

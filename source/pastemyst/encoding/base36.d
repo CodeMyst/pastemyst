@@ -1,5 +1,7 @@
 module pastemyst.encoding.base36;
 
+import std.random : uniform, Random, rndGen;
+
 version(unittest)
 {
     import dshould;
@@ -37,21 +39,17 @@ unittest
 /++
  + Generates a random base36 string with 8 characters (used for IDs).
  +/
-public string randomBase36Id() @safe
+public string randomBase36Id(Random urng = rndGen) @safe
 {
-    import std.random : uniform;
-
     // The magic numbers are for the smallest and biggest 8 character ID.
 
-    return encodeBase36(uniform(78_364_164_096, 2_821_109_907_455));
+    return encodeBase36(uniform(78_364_164_096, 2_821_109_907_455, urng));
 }
 
 @("the length of a random base36 id")
 unittest
 {
-    randomBase36Id().length.should.equal(8);
-    randomBase36Id().length.should.equal(8);
-    randomBase36Id().length.should.equal(8);
-    randomBase36Id().length.should.equal(8);
-    randomBase36Id().length.should.equal(8);
+    Random rand;
+    randomBase36Id(rand).should.equal("a2wqy2jz");
+    randomBase36Id(rand).length.should.equal(8);
 }

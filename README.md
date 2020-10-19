@@ -28,31 +28,7 @@ to build and run pastemyst you need `dmd`, `dub`, `libssl-dev` (1.1), `libscrypt
 
 run the mongodb server on `127.0.0.1` and create 2 databases, `pastemyst` and `pastemyst-test` (for unit testing).
 
-you also need a `config.yaml` file at the root of the project. it should look like:
-```yaml
-github:
-    id: <client id>
-    secret: <client secret>
-
-gitlab:
-    id: <client id>
-    secret: <client secret>
-
-# has to end with a trailing /
-hostname: http://localhost:5000/
-
-# shows a message at the top of the page to
-# indicate that this instance is a development one
-# and users shouldnt expect it to always work
-development_instance: true
-
-# where to host pastemyst
-host_ip: 127.0.0.1
-host_port: 5000
-
-# mongo connection string
-mongo_connection: 127.0.0.1
-```
+you also need a `config.yaml` file at the root of the project. it should look like [this](config-example.yml).
 
 the github id and secret should be gotten from: [github applications](https://github.com/settings/applications), the homepage url should be: `http://localhost:5000/` and the authorization callback: `http://localhost:5000/login/github/callback`; same with gitlab, just replace `github` with `gitlab`.
 

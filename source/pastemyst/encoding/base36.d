@@ -29,6 +29,7 @@ public string encodeBase36(const long value) @safe
     return to!string(result.reverse());
 }
 
+@safe
 @("encoding a number to base36")
 unittest
 {
@@ -39,17 +40,21 @@ unittest
 /++
  + Generates a random base36 string with 8 characters (used for IDs).
  +/
-public string randomBase36Id(Random urng = rndGen) @safe
+public string randomBase36Id(ref Random urng = rndGen) @safe
 {
     // The magic numbers are for the smallest and biggest 8 character ID.
 
     return encodeBase36(uniform(78_364_164_096, 2_821_109_907_455, urng));
 }
 
+@safe
 @("the length of a random base36 id")
 unittest
 {
     Random rand;
     randomBase36Id(rand).should.equal("a2wqy2jz");
     randomBase36Id(rand).length.should.equal(8);
+
+    randomBase36Id(rand).should.equal("omr391qr");
+    randomBase36Id(rand).should.equal("2myf2ko6");
 }

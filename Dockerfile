@@ -11,7 +11,7 @@ FROM dlang2/dmd-ubuntu:2.093.1
 COPY --from=build /usr/bin/pastemyst-autodetect /usr/bin/
 
 RUN apt-get update && \
-    apt-get install -y libssl-dev libscrypt-dev
+    apt-get install -y libssl-dev libscrypt-dev patch
 
 WORKDIR /app
 

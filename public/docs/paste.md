@@ -58,3 +58,11 @@ these are the values you can edit:
 * pasties
 
 to edit a single pasty you will need to provide all of the original pasties changing the fields you want. it's not possible to update a single pasty without providing all of the pasties.
+
+### delete a paste
+
+<p class="method">DELETE</p> <code>/paste/<span class="var">{id}</span></code>
+
+[comment]: <> (`DELETE /paste/:id`)
+
+you can only delete pastes on your account, so you must provide the `Authorization` header. this action is irreversible.

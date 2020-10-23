@@ -24,13 +24,20 @@ this is pretty much how the end result will look (at least for the home page), s
 
 ## building
 
-to build and run pastemyst you need `dmd`, `dub`, `libssl-dev` (1.1), `libscrypt`, `mongodb` and [`pastemyst-autodetect`](https://github.com/codemyst/pastemyst-autodetect).
+to build and run pastemyst you need `dmd`, `dub`, `libssl-dev` (1.1), `libscrypt` (`libscrypt-dev` in ubuntu repos), `mongodb` and [`pastemyst-autodetect`](https://github.com/codemyst/pastemyst-autodetect).
+
+you also need the `diff` and `patch` tools installed to be able to edit pastes and look at the history.
 
 run the mongodb server on `127.0.0.1` and create 2 databases, `pastemyst` and `pastemyst-test` (for unit testing).
 
 you also need a `config.yaml` file at the root of the project. it should look like [this](config-example.yml).
 
 the github id and secret should be gotten from: [github applications](https://github.com/settings/applications), the homepage url should be: `http://localhost:5000/` and the authorization callback: `http://localhost:5000/login/github/callback`; same with gitlab, just replace `github` with `gitlab`.
+
+don't forget to first pull the submodules:
+```sh
+git submodule update --init --recursive
+```
 
 now simply run `dub run` and everything should work fine.
 

@@ -22,6 +22,22 @@ window.addEventListener("load", () =>
         themePicker.value = theme;
     }
 
+    if (localStorage.getItem("acceptedCookies") === null)
+    {
+        localStorage.setItem("acceptedCookies", "false");
+    }
+
+    if (localStorage.getItem("acceptedCookies") === "false")
+    {
+        document.querySelector(".cookies").classList.remove("hidden");
+    }
+
+    document.querySelector(".cookies a").addEventListener("click", () =>
+    {
+        localStorage.setItem("acceptedCookies", "true");
+        document.querySelector(".cookies").classList.add("hidden");
+    });
+
     setTheme();
 });
 

@@ -15,4 +15,9 @@
         p.warning
             | this is a development instance, stuff might break, data might be deleted and it might not always be online
 
+    .cookies.hidden
+        p we use cookies to keep you logged in and to make the website more secure.
+        a.cookie-ok
+            span ok
+
     include navigation

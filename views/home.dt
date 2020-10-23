@@ -40,7 +40,7 @@ block body
                 a#create-paste create paste
 
                 #encrypt-options.hidden
-                    input(type="password", id="encrypt-password", placeholder="password")
+                    input(type="text", id="encrypt-password", placeholder="password", style="text-security:disc;-webkit-text-security:disc;")
                     p make sure to use a strong password!
                     p it's impossible to get your paste back if you forget the password! unless you have a lot of time (and can keep the universe alive while you do it)
 
@@ -75,7 +75,7 @@ block body
             input(type="checkbox", name="isAnonymous")
             input(type="text", name="pasties")
             input(type="checkbox", name="encrypt")
-            input(type="password", name="password")
+            input(type="text", name="password")
             input(type="submit")
 
 block scripts

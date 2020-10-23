@@ -6,6 +6,6 @@ block body
             h3 decrypt paste
 
             form(action="/" ~ id, method="post")
-                input(type="password", name="password", placeholder="password", autofocus)
+                input(type="text", name="password", placeholder="password", autofocus, style="text-security:disc;-webkit-text-security:disc;")
 
                 p #[button(type="submit") decrypt]&nbsp;&nbsp;&nbsp;&nbsp;#[a(href="/") cancel]

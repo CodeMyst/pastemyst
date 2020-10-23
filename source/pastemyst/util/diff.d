@@ -1,34 +1,56 @@
 module pastemyst.util.diff;
 
+import std.exception : basicExceptionCtors;
+
+/++
+ + simple diff exception
+ +/
+public final class DiffException : Exception
+{
+    mixin basicExceptionCtors;
+}
+
 /++
  + generates a diff string between two pasty contents
  +/
-public string generateDiff(string id, string before, string after) @trusted
+public string generateDiff(string id, string before, string after) @safe
 {
-    import std.process : execute, executeShell;
-    import std.file : write, mkdir, remove, exists;
-    import std.algorithm : endsWith, remove;
     import std.array : replace;
-    import algo = std.algorithm : remove;
+    import std.exception : enforce;
+    import std.file : exists, mkdir, remove, rmdir, tempDir, write;
+    import std.format : format;
+    import std.path : buildPath;
+    import std.process : execute;
+    import std.uuid : randomUUID;
 
-    if (!exists("tmp/"))
+    string dirPath;
+    do
     {
-        mkdir("tmp");
+        dirPath = buildPath(tempDir(), "pastemystv2-"~randomUUID().toString());
+    } while (dirPath.exists);
+
+    // make a temporary directory in your temporary space
+    dirPath.mkdir;
+    scope(exit) dirPath.rmdir;
+
+    immutable fileBefore = buildPath(dirPath, id~"-before");
+    immutable fileAfter = buildPath(dirPath, id~"-after");
+    scope(exit)
+    {
+        fileAfter.remove;
+        fileBefore.remove;
     }
 
-    write("tmp/" ~ id ~ "-before", before.replace("\r\n", "\n"));
-    write("tmp/" ~ id ~ "-after", after.replace("\r\n", "\n"));
+    write(fileBefore, before.replace("\r\n", "\n"));
+    write(fileAfter, after.replace("\r\n", "\n"));
 
-    const diff = execute(["diff", "-u", "tmp/" ~ id ~ "-before", "tmp/" ~ id ~ "-after"]);
+    const diff = execute(["diff", "-u", fileBefore, fileAfter]);
 
-    remove("tmp/" ~ id ~ "-before");
-    remove("tmp/" ~ id ~ "-after");
+    enforce!DiffException(diff.status != 2,
+        format!"Error while trying to calculate the diff between the pastes with id: %s! Output: %s."(id, diff.output)
+    );
 
-    char[] diffOutput = cast(char[]) diff.output;
-
-    write("tmp/" ~ id ~ "-diff", diffOutput);
-
-    return cast(string) diffOutput;
+    return diff.output;
 }
 
 /++
@@ -36,24 +58,32 @@ public string generateDiff(string id, string before, string after) @trusted
  +/
 public string patchDiff(string id, string current, string diff) @safe
 {
-    import std.process : executeShell;
-    import std.file : write, mkdir, remove, exists, readText;
     import std.array : replace;
+    import std.file : exists, mkdir, readText, remove, rmdir, tempDir, write;
+    import std.path : buildPath;
+    import std.process : pipeProcess, Redirect, wait;
+    import std.uuid : randomUUID;
 
-    if (!exists("tmp/"))
+    string dirPath;
+    do
     {
-        mkdir("tmp");
-    }
+        dirPath = buildPath(tempDir(), "pastemystv2-"~randomUUID().toString());
+    } while (dirPath.exists);
 
-    write("tmp/" ~ id ~ "-current", current.replace("\r\n", "\n"));
-    write("tmp/" ~ id ~ "-diff", diff.replace("\r\n", "\n"));
+    // make a temporary directory in your temporary space
+    dirPath.mkdir;
+    scope(exit) dirPath.rmdir;
 
-    executeShell("patch -R tmp/" ~ id ~ "-current < tmp/" ~ id ~ "-diff");
+    immutable fileCurrent = buildPath(dirPath, id~"-current");
+    scope(exit) fileCurrent.remove;
 
-    string res = readText("tmp/" ~ id ~ "-current");
+    write(fileCurrent, current.replace("\r\n", "\n"));
+    auto pp = pipeProcess(["patch", "-R", fileCurrent], Redirect.stdin);
 
-    remove("tmp/" ~ id ~ "-current");
-    remove("tmp/" ~ id ~ "-diff");
+    pp.stdin.write(diff.replace("\r\n", "\n"));
+    pp.stdin.flush();
+    pp.stdin.close();
+    wait(pp.pid);
 
-    return res;
+    return readText(fileCurrent);
 }

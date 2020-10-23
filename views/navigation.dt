@@ -11,8 +11,10 @@ nav
             a(href="https://github.com/codemyst/pastemyst-v2", target="_blank") github
         li
             a(href="/api-docs") api
-        li.no-delimiter
+        li
             a(href="/changelog") changelog
+        li.no-delimiter
+            a(href="/legal") legal
 
     a.tooltip.wordwrap
         i.fas.fa-exchange-alt

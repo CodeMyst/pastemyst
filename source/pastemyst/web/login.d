@@ -202,8 +202,6 @@ public class LoginWeb
 
         enforceHTTP(username.length > 0, HTTPStatus.badRequest, "username cannot be empty");
 
-        username = usernameRemoveDuplicateSymbols(username);
-
         enforceHTTP(!usernameHasSpecialChars(username),
                     HTTPStatus.badRequest, "username cannot contain special characters");
 
@@ -212,6 +210,8 @@ public class LoginWeb
 
         enforceHTTP(!usernameEndsWithSymbol(username),
                     HTTPStatus.badRequest, "username cannot end with a symbol");
+
+        username = usernameRemoveDuplicateSymbols(username);
 
         const serviceName = req.session.get!string("create_temp_type");
         const serviceUser = req.session.get!ServiceUser("create_temp_user");

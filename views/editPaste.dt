@@ -17,7 +17,7 @@ block body
                 include components/titleEditable
 
                 - import std.array : join;
-                input(name="tags", placeholder="tags (separated by commas)", type="text", autocomplete="off", spellcheck="false", class="tags-input", value=paste.tags.join(", "))
+                input(name="tags", placeholder="tags (separated by commas)", type="text", autocomplete="off", spellcheck="false", class="tags-input", value=paste.tags.join(", "), aria-label="tags")
 
             #pasty-editors
                 - foreach (pasty; paste.pasties)

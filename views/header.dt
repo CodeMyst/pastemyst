@@ -3,7 +3,7 @@
 #header
     .top
         h1
-            img.icon(src="/static/assets/icons/pastemyst.svg")
+            img.icon(src="/static/assets/icons/pastemyst.svg", alt="pastemyst logo")
             a(href="/") pastemyst
         a.donate(href="/donate") donate
 

@@ -1,8 +1,9 @@
 #title-editable
-    input(name="title", placeholder="paste title", type="text", autocomplete="off", spellcheck="false", value=titleValue, class=hideExpiresIn ? "no-expires-in" : "")
+    input(name="title", placeholder="paste title", type="text", autocomplete="off", spellcheck="false", value=titleValue, class=hideExpiresIn ? "no-expires-in" : "", aria-label="title")
     - if (!hideExpiresIn)
         #expires-in-dropdown.no-search
             .label expires in:
+            - string dropdownLabel = "expiresIn";
             include components/dropdown
                 block options
                     - import std.conv : to;

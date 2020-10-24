@@ -14,7 +14,7 @@ block body
             include components/titleEditable
 
             - if (session.loggedIn)
-                input(name="tags", placeholder="tags (separated by commas)", type="text", autocomplete="off", spellcheck="false", class="tags-input")
+                input(name="tags", placeholder="tags (separated by commas)", type="text", autocomplete="off", spellcheck="false", class="tags-input", aria-label="tags")
 
         #pasty-editors
             - static if (is(typeof(paste)))
@@ -40,7 +40,7 @@ block body
                 a#create-paste create paste
 
                 #encrypt-options.hidden
-                    input(type="text", id="encrypt-password", placeholder="password", style="text-security:disc;-webkit-text-security:disc;")
+                    input(type="text", id="encrypt-password", placeholder="password", style="text-security:disc;-webkit-text-security:disc;", aria-label="password")
                     p make sure to use a strong password!
                     p it's impossible to get your paste back if you forget the password! unless you have a lot of time (and can keep the universe alive while you do it)
 

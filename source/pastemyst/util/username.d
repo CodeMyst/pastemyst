@@ -2,107 +2,146 @@ module pastemyst.util.username;
 
 import std.string;
 
-private const(string) alpha = "abcdefghijklmnopqrstuvwxyz";
-private const(string) nums = "0123456789";
-private const(string) alphanums = alpha ~ nums;
-private const(string) symbols = "-_.";
-private const(string) alphanumerics = alpha ~ nums ~ symbols;
+private enum string symbols = "-_.";
 
 /++
  + checks if the given username contains any illegal special characters/symbols
  + returns true if at least 1 is found
  +/
-public bool usernameHasSpecialChars(string username)
+public bool usernameHasSpecialChars(in string username) @safe
 {
-    foreach (c; username)
-    {
-        import std.algorithm : count;
+    import std.algorithm : canFind, each;
+    import std.ascii : isAlphaNum;
+    import std.typecons : No, Yes;
 
-        if (count(alphanumerics, c.toLower()) != 1)
-            return true;
-    }
+    return username.each!((ref ch) => (!isAlphaNum(ch) && !canFind(symbols, ch)) ? No.each : Yes.each) == No.each;
+}
 
-    return false;
+@safe
+@("usernameHasSpecialChars")
+unittest
+{
+    assert(usernameHasSpecialChars("he.ll!o"));
+    assert(!usernameHasSpecialChars("he.l-l_o"));
 }
 
 /++
  + checks if the given username starts with a symbol
  + returns true if it does
  +/
-public bool usernameStartsWithSymbol(string username)
+public bool usernameStartsWithSymbol(in string username) @safe
+    in (!usernameHasSpecialChars(username))
 {
-    import std.algorithm : count;
+    import std.ascii : isAlphaNum;
 
-    if (count(alphanums, username[0].toLower()) != 1)
-        return true;
+    return !isAlphaNum(username[0]);
+}
 
-    return false;
+/++
+ + this is only @system because AssertError is @system
+ +/
+@system
+@("usernameStartsWithSymbol contract")
+unittest
+{
+    import core.exception : AssertError;
+    import std.exception : assertThrown;
+
+    assertThrown!AssertError(usernameStartsWithSymbol("%hello"));
+}
+
+@safe
+@("usernameStartsWithSymbol")
+unittest
+{
+    import std.format : format;
+
+    foreach (symbol; "-_.")
+        assert(usernameStartsWithSymbol(format!"%shello"(symbol)));
+
+    assert(!usernameStartsWithSymbol("0hello"));
 }
 
 /++
  + checks if the given username ends with a symbol
  + returns true if it does
  +/
-public bool usernameEndsWithSymbol(string username)
+public bool usernameEndsWithSymbol(in string username) @safe
+    in (!usernameHasSpecialChars(username))
 {
-    import std.algorithm : count;
+    import std.ascii : isAlphaNum;
 
-    if (count(alphanums, username[username.length - cast(uint) 1].toLower()) != 1)
-        return true;
+    return !isAlphaNum(username[$ - 1]);
+}
 
-    return false;
+/++
+ + this is only @system because AssertError is @system
+ +/
+@system
+@("usernameEndsWithSymbol contract")
+unittest
+{
+    import core.exception : AssertError;
+    import std.exception : assertThrown;
+
+    assertThrown!AssertError(usernameEndsWithSymbol("hello%"));
+}
+
+@safe
+@("usernameEndsWithSymbol")
+unittest
+{
+    import std.format : format;
+
+    foreach (symbol; "-_.")
+        assert(usernameEndsWithSymbol(format!"hello%s"(symbol)));
+
+    assert(!usernameEndsWithSymbol("hello0"));
 }
 
 /++
  + removes any duplicate subsequent symbols from the username
  +/
-public string usernameRemoveDuplicateSymbols(string username)
+public string usernameRemoveDuplicateSymbols(in string username) @safe
+    in (!usernameHasSpecialChars(username))
+    in (!usernameStartsWithSymbol(username))
+    in (!usernameEndsWithSymbol(username))
 {
-    import std.algorithm : canFind;
+    import std.algorithm : reverse, uniq;
+    import std.array : array;
+    import std.ascii : isAlphaNum;
+    import std.conv : to;
+    import std.range : retro;
 
-    if (username.length < 2)
-    {
-        return username;
-    }
-
-    string copy;
-
-    int len = cast(int) username.length;
-
-    foreach (i, c; username)
-    {
-        if (i >= len-2)
-        {
-            copy ~= c;
-            continue;
-        }
-
-        if (symbols.canFind(c))
-        {
-            if (symbols.canFind(username[i+1]))
-            {
-                continue;
-            }
-        }
-
-        copy ~= c;
-    }
-
-    return copy;
+    return username.retro.uniq!((a, b) => !isAlphaNum(a) && !isAlphaNum(b)).array.reverse.to!string;
 }
 
-@("finding special characters in username")
+/++
+ + this is only @system because AssertError is @system
+ +/
+@system
+@("usernameRemoveDuplicateSymbols contract")
 unittest
 {
-    assert(usernameHasSpecialChars("he.ll!o") == true);
-    assert(usernameHasSpecialChars("he.ll_o") == false);
+    import core.exception : AssertError;
+    import std.exception : assertThrown;
+    import std.format : format;
 
-    assert(usernameStartsWithSymbol("_hello") == true);
-    assert(usernameStartsWithSymbol("0hello") == false);
-    assert(usernameEndsWithSymbol("hello_") == true);
-    assert(usernameEndsWithSymbol("hello.") == true);
-    assert(usernameEndsWithSymbol("hello9") == false);
+    assertThrown!AssertError(usernameRemoveDuplicateSymbols("hello%"));
+    assertThrown!AssertError(usernameRemoveDuplicateSymbols("&hello"));
+    assertThrown!AssertError(usernameRemoveDuplicateSymbols("he$llo"));
 
+    foreach (symbol; "-_.")
+    {
+        assertThrown!AssertError(usernameRemoveDuplicateSymbols(format!"%shello"(symbol)));
+        assertThrown!AssertError(usernameRemoveDuplicateSymbols(format!"hello%s"(symbol)));
+    }
+}
+
+@safe
+@("usernameRemoveDuplicateSymbols")
+unittest
+{
     assert(usernameRemoveDuplicateSymbols("c") == "c");
     assert(usernameRemoveDuplicateSymbols("co") == "co");
     assert(usernameRemoveDuplicateSymbols("codemyst") == "codemyst");
@@ -110,4 +149,6 @@ unittest
     assert(usernameRemoveDuplicateSymbols("code--myst") == "code-myst");
     assert(usernameRemoveDuplicateSymbols("code__--myst") == "code-myst");
     assert(usernameRemoveDuplicateSymbols("code__--..myst") == "code.myst");
+    assert(usernameRemoveDuplicateSymbols("c-o_de__--..myst") == "c-o_de.myst");
+
 }

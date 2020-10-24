@@ -63,3 +63,35 @@
 {
     background-color: var(--color-mystlue);
 }
+
+#header .cookies
+{
+    background-color: var(--color-mystge);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    color: var(--color-nano);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#header .cookies.hidden
+{
+    display: none;
+}
+
+#header .cookies a
+{
+    background-color: var(--color-nano);
+    padding: 0.1rem 1rem;
+    border-radius: var(--border-radius);
+    margin-left: 20px;
+    align-self: stretch;
+    line-height: 100%;
+    display: flex;
+}
+
+#header .cookies a span
+{
+    align-self: center;
+}

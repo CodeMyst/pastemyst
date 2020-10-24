@@ -1,0 +1,17 @@
+#user-data h2
+{
+    margin-bottom: 20px;
+}
+
+#user-data code
+{
+    margin-bottom: 20px;
+    border-radius: var(--border-radius);
+}
+
+#user-data .description
+{
+    font-size: var(--font-size-small);
+    color: var(--color-nanolightlight);
+    margin-bottom: 20px;
+}

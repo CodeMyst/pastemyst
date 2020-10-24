@@ -1,0 +1,8 @@
+extends baseLayout
+
+block body
+    #changelog.markdown-rendered
+        - import vibe.d;
+        - import std.file;
+        - import commonmarkd;
+        |!= convertMarkdownToHTML(readFileUTF8(NativePath("./LEGAL.md")), MarkdownFlag.tablesExtension)

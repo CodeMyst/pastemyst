@@ -175,3 +175,9 @@
     cursor: pointer;
     color: var(--color-mystlue);
 }
+
+#settings .view-data
+{
+    margin-bottom: 20px;
+    display: inline-block;
+}

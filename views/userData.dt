@@ -1,0 +1,34 @@
+extends baseLayout
+
+block body
+    #user-data
+        include components/userinfo
+
+        .block
+            h2 user data
+
+            pre
+                code.js= userData
+
+            h2 api data
+
+            pre
+                code.js= apiData
+
+            h2 paste data
+
+            pre
+                code.js= pasteData
+
+            h2 encrypted paste data
+
+            p.description the fields encryptedData, salt and encryptedKey are hex encoded for the sake of displaying them here, but they are stored as raw bytes in the database.
+
+            pre
+                code.js= encryptedPasteData
+
+block scripts
+    script(src="/static/scripts/libs/highlight.pack.js")
+
+    script.
+        hljs.initHighlightingOnLoad();

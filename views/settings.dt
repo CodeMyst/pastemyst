@@ -60,6 +60,12 @@ block body
 
                 a.regen(href="settings/regen") regenerate
 
+                h2 privacy
+
+                p.description you can view all the data we store on you with this link. the page is private and only you can see it.
+
+                a.view-data(href="/user/data") view all my data
+
                 h2 account deletion
 
                 p.description deleting your account will delete #[b everything] tied to your account (user data, pastes, stars, etc.)

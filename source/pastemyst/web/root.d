@@ -73,4 +73,14 @@ public class RootWeb
 
         render!("donate.dt", session, title);
     }
+
+    @path("/legal")
+    public void getLegal(HTTPServerRequest req)
+    {
+        const session = getSession(req);
+
+        const title = "legal";
+
+        render!("legal.dt", session, title);
+    }
 }

@@ -17,7 +17,7 @@ for any public pastes, we cannot guarantee your content will not be copied by ot
 
 unless you are using an account, no data is gathered about you, except temporary ip addresses used for protecting the site from spammers or any other kind of attacks.
 
-if you are using an account, all data gathered about you can be downloaded on your profile settings page.
+if you are using an account, all data gathered about you can be seen on your profile settings page.
 
 you can delete your account, which completely deletes all data tied to your account on your profile settings page.
 

@@ -80,6 +80,52 @@ public class UserWeb
     }
 
     /++
+     + page with all of users data
+     +/
+    @path("/data")
+    @anyAuth
+    public void getData(HTTPServerRequest req)
+    {
+        import pastemyst.db : tryFindOneById, findOneById, find;
+        import std.digest : toHexString;
+
+        auto session = getSession(req);
+        const user = getSessionUser(session);
+
+        const userData = serializeToPrettyJson(user);
+        const apiData = serializeToPrettyJson(findOneById!ApiKey(user.id).get());
+
+        auto pastesMongo = find!BasePaste(["ownerId": user.id]);
+        Paste[] pastes;
+        EncryptedPaste[] encpastes;
+
+        foreach (p; pastesMongo)
+        {
+            auto npaste = tryFindOneById!Paste(p.id);
+
+            if (!npaste.isNull)
+            {
+                pastes ~= npaste.get();
+                continue;
+            }
+
+            auto encpaste = findOneById!EncryptedPaste(p.id).get();
+
+            encpaste.encryptedData = toHexString(cast(ubyte[]) encpaste.encryptedData);
+            encpaste.salt = toHexString(cast(ubyte[]) encpaste.salt);
+            encpaste.encryptedKey = toHexString(cast(ubyte[]) encpaste.encryptedKey);
+
+            encpastes ~= encpaste;
+        }
+
+        const pasteData = serializeToPrettyJson(pastes);
+        const encryptedPasteData = serializeToPrettyJson(encpastes);
+
+        const title = session.user.username ~ " - data";
+        render!("userData.dt", user, session, title, userData, apiData, pasteData, encryptedPasteData);
+    }
+
+    /++
      + POST /user/settings/save
      +
      + save user settings

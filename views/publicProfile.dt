@@ -3,7 +3,7 @@ extends baseLayout
 block body
     #profile.public-profile
         .public-user-info
-            img.avatar(src=user.avatarUrl)
+            img.avatar(src=user.avatarUrl, alt="user avatar")
             p.username= user.username
             - if (user.supporterLength > 0)
                 .supporter-badge.tooltip
@@ -18,7 +18,7 @@ block body
             .paste-search
                 .label
                     label(for="search") search:
-                input#search(type="text", placeholder="...", name="search", value=search)
+                input#search(type="text", placeholder="...", name="search", value=search, aria-label="paste search")
             input(type="submit")
 
         .pastes

@@ -10,7 +10,7 @@ block body
 
                 .username
                     p change username
-                    input(type="text", value=user.username, name="username", autocomplete="off", spellcheck="false")
+                    input(type="text", value=user.username, name="username", autocomplete="off", spellcheck="false", aria-label="username")
                     span.available username available
 
                 .avatar
@@ -18,12 +18,13 @@ block body
                     label(for="avatar-upload", class="avatar-upload-label")
                         i.fas.fa-upload
                         span upload
-                    input(type="file", accept=".png,.jpg", name="avatar", id="avatar-upload")
+                    input(type="file", accept=".png,.jpg", name="avatar", id="avatar-upload", aria-label="avatar upload")
 
                 h2 behaviour
 
                 .default-lang
                     p default language
+                    - string dropdownLabel = "default language";
                     include components/dropdown
                         block options
                             - import std.conv : to;
@@ -39,7 +40,7 @@ block body
 
                 h2 visibility
 
-                input(type="checkbox", id="public-profile", name="publicProfile", checked=user.publicProfile)
+                input(type="checkbox", id="public-profile", name="publicProfile", checked=user.publicProfile, aria-label="public profile")
                 label(for="public-profile") public profile
                 p.description whether your profile is public for everyone to see. your avatar and username will be visible including any pastes you marked to show on your profile.
                 - if (user.publicProfile)

@@ -6,7 +6,7 @@ block body
             h3 create a user
 
             form(action="/login/create", method="post")
-                input(type="text", name="username", placeholder="username", value=serviceUsername)
+                input(type="text", name="username", placeholder="username", value=serviceUsername, aria-label="username")
                 span.available username available
 
                 p #[button(type="button") create]&nbsp;&nbsp;&nbsp;&nbsp;#[a(href="/") cancel]

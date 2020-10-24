@@ -1,7 +1,7 @@
 details.dropdown
     summary --
-    .select
-        input(type="text", autocomplete="off", placeholder="search...", name="search")
+    .select(aria-label=dropdownLabel)
+        input(type="text", autocomplete="off", placeholder="search...", name="search", aria-label=dropdownLabel ~ " search")
         p.not-found.hidden no items found
         block options
         // example option:

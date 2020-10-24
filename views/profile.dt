@@ -8,7 +8,7 @@ block body
             .paste-search
                 .label
                     label(for="search") search:
-                input#search(type="text", placeholder="...", name="search", value=search)
+                input#search(type="text", placeholder="...", name="search", value=search, aria-label="search pastes")
                 input(type="hidden", name="tag", value=tag)
             input(type="submit")
 

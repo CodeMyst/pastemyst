@@ -3,7 +3,7 @@
     - import pastemyst.data : User;
     - auto u= findOneById!User(session.user.id).get();
     .left
-        img.avatar(src=session.user.avatarUrl)
+        img.avatar(src=session.user.avatarUrl, alt="user avatar")
         p.username= session.user.username
         - if (u.supporterLength > 0)
             .supporter-badge.tooltip

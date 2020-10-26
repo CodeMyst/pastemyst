@@ -176,11 +176,6 @@ public class UserWeb
         {
             enforceHTTP(username.length > 0, HTTPStatus.badRequest, "username cannot be empty");
 
-            username = usernameRemoveDuplicateSymbols(username); 
-
-            enforceHTTP(findOne!User(["$text": ["$search": username]]).isNull,
-                        HTTPStatus.badRequest, "username is taken");
-
             enforceHTTP(!usernameHasSpecialChars(username),
                         HTTPStatus.badRequest, "username cannot contain special characters");
 
@@ -189,6 +184,11 @@ public class UserWeb
 
             enforceHTTP(!usernameEndsWithSymbol(username),
                     HTTPStatus.badRequest, "username cannot end with a symbol");
+
+            username = usernameRemoveDuplicateSymbols(username);
+
+            enforceHTTP(findOne!User(["$text": ["$search": username]]).isNull,
+                        HTTPStatus.badRequest, "username is taken");
 
             session.user.username = username;
 

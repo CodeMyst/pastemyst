@@ -191,7 +191,7 @@ public class LoginWeb
     public void postLoginCreate(string username, HTTPServerRequest req, HTTPServerResponse res)
     {
         import pastemyst.util : generateUniqueId, usernameHasSpecialChars, usernameStartsWithSymbol,
-                                usernameEndsWithSymbol, usernameRemoveDuplicateSymbols;
+                                usernameEndsWithSymbol;
         import pastemyst.db : findOne, insert;
         import pastemyst.rest : generateApiKey;
 
@@ -210,8 +210,6 @@ public class LoginWeb
 
         enforceHTTP(!usernameEndsWithSymbol(username),
                     HTTPStatus.badRequest, "username cannot end with a symbol");
-
-        username = usernameRemoveDuplicateSymbols(username);
 
         const serviceName = req.session.get!string("create_temp_type");
         const serviceUser = req.session.get!ServiceUser("create_temp_user");

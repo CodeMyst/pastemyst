@@ -1,4 +1,3 @@
-import "./components/navigation.js";
 import { getWordwrap, getFullwidth } from "./helpers/options.js";
 
 window.addEventListener("load", () =>

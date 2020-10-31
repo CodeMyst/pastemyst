@@ -14,8 +14,6 @@
     background-color: var(--color-nano);
     padding: 0.25rem 1rem;
     border-radius: var(--border-radius);
-    display: flex;
-    flex-direction: row;
     margin-bottom: 20px;
     margin-top: 20px;
 }
@@ -28,13 +26,14 @@
 #history .edit .edit-header .jump
 {
     margin-left: auto;
+    float: right;
 }
 
 #history .edit .edit-header p,
 #history .edit .edit-header .editedAt
 {
     margin-bottom: 0;
-    white-space: pre;
+    display: inline;
 }
 
 #history .edit .subedit

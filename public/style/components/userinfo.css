@@ -8,7 +8,8 @@
     padding: 0.5rem 1rem;
 }
 
-.user-info .left, .right
+.user-info .left,
+.user-info .right
 {
     display: flex;
     flex-direction: row;

@@ -57,11 +57,17 @@
     align-items: baseline;
 }
 
+.paste-header .right a,
+.paste-header .right form
+{
+    display: inline-block;
+    margin-right: 10px;
+}
+
 .paste-header .right a
 {
     color: var(--color-white);
     font-size: var(--font-size-normal);
-    margin-right: 20px;
 }
 
 .paste-header .right a:last-child
@@ -160,11 +166,6 @@
     font-size: var(--font-size-normal);
 }
 
-.paste-header .star
-{
-    margin-right: 20px;
-}
-
 .paste-header .star i
 {
     margin-right: 5px;
@@ -199,4 +200,17 @@
 .paste-header .embed-script
 {
     display: none;
+}
+
+@media only screen and (max-width: 720px)
+{
+    .paste-header .top
+    {
+        flex-direction: column;
+    }
+
+    .paste-header .top .left
+    {
+        margin-bottom: 10px;
+    }
 }

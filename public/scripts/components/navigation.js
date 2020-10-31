@@ -1,11 +1,11 @@
 window.addEventListener("load", () =>
 {
-    removeNavigationDelimiters();
+    //removeNavigationDelimiters();
 });
 
 window.addEventListener("resize", () =>
 {
-    removeNavigationDelimiters();
+    //removeNavigationDelimiters();
 });
 
 /**

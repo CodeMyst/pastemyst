@@ -2,6 +2,12 @@
     - import pastemyst.db : findOneById;
     - import pastemyst.data : User;
     - auto u= findOneById!User(session.user.id).get();
+    .right
+        - if (u.publicProfile)
+            a(href="/users/" ~ u.username) public profile
+        a(href="/user/settings") settings
+        a(href="/logout") logout
+
     .left
         img.avatar(src=session.user.avatarUrl, alt="user avatar")
         p.username= session.user.username
@@ -13,9 +19,3 @@
             .contributor-badge.tooltip
                 i.fas.fa-user-ninja
                 span.tooltip-text contributor
-
-    .right
-        - if (u.publicProfile)
-            a(href="/users/" ~ u.username) public profile
-        a(href="/user/settings") settings
-        a(href="/logout") logout

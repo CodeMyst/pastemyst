@@ -3,7 +3,7 @@
     background-color: var(--color-nanolight);
     border-radius: var(--border-radius);
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     padding: 0.5rem 1rem;
 }
@@ -20,13 +20,23 @@
     margin-right: 20px;
 }
 
+.user-info .right
+{
+    margin-bottom: 20px;
+}
+
 .user-info .right *
 {
-    margin-left: 30px;
+    margin-right: 30px;
 }
 
 .user-info .avatar
 {
     width: 50px;
     border-radius: var(--border-radius);
+}
+
+@media only screen and (max-width: 600px)
+{
+
 }

@@ -137,19 +137,44 @@ private string getDataFilePath(string filename)
 }
 
 /++
- + checks if the provided language exists in the config file
+ + checks if the provided language exists in the config file,
+ + if it exists it returns the name of the language (it also checks for aliases and extensions)
+ + if it doesnt exist it return null
  +/
-public bool doesLanguageExist(string language) @safe
+public string getLanguageName(string language) @safe
 {
+    import std.algorithm : canFind;
     import std.uni : toLower;
 
     foreach (lang; languages.byValue())
     {
         if (lang["name"].get!string().toLower() == language.toLower())
         {
-            return true;
+            return lang["name"].get!string();
+        }
+
+        if ("alias" in lang)
+        {
+            foreach (a; lang["alias"].get!(Json[])())
+            {
+                if (a.get!string().toLower() == language.toLower())
+                {
+                    return lang["name"].get!string();
+                }
+            }
+        }
+
+        if ("ext" in lang)
+        {
+            foreach (a; lang["ext"].get!(Json[])())
+            {
+                if (a.get!string().toLower() == language.toLower())
+                {
+                    return lang["name"].get!string();
+                }
+            }
         }
     }
 
-    return false;
+    return null;
 }

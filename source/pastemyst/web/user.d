@@ -139,7 +139,7 @@ public class UserWeb
         import pastemyst.db : uploadAvatar, update, findOneById, findOne;
         import std.path : chainPath, baseName;
         import std.array : array, split;
-        import pastemyst.data : config, doesLanguageExist;
+        import pastemyst.data : config, getLanguageName;
         import std.file : remove, exists;
         import std.algorithm : startsWith;
         import imagefmt : read_image;
@@ -201,7 +201,7 @@ public class UserWeb
         if (user.defaultLang != language)
         {
             string lang = language.split(",")[0];
-            enforceHTTP(doesLanguageExist(lang), HTTPStatus.badRequest, "invalid language");
+            enforceHTTP(!(getLanguageName(lang) is null), HTTPStatus.badRequest, "invalid language");
             update!User(["_id": session.user.id], ["$set": ["defaultLang": lang]]);
         }
 

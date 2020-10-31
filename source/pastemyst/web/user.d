@@ -144,7 +144,7 @@ public class UserWeb
         import std.algorithm : startsWith;
         import imagefmt : read_image;
         import pastemyst.util : usernameHasSpecialChars, usernameStartsWithSymbol,
-            usernameEndsWithSymbol, usernameRemoveDuplicateSymbols;
+            usernameEndsWithSymbol;
 
         auto session = getSession(req);
         auto user = getSessionUser(session);
@@ -184,8 +184,6 @@ public class UserWeb
 
             enforceHTTP(!usernameEndsWithSymbol(username),
                     HTTPStatus.badRequest, "username cannot end with a symbol");
-
-            username = usernameRemoveDuplicateSymbols(username);
 
             enforceHTTP(findOne!User(["$text": ["$search": username]]).isNull,
                         HTTPStatus.badRequest, "username is taken");

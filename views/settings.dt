@@ -40,7 +40,7 @@ block body
 
                 h2 visibility
 
-                input(type="checkbox", id="public-profile", name="publicProfile", checked=user.publicProfile, aria-label="public profile")
+                input(type="checkbox", id="public-profile", name="publicProfile", aria-label="public profile", checked=user.publicProfile ? true : false)
                 label(for="public-profile") public profile
                 p.description whether your profile is public for everyone to see. your avatar and username will be visible including any pastes you marked to show on your profile.
                 - if (user.publicProfile)

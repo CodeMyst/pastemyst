@@ -121,3 +121,16 @@
     font-size: var(--font-size-normal);
     margin-bottom: 20px;
 }
+
+@media only screen and (max-width: 720px)
+{
+    #paste .paste-pasties .pasty .pasty-header
+    {
+        flex-direction: column;
+    }
+
+    #paste .paste-pasties .pasty .pasty-header .title
+    {
+        margin-bottom: 10px;
+    }
+}

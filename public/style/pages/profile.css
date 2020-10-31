@@ -182,3 +182,22 @@
     color: var(--color-mysteen);
     font-size: var(--font-size-medium);
 }
+
+@media only screen and (max-width: 550px)
+{
+    #profile .tags-pastes
+    {
+        flex-direction: column;
+    }
+
+    #profile .tags-pastes .tags
+    {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #profile .tags-pastes .pastes
+    {
+        width: 100%;
+    }
+}

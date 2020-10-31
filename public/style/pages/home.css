@@ -121,3 +121,17 @@
 {
     display: none;
 }
+
+@media only screen and (max-width: 620px)
+{
+    #home .paste-options-bottom
+    {
+        position: relative;
+    }
+
+    #home .paste-options-bottom-sticky
+    {
+        box-shadow: none;
+        -webkit-box-shadow: none;
+    }
+}

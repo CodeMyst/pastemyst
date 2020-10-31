@@ -21,7 +21,7 @@
                 - if (paste.edits.length > 0)
                     a.history(href="/" ~ paste.id ~ "/history") history
             - if (session.loggedIn)
-                form(method="post", action="/" ~ paste.id ~ "/star")
+                form(method="post", action="/" ~ paste.id ~ "/star", class="star-form")
                     - import std.algorithm : canFind;
                     - import pastemyst.db : findOneById;
                     - import pastemyst.data : User;

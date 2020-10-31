@@ -23,6 +23,7 @@
     line-height: 1.25;
     margin: 0;
     margin-bottom: 20px;
+    font-size: var(--font-size-small);
 }
 
 #header span.alpha
@@ -94,4 +95,19 @@
 #header .cookies a span
 {
     align-self: center;
+}
+
+@media only screen and (max-width: 470px)
+{
+    #header .top
+    {
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+
+    #header .top .donate
+    {
+        align-self: flex-start;
+        font-size: var(--font-size-normal);
+    }
 }

@@ -2,7 +2,7 @@ nav
 {
     background-color: var(--color-nanolight);
     border-radius: var(--border-radius);
-    font-size: var(--font-size-medium);
+    font-size: var(--font-size-normal);
     display: flex;
     flex-direction: row;
 }
@@ -30,15 +30,31 @@ nav ul
 nav ul li
 {
     display: inline;
+    margin-right: 20px;
 }
 
-nav ul li::after
+nav ul li::before
 {
-    content: "-";
+    content: "";
+}
+
+nav ul li:first-child::before
+{
+    content: "";
 }
 
 nav ul li.no-delimiter::after
 {
     content: "\A";
     white-space: pre;
+}
+
+@media only screen and (max-width: 720px)
+{
+    nav ul
+    {
+        font-size: var(--font-size-small);
+        line-height: 1.75;
+        padding: 0.5rem 1rem;
+    }
 }

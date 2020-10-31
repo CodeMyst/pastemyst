@@ -244,10 +244,9 @@ public class APIPaste : IAPIPaste
                     enforceHTTP(editedPasty.language.toLower() != "auotedect",
                                 HTTPStatus.badRequest,
                                 "can't edit a pasty to have an autodetect language.");
-
-                    enforceHTTP(doesLanguageExist(editedPasty.language),
-                                HTTPStatus.badRequest,
-                                "invalid pasty language.");
+    
+                    pasty.language = getLanguageName(pasty.language);
+                    enforceHTTP(!(pasty.language is null), HTTPStatus.badRequest, "invalid language value.");
 
                     Edit edit;
                     edit.uniqueId = generateUniqueEditId(paste);

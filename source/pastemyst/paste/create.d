@@ -14,7 +14,7 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
     import std.typecons : Nullable;
     import std.datetime : Clock;
     import pastemyst.db : insert, findOneById;
-    import pastemyst.data : Paste, doesLanguageExist;
+    import pastemyst.data : Paste, getLanguageName;
     import pastemyst.util : generateUniqueId;
     import std.uni : toLower;
     import pastemyst.time : expiresInToUnixTime;
@@ -28,9 +28,10 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
 
     enforceHTTP(!isPrivate || ownerId != "", HTTPStatus.forbidden, "can't create a private paste if not logged in");
 
-    foreach (pasty; pasties)
+    foreach (ref pasty; pasties)
     {
-        enforceHTTP(doesLanguageExist(pasty.language), HTTPStatus.badRequest, "invalid language value.");
+        pasty.language = getLanguageName(pasty.language);
+        enforceHTTP(!(pasty.language is null), HTTPStatus.badRequest, "invalid language value.");
     }
 
     auto currentTime = Clock.currTime().toUnixTime();
@@ -100,7 +101,8 @@ public EncryptedPaste createEncryptedPaste(string title, string expiresIn, Pasty
 
     foreach (pasty; pasties)
     {
-        enforceHTTP(doesLanguageExist(pasty.language), HTTPStatus.badRequest, "invalid language value.");
+        pasty.language = getLanguageName(pasty.language);
+        enforceHTTP(!(pasty.language is null), HTTPStatus.badRequest, "invalid language value.");
     }
 
     auto currentTime = Clock.currTime().toUnixTime();

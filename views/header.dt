@@ -9,7 +9,7 @@
 
     p.description
         | a simple website for sharing code.
-        | version 2.0.0 #[span.alpha alpha] (#[a(href="/changelog") changelog]).
+        | version 2.0.0 (#[a(href="/changelog") changelog]).
 
     - if (config.devInstance)
         p.warning

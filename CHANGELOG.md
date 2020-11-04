@@ -2,6 +2,12 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.0.1] - 2020-11-04]
+
+### fixed
+- navigation on firefox was wrapping for no reason (added width:100%; to the navigation ul)
+- wrong github link in the navigation (was the v2 repo)
+
 ## [2.0.0] - 2020-11-03
 
 ### added

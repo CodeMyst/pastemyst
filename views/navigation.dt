@@ -8,7 +8,7 @@ nav
             - else
                 a(href="/login") login
         li
-            a(href="https://github.com/codemyst/pastemyst-v2", target="_blank") github
+            a(href="https://github.com/codemyst/pastemyst", target="_blank") github
         li
             a(href="/api-docs") api
         li

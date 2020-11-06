@@ -20,6 +20,13 @@ nav .fullwidth
     align-self: center;
 }
 
+nav .wordwrap, nav .fullwidth {
+    color: var(--color-nanolightlight);
+}
+nav .wordwrap[active]:not(:hover), nav .fullwidth[active]:not(:hover) {
+    color: var(--color-mystge);
+}
+
 nav ul
 {
     padding: 1rem;

@@ -51,7 +51,14 @@ function toggleFullwidth()
     let fullwidth = getFullwidth();
 
     localStorage.setItem("fullwidth", !fullwidth);
-    getFullwidth() ? this.setAttribute("active", "") : this.removeAttribute("active");
+    
+    let toggle = document.querySelector("nav .fullwidth");
+    if (getFullwidth()) {
+        toggle.setAttribute("active", "");
+    }
+    else {
+        toggle.removeAttribute("active");
+    }
 
     setFullwidthClasses();
 }
@@ -61,7 +68,14 @@ function toggleWordwrap()
     let wordwrap = getWordwrap();
 
     localStorage.setItem("wordwrap", !wordwrap);
-    getWordwrap() ? this.setAttribute("active", "") : this.removeAttribute("active");
+    
+    let toggle = document.querySelector("nav .wordwrap");
+    if (getWordwrap()) {
+        toggle.setAttribute("active", "");
+    }
+    else {
+        toggle.removeAttribute("active");
+    }
 
     let editorElements = document.querySelectorAll(".CodeMirror");
 

@@ -2,8 +2,14 @@ import { getWordwrap, getFullwidth } from "./helpers/options.js";
 
 window.addEventListener("load", () =>
 {
-    document.querySelector("nav .fullwidth").addEventListener("click", toggleFullwidth);
-    document.querySelector("nav .wordwrap").addEventListener("click", toggleWordwrap);
+    let fullwidthToggle = document.querySelector("nav .fullwidth"),
+        wordwrapToggle = document.querySelector("nav .wordwrap");
+
+    fullwidthToggle.addEventListener("click", toggleFullwidth);
+    wordwrapToggle.addEventListener("click", toggleWordwrap);
+
+    if (getFullwidth()) { fullwidthToggle.setAttribute("active", ""); }
+    if (getWordwrap()) { wordwrapToggle.setAttribute("active", ""); }
 
     document.getElementById("theme-picker").addEventListener("change", setThemeEvent);
 
@@ -45,6 +51,14 @@ function toggleFullwidth()
     let fullwidth = getFullwidth();
 
     localStorage.setItem("fullwidth", !fullwidth);
+    
+    let toggle = document.querySelector("nav .fullwidth");
+    if (getFullwidth()) {
+        toggle.setAttribute("active", "");
+    }
+    else {
+        toggle.removeAttribute("active");
+    }
 
     setFullwidthClasses();
 }
@@ -54,6 +68,14 @@ function toggleWordwrap()
     let wordwrap = getWordwrap();
 
     localStorage.setItem("wordwrap", !wordwrap);
+    
+    let toggle = document.querySelector("nav .wordwrap");
+    if (getWordwrap()) {
+        toggle.setAttribute("active", "");
+    }
+    else {
+        toggle.removeAttribute("active");
+    }
 
     let editorElements = document.querySelectorAll(".CodeMirror");
 
@@ -67,6 +89,7 @@ function toggleWordwrap()
 function setFullwidthClasses()
 {
     let fullwidth = localStorage.getItem("fullwidth") === "true";
+
     let container = document.getElementById("container");
 
     if (fullwidth)

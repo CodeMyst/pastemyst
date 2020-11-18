@@ -57,3 +57,15 @@ you **must** run the tests **inside the docker**. To enter the docker run `docke
 do **not** forget to run `make down` when you're done!
 
 to run it again just do `make up` and you're good to go!
+
+## api libraries
+
+here are some api libraries that are developed by other people. they are not directly supported by me. big thanks to the developers! if you want your library added here just open an issue.
+
+| link                                                                | language | author        | supports v2 |
+|---------------------------------------------------------------------|----------|---------------|-------------|
+| [pastemyst-pi](https://github.com/Dmunch04/pastemyst-py)            | python   | munchii       | yes         |
+| [pastemyst-net](https://github.com/dentolos19/PasteMystNet)         | c#       | dentolos19    | yes         |
+| [pastemyst-js](https://github.com/FleshMobProductions/PasteMyst-JS) | js       | fmproductions | no          |
+
+you should avoid using a library not supporting the v2 api, since it might break and is lacking a lot of features.

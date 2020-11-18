@@ -15,18 +15,16 @@
     margin-top: 20px;
 }
 
-.markdown-rendered h1,
-.markdown-rendered h2
-{
-    border-bottom: 1px solid var(--color-nanolightlight);
-    padding-bottom: 20px;
-}
-
 .markdown-rendered code
 {
     background-color: var(--color-nano);
     border-radius: var(--border-radius);
     padding: 0 0.25rem;
+    display: inline-block;
+}
+
+.markdown-rendered pre
+{
     margin-bottom: 20px;
 }
 
@@ -41,11 +39,22 @@
     font-size: var(--font-size-small);
 }
 
-.markdown-rendered ul
+.markdown-rendered ul,
+.markdown-rendered ol
 {
     padding-left: 20px;
+    margin-left: 20px;
     margin-bottom: 20px;
     font-size: var(--font-size-small);
+    line-height: 1.25;
+}
+
+.markdown-rendered ul ul,
+.markdown-rendered ol ul,
+.markdown-rendered ul ol,
+.markdown-rendered ol ol
+{
+    margin-bottom: 0;
 }
 
 .markdown-rendered table
@@ -66,6 +75,11 @@
     text-align: left;
 }
 
+.markdown-rendered tr th[align="right"]
+{
+    text-align: right;
+}
+
 .markdown-rendered table th,
 .markdown-rendered table td
 {
@@ -81,4 +95,28 @@
 .markdown-rendered table tbody tr td:last-child
 {
     width: 100%;
+}
+
+.markdown-rendered hr
+{
+    background-color: var(--color-nano);
+    opacity: 0.75;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: none;
+    height: 2px;
+}
+
+.markdown-rendered blockquote
+{
+    border-left: 5px solid var(--color-nanolightlight);
+    padding-left: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+.markdown-rendered img
+{
+    max-width: 35%;
 }

@@ -98,11 +98,6 @@
     padding: 0.25rem 0.5rem;
 }
 
-#paste .markdown-rendered code
-{
-    display: block;
-}
-
 #paste .markdown-rendered .hidden
 {
     display: none;

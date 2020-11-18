@@ -1,0 +1,14 @@
+::-webkit-scrollbar
+{
+    width: 12px;
+}
+
+::-webkit-scrollbar-track
+{
+    background-color: var(--color-nano);
+}
+
+::-webkit-scrollbar-thumb
+{
+    background-color: var(--color-nanolight);
+}

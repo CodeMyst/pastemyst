@@ -12,3 +12,25 @@
 {
     background-color: var(--color-nanolight);
 }
+
+div.CodeMirror-vscrollbar::-webkit-scrollbar
+{
+    width: 5px;
+}
+
+div.CodeMirror-hscrollbar::-webkit-scrollbar
+{
+    height: 5px;
+}
+
+div.CodeMirror-vscrollbar::-webkit-scrollbar-track,
+div.CodeMirror-hscrollbar::-webkit-scrollbar-track
+{
+    background-color: var(--color-nanolight);
+}
+
+div.CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
+div.CodeMirror-hscrollbar::-webkit-scrollbar-thumb
+{
+    background-color: var(--color-nanolightlight);
+}

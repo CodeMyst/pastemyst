@@ -134,7 +134,7 @@ window.addEventListener("load", async () =>
 
 function copyLinkToClipboard(button, link)
 {
-    let url = window.location.host + link;
+    let url = window.location.protocol + "//" + window.location.host + link;
 
     copyToClipboard(url);
 

@@ -6,6 +6,9 @@ import pastemyst.auth;
  +/
 void displayError(HTTPServerRequest req, HTTPServerResponse res, HTTPServerErrorInfo error)
 {
+    import std.file : append;
+    import std.datetime.systime : Clock;
+
     string errorDebug = "";
     debug errorDebug = error.debugMessage;
 
@@ -16,6 +19,13 @@ void displayError(HTTPServerRequest req, HTTPServerResponse res, HTTPServerError
         res.contentType = "application/json";
         res.writeBody(`{"statusMessage": "` ~ error.message ~ `"}`);
         return;
+    }
+
+    if (error.code == 500)
+    {
+        auto time = Clock.currTime();
+        string msg = "[" ~ time.toSimpleString() ~ "]\n" ~ errorDebug ~ "\n\n";
+        append("log", msg);
     }
 
     res.render!("error.dt", error, errorDebug, session);

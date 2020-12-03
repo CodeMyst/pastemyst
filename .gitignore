@@ -6,3 +6,4 @@ public/assets/avatars/*
 !public/assets/avatars/.gitkeep
 tmp/
 db-data/
+log

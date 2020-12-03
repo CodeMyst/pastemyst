@@ -200,7 +200,7 @@ function copyLinkToClipboard(button, link)
 
 async function loadLanguage(lang)
 {
-    if (lang == "HTML")
+    if (lang === "HTML")
     {
         await loadLanguage("XML");
     }

@@ -56,7 +56,7 @@ window.addEventListener("load", async () =>
         });
 
         let lang = addedTextareas[i].parentElement.parentElement.querySelector("span.lang").textContent;
-        let langMime = await loadLanguage(lang);;
+        let langMime = await loadLanguage(lang);
         let langColor;
 
         editor.setOption("mode", langMime);
@@ -122,7 +122,7 @@ function copyLinkToClipboard(button, link)
 
 async function loadLanguage(lang)
 {
-    if (lang == "HTML")
+    if (lang === "HTML")
     {
         await loadLanguage("XML");
     }

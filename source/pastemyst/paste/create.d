@@ -184,14 +184,18 @@ private string autodetectLanguage(string pasteId, Pasty pasty) @safe
 
     write(filename, pasty.code);
 
-    auto res = execute(["pastemyst-autodetect", filename]);
+    string lang = "Plain Text";
 
-    if (res.status != 0)
+    try
     {
-        return "Plain Text";
-    }
+        auto res = execute(["pastemyst-autodetect", filename]);
 
-    const lang = res.output.strip();
+        if (res.status == 0)
+        {
+            lang = res.output.strip();
+        }
+    }
+    catch(Exception) {}
 
     remove(filename);
 

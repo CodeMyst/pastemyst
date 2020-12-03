@@ -189,6 +189,16 @@ window.addEventListener("load", async () =>
             setTimeout(function(){ textElem.textContent = originalText; }, 2000);
         });
     }
+
+    // hacky solution for a problem
+    // sometimes on hard refresh the selected text in the editor was offset
+    // needs a timeout because some unknown css file that causes this issue was getting loaded
+    // after the editors
+    setTimeout(function(){
+        for (let i = 0; i < editors.length; i++) {
+            editors[i].refresh();
+        }
+    }, 100);
 });
 
 function copyCodeToClipboard(copyButton)

@@ -169,10 +169,17 @@ function setupLanguageDropdown(editor)
 
 function setMode(editor, mode, mime)
 {
+    console.log(mode);
+
     if (mode === "null")
     {
         editor.setOption("mode", "text/plain");
         return;
+    }
+
+    if (mode == "htmlmixed")
+    {
+        import("../libs/codemirror/xml/xml.js"); // jshint ignore:line
     }
 
     import(`../libs/codemirror/${mode}/${mode}.js`).then(() => // jshint ignore:line

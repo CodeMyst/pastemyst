@@ -1,5 +1,7 @@
 import { getWordwrap, getTheme } from "../helpers/options.js";
 
+let langCache = new Map();
+
 window.addEventListener("load", async () =>
 {
     let editedAtElements = document.querySelectorAll(".editedAt");
@@ -34,8 +36,6 @@ window.addEventListener("load", async () =>
         });
     }
 
-    let langCache = new Map();
-
     let addedTextareas = document.querySelectorAll("textarea.added");
 
     for (let i = 0; i < addedTextareas.length; i++)
@@ -56,35 +56,8 @@ window.addEventListener("load", async () =>
         });
 
         let lang = addedTextareas[i].parentElement.parentElement.querySelector("span.lang").textContent;
-        let langMime;
+        let langMime = await loadLanguage(lang);;
         let langColor;
-
-        if (langCache.has(lang))
-        {
-            langMime = langCache.get(lang)[0];
-        }
-        else
-        {
-            let res = await fetch(`/api/data/language?name=${encodeURIComponent(lang)}`,
-            {
-                headers:
-                {
-                    "Content-Type": "application/json"
-                }
-            });
-
-            let langData = await  res.json();
-
-            if (langData.mode !== "null")
-            {
-                await import(`../libs/codemirror/${langData.mode}/${langData.mode}.js`).then(() => // jshint ignore:line
-                {
-                    langMime = langData.mimes[0];
-                });
-            }
-
-            langCache.set(lang, [langData.mimes[0], langData.color]);
-        }
 
         editor.setOption("mode", langMime);
 
@@ -145,6 +118,49 @@ function copyLinkToClipboard(button, link)
     textElem.textContent = "copied";
 
     setTimeout(function(){ textElem.textContent = originalText; }, 2000);
+}
+
+async function loadLanguage(lang)
+{
+    if (lang == "HTML")
+    {
+        await loadLanguage("XML");
+    }
+
+    let langMime;
+
+    if (langCache.has(lang)) // jshint ignore:line
+    {
+        langMime = langCache.get(lang)[0]; // jshint ignore:line
+    }
+    else
+    {
+        let res = await fetch(`/api/v2/data/language?name=${encodeURIComponent(lang)}`, // jshint ignore:line
+        {
+            headers:
+            {
+                "Content-Type": "application/json"
+            }
+        });
+
+        let langData = await res.json();
+
+        if (langData.mode && langData.mode !== "null")
+        {
+            await import(`../libs/codemirror/${langData.mode}/${langData.mode}.js`).then(() => // jshint ignore:line
+            {
+                langMime = langData.mimes[0];
+                langCache.set(lang, [langData.mimes[0], langData.color]); // jshint ignore:line
+            });
+        }
+        else
+        {
+            langMime = "text/plain";
+            langCache.set(lang, ["text/plain", "#ffffff"]); // jshint ignore:line
+        }
+    }
+
+    return langMime;
 }
 
 const copyToClipboard = str => {

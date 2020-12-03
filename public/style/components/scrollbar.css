@@ -50,3 +50,19 @@ code.hljs::-webkit-scrollbar-thumb
 {
     background-color: var(--color-nanolightlight);
 }
+
+.dropdown div.select::-webkit-scrollbar
+{
+    width: 5px;
+    height: 5px;
+}
+
+.dropdown div.select::-webkit-scrollbar-track
+{
+    background-color: var(--color-nanolight);
+}
+
+.dropdown div.select::-webkit-scrollbar-thumb
+{
+    background-color: var(--color-nanolightlight);
+}

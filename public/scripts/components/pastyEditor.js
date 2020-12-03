@@ -184,7 +184,6 @@ function setMode(editor, mode, mime)
     {
         import("../libs/codemirror/xml/xml.js"); // jshint ignore:line
         import("../libs/codemirror/javascript/javascript.js"); // jshint ignore:line
-        console.log("asd");
     }
 
     import(`../libs/codemirror/${mode}/${mode}.js`).then(() => // jshint ignore:line

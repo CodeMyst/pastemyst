@@ -748,7 +748,8 @@
                 "text\/jsx"
             ],
             "mode": "jsx",
-            "name": "JSX"
+            "name": "JSX",
+            "color": "#f1e05a"
         },
         {
             "ext": [

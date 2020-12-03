@@ -205,6 +205,12 @@ async function loadLanguage(lang)
         await loadLanguage("XML");
     }
 
+    if (lang === "JSX")
+    {
+        await loadLanguage("XML");
+        await loadLanguage("JavaScript");
+    }
+
     let langMime;
 
     if (langCache.has(lang)) // jshint ignore:line

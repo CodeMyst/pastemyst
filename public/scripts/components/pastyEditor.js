@@ -180,6 +180,12 @@ function setMode(editor, mode, mime)
         import("../libs/codemirror/xml/xml.js"); // jshint ignore:line
     }
 
+    if (mode === "jsx")
+    {
+        import("../libs/codemirror/xml/xml.js"); // jshint ignore:line
+        import("../libs/codemirror/javascript/javascript.js"); // jshint ignore:line
+    }
+
     import(`../libs/codemirror/${mode}/${mode}.js`).then(() => // jshint ignore:line
     {
         editor.setOption("mode", mime);

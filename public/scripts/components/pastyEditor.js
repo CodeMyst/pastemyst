@@ -175,6 +175,11 @@ function setMode(editor, mode, mime)
         return;
     }
 
+    if (mode === "htmlmixed")
+    {
+        import("../libs/codemirror/xml/xml.js"); // jshint ignore:line
+    }
+
     import(`../libs/codemirror/${mode}/${mode}.js`).then(() => // jshint ignore:line
     {
         editor.setOption("mode", mime);

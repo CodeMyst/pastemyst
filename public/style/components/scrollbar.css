@@ -34,3 +34,19 @@ div.CodeMirror-hscrollbar::-webkit-scrollbar-thumb
 {
     background-color: var(--color-nanolightlight);
 }
+
+code.hljs::-webkit-scrollbar
+{
+    width: 5px;
+    height: 5px;
+}
+
+code.hljs::-webkit-scrollbar-track
+{
+    background-color: #2b2b2b;
+}
+
+code.hljs::-webkit-scrollbar-thumb
+{
+    background-color: var(--color-nanolightlight);
+}

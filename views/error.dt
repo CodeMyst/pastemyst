@@ -7,6 +7,20 @@ block body
 
         p= error.message.toLower()
 
-        p= errorDebug
+        - if (error.code == 500)
+            p please report this error either by email (found in the footer) or by opening a github issue.
+            p be as specific as you can as to what you did to trigger the error, and send the below error log as well.
+            pre
+                code.plaintext
+                    p= errorDebug
+            br
+        - else
+            p= errorDebug.toLower()
 
         p you can go back to the #[a(href="/") home page]
+
+block scripts
+    script(src="/static/scripts/libs/highlight.pack.js")
+
+    script.
+        hljs.initHighlightingOnLoad();

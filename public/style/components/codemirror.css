@@ -3,3 +3,8 @@
 {
     background-color: #073847;
 }
+
+.CodeMirror .CodeMirror-scrollbar-filler
+{
+    background-color: var(--color-nanolight);
+}

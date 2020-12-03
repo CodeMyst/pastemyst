@@ -2,6 +2,26 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2020-12-03
+
+huge thanks to yilian and harsh for contributing to this release.
+
+### added
+
+- toggleable options in the navigation change colour depending on the state
+- custom scrollbars
+- much better markdown styling in markdown pastes
+- better error page when an internal server error occurs
+- logging internal server errors
+
+### fixed
+
+- editor selection offset
+- when copying links the protocol was missing
+- fixed html mode
+- fixed jsx mode
+- returning plain text when the autodetection program fails (when it returns an out of memory exception for some reason)
+
 ## [2.0.1] - 2020-11-04
 
 ### fixed

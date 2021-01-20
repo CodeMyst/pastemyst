@@ -57,59 +57,7 @@ window.addEventListener("load", async () =>
         }
 
         editors.push(editor);
-
-        let lines = editor.getWrapperElement().getElementsByClassName("CodeMirror-linenumber");
-
-        let start;
-        let end;
-
-        for (let j = 0; j < lines.length; j++)
-        {
-            lines[j].addEventListener("click", (e) => // jshint ignore:line
-            {
-                if (!e.shiftKey)
-                {
-                    // start marker
-                    start = j+1;
-                    end = undefined;
-                }
-                else
-                {
-                    // end marker
-                    if (start === undefined)
-                    {
-                        start = j+1;
-                    }
-                    else
-                    {
-                        if ((j+1) < start)
-                        {
-                            end = start;
-                            start = j+1;
-                        }
-                        else
-                        {
-                            end = j+1;
-                        }
-                    }
-                }
-
-                if (end !== undefined)
-                {
-                    location.hash = i + "L" + start + "-L" + end;
-                }
-                else
-                {
-                    location.hash = i + "L" + start;
-                }
-
-                highlightLines();
-            });
-        }
     }
-
-    highlightLines();
-    jumpToHighlight();
 
     let createdAtDate = new Date(createdAt * 1000); // jshint ignore:line
 
@@ -166,7 +114,59 @@ window.addEventListener("load", async () =>
     setTimeout(function(){
         for (let i = 0; i < editors.length; i++) {
             editors[i].refresh();
+
+            let lines = editors[i].getWrapperElement().getElementsByClassName("CodeMirror-linenumber");
+
+            let start;
+            let end;
+
+            for (let j = 0; j < lines.length; j++)
+            {
+                lines[j].addEventListener("click", (e) => // jshint ignore:line
+                {
+                    if (!e.shiftKey)
+                    {
+                        // start marker
+                        start = j+1;
+                        end = undefined;
+                    }
+                    else
+                    {
+                        // end marker
+                        if (start === undefined)
+                        {
+                            start = j+1;
+                        }
+                        else
+                        {
+                            if ((j+1) < start)
+                            {
+                                end = start;
+                                start = j+1;
+                            }
+                            else
+                            {
+                                end = j+1;
+                            }
+                        }
+                    }
+
+                    if (end !== undefined)
+                    {
+                        location.hash = i + "L" + start + "-L" + end;
+                    }
+                    else
+                    {
+                        location.hash = i + "L" + start;
+                    }
+
+                    highlightLines();
+                });
+            }
         }
+
+        highlightLines();
+        jumpToHighlight();
     }, 100);
 });
 
@@ -320,7 +320,11 @@ function jumpToHighlight()
         return;
     }
 
-    highlightedLines[0].scrollIntoView();
+    const yOffset = -50; 
+    const element = highlightedLines[0];
+    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+    window.scrollTo({top: y});
 }
 
 /**

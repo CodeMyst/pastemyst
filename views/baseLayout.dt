@@ -1,3 +1,5 @@
+- import pastemyst.data : getVersion;
+
 doctype html
 html(lang="en", class="myst")
     head
@@ -29,7 +31,7 @@ html(lang="en", class="myst")
 
         link(rel="shortcut icon", type="image/x-icon", href="/static/assets/icons/favicon.ico")
 
-        link(rel="stylesheet", href="/static/style/main.css")
+        link(rel="stylesheet", href="/static/style/main.css?v=#{getVersion()}")
 
         block head
     
@@ -41,10 +43,10 @@ html(lang="en", class="myst")
 
             include footer
 
-        script(src="/static/scripts/libs/codemirror/codemirror.js")
-        script(src="/static/scripts/libs/codemirror/simple.js")
-        script(src="/static/scripts/libs/codemirror/overlay.js")
-        script(src="/static/scripts/libs/codemirror/multiplex.js")
-        script(type="module", src="/static/scripts/main.js")
+        script(src="/static/scripts/libs/codemirror/codemirror.js?v=#{getVersion()}")
+        script(src="/static/scripts/libs/codemirror/simple.js?v=#{getVersion()}")
+        script(src="/static/scripts/libs/codemirror/overlay.js?v=#{getVersion()}")
+        script(src="/static/scripts/libs/codemirror/multiplex.js?v=#{getVersion()}")
+        script(type="module", src="/static/scripts/main.js?v=#{getVersion()}")
         
         block scripts

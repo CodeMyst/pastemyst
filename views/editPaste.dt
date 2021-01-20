@@ -31,4 +31,6 @@ block body
             include components/addEditorButton
 
 block scripts
-    script(type="module", src="/static/scripts/pages/editPaste.js")
+    - import pastemyst.data : getVersion;
+
+    script(type="module", src="/static/scripts/pages/editPaste.js?v=#{getVersion()}")

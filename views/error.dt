@@ -20,7 +20,9 @@ block body
         p you can go back to the #[a(href="/") home page]
 
 block scripts
-    script(src="/static/scripts/libs/highlight.pack.js")
+    - import pastemyst.data : getVersion;
+
+    script(src="/static/scripts/libs/highlight.pack.js?v=#{getVersion()}")
 
     script.
         hljs.initHighlightingOnLoad();

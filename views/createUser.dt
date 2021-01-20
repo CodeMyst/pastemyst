@@ -12,4 +12,6 @@ block body
                 p #[button(type="button") create]&nbsp;&nbsp;&nbsp;&nbsp;#[a(href="/") cancel]
 
 block scripts
-    script(type="module", src="/static/scripts/pages/createUser.js")
+    - import pastemyst.data : getVersion;
+
+    script(type="module", src="/static/scripts/pages/createUser.js?v=#{getVersion()}")

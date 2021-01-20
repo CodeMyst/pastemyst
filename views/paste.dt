@@ -68,6 +68,8 @@ block body
                             a(href="/users/" ~ user.username)= user.username
  
 block scripts
+    - import pastemyst.data : getVersion;
+
     script.
         var createdAt = #{paste.createdAt};
         var expiresIn = "#{cast(string) paste.expiresIn}";
@@ -84,9 +86,9 @@ block scripts
         script.
             editedAt = #{paste.edits[$-1].editedAt};
 
-    script(type="module", src="/static/scripts/pages/paste.js")
+    script(type="module", src="/static/scripts/pages/paste.js?v=#{getVersion()}")
 
-    script(src="/static/scripts/libs/highlight.pack.js")
+    script(src="/static/scripts/libs/highlight.pack.js?v=#{getVersion()}")
 
     script.
         hljs.initHighlightingOnLoad();

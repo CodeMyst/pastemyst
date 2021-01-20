@@ -80,4 +80,6 @@ block body
                 button.save(type="button") save
 
 block scripts
-    script(type="module", src="/static/scripts/pages/settings.js")
+    - import pastemyst.data : getVersion;
+
+    script(type="module", src="/static/scripts/pages/settings.js?v=#{getVersion()}")

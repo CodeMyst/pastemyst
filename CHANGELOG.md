@@ -2,6 +2,18 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.2.0] - 2021-01-2020
+
+### added
+
+- showing api libraries in the api docs
+- versioning asset files (no more caching issues)
+
+### fixed
+
+- html isnt rendered anymore in markdown pastes because of security issues
+- fixed highlighting lines of a paste (you can now highlight lines again and the browser will correctly scroll to them)
+
 ## [2.1.0] - 2020-12-03
 
 huge thanks to yilian and harsh for contributing to this release.

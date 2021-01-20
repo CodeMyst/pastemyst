@@ -26,7 +26,7 @@ block body
                         - if (p.language == "Markdown" || p.language == "GitHub Flavored Markdown")
                             .markdown-rendered
                                 - import commonmarkd;
-                                |!= convertMarkdownToHTML(p.code, MarkdownFlag.tablesExtension)
+                                |!= convertMarkdownToHTML(p.code, MarkdownFlag.tablesExtension | MarkdownFlag.noHTML)
                                 textarea.hidden=p.code
                         - else
                             textarea=p.code

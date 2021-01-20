@@ -18,3 +18,15 @@ to use the token you simply have to provide it as an `Authorization` header to a
 * [/user](/api-docs/user) - getting users
 
 and all of the objects that are needed for api requests: [objects](/api-docs/objects)
+
+### api libraries
+
+here are some api libraries that are developed by other people. they are not directly supported by me. big thanks to the developers! if you want your library added here just open an issue.
+
+| link                                                                | language | author        | supports v2 |
+|---------------------------------------------------------------------|----------|---------------|-------------|
+| [pastemyst-pi](https://github.com/Dmunch04/pastemyst-py)            | python   | munchii       | yes         |
+| [pastemyst-net](https://github.com/dentolos19/PasteMystNet)         | c#       | dentolos19    | yes         |
+| [pastemyst-js](https://github.com/FleshMobProductions/PasteMyst-JS) | js       | fmproductions | no          |
+
+you should avoid using a library not supporting the v2 api, since it might break and is lacking a lot of features.

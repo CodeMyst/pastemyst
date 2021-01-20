@@ -28,7 +28,8 @@ block body
                 code.js= encryptedPasteData
 
 block scripts
-    script(src="/static/scripts/libs/highlight.pack.js")
+    - import pastemyst.data : getVersion;
+    script(src="/static/scripts/libs/highlight.pack.js?v=#{getVersion()}")
 
     script.
         hljs.initHighlightingOnLoad();

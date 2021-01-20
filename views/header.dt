@@ -1,4 +1,4 @@
-- import pastemyst.data : config;
+- import pastemyst.data : config, getVersion;
 
 #header
     .top
@@ -9,7 +9,7 @@
 
     p.description
         | a simple website for sharing code.
-        | version 2.1.0 (#[a(href="/changelog") changelog]).
+        | version #{getVersion()} (#[a(href="/changelog") changelog]).
 
     - if (config.devInstance)
         p.warning

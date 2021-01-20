@@ -76,6 +76,8 @@ block body
                             include components/langBar
 
 block scripts
+    - import pastemyst.data : getVersion;
+
     script.
         var pastes = [];
 
@@ -93,4 +95,4 @@ block scripts
         script.
             pastes.push(pastetmp);
 
-    script(type="module", src="/static/scripts/pages/profile.js")
+    script(type="module", src="/static/scripts/pages/profile.js?v=#{getVersion()}")

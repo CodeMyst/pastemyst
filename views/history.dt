@@ -75,5 +75,7 @@ block body
                                         textarea.added= pasty.code
 
 block scripts
-    script(type="module", src="/static/scripts/pages/history.js")
-    script(src="/static/scripts/libs/codemirror/diff/diff.js")
+    - import pastemyst.data : getVersion;
+
+    script(type="module", src="/static/scripts/pages/history.js?v=#{getVersion()}")
+    script(src="/static/scripts/libs/codemirror/diff/diff.js?v=#{getVersion()}")

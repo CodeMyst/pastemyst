@@ -79,4 +79,6 @@ block body
             input(type="submit")
 
 block scripts
-    script(type="module", src="/static/scripts/pages/home.js")
+    - import pastemyst.data : getVersion;
+
+    script(type="module", src="/static/scripts/pages/home.js?v=#{getVersion()}")

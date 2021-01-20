@@ -1,7 +1,9 @@
+- import pastemyst.data : getVersion;
+
 doctype html
 html(lang="en", class="myst")
     head
-        link(rel="stylesheet", href="/static/style/embed.css")
+        link(rel="stylesheet", href="/static/style/embed.css?v=#{getVersion()}")
 
     body
         - static if (is(typeof(paste)))
@@ -25,10 +27,10 @@ html(lang="en", class="myst")
                         .pastemyst-pasty-content
                             textarea= pasty.code
 
-            script(src="/static/scripts/libs/codemirror/codemirror.js")
-            script(src="/static/scripts/libs/codemirror/simple.js")
-            script(src="/static/scripts/libs/codemirror/overlay.js")
-            script(src="/static/scripts/libs/codemirror/multiplex.js")
+            script(src="/static/scripts/libs/codemirror/codemirror.js?v=#{getVersion()}")
+            script(src="/static/scripts/libs/codemirror/simple.js?v=#{getVersion()}")
+            script(src="/static/scripts/libs/codemirror/overlay.js?v=#{getVersion()}")
+            script(src="/static/scripts/libs/codemirror/multiplex.js?v=#{getVersion()}")
 
             script.
                 var langs = [];
@@ -37,7 +39,7 @@ html(lang="en", class="myst")
                 script.
                     langs.push("#{p.language}");
 
-            script(type="module", src="/static/scripts/embed.js")
+            script(type="module", src="/static/scripts/embed.js?v=#{getVersion()}")
             script(src="/static/scripts/libs/iframeResizer.contentWindow.js")
         - else
             p.invalid this pastemyst embed is broken. this could be due to the paste being deleted, private or encrypted.

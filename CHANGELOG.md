@@ -2,7 +2,18 @@
 
 all notable changes to this project will be documented in this file.
 
-## [2.2.0] - 2021-01-2020
+## [2.3.0] - 2021-01-24
+
+### added
+
+- sessions are now stored in the mongo db
+- api now returns supporterLength and contributor for users
+
+### fixed
+
+- codeblocks in markdown with long lines were overflowing
+
+## [2.2.0] - 2021-01-20
 
 ### added
 

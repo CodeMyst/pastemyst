@@ -30,11 +30,12 @@ public class UserWeb
         import std.uni : toLower;
 
         auto session = getSession(req);
-        const title = session.user.username ~ " - profile";
+        const user = session.getSessionUser();
+        const title = user.username ~ " - profile";
 
         auto tags = redBlackTree!string();
 
-        auto pastesRes = find!BasePaste(["ownerId": session.user.id]);
+        auto pastesRes = find!BasePaste(["ownerId": session.userId]);
         BasePaste[] pastes;
         foreach (paste; pastesRes)
         {
@@ -73,9 +74,9 @@ public class UserWeb
         import pastemyst.db : findOneById;
 
         const session = getSession(req);
-        const user = getSessionUser(session);
+        const user = session.getSessionUser();
 
-        const title = session.user.username ~ " - settings";
+        const title = user.username ~ " - settings";
         render!("settings.dt", user, session, title);
     }
 
@@ -90,7 +91,7 @@ public class UserWeb
         import std.digest : toHexString;
 
         auto session = getSession(req);
-        const user = getSessionUser(session);
+        const user = session.getSessionUser();
 
         const userData = serializeToPrettyJson(user);
         const apiData = serializeToPrettyJson(findOneById!ApiKey(user.id).get());
@@ -121,7 +122,7 @@ public class UserWeb
         const pasteData = serializeToPrettyJson(pastes);
         const encryptedPasteData = serializeToPrettyJson(encpastes);
 
-        const title = session.user.username ~ " - data";
+        const title = user.username ~ " - data";
         render!("userData.dt", user, session, title, userData, apiData, pasteData, encryptedPasteData);
     }
 
@@ -147,7 +148,7 @@ public class UserWeb
             usernameEndsWithSymbol;
 
         auto session = getSession(req);
-        auto user = getSessionUser(session);
+        auto user = session.getSessionUser();
 
         if ("avatar" in req.files)
         {
@@ -167,12 +168,10 @@ public class UserWeb
                 remove("./public/assets/avatars/" ~ baseName(user.avatarUrl));
             }
 
-            update!User(["_id": session.user.id], ["$set": ["avatarUrl": avatarUrl]]);
-
-            session.user.avatarUrl = avatarUrl;
+            update!User(["_id": session.userId], ["$set": ["avatarUrl": avatarUrl]]);
         }
 
-        if (session.user.username != username)
+        if (user.username != username)
         {
             enforceHTTP(username.length > 0, HTTPStatus.badRequest, "username cannot be empty");
 
@@ -188,21 +187,19 @@ public class UserWeb
             enforceHTTP(findOne!User(["$text": ["$search": username]]).isNull,
                         HTTPStatus.badRequest, "username is taken");
 
-            session.user.username = username;
-
-            update!User(["_id": session.user.id], ["$set": ["username": username]]);
+            update!User(["_id": session.userId], ["$set": ["username": username]]);
         }
 
         if (user.publicProfile != publicProfile)
         {
-            update!User(["_id": session.user.id], ["$set": ["publicProfile": publicProfile]]);
+            update!User(["_id": session.userId], ["$set": ["publicProfile": publicProfile]]);
         }
 
         if (user.defaultLang != language)
         {
             string lang = language.split(",")[0];
             enforceHTTP(!(getLanguageName(lang) is null), HTTPStatus.badRequest, "invalid language");
-            update!User(["_id": session.user.id], ["$set": ["defaultLang": lang]]);
+            update!User(["_id": session.userId], ["$set": ["defaultLang": lang]]);
         }
 
         setSession(req, res, session);
@@ -238,15 +235,15 @@ public class UserWeb
         import file = std.file : remove;
 
         auto session = getSession(req);
-        auto user = getSessionUser(session);
+        auto user = session.getSessionUser();
 
         if (user.avatarUrl.startsWith(config.hostname))
         {
             file.remove("./public/assets/avatars/" ~ baseName(user.avatarUrl));
         }
 
-        remove!Paste(["ownerId": session.user.id]);
-        remove!User(["_id": session.user.id]);
+        remove!Paste(["ownerId": session.userId]);
+        remove!User(["_id": session.userId]);
 
         terminateSession();
 
@@ -265,7 +262,7 @@ public class UserWeb
 
         auto session = getSession(req);
 
-        update!ApiKey(["_id": session.user.id], ["$set": ["key": generateApiKey()]]);
+        update!ApiKey(["_id": session.userId], ["$set": ["key": generateApiKey()]]);
 
         redirect("/user/settings");
     }

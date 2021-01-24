@@ -14,7 +14,7 @@ mixin template Auth()
     public Session authenticate(scope HTTPServerRequest req, scope HTTPServerResponse res) @safe
     {
         const session = getSession(req);
-        const user = getSessionUser(session);
+        const user = session.getSessionUser();
 
         if (session == Session.init)
         {

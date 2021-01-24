@@ -32,7 +32,7 @@ block body
                             textarea=p.code
 
         .paste-meta
-            - if (paste.ownerId == session.user.id && paste.tags.length > 0)
+            - if (paste.ownerId == session.userId && paste.tags.length > 0)
                 p.tags
                     - import std.uri : encodeComponent;
                     span.highlight tags:
@@ -55,14 +55,14 @@ block body
                     - import pastemyst.db : getNumberOfEdits;
                     span.highlight edits: 
                     span.value= getNumberOfEdits(paste)
-            - if (paste.ownerId != "" && (paste.ownerId == session.user.id || paste.isPublic))
+            - if (paste.ownerId != "" && (paste.ownerId == session.userId || paste.isPublic))
                 - import pastemyst.db : findOneById;
                 - import pastemyst.data : User;
                 - const user = findOneById!User(paste.ownerId).get();
                 p.pasted-by
                     span.highlight pasted by:
                     span.value
-                        - if (paste.ownerId == session.user.id)
+                        - if (paste.ownerId == session.userId)
                             span you
                         - else if (paste.isPublic)
                             a(href="/users/" ~ user.username)= user.username

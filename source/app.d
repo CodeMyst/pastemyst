@@ -37,7 +37,8 @@ public void main()
 	import pastemyst.rest : APIPaste, APITime, APIData, APIUser, APIV1Paste;
 	import pastemyst.db : connect;
 	import pastemyst.paste : deleteExpiredPastes;
-        import pastemyst.data : config;
+    import pastemyst.auth : deleteExpiredSessions;
+    import pastemyst.data : config;
 
 	URLRouter router = new URLRouter();
 
@@ -68,6 +69,7 @@ public void main()
 	connect();
 
 	setTimer(15.seconds, toDelegate(&deleteExpiredPastes), true);
+	setTimer(15.seconds, toDelegate(&deleteExpiredSessions), true);
 
 	listenHTTP(serverSettings, router);
 

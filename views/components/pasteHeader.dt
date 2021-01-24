@@ -25,7 +25,7 @@
                     - import std.algorithm : canFind;
                     - import pastemyst.db : findOneById;
                     - import pastemyst.data : User;
-                    - const user = findOneById!User(session.user.id).get();
+                    - const user = session.getSessionUser();
                     - bool isStarred = user.stars.canFind(paste.id);
                     button.tooltip.star(type="submit")
                         i.fas.fa-star(class=isStarred?"starred":"")
@@ -65,7 +65,7 @@
                     span.tooltip-text copy embed script
                     input(type="text", class="embed-script", value="<iframe src='#{config.hostname}#{paste.id}/embed' scrolling='no' style='width:80%;border:none;'></iframe><script src='#{config.hostname}static/scripts/libs/iframeResizer.js'></script><script>iFrameResize();</script>")
 
-            -if(paste.ownerId != "" && session.user.id == paste.ownerId)
+            -if(paste.ownerId != "" && session.userId == paste.ownerId)
                 - if (!paste.encrypted)
                     a.tooltip(href="/" ~ paste.id ~ "/edit")
                         i.fas.fa-edit

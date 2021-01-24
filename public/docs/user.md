@@ -28,3 +28,4 @@ returned JSON body:
 | defaultLang     | string   | the default language                                             |
 | publicProfile   | bool     | if they have a public profile                                    |
 | supporterLength | uint     | how long has the user been a supporter for, 0 if not a supporter |
+| contributor     | bool     | if the user is a contributor to pastemyst                        |

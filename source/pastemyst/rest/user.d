@@ -73,11 +73,13 @@ public class APIUser : IAPIUser
             string avatarUrl;
             bool publicProfile;
             string defaultLang;
+            ulong supporterLength;
+            bool contributor;
         }
 
         const user = res.get();
 
         return serializeToJson(MinUser(user.id, user.username,
-                    user.avatarUrl, user.publicProfile, user.defaultLang));
+                    user.avatarUrl, user.publicProfile, user.defaultLang, user.supporterLength, user.contributor));
     }
 }

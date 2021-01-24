@@ -30,7 +30,7 @@ public class UserWeb
         import std.uni : toLower;
 
         auto session = getSession(req);
-        auto user = session.getSessionUser();
+        const user = session.getSessionUser();
         const title = user.username ~ " - profile";
 
         auto tags = redBlackTree!string();

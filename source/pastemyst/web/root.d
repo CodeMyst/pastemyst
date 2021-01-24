@@ -19,7 +19,7 @@ public class RootWeb
     public void getHome(HTTPServerRequest req)
     {
         const session = getSession(req);
-        const user = getSessionUser(session);
+        const user = session.getSessionUser();
 
         render!("home.dt", session, user);
     }
@@ -35,7 +35,7 @@ public class RootWeb
         import pastemyst.db : findOneById;
 
         const session = getSession(req);
-        const user = getSessionUser(session);
+        const user = session.getSessionUser();
 
         const pasteRes = findOneById!Paste(_id);
 
@@ -46,7 +46,7 @@ public class RootWeb
 
         const paste = pasteRes.get();
 
-        if (paste.isPrivate && (paste.ownerId != session.user.id))
+        if (paste.isPrivate && (paste.ownerId != session.userId))
         {
             return;
         }

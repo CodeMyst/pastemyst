@@ -172,9 +172,8 @@ public class LoginWeb
             return;
         }
 
-        const muser = MinimalUser(user.get().id, user.get().username, user.get().avatarUrl);
         pastemyst.auth.session.Session session;
-        session.user = muser;
+        session.userId = user.get().id;
         startSession(req, res, session);
 
         // FIXME: issue#55
@@ -235,7 +234,7 @@ public class LoginWeb
         insert(key);
 
         pastemyst.auth.session.Session session;
-        session.user = MinimalUser(user.id, user.username, user.avatarUrl);
+        session.userId = user.id;
         
         req.session.remove("create_temp_type");
         req.session.remove("create_temp_user");

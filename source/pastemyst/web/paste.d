@@ -43,7 +43,7 @@ public class PasteWeb
 
             const encPaste = enc.get();
 
-            if (encPaste.isPrivate && (encPaste.ownerId != session.user.id))
+            if (encPaste.isPrivate && (encPaste.ownerId != session.userId))
             {
                 return;
             }
@@ -58,7 +58,7 @@ public class PasteWeb
 
         const Paste paste = res.get();
 
-        if (paste.isPrivate && (paste.ownerId != session.user.id))
+        if (paste.isPrivate && (paste.ownerId != session.userId))
         {
             return;
         }
@@ -86,7 +86,7 @@ public class PasteWeb
 
         if (session.loggedIn)
         {
-            ownerId = session.user.id;
+            ownerId = session.userId;
         }
 
         Paste paste;
@@ -175,7 +175,7 @@ public class PasteWeb
 
         const encryptedPaste = res.get();
 
-        if (encryptedPaste.isPrivate && (encryptedPaste.ownerId != session.user.id))
+        if (encryptedPaste.isPrivate && (encryptedPaste.ownerId != session.userId))
         {
             return;
         }
@@ -246,12 +246,12 @@ public class PasteWeb
 
         const session = getSession(req);
 
-        if (paste.isPrivate && (paste.ownerId != session.user.id))
+        if (paste.isPrivate && (paste.ownerId != session.userId))
         {
             return;
         }
 
-        auto user = getSessionUser(session);
+        auto user = session.getSessionUser();
 
         int incAmnt = 1;
 
@@ -299,7 +299,7 @@ public class PasteWeb
 
                 const encPaste = enc.get();
 
-                if (encPaste.ownerId != "" && encPaste.ownerId == session.user.id && !encPaste.isPublic)
+                if (encPaste.ownerId != "" && encPaste.ownerId == session.userId && !encPaste.isPublic)
                 {
                     update!EncryptedPaste(["_id": _id], ["$set": ["isPrivate": !encPaste.isPrivate]]);
                     redirect("/" ~ _id);
@@ -309,7 +309,7 @@ public class PasteWeb
 
             const Paste paste = res.get();
 
-            if (paste.ownerId != "" && paste.ownerId == session.user.id && !paste.isPublic)
+            if (paste.ownerId != "" && paste.ownerId == session.userId && !paste.isPublic)
             {
                 update!Paste(["_id": _id], ["$set": ["isPrivate": !paste.isPrivate]]);
                 redirect("/" ~ _id);
@@ -348,7 +348,7 @@ public class PasteWeb
 
                 const encPaste = enc.get();
 
-                if (encPaste.ownerId != "" && encPaste.ownerId == session.user.id && !encPaste.isPrivate)
+                if (encPaste.ownerId != "" && encPaste.ownerId == session.userId && !encPaste.isPrivate)
                 {
                     update!Paste(["_id": _id], ["$set": ["isPublic": !encPaste.isPublic]]);
                     redirect("/" ~ _id);
@@ -358,7 +358,7 @@ public class PasteWeb
 
             const Paste paste = res.get();
 
-            if (paste.ownerId != "" && paste.ownerId == session.user.id && !paste.isPrivate)
+            if (paste.ownerId != "" && paste.ownerId == session.userId && !paste.isPrivate)
             {
                 update!Paste(["_id": _id], ["$set": ["isPublic": !paste.isPublic]]);
                 redirect("/" ~ _id);
@@ -397,7 +397,7 @@ public class PasteWeb
 
                 auto encPaste = enc.get();
 
-                if (encPaste.ownerId != "" && encPaste.ownerId == session.user.id)
+                if (encPaste.ownerId != "" && encPaste.ownerId == session.userId)
                 {
                     encPaste.ownerId = "";
                     encPaste.isPrivate = false;
@@ -411,7 +411,7 @@ public class PasteWeb
 
             auto paste = res.get();
 
-            if (paste.ownerId != "" && paste.ownerId == session.user.id)
+            if (paste.ownerId != "" && paste.ownerId == session.userId)
             {
                 paste.ownerId = "";
                 paste.isPrivate = false;
@@ -455,7 +455,7 @@ public class PasteWeb
 
                 const encPaste = enc.get();
 
-                if (encPaste.ownerId != "" && encPaste.ownerId == session.user.id)
+                if (encPaste.ownerId != "" && encPaste.ownerId == session.userId)
                 {
                     removeOneById!EncryptedPaste(_id);
                     redirect("/user/profile");
@@ -465,7 +465,7 @@ public class PasteWeb
 
             const Paste paste = res.get();
 
-            if (paste.ownerId != "" && paste.ownerId == session.user.id)
+            if (paste.ownerId != "" && paste.ownerId == session.userId)
             {
                 removeOneById!Paste(_id);
                 redirect("/user/profile");
@@ -560,7 +560,7 @@ public class PasteWeb
 
         const paste = res.get();
 
-        if (paste.ownerId != session.user.id)
+        if (paste.ownerId != session.userId)
         {
             return;
         }
@@ -597,7 +597,7 @@ public class PasteWeb
 
         Paste paste = res.get();
 
-        if (paste.ownerId != session.user.id)
+        if (paste.ownerId != session.userId)
         {
             return;
         }
@@ -787,7 +787,7 @@ public class PasteWeb
 
         const session = getSession(req);
 
-        if (paste.isPrivate && paste.ownerId != session.user.id)
+        if (paste.isPrivate && paste.ownerId != session.userId)
         {
             return;
         }
@@ -813,7 +813,7 @@ public class PasteWeb
 
         const session = getSession(req);
 
-        if (paste.isPrivate && paste.ownerId != session.user.id)
+        if (paste.isPrivate && paste.ownerId != session.userId)
         {
             return;
         }

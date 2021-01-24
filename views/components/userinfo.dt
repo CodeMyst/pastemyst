@@ -1,7 +1,7 @@
 .user-info
     - import pastemyst.db : findOneById;
     - import pastemyst.data : User;
-    - auto u= findOneById!User(session.user.id).get();
+    - auto u = session.getSessionUser();
     .right
         - if (u.publicProfile)
             a(href="/users/" ~ u.username) public profile
@@ -9,8 +9,8 @@
         a(href="/logout") logout
 
     .left
-        img.avatar(src=session.user.avatarUrl, alt="user avatar")
-        p.username= session.user.username
+        img.avatar(src=u.avatarUrl, alt="user avatar")
+        p.username= u.username
         - if (u.supporterLength > 0)
             .supporter-badge.tooltip
                 i.fas.fa-user-astronaut

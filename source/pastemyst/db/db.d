@@ -12,7 +12,7 @@ version(unittest)
 /++
  + List of all collections in the mongo db.
  +/
-public const string[] collectionNames = ["pastes", "users", "api-keys"];
+public const string[] collectionNames = ["pastes", "users", "api-keys", "sessions"];
 
 private MongoDatabase mongo;
 
@@ -51,6 +51,10 @@ private string getCollectionName(T)() @safe
     else static if (is(T == ApiKey))
     {
         return "api-keys";
+    }
+    else static if (is(T == pastemyst.auth.session.Session))
+    {
+        return "sessions";
     }
     else
     {

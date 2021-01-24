@@ -31,6 +31,8 @@
 .markdown-rendered pre code
 {
     padding: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .markdown-rendered p

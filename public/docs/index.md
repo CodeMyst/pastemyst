@@ -25,7 +25,8 @@ here are some api libraries that are developed by other people. they are not dir
 
 | link                                                                | language | author        | supports v2 |
 |---------------------------------------------------------------------|----------|---------------|-------------|
-| [pastemyst-pi](https://github.com/Dmunch04/pastemyst-py)            | python   | munchii       | yes         |
+| [pastemyst-d](https://github.com/CodeMyst/pastemyst-d)              | d        | codemyst      | yes         |
+| [pastemyst-py](https://github.com/Dmunch04/pastemyst-py)            | python   | munchii       | yes         |
 | [pastemyst-net](https://github.com/dentolos19/PasteMystNet)         | c#       | dentolos19    | yes         |
 | [pastemyst-js](https://github.com/FleshMobProductions/PasteMyst-JS) | js       | fmproductions | no          |
 

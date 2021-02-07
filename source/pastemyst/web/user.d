@@ -184,7 +184,7 @@ public class UserWeb
             enforceHTTP(!usernameEndsWithSymbol(username),
                     HTTPStatus.badRequest, "username cannot end with a symbol");
 
-            enforceHTTP(findOne!User(["$text": ["$search": username]]).isNull,
+            enforceHTTP(findOne!User(["$text": ["$search": "\""~username~"\""]]).isNull,
                         HTTPStatus.badRequest, "username is taken");
 
             update!User(["_id": session.userId], ["$set": ["username": username]]);

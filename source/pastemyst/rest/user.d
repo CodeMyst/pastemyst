@@ -40,7 +40,7 @@ public class APIUser : IAPIUser
         import pastemyst.data : User;
         import pastemyst.db : findOne;
 
-        const res = findOne!User(["$text": ["$search": _username]]);
+        const res = findOne!User(["$text": ["$search": "\""~_username~"\""]]);
 
         if (res.isNull)
         {

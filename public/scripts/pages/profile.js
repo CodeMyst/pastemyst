@@ -6,24 +6,14 @@ window.addEventListener("load", async () =>
     {
         let pasteElement = document.querySelectorAll("#profile .pastes .paste")[i];
         let createdAtDate = new Date(pastes[i].createdAt * 1000); // jshint ignore:line
+        let deletesAt = pastes[i].deletesAt; // jshint ignore:line
 
         pasteElement.querySelector(".info .created-at .value").textContent = "created at: " + createdAtDate.toDateString().toLowerCase();
         pasteElement.querySelector(".info .created-at .tooltip-text").textContent = createdAtDate.toString().toLowerCase();
 
-        // TODO: this can be optimized, the pastes now hold information where they will get deleted
-        const response = await fetch(`/api/v2/time/expiresInToUnixTime?createdAt=${pastes[i].createdAt}&expiresIn=${pastes[i].expiresIn}`, // jshint ignore:line
+        if (deletesAt !== 0)
         {
-            headers:
-            {
-                "Content-Type": "application/json"
-            }
-        });
-
-        let expiresAt = (await response.json()).result;
-
-        if (expiresAt !== 0)
-        {
-            let expiresIn = timeDifferenceToString(expiresAt * 1000 - new Date());
+            let expiresIn = timeDifferenceToString(deletesAt * 1000 - new Date());
             pasteElement.querySelector(".info .expires-in").textContent = "expires in: " + expiresIn;
         }
         else

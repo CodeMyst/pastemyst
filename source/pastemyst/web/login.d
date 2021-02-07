@@ -213,7 +213,7 @@ public class LoginWeb
         const serviceName = req.session.get!string("create_temp_type");
         const serviceUser = req.session.get!ServiceUser("create_temp_user");
 
-        const userCheck = findOne!User(["$text": ["$search": username]]);
+        const userCheck = findOne!User(["$text": ["$search": "\""~username~"\""]]);
 
         if (!userCheck.isNull)
         {
@@ -235,7 +235,7 @@ public class LoginWeb
 
         pastemyst.auth.session.Session session;
         session.userId = user.id;
-        
+
         req.session.remove("create_temp_type");
         req.session.remove("create_temp_user");
 

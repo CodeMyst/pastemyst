@@ -12,6 +12,8 @@ nav
         li
             a(href="/api-docs") api
         li
+            a(href="/pastry") cli-tool
+        li
             a(href="/changelog") changelog
         li.no-delimiter
             a(href="/legal") legal

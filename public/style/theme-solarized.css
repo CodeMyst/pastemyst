@@ -1,13 +1,13 @@
 html.solarized
 {
-    --color-nano: #002b36;
+    --color-nano: #002028;
     --color-nanonotsolight: #001a21;
-    --color-nanolight: #073642;
+    --color-nanolight: #002b36;
     --color-nanolightlight: #586e75;
     --color-white: #eee8d5;
     --color-mystge: #cb4b16;
     --color-mystlue: #268bd2;
-    --color-mysted: #d30102;
+    --color-mysted: #dc322f;
     --color-mysteen: #859900;
 
     --font-size-code: 1rem;

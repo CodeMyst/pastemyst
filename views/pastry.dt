@@ -1,0 +1,8 @@
+extends baseLayout
+
+block body
+    #pastry.markdown-rendered
+        - import vibe.d;
+        - import std.file;
+        - import commonmarkd;
+        |!= convertMarkdownToHTML(readFileUTF8(NativePath("./pastry.md")), MarkdownFlag.tablesExtension)

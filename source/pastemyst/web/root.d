@@ -83,4 +83,14 @@ public class RootWeb
 
         render!("legal.dt", session, title);
     }
+
+    @path("/pastry")
+    public void getPastry(HTTPServerRequest req)
+    {
+        const session = getSession(req);
+
+        const title = "pastry";
+
+        render!("pastry.dt", session, title);
+    }
 }

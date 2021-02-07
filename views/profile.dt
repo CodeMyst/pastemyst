@@ -83,7 +83,7 @@ block scripts
 
     - foreach(p; pastes)
         script.
-            var pastetmp = {'createdAt': '#{p.createdAt}', 'expiresIn': '#{cast(string) p.expiresIn}'};
+            var pastetmp = {'createdAt': '#{p.createdAt}', 'expiresIn': '#{cast(string) p.expiresIn}', 'deletesAt': '#{p.deletesAt}'};
             pastetmp.editedAt = 0;
 
         - if (!p.encrypted)

@@ -13,7 +13,7 @@ get the language information for a specific language, returns a `404` status if 
 | name  | string       | language name                           | no        |
 | mode  | string       | language mode to be used in the editor  | no        |
 | mimes | string array | list of mimes used by the language      | no        |
-| ext   | string array | list of extensions used by the language | no        |
+| ext   | string array | list of extensions used by the language | yes       |
 | color | string       | color representing the language         | yes       |
 
 ```json

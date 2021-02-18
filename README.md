@@ -1,7 +1,7 @@
 <p align="center" style="position: relative">
   <a href="https://paste.myst.rs">
     <img width="500" src="./public/assets/images/pastemyst-display-2.png" /></a><br />
-  “a powerful website for storing and sharing text and code snippets”. completely free and open source.
+  a powerful website for storing and sharing text and code snippets. completely free and open source.
 </p>
 <p align="center">
   <a href="./LICENSE">License</a> •

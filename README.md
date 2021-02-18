@@ -8,7 +8,7 @@
   <a href="https://paste.myst.rs/legal">legal</a> •
   <a href="https://paste.myst.rs/donate">donations</a> •
   <a href="https://paste.myst.rs/changelog">changelog</a> •
-  <a href="https://paste.myst.rs/api-docs">api</a>
+  <a href="https://paste.myst.rs/api-docs">api</a> •
   <a href="https://paste.myst.rs/pastry">pastry-cli</a>
 </p>
 <p align="center">

@@ -4,7 +4,7 @@
   a powerful website for storing and sharing text and code snippets. completely free and open source.
 </p>
 <p align="center">
-  <a href="./LICENSE">License</a> •
+  <a href="./LICENSE">license</a> •
   <a href="https://paste.myst.rs/legal">legal</a> •
   <a href="https://paste.myst.rs/donate">donations</a> •
   <a href="https://paste.myst.rs/changelog">changelog</a> •

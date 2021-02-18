@@ -14,7 +14,7 @@
   <a href="https://discord.gg/SdKbcbq"
     ><img src="https://discordapp.com/api/guilds/298510542535000065/widget.png"
   /></a>
-  <a href="https://patreon.com/codemyst"
+  <a href="https://paste.myst.rs/donate"
     ><img src="https://img.shields.io/badge/-donate-blueviolet" width="49"
   /></a>
   <a href="https://github.com/CodeMyst/pastemyst/actions"

@@ -1,0 +1,51 @@
+/**
+    Name: Dark+
+    From ANF-Studios
+ */
+ 
+ .cm-s-darkplus span.cm-meta { color: #BBB529; }
+ .cm-s-darkplus span.cm-number { color: #aaeac1e6; }
+ .cm-s-darkplus span.cm-keyword { color: #348CD6; line-height: 1em; font-weight: normal; }
+ .cm-s-darkplus span.cm-def { color: #77d08b; font-style: italic; }
+ .cm-s-darkplus span.cm-variable { color: #d1e07b; }
+ .cm-s-darkplus span.cm-variable-2 { color: #A9B7C6; }
+ .cm-s-darkplus span.cm-variable-3 { color: #9876AA; }
+ .cm-s-darkplus span.cm-type { color: #348CD6; font-weight: normal; }
+ .cm-s-darkplus span.cm-property { color: #9CD0CB; }
+ .cm-s-darkplus span.cm-operator { color: #cad6d6; }
+ .cm-s-darkplus span.cm-string { color: #CE9178; }
+ .cm-s-darkplus span.cm-string-2 { color: #CE9178; }
+ .cm-s-darkplus span.cm-comment { color: #2a671b; font-style: italic; }
+ .cm-s-darkplus span.cm-link { color: #CE9178; }
+ .cm-s-darkplus span.cm-atom { color: #CE9178; }
+ .cm-s-darkplus span.cm-error { color: #BC3F3C; }
+ .cm-s-darkplus span.cm-tag { color: #348CD6; font-weight: normal; font-style: normal; }
+ .cm-s-darkplus span.cm-attribute { color: #6897bb; }
+ .cm-s-darkplus span.cm-qualifier { color: #D7BA7D; }
+ .cm-s-darkplus span.cm-bracket { color: #798080; }
+ .cm-s-darkplus span.cm-builtin { color: #FF9E59; }
+ .cm-s-darkplus span.cm-special { color: #FF9E59; }
+ .cm-s-darkplus span.cm-matchhighlight { color: #FFFFFF; background-color: rgba(50, 89, 48, .7); font-weight: normal;}
+ .cm-s-darkplus span.cm-searching { color: #FFFFFF; background-color: rgba(61, 115, 59, .7); font-weight: normal;}
+ 
+ .cm-s-darkplus .CodeMirror-cursor { border-left: 1px solid #d3dae2; }
+ .cm-s-darkplus .CodeMirror-activeline-background { background: #323232; }
+ .cm-s-darkplus .CodeMirror-gutters { border-right: none; }
+ .cm-s-darkplus .CodeMirror-guttermarker { color: #FFEE80; }
+ .cm-s-darkplus .CodeMirror-guttermarker-subtle { color: #D0D0D0; }
+ .cm-s-darkplus .CodeMirrir-linenumber { color: #606366; }
+ .cm-s-darkplus .CodeMirror-matchingbracket { background-color: #3B514D; color: #FFEF28 !important; font-weight: bold; }
+ 
+ .cm-s-darkplus div.CodeMirror-selected { background: #2f4c67; }
+ 
+ .CodeMirror-hints.myst {
+   font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+   color: #9C9E9E;
+   background-color: #3B3E3F !important;
+ }
+ 
+ .CodeMirror-hints.myst .CodeMirror-hint-active {
+   background-color: #494D4E !important;
+   color: #9C9E9E !important;
+ }
+ 

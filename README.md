@@ -39,6 +39,10 @@ features:
 * editing pastes and a full history system
 * simple to use and mostly restriction free REST API
 
+<h3>pastry-cli</h3>
+
+pastemyst also provides a first-party cli tool to interact with pastemyst directly without an interface. you can learn more about pastry from [pastemyst/pastry](https://paste.myst.rs/pastry)
+
 <h2>building and running</h2>
 
 to build and run pastemyst you need `dmd`, `dub`, `libssl-dev` (1.1), `libscrypt` (`libscrypt-dev` in ubuntu repos), `mongodb` and [`pastemyst-autodetect`](https://github.com/codemyst/pastemyst-autodetect).

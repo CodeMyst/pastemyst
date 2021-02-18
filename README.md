@@ -1,12 +1,31 @@
-# pastemyst ![CI](https://github.com/CodeMyst/pastemyst/workflows/CI/badge.svg) [![Discord Server](https://discordapp.com/api/guilds/298510542535000065/widget.png)](https://discord.gg/SdKbcbq)
+<p align="center" style="position: relative">
+  <a href="https://paste.myst.rs">
+    <img width="500" src="./public/assets/images/pastemyst-display-2.png" /></a><br />
+  “a powerful website for storing and sharing text and code snippets” known as [pastemyst](https://paste.myst.rs/). completely free and open source.
+</p>
+<p align="center">
+  <a href="./LICENSE">License</a> •
+  <a href="https://paste.myst.rs/legal">Legal</a> •
+  <a href="https://paste.myst.rs/donate">Donations</a> •
+  <a href="https://paste.myst.rs/changelog">Changelog</a> •
+  <a href="https://paste.myst.rs/api-docs">API</a>
+</p>
+<p align="center">
+  <a href="https://discord.gg/SdKbcbq"
+    ><img src="https://discordapp.com/api/guilds/298510542535000065/widget.png"
+  /></a>
+  <a href="https://patreon.com/codemyst"
+    ><img src="https://img.shields.io/badge/-donate-blueviolet" width="49"
+  /></a>
+  <a href="https://github.com/CodeMyst/pastemyst/actions"
+    ><img src="https://github.com/CodeMyst/pastemyst/workflows/CI/badge.svg"
+  /></a>
+</p>
 
-## about
 
-a powerful website for storing and sharing text and code snippets. completely free and open source.
+<h2>about</h2>
 
-https://paste.myst.rs/
-
-if you like this project please consider donating. any support is appreciated as it helps pay the server. https://paste.myst.rs/donate
+if you like this project, please consider donating. any support is appreciated as it helps pay the server. more info at [pastemyst/donate](https://paste.myst.rs/donate) 
 
 features:
 * simple and beautiful interface
@@ -20,7 +39,7 @@ features:
 * editing pastes and a full history system
 * simple to use and mostly restriction free REST API
 
-## building
+<h2>building and running</h2>
 
 to build and run pastemyst you need `dmd`, `dub`, `libssl-dev` (1.1), `libscrypt` (`libscrypt-dev` in ubuntu repos), `mongodb` and [`pastemyst-autodetect`](https://github.com/codemyst/pastemyst-autodetect).
 
@@ -39,11 +58,7 @@ git submodule update --init --recursive
 
 now simply run `dub run` and everything should work fine.
 
-## contributing
-
-first find an issue you would like to work on (or create your own and wait for approval). you should work on a separate branch (if you're working on a new feature name the branch `feature/feature-name`, for fixes: `fix/fix-name`, etc.).
-
-## docker
+<h3>docker</h3>
 
 you can run this project with docker.
  * after cloning this project do NOT forget to add the git submodule dependency
@@ -58,7 +73,11 @@ do **not** forget to run `make down` when you're done!
 
 to run it again just do `make up` and you're good to go!
 
-## api libraries
+<h2>contributing</h2>
+
+first find an issue you would like to work on (or create your own and wait for approval). you should work on a separate branch (if you're working on a new feature name the branch `feature/feature-name`, for fixes: `fix/fix-name`, etc).
+
+<h2>api libraries</h2>
 
 here are some api libraries that are developed by other people. they are not directly supported by me. big thanks to the developers! if you want your library added here just open an issue.
 

@@ -1,6 +1,7 @@
 @import url(fonts.css);
 
 @import url(theme-myst.css);
+@import url(theme-darkplus.css);
 @import url(theme-monokai.css);
 @import url(theme-dracula.css);
 @import url(theme-solarized.css);
@@ -14,6 +15,7 @@
 
 @import url(libs/codemirror.css);
 @import url(libs/codemirror-myst.css);
+@import url(libs/codemirror-darkplus.css);
 @import url(libs/codemirror-monokai.css);
 @import url(libs/codemirror-dracula.css);
 @import url(libs/codemirror-solarized.css);

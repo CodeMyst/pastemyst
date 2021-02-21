@@ -1,0 +1,29 @@
+/**
+    Name: Dark+
+    From ANF-Studios
+ */
+
+html.darkplus
+{
+    --color-nano: #161517;
+    --color-nanonotsolight: #1c1c1c;
+    --color-nanolight: #1c1b1f;
+    --color-nanolightlight: #ffffff;
+    --color-white: #e8e6e6;
+    --color-mystge: #FF6A00;
+    --color-mystlue: #68D0FE;
+    --color-mysted: #da5245;
+    --color-mysteen: #3fef6b;
+
+    --font-size-code: 1rem;
+    --font-size-small: 1rem;
+    --font-size-normal: 1.2rem;
+    --font-size-medium: 1.5rem;
+    --font-size-big: 3rem;
+
+    --border-radius: 0.3rem;
+
+    --break-small: 640px;
+
+    --font-stack: 'UbuntuMono', monospace;
+}

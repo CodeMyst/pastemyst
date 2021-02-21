@@ -2,6 +2,17 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.3.2] - 2021-02-21
+
+### added
+
+- added pastemyst.js and pastemyst-rs wrappers
+- dark+ theme (thanks to ANF Studios)
+
+### fixed
+
+- updated api docs to show that the extension of a language is optional
+
 ## [2.3.1] - 2021-02-07
 
 ### added

@@ -42,6 +42,15 @@ public void main()
 
 	URLRouter router = new URLRouter();
 
+	// redirect api requests with a trailing slash
+	router.any("/*", (HTTPServerRequest req, HTTPServerResponse res) {
+		import std.algorithm : startsWith;
+		if (req.requestURI.startsWith("/api/") && req.requestURI[$-1] == '/')
+		{
+			res.redirect(req.requestURI[0..$-1], 307);
+		}
+	});
+
 	router.registerRestInterface(new APIPaste());
 	router.registerRestInterface(new APIUser());
 	router.registerRestInterface(new APITime());
@@ -55,15 +64,15 @@ public void main()
 	router.registerWebInterface(new UsersWeb());
 	router.registerWebInterface(new PasteWeb());
 
-        auto fsettings = new HTTPFileServerSettings();
-        fsettings.serverPathPrefix = "/static";
+	auto fsettings = new HTTPFileServerSettings();
+	fsettings.serverPathPrefix = "/static";
 
 	router.get("/static/*", serveStaticFiles("public/", fsettings));
 
 	HTTPServerSettings serverSettings = new HTTPServerSettings();
 	serverSettings.bindAddresses = [config.hostIp];
 	serverSettings.port = config.hostPort;
-        serverSettings.sessionStore = new MemorySessionStore();
+	serverSettings.sessionStore = new MemorySessionStore();
 	serverSettings.errorPageHandler = toDelegate(&displayError);
 
 	connect();

@@ -21,6 +21,12 @@
     border-radius: var(--border-radius);
     padding: 0 0.25rem;
     display: inline-block;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
 }
 
 .markdown-rendered pre

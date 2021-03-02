@@ -48,6 +48,8 @@ export function initEditors()
             setupDeleteButton(editors[i]);
         }
     }
+
+    handleMoveButtons();
 }
 
 export function addEditor()
@@ -110,6 +112,8 @@ export function addEditor()
     editor.editor.focus();
 
     setMode(editor.editor, "null", "null");
+
+    handleMoveButtons();
 }
 
 function removeEditor(editor)
@@ -132,6 +136,73 @@ function removeEditor(editor)
     {
         editors[i].index = i;
     }
+
+    handleMoveButtons();
+}
+
+function handleMoveButtons()
+{
+    if (editors.length < 2)
+    {
+        removeMoveUpButton(editors[0]);
+        removeMoveDownButton(editors[0]);
+        return;
+    }
+
+    setupMoveDownButton(editors[0]);
+    removeMoveUpButton(editors[0]);
+
+    editors[0].rootElement.getElementsByClassName("pasty-editor-movedown")[0].addEventListener("click", () => swapEditors(0, 1));
+
+    for (let i = 1; i < editors.length - 1; i++)
+    {
+        setupMoveUpButton(editors[i]);
+        setupMoveDownButton(editors[i]);
+
+        editors[i].rootElement.getElementsByClassName("pasty-editor-moveup")[0].addEventListener("click", () => swapEditors(i-1,i));
+        editors[i].rootElement.getElementsByClassName("pasty-editor-movedown")[0].addEventListener("click", () => swapEditors(i,i+1));
+    }
+
+    setupMoveUpButton(editors[editors.length-1]);
+    removeMoveDownButton(editors[editors.length-1]);
+
+    editors[editors.length-1].rootElement.getElementsByClassName("pasty-editor-moveup")[0].addEventListener("click", () => swapEditors(editors.length-2, editors.length-1));
+}
+
+function swapEditors(a, b)
+{
+    editors[a].rootElement.parentNode.insertBefore(editors[a].rootElement.nextElementSibling, editors[a].rootElement);
+    let tmp = editors[a];
+    editors[a] = editors[b];
+    editors[b] = tmp;
+    editors[a].index = a;
+    editors[b].index = b;
+    console.log(`swap ${a} ${b}`);
+    handleMoveButtons();
+}
+
+function setupMoveUpButton(editor)
+{
+    let elm = editor.rootElement.getElementsByClassName("pasty-editor-moveup")[0];
+    elm.style.display = "initial";
+    elm.replaceWith(elm.cloneNode(true));
+}
+
+function removeMoveUpButton(editor)
+{
+    editor.rootElement.getElementsByClassName("pasty-editor-moveup")[0].style.display = "none";
+}
+
+function setupMoveDownButton(editor)
+{
+    let elm = editor.rootElement.getElementsByClassName("pasty-editor-movedown")[0];
+    elm.style.display = "initial";
+    elm.replaceWith(elm.cloneNode(true));
+}
+
+function removeMoveDownButton(editor)
+{
+    editor.rootElement.getElementsByClassName("pasty-editor-movedown")[0].style.display = "none";
 }
 
 function setupDeleteButton(editor)

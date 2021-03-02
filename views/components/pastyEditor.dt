@@ -1,6 +1,8 @@
 .pasty-editor
     .pasty-editor-options
-        i.fas.fa-minus-square.pasty-editor-delete
+        i.fas.fa-minus-square.pasty-editor-delete.pasty-editor-option
+        i.fas.fa-chevron-up.pasty-editor-moveup.pasty-editor-option
+        i.fas.fa-chevron-down.pasty-editor-movedown.pasty-editor-option
         input.pasty-editor-title(placeholder="pasty title", type="text", autocomplete="off", spellcheck="false", value=pastyTitle, aria-label="pasty title")
         input.hidden(type="text", name="id", value=pastyId)
         .language-dropdown

@@ -15,7 +15,7 @@
     flex-wrap: wrap;
 }
 
-.pasty-editor .pasty-editor-options .pasty-editor-delete
+.pasty-editor .pasty-editor-options .pasty-editor-option
 {
     padding: 0.5rem 1rem;
     padding-right: 0;
@@ -25,9 +25,15 @@
     display: none;
 }
 
-.pasty-editor .pasty-editor-options .pasty-editor-delete:hover
+.pasty-editor .pasty-editor-options .pasty-editor-option:hover
 {
     cursor: pointer;
+}
+
+.pasty-editor .pasty-editor-options .pasty-editor-moveup,
+.pasty-editor .pasty-editor-options .pasty-editor-movedown
+{
+    color: var(--color-mystge);
 }
 
 .pasty-editor .pasty-editor-options .pasty-editor-title

@@ -159,8 +159,8 @@ function handleMoveButtons()
         setupMoveUpButton(editors[i]);
         setupMoveDownButton(editors[i]);
 
-        editors[i].rootElement.getElementsByClassName("pasty-editor-moveup")[0].addEventListener("click", () => swapEditors(i-1,i));
-        editors[i].rootElement.getElementsByClassName("pasty-editor-movedown")[0].addEventListener("click", () => swapEditors(i,i+1));
+        editors[i].rootElement.getElementsByClassName("pasty-editor-moveup")[0].addEventListener("click", () => swapEditors(i-1,i)); // jshint ignore:line
+        editors[i].rootElement.getElementsByClassName("pasty-editor-movedown")[0].addEventListener("click", () => swapEditors(i,i+1)); // jshint ignore:line
     }
 
     setupMoveUpButton(editors[editors.length-1]);
@@ -177,7 +177,6 @@ function swapEditors(a, b)
     editors[b] = tmp;
     editors[a].index = a;
     editors[b].index = b;
-    console.log(`swap ${a} ${b}`);
     handleMoveButtons();
 }
 

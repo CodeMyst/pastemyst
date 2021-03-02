@@ -33,8 +33,15 @@ html(lang="en", class="myst")
 
         link(rel="stylesheet", href="/static/style/main.css?v=#{getVersion()}")
 
+        script.
+            const theme = localStorage.getItem("theme");
+
+            document.documentElement.classList = theme;
+
+        script(type="module", src="/static/scripts/main.js?v=#{getVersion()}")
+
         block head
-    
+
     body
         #container
             include header
@@ -47,6 +54,5 @@ html(lang="en", class="myst")
         script(src="/static/scripts/libs/codemirror/simple.js?v=#{getVersion()}")
         script(src="/static/scripts/libs/codemirror/overlay.js?v=#{getVersion()}")
         script(src="/static/scripts/libs/codemirror/multiplex.js?v=#{getVersion()}")
-        script(type="module", src="/static/scripts/main.js?v=#{getVersion()}")
-        
+
         block scripts

@@ -1,5 +1,19 @@
 import { getWordwrap, getFullwidth } from "./helpers/options.js";
 
+    if (localStorage.getItem("theme") === null)
+    {
+        localStorage.setItem("theme", "myst");
+    }
+    else
+    {
+        const themePicker = document.getElementById("theme-picker");
+        const theme = localStorage.getItem("theme");
+
+        themePicker.value = theme;
+    }
+
+    setTheme();
+
 window.addEventListener("load", () =>
 {
     let fullwidthToggle = document.querySelector("nav .fullwidth"),
@@ -14,18 +28,6 @@ window.addEventListener("load", () =>
     document.getElementById("theme-picker").addEventListener("change", setThemeEvent);
 
     setFullwidthClasses();
-
-    if (localStorage.getItem("theme") === null)
-    {
-        localStorage.setItem("theme", "myst");
-    }
-    else
-    {
-        const themePicker = document.getElementById("theme-picker");
-        const theme = localStorage.getItem("theme");
-
-        themePicker.value = theme;
-    }
 
     if (localStorage.getItem("acceptedCookies") === null)
     {

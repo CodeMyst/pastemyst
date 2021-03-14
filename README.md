@@ -86,13 +86,15 @@ first find an issue you would like to work on (or create your own and wait for a
 
 here are some api libraries that are developed by other people. they are not directly supported by me. big thanks to the developers! if you want your library added here just open an issue.
 
-| link                                                                | language | author        | supports v2 |
-|---------------------------------------------------------------------|----------|---------------|-------------|
-| [pastemyst-rs](https://github.com/ANF/pastemyst-rs)                 | rust     | ANF-Studios   | yes         |
-| [pastemyst.js](https://github.com/harshhhdev/pastemyst.js)          | js/ts    | harshhhdev    | yes         |
-| [pastemyst-d](https://github.com/CodeMyst/pastemyst-d)              | d        | codemyst      | yes         |
-| [pastemyst-py](https://github.com/Dmunch04/pastemyst-py)            | python   | munchii       | yes         |
-| [PasteMystNet](https://github.com/dentolos19/PasteMystNet)          | c#       | dentolos19    | yes         |
-| [PasteMyst-JS](https://github.com/FleshMobProductions/PasteMyst-JS) | js       | fmproductions | no          |
+| link                                                                | language   | author          | supports v2 |
+|---------------------------------------------------------------------|------------|-----------------|-------------|
+| [pastemyst.v](https://github.com/billyeatcookies/pastemyst.v)       | v          | billyeatcookies | yes         |
+| [pastemyst-ts](https://github.com/YilianSource/pastemyst-ts)        | typescript | YilianSource    | yes         |
+| [pastemyst-rs](https://github.com/ANF/pastemyst-rs)                 | rust       | ANF-Studios     | yes         |
+| [pastemyst.js](https://github.com/harshhhdev/pastemyst.js)          | js/ts      | harshhhdev      | yes         |
+| [pastemyst-d](https://github.com/CodeMyst/pastemyst-d)              | d          | codemyst        | yes         |
+| [pastemyst-py](https://github.com/Dmunch04/pastemyst-py)            | python     | munchii         | yes         |
+| [PasteMystNet](https://github.com/dentolos19/PasteMystNet)          | c#         | dentolos19      | yes         |
+| [PasteMyst-JS](https://github.com/FleshMobProductions/PasteMyst-JS) | js         | fmproductions   | no          |
 
 you should avoid using a library not supporting the v2 api, since it might break and is lacking a lot of features.

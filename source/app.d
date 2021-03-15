@@ -35,7 +35,7 @@ public void main()
 {
 	import pastemyst.web : RootWeb, PasteWeb, LoginWeb, UserWeb, UsersWeb, ApiDocsWeb;
 	import pastemyst.rest : APIPaste, APITime, APIData, APIUser, APIV1Paste;
-	import pastemyst.db : connect;
+	import pastemyst.db : connect, deleteZips;
 	import pastemyst.paste : deleteExpiredPastes;
     import pastemyst.auth : deleteExpiredSessions;
     import pastemyst.data : config;
@@ -70,6 +70,7 @@ public void main()
 
 	setTimer(15.seconds, toDelegate(&deleteExpiredPastes), true);
 	setTimer(15.seconds, toDelegate(&deleteExpiredSessions), true);
+	setTimer(5.minutes, toDelegate(&deleteZips), true);
 
 	listenHTTP(serverSettings, router);
 

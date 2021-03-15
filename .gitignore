@@ -4,6 +4,8 @@ config.yml
 config.yaml
 public/assets/avatars/*
 !public/assets/avatars/.gitkeep
+public/zips/*
+!public/zips/.gitkeep
 tmp/
 db-data/
 log

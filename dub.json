@@ -18,6 +18,7 @@
 	],
 	"copyright": "Copyright © 2019, CodeMyst",
 	"dependencies": {
+		"archive": "~>0.7.0",
 		"commonmark-d": "~>1.0.7",
 		"crypto": "~>0.2.13",
 		"csprng": "~>1.1.1",
@@ -25,9 +26,12 @@
 		"dshould": "~>1.1.0",
 		"dyaml": "~>0.8.0",
 		"imagefmt": "~>2.1.0",
+		"scrypt-d": {
+			"path": "scrypt.d/",
+			"version": ">=0.0.0"
+		},
 		"silly": "~>1.0.2",
-		"vibe-d": ">=0.9.0",
-                "scrypt-d": { "path": "scrypt.d/" }
+		"vibe-d": ">=0.9.0"
 	},
 	"description": "A minimal D application.",
 	"license": "MPL-2.0",

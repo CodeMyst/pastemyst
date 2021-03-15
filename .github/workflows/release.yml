@@ -31,3 +31,15 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: "bin/pastemyst"
           target: "builds"
+      - name: move binary and pull repo
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_SECRET }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            rm pastemyst/pastemyst
+            mv builds/bin/pastemyst pastemyst/pastemyst
+            cd pastemyst
+            git pull origin main

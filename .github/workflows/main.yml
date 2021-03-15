@@ -30,7 +30,7 @@ jobs:
           compiler: dmd-latest
       - name: Build
         run: dub build
-      - name: Style cheks
+      - name: Style checks
         run: |
           dub fetch dscanner
           dub run dscanner -- -S source/

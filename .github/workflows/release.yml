@@ -1,0 +1,41 @@
+name: Deploy to server
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    name: Deploy to server
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: install D
+        uses: dlang-community/setup-dlang@v1
+        with:
+          compiler: dmd-latest
+      - name: Install libscrypt
+        run: |
+          sudo apt-get install libscrypt0
+          sudo apt-get install libscrypt-dev
+      - name: Checkout submodules
+        uses: srt32/git-actions@v0.0.3
+        with:
+          args: git submodule update --init --recursive
+      - name: build
+        run: dub build -b release
+      - name: upload to server
+        uses: appleboy/scp-action@master
+      - name: ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: myst.rs
+          username: codemyst
+          key: ${{ secrets.SSH_SECRET }}
+          port: 22
+          source: "bin/pastemyst"
+          target: "builds/pastemyst"
+        # with:
+        #   host: myst.rs
+        #   username: codemyst
+        #   key: ${{ secrets.SSH_SECRET }}
+        #   port: 22
+        #   script: |

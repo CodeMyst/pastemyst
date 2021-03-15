@@ -65,6 +65,10 @@
                     span.tooltip-text copy embed script
                     input(type="text", class="embed-script", value="<iframe src='#{config.hostname}#{paste.id}/embed' scrolling='no' style='width:80%;border:none;'></iframe><script src='#{config.hostname}static/scripts/libs/iframeResizer.js'></script><script>iFrameResize();</script>")
 
+                a.tooltip.download(href="/" ~ paste.id ~ ".zip")
+                    i.fas.fa-download
+                    span.tooltip-text download paste as zip
+
             -if(paste.ownerId != "" && session.userId == paste.ownerId)
                 - if (!paste.encrypted)
                     a.tooltip(href="/" ~ paste.id ~ "/edit")

@@ -69,6 +69,35 @@ public class PasteWeb
     }
 
     /++
+     + GET /:id.zip
+     +
+     + downloads a paste as a zip file
+     +/
+    @path("/:id.zip")
+    @noAuth
+    public void getDownloadPaste(string _id, HTTPServerRequest req, HTTPServerResponse res)
+    {
+        import pastemyst.db : tryFindOneById, createZip;
+        import std.path : baseName;
+
+        // remove .zip form the id
+        string id = _id[0..($-".zip".length)];
+
+        const auto pasteRes = tryFindOneById!Paste(id);
+
+        enforceHTTP(!pasteRes.isNull, HTTPStatus.notFound);
+
+        const paste = pasteRes.get();
+
+        enforceHTTP(!paste.isPrivate, HTTPStatus.notFound);
+
+        string path = createZip(paste);
+
+        res.headers.addField!string(`Content-Disposition`, `attachment; filename="`~baseName(path)~`"`);
+        sendFile(req, res, NativePath(path));
+    }
+
+    /++
      + POST /paste
      +
      + creates a paste

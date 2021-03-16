@@ -9,6 +9,7 @@ all notable changes to this project will be documented in this file.
 - reordering pasties (not implemented yet when editing)
 - specified how to provide the auth header for the api
 - downloading pastes as a zip file
+- added V and TS libs to docs (thanks to billyeatcookies and Yilian)
 
 ### fixed
 

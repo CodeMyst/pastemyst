@@ -147,17 +147,7 @@ public class LoginWeb
 
         string serviceName = service.to!string().toLower();
 
-        ServiceUser serviceUser;
-
-        final switch(service)
-        {
-            case Service.Github:
-                serviceUser = getGithubUser(accessToken);
-                break;
-            case Service.Gitlab:
-                serviceUser = getGitlabUser(accessToken);
-                break;
-        }
+        auto serviceUser = getServiceUser(service, accessToken);
 
         const user = findOne!User(["serviceIds." ~ serviceName: serviceUser.id]);
 

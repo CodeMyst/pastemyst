@@ -2,6 +2,20 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.4.0] - 2021-03-16
+
+### added
+
+- reordering pasties (not implemented yet when editing)
+- specified how to provide the auth header for the api
+- downloading pastes as a zip file
+
+### fixed
+
+- redirecting api requests that have a trailing slash
+- correct wrapping of inline code blocks in markdown rendered pastes (and docs)
+- faster theme loading (now there shouldn't be a flicker when you use the non-default theme)
+
 ## [2.3.2] - 2021-02-21
 
 ### added

@@ -43,7 +43,7 @@ public struct Session
         {
             return User.init;
         }
-        
+
         return res.get();
     }
 }
@@ -55,12 +55,14 @@ private const string cookieName = "session.myst";
  +/
 public void startSession(ref HTTPServerRequest req, ref HTTPServerResponse res, Session session) @safe
 {
-    import std.datetime : Clock;
+    import std.datetime : Clock, days;
     import std.string : startsWith;
     import pastemyst.data : config;
     import pastemyst.db : tryFindOneById, insert;
     import pastemyst.util : generateUniqueId;
 
+    // if cookie is already set on the client and the cookie exists in the DB
+    // this means the session is already started, exit out of the function
     if (cookieName in req.cookies)
     {
         if (!tryFindOneById!Session(req.cookies.get(cookieName)).isNull)
@@ -72,7 +74,7 @@ public void startSession(ref HTTPServerRequest req, ref HTTPServerResponse res, 
     string id = generateUniqueId!Session();
 
     auto currentTime = Clock.currTime();
-    auto expiresAt = Clock.currTime().add!"months"(1);
+    auto expiresAt = currentTime + 30.days;
 
     session.id = id;
     session.createdAt = currentTime.toUnixTime();
@@ -85,11 +87,14 @@ public void startSession(ref HTTPServerRequest req, ref HTTPServerResponse res, 
     cookie.value = id;
     cookie.path = "/";
 
+    // only set the cookie as secure if the website is hosted on https
+    // this is so it also works on dev instances for testing
     if (config.hostname.startsWith("https"))
     {
         cookie.secure = true;
     }
 
+    // add the cookie to the client and to the DB
     res.cookies.addField(cookieName, cookie);
 
     insert!Session(session);

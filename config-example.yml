@@ -9,9 +9,6 @@ gitlab:
 # has to begin with the protocol and end with a trailing /
 hostname: http://localhost:5000/
 
-# is pastemyst hosted on a https enabled host
-https_enabled: false
-
 # shows a message at the top of the page to
 # indicate that this instance is a development one
 # and users shouldnt expect it to always work

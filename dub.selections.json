@@ -9,23 +9,23 @@
 		"csprng": "1.1.1",
 		"diet-ng": "1.6.1",
 		"dshould": "1.1.0",
+		"dunit": "1.0.16",
 		"dyaml": "0.8.3",
 		"eventcore": "0.9.13",
-		"fastjwt": "1.1.1",
 		"imagefmt": "2.1.1",
 		"intel-intrinsics": "1.3.8",
 		"libasync": "0.8.6",
 		"memutils": "1.0.4",
 		"mir-linux-kernel": "1.0.1",
 		"openssl": "1.1.6+1.0.1g",
-		"scrypt-d": {"path":"scrypt.d/"},
+		"scrypt-d": {"path":"packages/scrypt.d/"},
 		"silly": "1.0.2",
 		"stdx-allocator": "2.77.5",
-		"stringbuffer": "1.1.2",
-		"taggedalgebraic": "0.11.19",
+		"taggedalgebraic": "0.11.20",
 		"tinyendian": "0.2.0",
 		"unit-threaded": "0.10.8",
 		"vibe-core": "1.13.0",
-		"vibe-d": "0.9.3"
+		"vibe-d": "0.9.3",
+		"yamlserialized": {"path":"packages/yamlserialized/"}
 	}
 }

@@ -27,11 +27,13 @@
 		"dyaml": "~>0.8.0",
 		"imagefmt": "~>2.1.0",
 		"scrypt-d": {
-			"path": "scrypt.d/",
-			"version": ">=0.0.0"
+			"path": "packages/scrypt.d/"
 		},
 		"silly": "~>1.0.2",
-		"vibe-d": ">=0.9.0"
+		"vibe-d": ">=0.9.0",
+		"yamlserialized": {
+			"path": "packages/yamlserialized/"
+		}
 	},
 	"description": "A minimal D application.",
 	"license": "MPL-2.0",

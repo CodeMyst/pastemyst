@@ -1,3 +1,6 @@
 [submodule "scrypt.d"]
-	path = scrypt.d
+	path = packages/scrypt.d
 	url = https://github.com/CodeMyst/scrypt.d.git
+[submodule "packages/yamlserialized"]
+	path = packages/yamlserialized
+	url = https://github.com/CodeMyst/yamlserialized.git

@@ -9,14 +9,14 @@ version(unittest)
     import dshould;
 }
 
-/++ 
+/++
  + Expire options Json object.
  +/
 @property
 public Json expireOptions() { return _expireOptions; }
 private Json _expireOptions;
 
-/++ 
+/++
  + All supported languages Json object.
  +/
 @property @safe
@@ -105,22 +105,6 @@ public string getTextDataFile(DataFile dataFile)
     }
 
     return res;
-}
-
-@("expireOptions.json file correctness")
-unittest
-{
-    const string contents = getTextDataFile(DataFile.EXPIRE_OPTIONS);
-
-    contents.should.equal(`{"expireOptions":[{"value": "never","pretty": "never"},` ~
-                          `{"value": "1h","pretty": "1 hour"},` ~
-                          `{"value": "2h","pretty": "2 hours"},` ~
-                          `{"value": "10h","pretty": "10 hours"},` ~
-                          `{"value": "1d","pretty": "1 day"},` ~
-                          `{"value": "2d","pretty": "2 days"},` ~
-                          `{"value": "1w","pretty": "1 week"},` ~
-                          `{"value": "1m","pretty": "1 month"},` ~
-                          `{"value": "1y","pretty": "1 year"}]}`);
 }
 
 /++ 

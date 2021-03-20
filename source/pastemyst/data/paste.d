@@ -46,7 +46,6 @@ template BasePasteTmpl()
      +/
     public bool isPublic;
 
-
     /++
      + array of all tags for this paste
      +/
@@ -92,6 +91,23 @@ public struct Paste
      + array of paste edits
      +/
     public Edit[] edits;
+
+    /++
+     + converts the paste to an encrypted paste, doesn't actually do any encryption.
+     +/
+    public EncryptedPaste opCast(EncryptedPaste)() const
+    {
+        EncryptedPaste res;
+        res.id = id;
+        res.createdAt = createdAt;
+        res.expiresIn = expiresIn;
+        res.deletesAt = deletesAt;
+        res.ownerId = ownerId;
+        res.isPrivate = isPrivate;
+        res.encrypted = true;
+
+        return res;
+    }
 }
 
 
@@ -156,22 +172,4 @@ public struct EncryptedPasteData
 
     ///
     public Pasty[] pasties;
-}
-
-/++
- + generates a unique pasty id
- +/
-public string generateUniquePastyId(Paste paste) @safe
-{
-    import pastemyst.encoding : randomBase36Id;
-    import std.algorithm : canFind;
-
-    string id;
-
-    do
-    {
-        id = randomBase36Id();
-    } while(paste.pasties.canFind!((p) => p.id == id));
-
-    return id;
 }

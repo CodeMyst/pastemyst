@@ -16,7 +16,7 @@ public struct Edit
     public string uniqueId;
 
     /++
-     + edit id, multiple edits can share the same id to show that multiple properties were edited at the same time
+     + edit id, multiple edits can share the same id to show that multiple properties were edited at the same time. this is an incrementing number
      +/
     public ulong editId;
 
@@ -24,12 +24,12 @@ public struct Edit
      + type of edit
      +/
     public EditType editType;
-    
+
     /++
      + various metadata, most used case is for storing which pasty was edited
      +/
     public string[] metadata;
-    
+
     /++
      + actual edit, usually stores the old data
      +/
@@ -90,7 +90,7 @@ public Edit getNextEdit(Paste paste, string editUniqueId)
 
     ulong editIndex = edits.countUntil!((e) => e.uniqueId == editUniqueId);
 
-    if (editIndex >= edits.length)
+    if (editIndex == -1)
     {
         return Edit.init;
     }
@@ -230,6 +230,6 @@ public Pasty getRemovedPasty(Edit edit)
     res.title = edit.metadata[1];
     res.language = edit.metadata[2];
     res.code = edit.edit;
-    
+
     return res;
 }

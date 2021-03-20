@@ -150,7 +150,7 @@ public class APIPaste : IAPIPaste
         import std.datetime : Clock;
         import std.algorithm : canFind, countUntil, remove;
         import std.conv : to;
-        import pastemyst.util : generateUniqueEditId, generateDiff;
+        import pastemyst.util : generateUniqueEditId, generateDiff, generateUniquePastyId;
         import pastemyst.paste : tagsStringToArray;
 
         auto res = tryFindOneById!Paste(_id);
@@ -244,7 +244,7 @@ public class APIPaste : IAPIPaste
                     enforceHTTP(editedPasty.language.toLower() != "auotedect",
                                 HTTPStatus.badRequest,
                                 "can't edit a pasty to have an autodetect language.");
-    
+
                     pasty.language = getLanguageName(pasty.language);
                     enforceHTTP(!(pasty.language is null), HTTPStatus.badRequest, "invalid language value.");
 

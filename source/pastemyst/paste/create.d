@@ -9,18 +9,16 @@ import pastemyst.data;
  +/
 public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool isPrivate, string ownerId) @safe
 {
-    import pastemyst.encoding : randomBase36Id;
     import pastemyst.conv : valueToEnum;
     import std.typecons : Nullable;
     import std.datetime : Clock;
-    import pastemyst.db : insert, findOneById;
     import pastemyst.data : Paste, getLanguageName;
-    import pastemyst.util : generateUniqueId;
+    import pastemyst.util : generateUniqueId, generateUniquePastyId;
     import std.uni : toLower;
     import pastemyst.time : expiresInToUnixTime;
     import std.array : replace;
 
-    enforceHTTP(!pasties.length == 0, HTTPStatus.badRequest, "pastie arrays has to have at least one element.");
+    enforceHTTP(!pasties.length == 0, HTTPStatus.badRequest, "pasties array has to have at least one element.");
 
     Nullable!ExpiresIn expires = valueToEnum!ExpiresIn(expiresIn);
 
@@ -73,78 +71,20 @@ public Paste createPaste(string title, string expiresIn, Pasty[] pasties, bool i
 /++
  + creates an encrypted pastes
  +/
-public EncryptedPaste createEncryptedPaste(string title, string expiresIn, Pasty[] pasties, bool isPrivate,
-        string ownerId, string password) @trusted
+public EncryptedPaste createEncryptedPaste(string title, string expiresIn,
+    Pasty[] pasties, bool isPrivate, string ownerId, string password) @trusted
 {
-    
-    import pastemyst.encoding : randomBase36Id;
-    import pastemyst.conv : valueToEnum;
-    import std.typecons : Nullable;
-    import std.datetime : Clock;
-    import pastemyst.db : insert, findOneById;
-    import pastemyst.util : generateUniqueId;
-    import std.uni : toLower;
-    import pastemyst.time : expiresInToUnixTime;
-    import std.array : replace;
     import crypto.aes : AESUtils, AES256;
     import crypto.padding : PaddingMode;
     import csprng.system : CSPRNG;
     import scrypt.password : genScryptPasswordHash, SCRYPT_OUTPUTLEN_DEFAULT, SCRYPT_R_DEFAULT, SCRYPT_P_DEFAULT;
 
-    enforceHTTP(!pasties.length == 0, HTTPStatus.badRequest, "pasties array has to have at least one element.");
-
-    Nullable!ExpiresIn expires = valueToEnum!ExpiresIn(expiresIn);
-
-    enforceHTTP(!expires.isNull, HTTPStatus.badRequest, "invalid expiresIn value.");
-
-    enforceHTTP(!isPrivate || ownerId != "", HTTPStatus.forbidden, "can't create a private paste if not logged in");
-
-    foreach (pasty; pasties)
-    {
-        pasty.language = getLanguageName(pasty.language);
-        enforceHTTP(!(pasty.language is null), HTTPStatus.badRequest, "invalid language value.");
-    }
-
-    auto currentTime = Clock.currTime().toUnixTime();
-
-    ulong deletesAt = 0;
-
-    if (expires.get() != ExpiresIn.never)
-    {
-        deletesAt = expiresInToUnixTime(currentTime, expires.get());
-    }
-
-    EncryptedPaste paste;
-    paste.id = generateUniqueId!Paste();
-    paste.createdAt = currentTime;
-    paste.expiresIn = expires.get();
-    paste.deletesAt = deletesAt;
-    paste.ownerId = ownerId;
-    paste.isPrivate = isPrivate;
-    paste.encrypted = true;
-
-    // used so we can generate unique ids for pasties
-    Paste mockPaste;
-    mockPaste.id = paste.id;
+    const base = createPaste(title, expiresIn, pasties, isPrivate, ownerId);
+    auto paste = cast(EncryptedPaste) base;
 
     EncryptedPasteData data;
-
     data.title = title;
-
-    foreach (pasty; pasties)
-    {
-        pasty.id = generateUniquePastyId(mockPaste);
-
-        if (pasty.language.toLower() == "autodetect")
-        {
-            pasty.language = autodetectLanguage(paste.id, pasty);
-        }
-
-        pasty.code = pasty.code.replace("\r\n", "\n");
-
-        data.pasties ~= pasty;
-        mockPaste.pasties ~= pasty;
-    }
+    data.pasties = cast(Pasty[]) base.pasties;
 
     auto dataJson = cast(ubyte[]) serializeToJsonString(data);
 

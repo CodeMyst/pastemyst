@@ -24,6 +24,24 @@ public string generateUniqueId(T)()
 }
 
 /++
+ + generates a unique pasty id
+ +/
+public string generateUniquePastyId(Paste paste) @safe
+{
+    import pastemyst.encoding : randomBase36Id;
+    import std.algorithm : canFind;
+
+    string id;
+
+    do
+    {
+        id = randomBase36Id();
+    } while(paste.pasties.canFind!((p) => p.id == id));
+
+    return id;
+}
+
+/++
  + generates a unique id for an edit for a paste
  +/
 public string generateUniqueEditId(Paste paste) @safe

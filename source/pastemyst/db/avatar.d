@@ -2,7 +2,7 @@ module pastemyst.db.avatar;
 
 /++
  + uploads an avatar to the assets directory
- + gives it an unique id and returns the filename with the extension
+ + gives it a unique id and returns the filename with the extension
  +/
 public string uploadAvatar(string tempPath, string filename)
 {

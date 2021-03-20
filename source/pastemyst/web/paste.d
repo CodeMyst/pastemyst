@@ -611,7 +611,7 @@ public class PasteWeb
         import std.array : split, join;
         import std.conv : to;
         import std.datetime : Clock;
-        import pastemyst.util : generateDiff, generateUniqueEditId;
+        import pastemyst.util : generateDiff, generateUniqueEditId, generateUniquePastyId;
         import std.algorithm : canFind, find, countUntil, remove;
         import pastemyst.paste : tagsStringToArray;
 

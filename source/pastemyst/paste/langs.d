@@ -34,6 +34,7 @@ public LangStat[] pasteLangStats(const Paste paste) @safe
 
     foreach (pasty; paste.pasties)
     {
+        // if lang not in chars add it
         if (!(pasty.language in chars))
         {
             chars[pasty.language] = 0;

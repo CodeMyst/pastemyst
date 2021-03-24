@@ -16,7 +16,7 @@ public const string[] collectionNames = ["pastes", "users", "api-keys", "session
 
 private MongoDatabase mongo;
 
-/++ 
+/++
  + Connects to the databases.
  +/
 public void connect()
@@ -79,14 +79,10 @@ private void connectMongo(string host, string dbName)
  + The collection is automatically determined from the item type. It will throw an error if you try to insert an invalid type.
  +/
 public void insert(T)(T item)
-{   
+{
     MongoCollection collection = mongo[getCollectionName!T()];
 
-    Json data;
-
-    data = serializeToJson(item);
-
-    collection.insert(data);
+    collection.insert(serializeToJson(item));
 }
 
 /++
@@ -129,7 +125,7 @@ public MongoCursor!R find(R, T)(T query) @safe
     return collection.find!R(query);
 }
 
-/++ 
+/++
  +
  + Gets one item from the Mongo DB.
  +
@@ -142,7 +138,7 @@ public Nullable!R findOne(R, T)(T query) @safe
     return collection.findOne!R(query);
 }
 
-/++ 
+/++
  +
  + Gets one item from the Mongo DB with the specified id (_id).
  +
@@ -170,6 +166,9 @@ public Nullable!R tryFindOneById(R, T)(T id) @safe
     }
 }
 
+/++
+ + gets the number of unique edits of a paste
+ +/
 public ulong getNumberOfEdits(const Paste paste) @safe
 {
     import std.array : array;
@@ -186,6 +185,7 @@ public ulong getNumberOfEdits(const Paste paste) @safe
 public void remove(R, T)(T query) @safe
 {
     MongoCollection collection = mongo[getCollectionName!R()];
+
     collection.remove(query);
 }
 
@@ -195,18 +195,4 @@ public void remove(R, T)(T query) @safe
 public void removeOneById(R, T)(T id) @safe
 {
     remove!R(["_id": id]);
-}
-
-version(unittest)
-{
-    /++
-     + DANGEROUS! Drops all collections in the mongo db. Used for cleaning the db before running tests.
-     +/
-    public void dropAllCollections()
-    {
-        foreach (string c; collectionNames)
-        {
-            mongo[c].drop();
-        }
-    }
 }

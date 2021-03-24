@@ -1,5 +1,7 @@
 module pastemyst.db.avatar;
 
+private const string AVATARS_PATH = "./public/assets/avatars/";
+
 /++
  + uploads an avatar to the assets directory
  + gives it a unique id and returns the filename with the extension
@@ -17,7 +19,7 @@ public string uploadAvatar(string tempPath, string filename)
         id = randomBase36Id();
     } while(doesAvatarExist(id));
 
-    copy(tempPath, "./public/assets/avatars/" ~ id ~ extension(filename));
+    copy(tempPath, AVATARS_PATH ~ id ~ extension(filename));
     remove(tempPath);
 
     return id ~ extension(filename);
@@ -28,7 +30,7 @@ private bool doesAvatarExist(string filename)
     import std.file : dirEntries, SpanMode;
     import std.path : stripExtension;
 
-    foreach (string name; dirEntries("./public/assets/avatars/", SpanMode.shallow))
+    foreach (string name; dirEntries(AVATARS_PATH, SpanMode.shallow))
     {
         if (filename == stripExtension(name))
         {

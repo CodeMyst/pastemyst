@@ -21,7 +21,7 @@
 		"archive": "~>0.7.0",
 		"commonmark-d": "~>1.0.7",
 		"crypto": "~>0.2.13",
-		"csprng": "~>1.1.1",
+		"csprng": "~>1.1.2",
 		"diet-ng": "~>1.6.1",
 		"dshould": "~>1.1.0",
 		"dyaml": "~>0.8.0",

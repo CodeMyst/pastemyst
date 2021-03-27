@@ -36,5 +36,6 @@
 	"description": "A minimal D application.",
 	"license": "MPL-2.0",
 	"name": "pastemyst",
-	"targetPath": "bin"
+	"targetPath": "bin",
+	"libs-windows": ["lib/windows/scrypt"]
 }

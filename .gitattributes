@@ -1,2 +1,3 @@
 public/scripts/libs/**/* linguist-vendored
 public/style/libs/**/* linguist-vendored
+*.lib filter=lfs diff=lfs merge=lfs -text

@@ -48,6 +48,8 @@ pastemyst also provides a first-party cli tool to interact with pastemyst direct
 
 to build and run pastemyst you need `dmd`, `dub`, `libssl-dev` (1.1), `libscrypt` (`libscrypt-dev` in ubuntu repos), `mongodb` and [`pastemyst-autodetect`](https://github.com/codemyst/pastemyst-autodetect).
 
+on windows `libssl` should already be installed and `libscrypt` is prepackaged in `lib/windows/scrypt.lib` (you can build it yourself from https://github.com/CodeMyst/libscrypt).
+
 you also need the `diff` and `patch` tools installed to be able to edit pastes and look at the history.
 
 run the mongodb server on `127.0.0.1` and create 2 databases, `pastemyst` and `pastemyst-test` (for unit testing).

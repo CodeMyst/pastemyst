@@ -80,10 +80,11 @@ public class PasteWeb
         import pastemyst.db : tryFindOneById, createZip;
         import std.path : baseName;
 
-        // remove .zip form the id
-        string id = _id[0..($-".zip".length)];
+        // remove .zip form the id if present
+        if (_id.endsWith(".zip"))
+            _id = _id[0..($-".zip".length)];
 
-        const auto pasteRes = tryFindOneById!Paste(id);
+        const auto pasteRes = tryFindOneById!Paste(_id);
 
         enforceHTTP(!pasteRes.isNull, HTTPStatus.notFound);
 

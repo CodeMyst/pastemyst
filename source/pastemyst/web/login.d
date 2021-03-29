@@ -50,7 +50,7 @@ public class LoginWeb
     @noAuth
     public void getGithub()
     {
-        redirect("https://github.com/login/oauth/authorize?client_id=" ~ config.github.id ~ "&scope=read:user");
+        redirect(getServiceAuthLink(Service.Github));
     }
 
     /++
@@ -62,8 +62,7 @@ public class LoginWeb
     @noAuth
     public void getGitlab()
     {
-        redirect("https://gitlab.com/oauth/authorize?client_id=" ~ config.gitlab.id ~
-                 "&redirect_uri=" ~ config.hostname ~ "login/gitlab/callback&response_type=code&scope=read_user");
+        redirect(getServiceAuthLink(Service.Gitlab));
     }
 
     /++
@@ -76,10 +75,28 @@ public class LoginWeb
     @noAuth
     public void getGithubCallback(string code, HTTPServerRequest req, HTTPServerResponse res)
     {
+        handleServiceCallback(Service.Github, code, req, res);
+    }
+
+    /++
+     + GET /login/gitlab/callback
+     +
+     + gitlab oauth callback
+     +/
+    @path("/login/gitlab/callback")
+    @queryParam("code", "code")
+    @noAuth
+    public void getGitlabCallback(string code, HTTPServerRequest req, HTTPServerResponse res)
+    {
+        handleServiceCallback(Service.Gitlab, code, req, res);
+    }
+
+    private void handleServiceCallback(Service service, string code,
+        HTTPServerRequest request, HTTPServerResponse response)
+    {
         string accessToken = "";
 
-        requestHTTP("https://github.com/login/oauth/access_token?client_id=" ~ config.github.id ~
-                    "&client_secret=" ~ config.github.secret ~ "&code=" ~ code,
+        requestHTTP(getServiceTokenLink(service, code),
         (scope req)
         {
             req.method = HTTPMethod.POST;
@@ -98,39 +115,10 @@ public class LoginWeb
             }
         });
 
-        enforceHTTP(accessToken != "", HTTPStatus.internalServerError, "failed getting the access token from github");
+        enforceHTTP(accessToken != "", HTTPStatus.internalServerError,
+            "failed getting the access token from " ~ service.to!string());
 
-        loginService(Service.Github, accessToken, req, res);
-    }
-
-    /++
-     + GET /login/gitlab/callback
-     +
-     + gitlab oauth callback
-     +/
-    @path("/login/gitlab/callback")
-    @queryParam("code", "code")
-    @noAuth
-    public void getGitlabCallback(string code, HTTPServerRequest req, HTTPServerResponse res)
-    {
-        string accessToken = "";
-
-        requestHTTP("https://gitlab.com/oauth/token?client_id=" ~ config.gitlab.id ~
-                    "&client_secret=" ~ config.gitlab.secret ~ "&code=" ~ code ~ 
-                    "&grant_type=authorization_code&redirect_uri=" ~ config.hostname ~ "login/gitlab/callback",
-        (scope req)
-        {
-            req.method = HTTPMethod.POST;
-            req.headers.addField("Accept", "application/json");
-        },
-        (scope res)
-        {
-            accessToken = parseJsonString(res.bodyReader.readAllUTF8())["access_token"].get!string();
-        });
-
-        enforceHTTP(accessToken != "", HTTPStatus.internalServerError, "failed getting the access token from gitlab");
-
-        loginService(Service.Gitlab, accessToken, req, res);
+        loginService(service, accessToken, request, response);
     }
 
     /++

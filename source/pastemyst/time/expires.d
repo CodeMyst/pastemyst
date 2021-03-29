@@ -2,7 +2,7 @@ module pastemyst.time.expires;
 
 import pastemyst.data.expires;
 
-/++ 
+/++
  + converts the expires in value to a specific time when the paste expires according to the created at time.
  +/
 public long expiresInToUnixTime(long createdAt, ExpiresIn expiresIn) @safe

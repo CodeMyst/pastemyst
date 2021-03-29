@@ -30,8 +30,8 @@ public string generateDiff(string id, string before, string after) @safe
     } while (dirPath.exists);
 
     // make a temporary directory in your temporary space
-    dirPath.mkdir;
-    scope(exit) dirPath.rmdir;
+    dirPath.mkdir();
+    scope(exit) dirPath.rmdir();
 
     immutable fileBefore = buildPath(dirPath, id~"-before");
     immutable fileAfter = buildPath(dirPath, id~"-after");
@@ -71,11 +71,11 @@ public string patchDiff(string id, string current, string diff) @safe
     } while (dirPath.exists);
 
     // make a temporary directory in your temporary space
-    dirPath.mkdir;
-    scope(exit) dirPath.rmdir;
+    dirPath.mkdir();
+    scope(exit) dirPath.rmdir();
 
     immutable fileCurrent = buildPath(dirPath, id~"-current");
-    scope(exit) fileCurrent.remove;
+    scope(exit) fileCurrent.remove();
 
     write(fileCurrent, current.replace("\r\n", "\n"));
     auto pp = pipeProcess(["patch", "-R", fileCurrent], Redirect.stdin);

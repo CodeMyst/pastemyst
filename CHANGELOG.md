@@ -2,6 +2,13 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.4.1] - 2021-03-30
+
+### fixed
+
+- pastes with an id of length 3 or less were crashing the program because it tried to get the .zip part of the url
+- pastemyst now successfully builds on windows
+
 ## [2.4.0] - 2021-03-16
 
 ### added

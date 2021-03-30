@@ -4,6 +4,8 @@ all notable changes to this project will be documented in this file.
 
 ## [2.4.1] - 2021-03-30
 
+thanks to ANF-Studios for help on this hotfix.
+
 ### fixed
 
 - pastes with an id of length 3 or less were crashing the program because it tried to get the .zip part of the url

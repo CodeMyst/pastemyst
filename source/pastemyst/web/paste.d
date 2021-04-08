@@ -5,8 +5,14 @@ import vibe.web.auth;
 import pastemyst.data;
 import pastemyst.web;
 import pastemyst.auth;
+import pastemyst.db;
+import pastemyst.paste;
 
 import std.typecons : Nullable;
+import std.variant;
+import std.conv;
+import std.path;
+import std.algorithm;
 
 /++
  + web interface for getting pastes
@@ -15,6 +21,52 @@ import std.typecons : Nullable;
 public class PasteWeb
 {
     mixin Auth;
+
+    private Variant getPaste(string id)
+    {
+        // Variant has to be declared
+        Variant res;
+
+        auto paste = tryFindOneById!Paste(id);
+
+        if (!paste.isNull)
+        {
+            res = paste.get();
+            return res;
+        }
+
+        auto encrypted = tryFindOneById!EncryptedPaste(id);
+
+        if (!encrypted.isNull)
+        {
+            res = encrypted.get();
+            return res;
+        }
+
+        res = null;
+        return res;
+    }
+
+    private bool checkOwner(const BasePaste p, pastemyst.auth.Session s)
+    {
+        if (p.isPrivate) return p.ownerId == s.userId;
+        else if (!p.isPrivate) return true;
+        else return false;
+    }
+
+    private bool checkOwner(const Paste p, pastemyst.auth.Session s)
+    {
+        if (p.isPrivate) return p.ownerId == s.userId;
+        else if (!p.isPrivate) return true;
+        else return false;
+    }
+
+    private bool checkOwner(const EncryptedPaste p, pastemyst.auth.Session s)
+    {
+        if (p.isPrivate) return p.ownerId == s.userId;
+        else if (!p.isPrivate) return true;
+        else return false;
+    }
 
     /++
      + GET /:id
@@ -25,47 +77,38 @@ public class PasteWeb
     @noAuth
     public void getPaste(string _id, HTTPServerRequest req)
     {
-        import pastemyst.db : findOneById, tryFindOneById;
-        import std.conv : to;
-
         const session = getSession(req);
 
-        const auto res = tryFindOneById!Paste(_id);
+        const res = getPaste(_id);
 
-        if (res.isNull)
+        // the result is a regular paste
+        if (res.peek!Paste() !is null)
         {
-            auto enc = tryFindOneById!EncryptedPaste(_id);
+            const paste = res.get!Paste();
 
-            if (enc.isNull)
-            {
-                return;
-            }
+            if (!checkOwner(paste, session)) return;
 
-            const encPaste = enc.get();
+            const title = paste.title != "" ? paste.title : "(untitled)";
 
-            if (encPaste.isPrivate && (encPaste.ownerId != session.userId))
-            {
-                return;
-            }
+            render!("paste.dt", paste, title, session);
+        }
+        // the result is an encrypted paste
+        else if (res.peek!EncryptedPaste() !is null)
+        {
+            const encryptedPaste = res.get!EncryptedPaste();
 
-            const id = encPaste.id;
+            if (!checkOwner(encryptedPaste, session)) return;
 
+            const id = encryptedPaste.id;
             const title = "encrypted paste";
 
             render!("decrypt.dt", id, session, title);
-            return;
         }
-
-        const Paste paste = res.get();
-
-        if (paste.isPrivate && (paste.ownerId != session.userId))
+        // paste not found
+        else
         {
             return;
         }
-
-        const title = paste.title != "" ? paste.title : "(untitled)";
-
-        render!("paste.dt", paste, title, session);
     }
 
     /++
@@ -77,19 +120,18 @@ public class PasteWeb
     @noAuth
     public void getDownloadPaste(string _id, HTTPServerRequest req, HTTPServerResponse res)
     {
-        import pastemyst.db : tryFindOneById, createZip;
-        import std.path : baseName;
+        if (!_id.endsWith(".zip")) return;
 
         // remove .zip form the id
-        string id = _id[0..($-".zip".length)];
+        _id = _id[0..($-".zip".length)];
 
-        const auto pasteRes = tryFindOneById!Paste(id);
+        const pasteRes = tryFindOneById!Paste(_id);
 
-        enforceHTTP(!pasteRes.isNull, HTTPStatus.notFound);
+        if (pasteRes.isNull) return;
 
         const paste = pasteRes.get();
 
-        enforceHTTP(!paste.isPrivate, HTTPStatus.notFound);
+        if (paste.isPrivate) return;
 
         string path = createZip(paste);
 
@@ -106,9 +148,6 @@ public class PasteWeb
     public void postPaste(string title, string tags, string expiresIn, bool isPrivate, bool isPublic,
             bool isAnonymous, bool encrypt, string password, string pasties, HTTPServerRequest req)
     {
-        import pastemyst.paste : createPaste, createEncryptedPaste, tagsStringToArray;
-        import pastemyst.db : insert;
-
         string ownerId = "";
 
         const session = getSession(req);
@@ -133,16 +172,11 @@ public class PasteWeb
 
         if (isPublic)
         {
-            if (session.loggedIn)
-            {
-                paste.isPublic = isPublic;
-                encryptedPaste.isPublic = isPublic;
-            }
-            else
-            {
-                throw new HTTPStatusException(HTTPStatus.forbidden,
-                        "you cant create a profile public paste if you are not logged in.");
-            }
+            enforceHTTP(session.loggedIn, HTTPStatus.forbidden,
+                "you cant create a profile public paste if you are not logged in.");
+
+            paste.isPublic = isPublic;
+            encryptedPaste.isPublic = isPublic;
         }
 
         if (session.loggedIn)
@@ -161,8 +195,9 @@ public class PasteWeb
             {
                 enforceHTTP(!isAnonymous && !isPublic, HTTPStatus.badRequest,
                     "the paste cant be anonymous or shown on the profile if its private");
-            } 
+            }
         }
+
         if (tags != "")
         {
             enforceHTTP(session.loggedIn, HTTPStatus.forbidden, "you cant tag pastes if you are not logged in.");
@@ -191,23 +226,19 @@ public class PasteWeb
     @noAuth
     public void postDecrypt(string _id, string password, HTTPServerRequest req)
     {
-        import pastemyst.db : tryFindOneById;
         import crypto.aes : AESUtils, AES256;
         import crypto.padding : PaddingMode;
         import scrypt.password : genScryptPasswordHash, SCRYPT_OUTPUTLEN_DEFAULT, SCRYPT_R_DEFAULT, SCRYPT_P_DEFAULT;
 
         const session = getSession(req);
 
-        const auto res = tryFindOneById!EncryptedPaste(_id);
+        const res = tryFindOneById!EncryptedPaste(_id);
 
-        enforceHTTP(!res.isNull, HTTPStatus.badRequest, "paste not found or is not encrypted");
+        enforceHTTP(!res.isNull, HTTPStatus.notFound, "paste not found or is not encrypted");
 
         const encryptedPaste = res.get();
 
-        if (encryptedPaste.isPrivate && (encryptedPaste.ownerId != session.userId))
-        {
-            return;
-        }
+        if (!checkOwner(encryptedPaste, session)) return;
 
         Paste paste;
         paste.id = encryptedPaste.id;
@@ -261,10 +292,7 @@ public class PasteWeb
     @anyAuth
     public void postStar(string _id, HTTPServerRequest req)
     {
-        import pastemyst.db : findOneById, update, tryFindOneById;
-        import std.algorithm : canFind, remove, countUntil;
-
-        const auto res = findOneById!BasePaste(_id);
+        const res = findOneById!BasePaste(_id);
 
         if (res.isNull)
         {
@@ -275,15 +303,13 @@ public class PasteWeb
 
         const session = getSession(req);
 
-        if (paste.isPrivate && (paste.ownerId != session.userId))
-        {
-            return;
-        }
+        if (!checkOwner(paste, session)) return;
 
         auto user = session.getSessionUser();
 
         int incAmnt = 1;
 
+        // user already starred the paste, this will unstar
         if (user.stars.canFind(paste.id))
         {
             incAmnt = -1;
@@ -309,44 +335,32 @@ public class PasteWeb
     @noAuth
     public void postTogglePrivate(string _id, HTTPServerRequest req)
     {
-        import pastemyst.db : findOneById, update, tryFindOneById;
-
         const session = getSession(req);
 
-        if (session.loggedIn)
+        enforceHTTP(session.loggedIn, HTTPStatus.forbidden);
+
+        const res = getPaste(_id);
+
+        if (res.peek!Paste() !is null)
         {
-            const auto res = tryFindOneById!Paste(_id);
-
-            if (res.isNull)
-            {
-                const enc = tryFindOneById!EncryptedPaste(_id);
-
-                if (enc.isNull)
-                {
-                    return;
-                }
-
-                const encPaste = enc.get();
-
-                if (encPaste.ownerId != "" && encPaste.ownerId == session.userId && !encPaste.isPublic)
-                {
-                    update!EncryptedPaste(["_id": _id], ["$set": ["isPrivate": !encPaste.isPrivate]]);
-                    redirect("/" ~ _id);
-                    return;
-                }
-            }
-
-            const Paste paste = res.get();
+            const paste = res.get!Paste();
 
             if (paste.ownerId != "" && paste.ownerId == session.userId && !paste.isPublic)
             {
                 update!Paste(["_id": _id], ["$set": ["isPrivate": !paste.isPrivate]]);
                 redirect("/" ~ _id);
-                return;
             }
         }
+        else if (res.peek!EncryptedPaste() !is null)
+        {
+            const encPaste = res.get!EncryptedPaste();
 
-        throw new HTTPStatusException(HTTPStatus.forbidden);
+            if (encPaste.ownerId != "" && encPaste.ownerId == session.userId && !encPaste.isPublic)
+            {
+                update!EncryptedPaste(["_id": _id], ["$set": ["isPrivate": !encPaste.isPrivate]]);
+                redirect("/" ~ _id);
+            }
+        }
     }
 
     /++
@@ -358,44 +372,32 @@ public class PasteWeb
     @noAuth
     public void postTogglePublicOnProfile(string _id, HTTPServerRequest req)
     {
-        import pastemyst.db : findOneById, update, tryFindOneById;
-
         const session = getSession(req);
 
-        if (session.loggedIn)
+        enforceHTTP(session.loggedIn, HTTPStatus.forbidden);
+
+        const auto res = getPaste(_id);
+
+        if (res.peek!Paste() !is null)
         {
-            const auto res = tryFindOneById!Paste(_id);
-
-            if (res.isNull)
-            {
-                const enc = tryFindOneById!EncryptedPaste(_id);
-
-                if (enc.isNull)
-                {
-                    return;
-                }
-
-                const encPaste = enc.get();
-
-                if (encPaste.ownerId != "" && encPaste.ownerId == session.userId && !encPaste.isPrivate)
-                {
-                    update!Paste(["_id": _id], ["$set": ["isPublic": !encPaste.isPublic]]);
-                    redirect("/" ~ _id);
-                    return;
-                }
-            }
-
-            const Paste paste = res.get();
+            const paste = res.get!Paste();
 
             if (paste.ownerId != "" && paste.ownerId == session.userId && !paste.isPrivate)
             {
                 update!Paste(["_id": _id], ["$set": ["isPublic": !paste.isPublic]]);
                 redirect("/" ~ _id);
-                return;
             }
         }
+        else if (res.peek!EncryptedPaste() !is null)
+        {
+            const encPaste = res.get!EncryptedPaste();
 
-        throw new HTTPStatusException(HTTPStatus.forbidden);
+            if (encPaste.ownerId != "" && encPaste.ownerId == session.userId && !encPaste.isPrivate)
+            {
+                update!Paste(["_id": _id], ["$set": ["isPublic": !encPaste.isPublic]]);
+                redirect("/" ~ _id);
+            }
+        }
     }
 
     /++
@@ -407,38 +409,15 @@ public class PasteWeb
     @noAuth
     public void postPasteAnon(string _id, HTTPServerRequest req)
     {
-        import pastemyst.db : findOneById, update, tryFindOneById;
-        
         const session = getSession(req);
 
-        if (session.loggedIn)
+        enforceHTTP(session.loggedIn, HTTPStatus.forbidden);
+
+        auto res = getPaste(_id);
+
+        if (res.peek!Paste() !is null)
         {
-            auto res = tryFindOneById!Paste(_id);
-
-            if (res.isNull)
-            {
-                auto enc = tryFindOneById!EncryptedPaste(_id);
-
-                if (enc.isNull)
-                {
-                    return;
-                }
-
-                auto encPaste = enc.get();
-
-                if (encPaste.ownerId != "" && encPaste.ownerId == session.userId)
-                {
-                    encPaste.ownerId = "";
-                    encPaste.isPrivate = false;
-                    encPaste.isPublic = false;
-                    encPaste.tags.length = 0;
-                    update!EncryptedPaste(["_id": _id], encPaste);
-                    redirect("/" ~ _id);
-                    return;
-                }
-            }
-
-            auto paste = res.get();
+            auto paste = res.get!Paste();
 
             if (paste.ownerId != "" && paste.ownerId == session.userId)
             {
@@ -449,11 +428,22 @@ public class PasteWeb
                 paste.edits.length = 0;
                 update!Paste(["_id": _id], paste);
                 redirect("/" ~ _id);
-                return;
             }
         }
+        else if (res.peek!EncryptedPaste() !is null)
+        {
+            auto encPaste = res.get!EncryptedPaste();
 
-        throw new HTTPStatusException(HTTPStatus.forbidden);
+            if (encPaste.ownerId != "" && encPaste.ownerId == session.userId)
+            {
+                encPaste.ownerId = "";
+                encPaste.isPrivate = false;
+                encPaste.isPublic = false;
+                encPaste.tags.length = 0;
+                update!EncryptedPaste(["_id": _id], encPaste);
+                redirect("/" ~ _id);
+            }
+        }
     }
 
     /++
@@ -465,44 +455,32 @@ public class PasteWeb
     @noAuth
     public void postPasteDelete(string _id, HTTPServerRequest req)
     {
-        import pastemyst.db : findOneById, removeOneById, tryFindOneById;
-
         const session = getSession(req);
 
-        if (session.loggedIn)
+        enforceHTTP(session.loggedIn, HTTPStatus.forbidden);
+
+        const res = getPaste(_id);
+
+        if (res.peek!Paste() !is null)
         {
-            const auto res = tryFindOneById!Paste(_id);
-
-            if (res.isNull)
-            {
-                const enc = tryFindOneById!EncryptedPaste(_id);
-
-                if (enc.isNull)
-                {
-                    return;
-                }
-
-                const encPaste = enc.get();
-
-                if (encPaste.ownerId != "" && encPaste.ownerId == session.userId)
-                {
-                    removeOneById!EncryptedPaste(_id);
-                    redirect("/user/profile");
-                    return;
-                }
-            }
-
-            const Paste paste = res.get();
+            const paste = res.get!Paste();
 
             if (paste.ownerId != "" && paste.ownerId == session.userId)
             {
                 removeOneById!Paste(_id);
                 redirect("/user/profile");
-                return;
             }
         }
+        else if (res.peek!EncryptedPaste() !is null)
+        {
+            const encPaste = res.get!EncryptedPaste();
 
-        throw new HTTPStatusException(HTTPStatus.forbidden);
+            if (encPaste.ownerId != "" && encPaste.ownerId == session.userId)
+            {
+                removeOneById!EncryptedPaste(_id);
+                redirect("/user/profile");
+            }
+        }
     }
 
     @path("/raw/:pasteId/:pastyId")
@@ -521,10 +499,6 @@ public class PasteWeb
     @noAuth
     public void getRawPasty(string _pasteId, string _pastyId, long _editId)
     {
-        import pastemyst.db : findOneById, tryFindOneById;
-        import pastemyst.data : Paste;
-        import std.algorithm : canFind, find;
-
         const auto res = tryFindOneById!Paste(_pasteId);
 
         if (res.isNull())
@@ -542,16 +516,7 @@ public class PasteWeb
             return;
         }
 
-        Paste paste;
-
-        if (_editId == -1)
-        {
-            paste = cast(Paste) res.get();
-        }
-        else
-        {
-            paste = pasteRevision(_pasteId, _editId);
-        }
+        auto paste = pasteRevision(_pasteId, _editId);
 
         if (!paste.pasties.canFind!((p) => p.id == _pastyId))
         {
@@ -577,8 +542,6 @@ public class PasteWeb
     @anyAuth
     public void getPasteEdit(string _id, HTTPServerRequest req)
     {
-        import pastemyst.db : findOneById, tryFindOneById;
-
         const session = getSession(req);
         auto res = tryFindOneById!Paste(_id);
 
@@ -607,13 +570,9 @@ public class PasteWeb
     @anyAuth
     public void postPasteEdit(string _id, HTTPServerRequest req)
     {
-        import pastemyst.db : findOneById, update, tryFindOneById;
         import std.array : split, join;
-        import std.conv : to;
         import std.datetime : Clock;
         import pastemyst.util : generateDiff, generateUniqueEditId, generateUniquePastyId;
-        import std.algorithm : canFind, find, countUntil, remove;
-        import pastemyst.paste : tagsStringToArray;
 
         auto res = tryFindOneById!Paste(_id);
 
@@ -799,8 +758,6 @@ public class PasteWeb
     @noAuth
     public void getPasteHistory(string _id, HTTPServerRequest req)
     {
-        import pastemyst.db : findOneById, tryFindOneById;
-
         auto res = tryFindOneById!Paste(_id);
 
         if (res.isNull())
@@ -809,17 +766,14 @@ public class PasteWeb
         }
 
         Paste paste = res.get();
-        // TODO: this line is here because otherwise d-scanner
+        // this line is here because otherwise d-scanner
         // complains that paste isn't changed anywhere and it can be
         // declared const
         paste.title = paste.title;
 
         const session = getSession(req);
 
-        if (paste.isPrivate && paste.ownerId != session.userId)
-        {
-            return;
-        }
+        if (!checkOwner(paste, session)) return;
 
         render!("history.dt", session, paste);
     }
@@ -856,8 +810,6 @@ public class PasteWeb
     @noAuth
     public void getPasteEmbed(string _id)
     {
-        import pastemyst.db : tryFindOneById;
-
         auto res = tryFindOneById!Paste(_id);
 
         if (res.isNull || res.get().isPrivate)
@@ -873,9 +825,6 @@ public class PasteWeb
 
     private Paste pasteRevision(string _pasteId, ulong _editId)
     {
-        import pastemyst.db : findOneById, tryFindOneById;
-        import std.algorithm : reverse, countUntil, remove;
-        import std.stdio : writeln;
         import pastemyst.util : patchDiff;
 
         auto res = tryFindOneById!Paste(_pasteId);
@@ -886,6 +835,12 @@ public class PasteWeb
         }
 
         Paste paste = res.get();
+
+        // -1 is the latest paste
+        if (_editId == -1)
+        {
+            return paste;
+        }
 
         // if there are no edits, and the user is looking for the first edit
         // redirect to the current version

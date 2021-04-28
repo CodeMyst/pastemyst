@@ -1,0 +1,12 @@
+{
+	"authors": [
+		"codemyst"
+	],
+	"copyright": "Copyright © 2021, codemyst",
+	"dependencies": {
+		"vibe-d": "~>0.9.3"
+	},
+	"description": "A minimal D application.",
+	"license": "MIT",
+	"name": "pastemyst"
+}

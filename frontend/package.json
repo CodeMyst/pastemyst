@@ -25,6 +25,8 @@
     "typescript": "^4.0.0"
   },
   "dependencies": {
-    "sirv-cli": "^1.0.0"
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "sirv-cli": "^1.0.0",
+    "svelte-fa": "^2.2.0"
   }
 }

@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+    --color-cod-gray: #141414;
+    --color-cod-gray-light: #1c1c1c;
+    --color-mineshaft: #222222;
+    --color-boulder: #777777;
+    --color-white: #ffffff;
+
+    --color-main: #ee720d;
+    --color-accent: #1eaedb;
+    --color-red: #ff4c4c;
+    --color-green: #2ec933;
+
+    --fontsize-small: 0.9em;
+    --fontsize-normal: 1em;
+    --fontsize-medium: 1.2em;
+
+    --border-radius: 0.2em;
+
+    --fontstack: "Ubuntu Mono", monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-size: var(--fontsize-normal);
+    font-family: var(--fontstack);
+    background-color: var(--color-cod-gray);
+    color: var(--color-white);
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    max-width: 90%;
+    width: 1280px;
+    margin: 0 auto;
+}
+
+h1 {
+    margin: 0;
+}
+
+a {
+    color: var(--color-main);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--color-accent);
+}

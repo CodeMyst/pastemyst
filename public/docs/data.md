@@ -6,7 +6,7 @@ this endpoint is for getting various simple data.
 
 <p class="method">GET</p> <code>/data/language?name=<span class="var">{language}</span></code>
 
-get the language information for a specific language, returns a `404` status if the language couldn't be found.
+get the language information for a specific language, returns a `404` status if the language couldn't be found. if you recieve a 404 status but the language does exist, verify that the uri is encoded, for example links `c#` needs to be `c%23`
 
 | field | type         | description                             | optional? |
 |-------|--------------|-----------------------------------------|-----------|
@@ -34,7 +34,7 @@ get the language information for a specific language, returns a `404` status if 
 
 <p class="method">GET</p> <code>/data/languageExt?extension=<span class="var">{extension}</span></code>
 
-get the language information for a specific language found by the extension, returns a `404` status if the language couldn't be found.
+get the language information for a specific language found by the extension, returns a `404` status if the language couldn't be found. if you recieve a 404 status but the language does exist, verify that the uri is encoded, for example links `c#` needs to be `c%23`
 
 returns the same object as getting the language by name.
 

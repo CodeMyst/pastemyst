@@ -1,6 +1,7 @@
 module pastemyst.rest.user;
 
 import vibe.d;
+import pastemyst.data;
 
 /++
  + api interface for the `/api/user` endpoint
@@ -8,6 +9,15 @@ import vibe.d;
 @path("/api/v2/user")
 public interface IAPIUser
 {
+    /++
+     + GET /user/self
+     +
+     + gets the current user identified by the token
+     +/
+    @path("self")
+    @headerParam("auth", "Authorization")
+    Json getSelf(string auth) @safe;
+
     /++
      + GET /:username/exists
      +
@@ -37,7 +47,6 @@ public class APIUser : IAPIUser
      +/
     public Json getExists(string _username) @safe
     {
-        import pastemyst.data : User;
         import pastemyst.db : findOne;
 
         const res = findOne!User(["$text": ["$search": "\""~_username~"\""]]);
@@ -57,7 +66,6 @@ public class APIUser : IAPIUser
      +/
     Json getUser(string _username) @safe
     {
-        import pastemyst.data : User;
         import pastemyst.db : findOne;
 
         const res = findOne!User(["$text": ["$search": _username]]);
@@ -81,5 +89,27 @@ public class APIUser : IAPIUser
 
         return serializeToJson(MinUser(user.id, user.username,
                     user.avatarUrl, user.publicProfile, user.defaultLang, user.supporterLength, user.contributor));
+    }
+
+    /++
+     + GET /user/self
+     +
+     + gets the current user identified by the token
+     +/
+    Json getSelf(string auth) @safe
+    {
+        import pastemyst.db : findOne, findOneById;
+
+        auto key = findOne!ApiKey(["key": auth]);
+
+        enforceHTTP(!key.isNull, HTTPStatus.badRequest, "invalid token.");
+
+        string userId = key.get().id;
+
+        auto user = findOneById!User(userId);
+
+        enforceHTTP(!user.isNull, HTTPStatus.notFound, "user not found.");
+
+        return serializeToJson!User(user.get());
     }
 }

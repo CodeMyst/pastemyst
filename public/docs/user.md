@@ -64,3 +64,23 @@ example JSON:
     "username": "CodeMyst"
 }
 ```
+
+### get the current user's pastes
+
+<p class="method">GET</p> <code>/user/self/pastes</code>
+
+[comment]: <> (`GET /user/self/pastes`)
+
+returns a list of current user's pastes. the current user is identified by a token. you have to provide the `Authorization` header.
+
+example JSON:
+
+```json
+[
+    "xexhemlu",
+    "sr7zm4hp",
+    "jhiro31p",
+    "7lp5gze9",
+    "cw09wh9y"
+]
+```

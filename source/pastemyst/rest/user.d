@@ -19,6 +19,15 @@ public interface IAPIUser
     Json getSelf(string auth) @safe;
 
     /++
+     + GET /user/self/pastes
+     +
+     + gets all of user's pastes
+     +/
+    @path("self/pastes")
+    @headerParam("auth", "Authorization")
+    Json getSelfPastes(string auth) @safe;
+
+    /++
      + GET /:username/exists
      +
      + checks if a user exists with username
@@ -98,6 +107,39 @@ public class APIUser : IAPIUser
      +/
     Json getSelf(string auth) @safe
     {
+        return serializeToJson!User(getUserFromToken(auth));
+    }
+
+
+    /++
+     + GET /user/self/pastes
+     +
+     + gets all of user's pastes
+     +/
+    Json getSelfPastes(string auth) @safe
+    {
+        import pastemyst.db : find;
+        import std.algorithm : map, sort;
+        import std.array : array;
+
+        auto user = getUserFromToken(auth);
+
+        auto pastesCursor = find!Paste(["ownerId": user.id]);
+
+        Paste[] pastes;
+
+        foreach (doc; pastesCursor)
+        {
+            pastes ~= doc;
+        }
+
+        sort!((a, b) => a.createdAt > b.createdAt)(pastes);
+
+        return serializeToJson(pastes.map!(p => p.id).array);
+    }
+
+    private User getUserFromToken(string auth) @safe
+    {
         import pastemyst.db : findOne, findOneById;
 
         auto key = findOne!ApiKey(["key": auth]);
@@ -110,6 +152,6 @@ public class APIUser : IAPIUser
 
         enforceHTTP(!user.isNull, HTTPStatus.notFound, "user not found.");
 
-        return serializeToJson!User(user.get());
+        return user.get();
     }
 }

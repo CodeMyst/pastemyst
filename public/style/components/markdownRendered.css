@@ -74,6 +74,7 @@
     font-size: var(--font-size-small);
     width: 100%;
     overflow-x: auto;
+    display: block;
 }
 
 .markdown-rendered tr th

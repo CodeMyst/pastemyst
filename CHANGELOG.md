@@ -2,6 +2,21 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.5.0] - 2021-05-17
+
+### added
+
+- added getting the current user through the api
+- added getting all of current user's pastes through the api
+- specified that the param should be encoded for the api/data/language endpoint (thanks to ANF-Studios)
+- added pastemystgo to the docs (thanks to WaifuShork)
+
+### fixed
+
+- unbreakable words will now wrap in markdown
+- tables now properly scroll on overflow
+- fixed the link to pastemyst.v in the docs
+
 ## [2.4.1] - 2021-03-30
 
 thanks to ANF-Studios for help on this hotfix.

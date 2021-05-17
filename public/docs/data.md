@@ -6,7 +6,7 @@ this endpoint is for getting various simple data.
 
 <p class="method">GET</p> <code>/data/language?name=<span class="var">{language}</span></code>
 
-get the language information for a specific language, returns a `404` status if the language couldn't be found.
+get the language information for a specific language, returns a `404` status if the language couldn't be found. note that the language name must be [percent encoded](https://en.wikipedia.org/wiki/Percent-encoding).
 
 | field | type         | description                             | optional? |
 |-------|--------------|-----------------------------------------|-----------|

@@ -1,110 +1,114 @@
 <script lang="ts">
 
-import Fa from "svelte-fa";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+    import Fa from "svelte-fa";
+    import { faBars } from "@fortawesome/free-solid-svg-icons";
 
-let showNavbar: boolean = false;
+    let showNavbar: boolean = false;
 
 </script>
 
 <style>
 
-.logo {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 1.25em;
-}
-
-img {
-    width: 50px;
-    margin-right: 1em;
-}
-
-.version {
-    align-self: flex-end;
-    margin-left: 0.5em;
-    color: var(--color-boulder);
-}
-
-.beta {
-    color: var(--color-accent);
-}
-
-.nav {
-    display: none;
-    flex-direction: column;
-}
-
-.nav.active {
-    display: flex;
-}
-
-.nav nav {
-    display: flex;
-    flex-direction: column;
-    margin-top: 1em;
-    margin-left: 1em;
-}
-
-nav a {
-    margin-top: 0.25em;
-    font-size: var(--fontsize-medium);
-}
-
-.navbar-toggle {
-    margin-left: auto;
-    font-size: 1.5em;
-    cursor: pointer;
-}
-
-.donate {
-    font-weight: bold;
-    color: var(--color-accent);
-}
-
-@media screen and (min-width: 1100px) {
     #header {
-        display: flex;
-        flex-direction: row;
+        margin-top: 1em;
     }
 
-    .navbar-toggle {
-        display: none;
+    .logo {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    img {
+        width: 50px;
+        margin-right: 1em;
+    }
+
+    .version {
+        align-self: flex-end;
+        margin-left: 0.5em;
+        color: var(--color-boulder);
+    }
+
+    .beta {
+        color: var(--color-accent);
     }
 
     .nav {
+        display: none;
+        flex-direction: column;
+    }
+
+    .nav.active {
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
     }
 
     .nav nav {
-        flex-direction: row;
-        align-items: center;
-        margin-top: 0;
+        display: flex;
+        flex-direction: column;
+        margin-top: 1em;
+        margin-left: 1em;
     }
 
     nav a {
-        margin-top: 0;
+        margin-top: 0.25em;
+        font-size: var(--fontsize-medium);
     }
 
-    nav .delimiter {
-        margin-top: 3px;
+    .navbar-toggle {
+        margin-left: auto;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: var(--color-boulder);
     }
 
-    nav .delimiter::before {
-        content: "-";
-        margin-left: 0.5em;
-        margin-right: 0.5em;
+    .donate {
+        font-weight: bold;
+        color: var(--color-accent);
     }
-}
+
+    @media screen and (min-width: 1100px) {
+        #header {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .navbar-toggle {
+            display: none;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .nav nav {
+            flex-direction: row;
+            align-items: center;
+            margin-top: 0;
+        }
+
+        nav a {
+            margin-top: 0;
+        }
+
+        nav .delimiter {
+            margin-top: 3px;
+        }
+
+        nav .delimiter::before {
+            content: "-";
+            margin-left: 0.5em;
+            margin-right: 0.5em;
+        }
+    }
 
 </style>
 
-<div id="header">
+<div id="header" class={$$props.class}>
     <div class="logo">
         <img src="/images/pastemyst.svg" alt="pastemyst logo">
         <h1><a href="/">pastemyst</a></h1>

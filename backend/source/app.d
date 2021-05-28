@@ -1,6 +1,6 @@
 import vibe.d;
 
-void main()
+public void main()
 {
     auto router = new URLRouter();
 

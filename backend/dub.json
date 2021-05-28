@@ -4,6 +4,7 @@
 	],
 	"copyright": "Copyright © 2021, codemyst",
 	"dependencies": {
+		"graphqld": "~>3.9.3",
 		"vibe-d": "~>0.9.3"
 	},
 	"description": "A minimal D application.",

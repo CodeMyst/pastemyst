@@ -8,13 +8,30 @@
 
     let editorElement: HTMLElement;
 
+    let editorView: EditorView;
+
+    let line: number = 0;
+    let pos: number = 0;
+
+    let indentAmount: number = 4;
+    let indentType: string = "spaces";
+
     onMount(() => {
-        new EditorView({
+        let updateListener = EditorView.updateListener.of((update) => {
+            let cmLine = update.state.doc.lineAt(update.state.selection.main.head);
+            line = cmLine.number;
+            pos = update.state.selection.main.head - cmLine.from;
+        });
+
+        editorView = new EditorView({
             state: EditorState.create({
-                extensions: [basicSetup, myst, javascript()]
+                extensions: [basicSetup, myst, javascript(), updateListener]
             }),
             parent: editorElement
         });
+
+        line = editorView.state.selection.main.head;
+        pos = editorView.state.selection.main.from;
     });
 
 </script>
@@ -26,11 +43,11 @@
     }
 
     :global(.cm-editor) {
-        border-radius: var(--border-radius);
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
     }
 
     :global(.cm-gutters) {
-        border-radius: var(--border-radius) 0 0 var(--border-radius);
+        border-radius: var(--border-radius) 0 0 0;
     }
 
     :global(.cm-editor:focus),
@@ -51,6 +68,38 @@
         height: 500px;
     }
 
+    .toolbar {
+        background-color: var(--color-mineshaft);
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0.25em 1em;
+    }
+
+    .toolbar .right {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .toolbar .right .pos {
+        margin-right: 2em;
+    }
+
 </style>
 
 <div class="editor" bind:this={editorElement}></div>
+
+<div class="toolbar">
+    <div class="left">
+        lang: javascript
+    </div>
+    <div class="right">
+        <div class="pos">
+            ln {line} pos {pos}
+        </div>
+        <div class="indent">
+            {indentAmount} {indentType}
+        </div>
+    </div>
+</div>

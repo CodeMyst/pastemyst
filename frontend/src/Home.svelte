@@ -2,6 +2,7 @@
 
     import Header from "./components/Header.svelte";
     import TextInput from "./components/TextInput.svelte";
+    import Editor from "./components/Editor.svelte";
 
 </script>
 
@@ -17,4 +18,6 @@
     <Header class="header" />
 
     <TextInput placeholder="title..." />
+
+    <Editor />
 </main>

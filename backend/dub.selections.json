@@ -3,14 +3,21 @@
 	"versions": {
 		"botan": "1.12.19",
 		"botan-math": "1.0.3",
+		"darser": "1.0.0",
 		"diet-ng": "1.7.5",
+		"dyaml": "0.8.3",
 		"eventcore": "0.9.13",
+		"exceptionhandling": "1.0.0",
+		"fixedsizearray": "1.3.0",
+		"graphqld": "3.9.4",
 		"libasync": "0.8.6",
 		"memutils": "1.0.4",
 		"mir-linux-kernel": "1.0.1",
+		"nullablestore": "2.1.0",
 		"openssl": "1.1.6+1.0.1g",
 		"stdx-allocator": "2.77.5",
 		"taggedalgebraic": "0.11.20",
+		"tinyendian": "0.2.0",
 		"vibe-core": "1.16.0",
 		"vibe-d": "0.9.3"
 	}

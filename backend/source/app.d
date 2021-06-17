@@ -2,7 +2,7 @@ import vibe.d;
 
 import pastemyst.request.router;
 
-import pastemyst.api.data;
+import pastemyst.api.v3.data;
 
 public void main()
 {
@@ -10,7 +10,7 @@ public void main()
     serverSettings.bindAddresses = ["127.0.0.1"];
     serverSettings.port = 5005;
 
-    registerRoutes(TestApi());
+    registerRoutes(DataApi());
 
     listenHTTP(serverSettings, &handleRequests);
     runApplication();
@@ -18,7 +18,7 @@ public void main()
 
 private void handleRequests(HTTPServerRequest req, HTTPServerResponse res)
 {
-    auto route = matchRoute(req.requestPath.toString());
+    auto route = matchApiRoute(req.requestPath.toString());
 
     if (route.isNull)
     {

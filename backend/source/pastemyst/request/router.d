@@ -2,6 +2,7 @@ module pastemyst.request.router;
 
 import std.traits;
 import std.typecons;
+import std.regex;
 import vibe.d;
 
 public struct Route
@@ -9,13 +10,19 @@ public struct Route
     string value;
 }
 
-public struct RouteHandler
+public struct Api
+{
+    string value;
+}
+
+public struct ApiRouteHandler
 {
     Route route;
+    Api api;
     Json delegate() handler;
 }
 
-private RouteHandler[] routeHandlers;
+private ApiRouteHandler[] apiRouteHandlers;
 
 public void registerRoutes(T)(T instance)
 {
@@ -26,27 +33,29 @@ public void registerRoutes(T)(T instance)
         alias a = __traits(getMember, instance, m);
         if (isFunction!(a))
         {
-            auto udas = getUDAs!(a, Route);
+            auto routeUdas = getUDAs!(a, Route);
+            auto apiUdas = getUDAs!(a, Api);
 
-            if (udas.length > 0)
+            if (routeUdas.length > 0 && apiUdas.length > 0)
             {
-                auto route = udas[0];
+                auto route = routeUdas[0];
+                auto api = apiUdas[0];
 
-                routeHandlers ~= RouteHandler(route, toDelegate(&a));
+                apiRouteHandlers ~= ApiRouteHandler(route, api, toDelegate(&a));
             }
         }
     }
 }
 
-public Nullable!RouteHandler matchRoute(string route)
+public Nullable!ApiRouteHandler matchApiRoute(string route)
 {
-    foreach (r; routeHandlers)
+    foreach (r; apiRouteHandlers)
     {
-        if (r.route.value == route)
+        if (route == ("/api/" ~ r.api.value ~ r.route.value))
         {
             return r.nullable;
         }
     }
 
-    return Nullable!RouteHandler.init;
+    return Nullable!ApiRouteHandler.init;
 }

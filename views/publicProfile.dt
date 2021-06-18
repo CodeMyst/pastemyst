@@ -36,7 +36,7 @@ block body
                 - LangStat[] langStats;
                 - Paste properPaste;
                 - if (!paste.encrypted)
-                    - properPaste = findOneById!Paste(paste.id);
+                    - properPaste = findOneById!Paste(paste.id).get();
                     - langStats = pasteLangStats(properPaste);
                 a.paste(href="/" ~ paste.id, class=langStats.length > 0 ? "" : "border-bottom")
                     .title

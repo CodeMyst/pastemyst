@@ -22,7 +22,7 @@
 		"commonmark-d": "~>1.0.7",
 		"crypto": "~>0.2.13",
 		"csprng": "~>1.1.2",
-		"diet-ng": "~>1.6.1",
+		"diet-ng": "~>1.7.5",
 		"dshould": "~>1.1.0",
 		"dyaml": "~>0.8.0",
 		"imagefmt": "~>2.1.0",

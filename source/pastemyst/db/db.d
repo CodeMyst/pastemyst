@@ -1,8 +1,10 @@
 module pastemyst.db.db;
 
-import vibe.d;
+import vibe.d : MongoDatabase, connectMongoDB, MongoCollection, MongoCursor, count, Json, serializeToJson;
+
 import std.typecons;
 import pastemyst.data;
+import pastemyst.auth;
 
 version(unittest)
 {
@@ -16,7 +18,7 @@ public const string[] collectionNames = ["pastes", "users", "api-keys", "session
 
 private MongoDatabase mongo;
 
-/++ 
+/++
  + Connects to the databases.
  +/
 public void connect()
@@ -52,7 +54,7 @@ private string getCollectionName(T)() @safe
     {
         return "api-keys";
     }
-    else static if (is(T == pastemyst.auth.session.Session))
+    else static if (is(T == Session))
     {
         return "sessions";
     }
@@ -79,7 +81,7 @@ private void connectMongo(string host, string dbName)
  + The collection is automatically determined from the item type. It will throw an error if you try to insert an invalid type.
  +/
 public void insert(T)(T item)
-{   
+{
     MongoCollection collection = mongo[getCollectionName!T()];
 
     Json data;
@@ -129,7 +131,7 @@ public MongoCursor!R find(R, T)(T query) @safe
     return collection.find!R(query);
 }
 
-/++ 
+/++
  +
  + Gets one item from the Mongo DB.
  +
@@ -142,7 +144,7 @@ public Nullable!R findOne(R, T)(T query) @safe
     return collection.findOne!R(query);
 }
 
-/++ 
+/++
  +
  + Gets one item from the Mongo DB with the specified id (_id).
  +

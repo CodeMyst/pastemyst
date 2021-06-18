@@ -3,7 +3,7 @@
     background-color: var(--color-mystge);
     display: flex;
     flex-direction: row;
-    margin-top: -25px;
+    margin-top: 20px;
     border-radius: var(--border-radius);
     padding: 0.35rem 1rem;
     padding-top: 0.5rem;

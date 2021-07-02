@@ -30,6 +30,7 @@ here are some api libraries that are developed by other people. they are not dir
 
 | link                                                                | language   | author          | supports v2 |
 |---------------------------------------------------------------------|------------|-----------------|-------------|
+| [pastemyst-cpp](https://github.com/billyeatcookies/pastemyst-cpp)   | c++        | billyeatcookies | yes         |
 | [MystPaste.NET](https://github.com/shift-eleven/MystPaste.NET)      | c#         | shift-eleven    | yes         |
 | [pastemystgo](https://github.com/WaifuShork/pastemystgo)            | go         | WaifuShork      | yes         |
 | [pastemyst.v](https://github.com/billyateallcookies/pastemyst.v)    | v          | billyeatcookies | yes         |

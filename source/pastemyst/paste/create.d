@@ -169,11 +169,24 @@ public EncryptedPaste createEncryptedPaste(string title, string expiresIn, Pasty
     return paste;
 }
 
+/++
+ + tries to autodetect a language, will try and get the language from the pasty title first
+ +/
 private string autodetectLanguage(string pasteId, Pasty pasty) @safe
 {
     import std.file : write, remove, exists, mkdir;
+    import std.path : extension;
     import std.process : execute;
     import std.string : strip;
+    import pastemyst.data : languages;
+
+    // check if the language can be gotten from the extension
+    auto ext = extension(pasty.title);
+    if (ext !is null)
+    {
+        auto extLang = getLanguageName(ext[1..$]);
+        if (extLang !is null) return extLang;
+    }
 
     if (!exists("tmp/"))
     {

@@ -2,6 +2,16 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.6.0] - 2021-07-15
+
+### added
+
+- new pasty editor button is now clearer (thanks to TheDutchMagikarp)
+- added MystPaste.NET to docs (thanks to shift-eleven)
+- added pastemyst-cpp do docs (thanks to billyeatcookies)
+- added pastemyst.java to docs (thanks to Yeffy)
+- when autodetect is selected, it will try and get the language from the pasty's title if it has an extension
+
 ## [2.5.0] - 2021-05-17
 
 ### added

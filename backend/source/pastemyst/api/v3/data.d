@@ -4,21 +4,22 @@ import vibe.d;
 
 import pastemyst.request;
 
+/**
+ * Endpoint for providing various simple data.
+ */
 public struct DataApi
 {
 public:
 
-    @Api("v2")
-    @Route("/data/test")
-    Json getFoo2()
-    {
-        return Json(["hello": Json("world2")]);
-    }
-
+    /**
+     * Returns the list of all supported languages.
+     */
     @Api("v3")
-    @Route("/data/test")
-    Json getFoo3()
+    @Route("/data/langs")
+    Json getLangs()
     {
-        return Json(["hello": Json("world3")]);
+        import pastemyst.data.files : langs;
+
+        return serializeToJson(langs);
     }
 }

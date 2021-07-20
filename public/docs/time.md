@@ -1,6 +1,6 @@
 ## time
 
-endpoint for useful time oprations.
+endpoint for useful time operations.
 
 ### expires in to a unix timestamp
 

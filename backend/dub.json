@@ -6,8 +6,12 @@
 	"dependencies": {
 		"dyaml": "~>0.8.3",
 		"graphqld": "~>3.9.3",
+		"silly": "~>1.1.1",
 		"vibe-d": "~>0.9.3",
-		"yamlserialized": { "path": "packages/yamlserialized" }
+		"yamlserialized": {
+			"path": "packages/yamlserialized",
+			"version": ">=0.0.0"
+		}
 	},
 	"description": "A minimal D application.",
 	"license": "MIT",

@@ -156,3 +156,75 @@ public RouteHandler[] matchApiRoutes(HTTPServerRequest req)
 
     return res;
 }
+
+/**
+ * Handles all vibe.d requests.
+ */
+public void handleRequest(HTTPServerRequest req, HTTPServerResponse res)
+{
+    auto routes = matchApiRoutes(req);
+
+    foreach (route; routes)
+    {
+        auto ret = route.handler();
+
+        if (ret.skipped) continue;
+
+        res.writeBody(ret.json.toPrettyString(), "application/json");
+
+        return;
+    }
+
+    throw new HTTPStatusException(HTTPStatus.notFound);
+}
+
+@("Router")
+unittest
+{
+    struct TestApi
+    {
+    public:
+
+        @Api("v1")
+        @Route("/test")
+        RouteResponse getTest()
+        {
+            RouteResponse res;
+            res.json = Json("test");
+            return res;
+        }
+
+        @Api("v2")
+        @Route("/test")
+        RouteResponse postTest()
+        {
+            RouteResponse res;
+            res.json = Json("");
+            return res;
+        }
+    }
+
+    registerApiRoutes(TestApi());
+
+    assert(apiRoutes["/test"][0].ver == "v1");
+
+    auto req = createTestHTTPServerRequest(URL("http://localhost:4000/api/v1/test"));
+
+    auto routes = matchApiRoutes(req);
+
+    assert(routes.length == 1);
+    assert(routes[0].pattern == "/test");
+    assert(routes[0].ver == "v1");
+    assert(routes[0].method == HTTPMethod.GET);
+    assert(routes[0].handler().json == Json("test"));
+
+    req = createTestHTTPServerRequest(URL("http://localhost:4000/api/v2/test"), HTTPMethod.POST);
+
+    routes = matchApiRoutes(req);
+
+    assert(routes.length == 1);
+    assert(routes[0].pattern == "/test");
+    assert(routes[0].ver == "v2");
+    assert(routes[0].method == HTTPMethod.POST);
+    assert(routes[0].handler().json == Json(""));
+}

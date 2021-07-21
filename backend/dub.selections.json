@@ -16,6 +16,7 @@
 		"mir-linux-kernel": "1.0.1",
 		"nullablestore": "2.1.0",
 		"openssl": "1.1.6+1.0.1g",
+		"silly": "1.1.1",
 		"stdx-allocator": "2.77.5",
 		"taggedalgebraic": "0.11.22",
 		"tinyendian": "0.2.0",

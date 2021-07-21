@@ -12,24 +12,6 @@ public void main()
 
     registerApiRoutes(DataApi());
 
-    listenHTTP(serverSettings, &handleRequests);
+    listenHTTP(serverSettings, &handleRequest);
     runApplication();
-}
-
-private void handleRequests(HTTPServerRequest req, HTTPServerResponse res)
-{
-     auto routes = matchApiRoutes(req);
-
-    foreach (route; routes)
-    {
-        auto ret = route.handler();
-
-        if (ret.skipped) continue;
-
-        res.writeBody(ret.json.toPrettyString(), "application/json");
-
-        break;
-    }
-
-    throw new HTTPStatusException(HTTPStatus.notFound);
 }

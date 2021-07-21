@@ -10,7 +10,7 @@ public void main()
     serverSettings.bindAddresses = ["127.0.0.1"];
     serverSettings.port = 5005;
 
-    registerRoutes(DataApi());
+    registerApiRoutes(DataApi());
 
     listenHTTP(serverSettings, &handleRequests);
     runApplication();
@@ -18,14 +18,18 @@ public void main()
 
 private void handleRequests(HTTPServerRequest req, HTTPServerResponse res)
 {
-    auto route = matchApiRoute(req.requestPath.toString());
+     auto routes = matchApiRoutes(req);
 
-    if (route.isNull)
+    foreach (route; routes)
     {
-        throw new HTTPStatusException(HTTPStatus.notFound);
+        auto ret = route.handler();
+
+        if (ret.skipped) continue;
+
+        res.writeBody(ret.json.toPrettyString(), "application/json");
+
+        break;
     }
 
-    auto ret = route.get().handler();
-
-    res.writeBody(ret.toPrettyString(), "application/json");
+    throw new HTTPStatusException(HTTPStatus.notFound);
 }

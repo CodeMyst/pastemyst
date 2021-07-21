@@ -16,10 +16,12 @@ public:
      */
     @Api("v3")
     @Route("/data/langs")
-    Json getLangs()
+    RouteResponse getLangs()
     {
         import pastemyst.data.files : langs;
 
-        return serializeToJson(langs);
+        RouteResponse res;
+        res.json = serializeToJson(langs);
+        return res;
     }
 }

@@ -5,6 +5,9 @@
     import { EditorState, EditorView, basicSetup } from "@codemirror/basic-setup";
     import { javascript } from "@codemirror/lang-javascript";
     import { myst } from "../cm-themes/myst";
+    import { Select } from "select.myst";
+
+    let langsPromise = loadLangs();
 
     let editorElement: HTMLElement;
 
@@ -33,6 +36,29 @@
         line = editorView.state.selection.main.head;
         pos = editorView.state.selection.main.from;
     });
+
+    /**
+     * Loading all the languages from the API.
+     */
+    async function loadLangs(): Promise<[String,String][]> {
+        // TODO: turn the host into a var
+        let res = await fetch("http://localhost:5001/api/v3/data/langs",
+            {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+        let json: JSON = await res.json();
+
+        let langs: [String, String][] = new Array<[String, String]>();
+
+        for (let lang in json) {
+            langs.push([lang, lang]);
+        }
+
+        return langs;
+    }
 
 </script>
 
@@ -92,7 +118,13 @@
 
 <div class="toolbar">
     <div class="left">
-        lang: javascript
+        {#await langsPromise}
+            <p>loading...</p>
+        {:then langs}
+            <Select id="language"
+                    label="lang:"
+                    options={langs} />
+        {/await}
     </div>
     <div class="right">
         <div class="pos">

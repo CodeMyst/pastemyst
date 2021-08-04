@@ -18,7 +18,17 @@ namespace PasteMyst
         public void ConfigureServices(IServiceCollection services)
         {
             LoadLangs();
-            
+
+            // TODO: this is only temporary, later cors should be defined per endpoints
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("*")
+                           .AllowAnyHeader();
+                });
+            });
+
             services.AddControllers();
             services.AddApiVersioning();
             services.AddSingleton(_langs);
@@ -32,6 +42,8 @@ namespace PasteMyst
             }
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {

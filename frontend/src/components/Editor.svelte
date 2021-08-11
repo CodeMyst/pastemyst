@@ -1,11 +1,15 @@
 <script lang="ts">
-
     import { onMount } from "svelte";
 
-    import { EditorState, EditorView, basicSetup } from "@codemirror/basic-setup";
+    import {
+        EditorState,
+        EditorView,
+        basicSetup,
+    } from "@codemirror/basic-setup";
+
     import { javascript } from "@codemirror/lang-javascript";
     import { myst } from "../cm-themes/myst";
-    import { Select } from "select.myst";
+    import BigSelect from "./BigSelect.svelte";
 
     let langsPromise = loadLangs();
 
@@ -21,16 +25,18 @@
 
     onMount(() => {
         let updateListener = EditorView.updateListener.of((update) => {
-            let cmLine = update.state.doc.lineAt(update.state.selection.main.head);
+            let cmLine = update.state.doc.lineAt(
+                update.state.selection.main.head
+            );
             line = cmLine.number;
             pos = update.state.selection.main.head - cmLine.from;
         });
 
         editorView = new EditorView({
             state: EditorState.create({
-                extensions: [basicSetup, myst, javascript(), updateListener]
+                extensions: [basicSetup, myst, javascript(), updateListener],
             }),
-            parent: editorElement
+            parent: editorElement,
         });
 
         line = editorView.state.selection.main.head;
@@ -40,14 +46,13 @@
     /**
      * Loading all the languages from the API.
      */
-    async function loadLangs(): Promise<[String,String][]> {
+    async function loadLangs(): Promise<[String, String][]> {
         // TODO: turn the host into a var
-        let res = await fetch("http://localhost:5001/api/v3/data/langs",
-            {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+        let res = await fetch("http://localhost:5001/api/v3/data/langs", {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
 
         let json: JSON = await res.json();
 
@@ -59,11 +64,30 @@
 
         return langs;
     }
-
 </script>
 
-<style>
+<div class="editor" bind:this={editorElement} />
 
+<div class="toolbar">
+    <div class="left">
+        {#await langsPromise}
+            <p>loading...</p>
+        {:then langs}
+            <BigSelect id="language" label="lang:" options={langs} />
+        {/await}
+    </div>
+    <div class="right">
+        <div class="pos">
+            ln {line} pos {pos}
+        </div>
+        <div class="indent">
+            {indentAmount}
+            {indentType}
+        </div>
+    </div>
+</div>
+
+<style>
     .editor {
         margin-top: 2em;
     }
@@ -100,7 +124,8 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        padding: 0.25em 1em;
+        padding: 0em 1em;
+        align-items: center;
     }
 
     .toolbar .right {
@@ -111,27 +136,4 @@
     .toolbar .right .pos {
         margin-right: 2em;
     }
-
 </style>
-
-<div class="editor" bind:this={editorElement}></div>
-
-<div class="toolbar">
-    <div class="left">
-        {#await langsPromise}
-            <p>loading...</p>
-        {:then langs}
-            <Select id="language"
-                    label="lang:"
-                    options={langs} />
-        {/await}
-    </div>
-    <div class="right">
-        <div class="pos">
-            ln {line} pos {pos}
-        </div>
-        <div class="indent">
-            {indentAmount} {indentType}
-        </div>
-    </div>
-</div>

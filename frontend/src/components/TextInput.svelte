@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Select } from "select.myst";
+    import Select from "./Select.svelte";
 
     const expiresValues: [String, String][] = [
         ["never", "never"],
@@ -10,14 +10,26 @@
         ["2d", "2 days"],
         ["1w", "1 week"],
         ["1m", "1 month"],
-        ["1y", "1 year"]
+        ["1y", "1 year"],
     ];
 
     let selectedExpires: [String, String] = expiresValues[0];
 </script>
 
-<style>
+<div class="text-input">
+    <input type="text" placeholder={$$props.placeholder} autocomplete="false" />
 
+    <div class="select">
+        <Select
+            id="expires-in"
+            label="expires in:"
+            options={expiresValues}
+            bind:selectedValue={selectedExpires}
+        />
+    </div>
+</div>
+
+<style>
     .text-input {
         display: flex;
         flex-direction: column;
@@ -81,22 +93,4 @@
             width: 100px;
         }
     }
-
 </style>
-
-<div class="text-input">
-
-    <input type="text"
-           placeholder={$$props.placeholder}
-           autocomplete=false>
-
-    <div class="select">
-
-        <Select id="expires-in"
-                label="expires in:"
-                options={expiresValues}
-                bind:selectedValue={selectedExpires} />
-
-    </div>
-
-</div>

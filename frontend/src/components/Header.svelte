@@ -1,14 +1,45 @@
 <script lang="ts">
-
     import Fa from "svelte-fa";
     import { faBars } from "@fortawesome/free-solid-svg-icons";
 
     let showNavbar: boolean = false;
-
 </script>
 
-<style>
+<div id="header" class={$$props.class}>
+    <div class="logo">
+        <img src="/images/pastemyst.svg" alt="pastemyst logo" />
+        <h1><a href="/">pastemyst</a></h1>
+        <span class="version">v3.0.0<span class="beta">b</span></span>
 
+        <span class="navbar-toggle" on:click={() => (showNavbar = !showNavbar)}>
+            <Fa icon={faBars} />
+        </span>
+    </div>
+
+    <div class={`nav ${showNavbar ? "active" : ""}`}>
+        <nav>
+            <a href="/api-docs">api</a>
+            <span class="delimiter" />
+            <a href="/pastry">cli</a>
+            <span class="delimiter" />
+            <a href="/changelog">changelog</a>
+            <span class="delimiter" />
+            <a href="/contact">contact</a>
+            <span class="delimiter" />
+            <a href="/legal">legal</a>
+            <span class="delimiter" />
+            <a href="/donate" class="donate">donate</a>
+        </nav>
+
+        <nav class="login">
+            <a href="/login">login</a>
+            <span class="delimiter" />
+            <a href="/register">register</a>
+        </nav>
+    </div>
+</div>
+
+<style>
     #header {
         margin-top: 1em;
     }
@@ -105,39 +136,4 @@
             margin-right: 0.5em;
         }
     }
-
 </style>
-
-<div id="header" class={$$props.class}>
-    <div class="logo">
-        <img src="/images/pastemyst.svg" alt="pastemyst logo">
-        <h1><a href="/">pastemyst</a></h1>
-        <span class="version">v3.0.0<span class="beta">b</span></span>
-
-        <span class="navbar-toggle" on:click={() => showNavbar = !showNavbar}>
-            <Fa icon={faBars} />
-        </span>
-    </div>
-
-    <div class={`nav ${showNavbar ? "active" : ""}`}>
-        <nav>
-            <a href="/api-docs">api</a>
-            <span class="delimiter"></span>
-            <a href="/pastry">cli</a>
-            <span class="delimiter"></span>
-            <a href="/changelog">changelog</a>
-            <span class="delimiter"></span>
-            <a href="/contact">contact</a>
-            <span class="delimiter"></span>
-            <a href="/legal">legal</a>
-            <span class="delimiter"></span>
-            <a href="/donate" class="donate">donate</a>
-        </nav>
-
-        <nav class="login">
-            <a href="/login">login</a>
-            <span class="delimiter"></span>
-            <a href="/register">register</a>
-        </nav>
-    </div>
-</div>

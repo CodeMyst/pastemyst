@@ -28,7 +28,6 @@
     "@codemirror/basic-setup": "^0.18.2",
     "@codemirror/lang-javascript": "^0.18.0",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
-    "select.myst": "^1.2.0",
     "sirv-cli": "^1.0.0",
     "svelte-fa": "^2.2.0"
   }

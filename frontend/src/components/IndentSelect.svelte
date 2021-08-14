@@ -1,0 +1,51 @@
+<script lang="ts">
+    import BigSelect from "./BigSelect.svelte";
+
+    let indentSelect: BigSelect;
+
+    const indentUnits: [String, String][] = [
+        ["tabs", "tabs"],
+        ["spaces", "spaces"],
+    ];
+
+    const indentAmounts: [String, String][] = [
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"],
+        ["8", "8"],
+    ];
+
+    export let selectedIndentUnit = indentUnits[1];
+    export let selectedIndentAmount = indentAmounts[3];
+
+    async function onMethodSelected() {
+        await indentSelect.setOpen(true);
+    }
+</script>
+
+<style>
+</style>
+
+<BigSelect
+    id="indent-method"
+    label=""
+    placeholder="select an indent unit"
+    options={indentUnits}
+    displayAppend=": {selectedIndentAmount[1].toString()}"
+    bind:selectedValue={selectedIndentUnit}
+    on:selected={onMethodSelected}
+/>
+
+<BigSelect
+    id="indent-amount"
+    bind:this={indentSelect}
+    label=""
+    placeholder="select an indent amount"
+    options={indentAmounts}
+    hiddenLabel={true}
+    bind:selectedValue={selectedIndentAmount}
+/>

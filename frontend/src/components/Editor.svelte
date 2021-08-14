@@ -1,15 +1,13 @@
 <script lang="ts">
     import { onMount } from "svelte";
-
-    import {
-        EditorState,
-        EditorView,
-        basicSetup,
-    } from "@codemirror/basic-setup";
-
-    import { javascript } from "@codemirror/lang-javascript";
+    import { EditorState, basicSetup } from "@codemirror/basic-setup";
+    import { EditorView, keymap } from "@codemirror/view";
+    import { Compartment } from "@codemirror/state";
+    import { indentWithTab } from "@codemirror/commands";
+    import { indentUnit } from "@codemirror/language";
     import { myst } from "../cm-themes/myst";
     import BigSelect from "./BigSelect.svelte";
+    import IndentSelect from "./IndentSelect.svelte";
 
     let langsPromise = loadLangs();
 
@@ -20,8 +18,17 @@
     let line: number = 0;
     let pos: number = 0;
 
-    let indentAmount: number = 4;
-    let indentType: string = "spaces";
+    let indentation = new Compartment();
+    let tabSize = new Compartment();
+
+    let selectedIndentUnit: [String, String];
+    let selectedIndentAmount: [String, String];
+
+    $: {
+        if (editorView !== undefined) {
+            setIndentation(selectedIndentUnit[1] as Unit, Number(selectedIndentAmount[1]));
+        }
+    }
 
     onMount(() => {
         let updateListener = EditorView.updateListener.of((update) => {
@@ -34,7 +41,14 @@
 
         editorView = new EditorView({
             state: EditorState.create({
-                extensions: [basicSetup, myst, javascript(), updateListener],
+                extensions: [
+                    basicSetup,
+                    keymap.of([indentWithTab]),
+                    myst,
+                    updateListener,
+                    indentation.of(indentUnit.of("\t")),
+                    tabSize.of(EditorState.tabSize.of(4)),
+                ],
             }),
             parent: editorElement,
         });
@@ -42,6 +56,28 @@
         line = editorView.state.selection.main.head;
         pos = editorView.state.selection.main.from;
     });
+
+    type Unit = "spaces" | "tabs";
+
+    /**
+     * Sets the indentation units and amount for the editor.
+     */
+    function setIndentation(unit: Unit, amount: number) {
+        if (unit == "tabs") {
+            editorView.dispatch({
+                effects: [
+                    indentation.reconfigure(indentUnit.of("\t")),
+                    tabSize.reconfigure(EditorState.tabSize.of(amount)),
+                ],
+            });
+        } else if (unit == "spaces") {
+            editorView.dispatch({
+                effects: indentation.reconfigure(
+                    indentUnit.of(" ".repeat(amount))
+                ),
+            });
+        }
+    }
 
     /**
      * Loading all the languages from the API.
@@ -73,7 +109,12 @@
         {#await langsPromise}
             <p>loading...</p>
         {:then langs}
-            <BigSelect id="language" label="lang:" options={langs} />
+            <BigSelect
+                id="language"
+                label="lang:"
+                placeholder="select a language..."
+                options={langs}
+            />
         {/await}
     </div>
     <div class="right">
@@ -81,8 +122,10 @@
             ln {line} pos {pos}
         </div>
         <div class="indent">
-            {indentAmount}
-            {indentType}
+            <IndentSelect
+                bind:selectedIndentUnit={selectedIndentUnit}
+                bind:selectedIndentAmount={selectedIndentAmount}
+            />
         </div>
     </div>
 </div>
@@ -134,6 +177,12 @@
     }
 
     .toolbar .right .pos {
-        margin-right: 2em;
+        margin-right: 1em;
+        align-self: center;
+    }
+
+    .toolbar .indent {
+        display: flex;
+        align-items: center;
     }
 </style>

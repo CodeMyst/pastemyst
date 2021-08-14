@@ -1,11 +1,15 @@
 <!-- TODO: this is just a copy paste from Select.svele with different styling and a different scrollSelectedIntoView function -->
-
 <script lang="ts">
-    import { tick } from "svelte";
+    import { tick, createEventDispatcher } from "svelte";
 
     export let id: string;
     export let label: String;
     export let options: [String, String][];
+    export let placeholder: string = "filter...";
+    export let displayAppend: string = "";
+    export let hiddenLabel: boolean = false;
+
+    const dispatch = createEventDispatcher();
 
     // provided options filtered by a search string
     let filteredOptions: [String, String][] = options;
@@ -55,14 +59,13 @@
         await setOpen(true);
     };
 
-    const setOpen = async (o: boolean) => {
+    export const setOpen = async (o: boolean) => {
         open = o;
 
         // after opening, wait for the DOM to update
         // and reset the search
         if (open) {
             await tick();
-
             searchElement.focus();
             search = "";
             filteredOptions = options;
@@ -86,6 +89,7 @@
             case "Enter":
                 {
                     open = false;
+                    dispatch("selected");
                 }
                 break;
 
@@ -145,6 +149,7 @@
     const optionMouseDownHandler = (v: [String, String]) => {
         mouseDown = true;
         selectedValue = v;
+        dispatch("selected");
     };
 
     const optionMouseUpHandler = () => {
@@ -169,7 +174,7 @@
     };
 </script>
 
-<div {id} class="container">
+<div {id} class="container" class:hidden={hiddenLabel}>
     <label id="{id}-label" for="{id}-select" class="select-label">
         {label}
     </label>
@@ -196,14 +201,14 @@
             on:mousedown={valueClickHandler}
             on:focus={valueFocusHandler}
         >
-            {selectedValue[1]}
+            {selectedValue[1]}{displayAppend}
         </span>
 
         <div class="dropdown" role="listbox" bind:this={dropdownElement}>
             <input
                 type="text"
                 autocomplete="off"
-                placeholder="select a language..."
+                {placeholder}
                 bind:this={searchElement}
                 bind:value={search}
                 on:input={filterOptions}
@@ -255,6 +260,15 @@
     .container {
         display: flex;
         justify-content: space-between;
+    }
+
+    .container.hidden .select {
+        min-width: 0;
+        padding: 0;
+    }
+
+    .container.hidden .select .value {
+        display: none;
     }
 
     label {

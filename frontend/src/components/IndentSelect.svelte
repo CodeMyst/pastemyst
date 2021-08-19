@@ -1,5 +1,9 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
+
     import BigSelect from "./BigSelect.svelte";
+
+    const dispatch = createEventDispatcher();
 
     let indentSelect: BigSelect;
 
@@ -25,10 +29,11 @@
     async function onMethodSelected() {
         await indentSelect.setOpen(true);
     }
-</script>
 
-<style>
-</style>
+    function onAmountSelected() {
+        dispatch("selected");
+    }
+</script>
 
 <BigSelect
     id="indent-method"
@@ -48,4 +53,8 @@
     options={indentAmounts}
     hiddenLabel={true}
     bind:selectedValue={selectedIndentAmount}
+    on:selected={onAmountSelected}
 />
+
+<style>
+</style>

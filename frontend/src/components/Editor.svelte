@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onMount, tick } from "svelte";
     import { EditorState, basicSetup } from "@codemirror/basic-setup";
     import { EditorView, keymap } from "@codemirror/view";
     import { Compartment } from "@codemirror/state";
@@ -8,6 +8,8 @@
     import { myst } from "../cm-themes/myst";
     import BigSelect from "./BigSelect.svelte";
     import IndentSelect from "./IndentSelect.svelte";
+
+    export let hidden: boolean = false;
 
     let langsPromise = loadLangs();
 
@@ -24,13 +26,7 @@
     let selectedIndentUnit: [String, String];
     let selectedIndentAmount: [String, String];
 
-    $: {
-        if (editorView !== undefined) {
-            setIndentation(selectedIndentUnit[1] as Unit, Number(selectedIndentAmount[1]));
-        }
-    }
-
-    onMount(() => {
+    onMount(async () => {
         let updateListener = EditorView.updateListener.of((update) => {
             let cmLine = update.state.doc.lineAt(
                 update.state.selection.main.head
@@ -38,6 +34,8 @@
             line = cmLine.number;
             pos = update.state.selection.main.head - cmLine.from;
         });
+
+        await tick();
 
         editorView = new EditorView({
             state: EditorState.create({
@@ -55,14 +53,23 @@
 
         line = editorView.state.selection.main.head;
         pos = editorView.state.selection.main.from;
+
+        onSetIndentation();
     });
+
+    export function focus() {
+        editorView.focus();
+    }
 
     type Unit = "spaces" | "tabs";
 
     /**
      * Sets the indentation units and amount for the editor.
      */
-    function setIndentation(unit: Unit, amount: number) {
+    function onSetIndentation() {
+        const unit = selectedIndentUnit[1] as Unit;
+        const amount = Number(selectedIndentAmount[1]);
+
         if (unit == "tabs") {
             editorView.dispatch({
                 effects: [
@@ -102,45 +109,40 @@
     }
 </script>
 
-<div class="editor" bind:this={editorElement} />
+<div class:hidden={hidden}>
+    <div class="editor" bind:this={editorElement} />
 
-<div class="toolbar">
-    <div class="left">
-        {#await langsPromise}
-            <p>loading...</p>
-        {:then langs}
-            <BigSelect
-                id="language"
-                label="lang:"
-                placeholder="select a language..."
-                options={langs}
-            />
-        {/await}
-    </div>
-    <div class="right">
-        <div class="pos">
-            ln {line} pos {pos}
+    <div class="toolbar">
+        <div class="left">
+            {#await langsPromise}
+                <p>loading...</p>
+            {:then langs}
+                <BigSelect
+                    id="language"
+                    label="lang:"
+                    placeholder="select a language..."
+                    options={langs}
+                />
+            {/await}
         </div>
-        <div class="indent">
-            <IndentSelect
-                bind:selectedIndentUnit={selectedIndentUnit}
-                bind:selectedIndentAmount={selectedIndentAmount}
-            />
+        <div class="right">
+            <div class="pos">
+                ln {line} pos {pos}
+            </div>
+            <div class="indent">
+                <IndentSelect
+                    bind:selectedIndentUnit
+                    bind:selectedIndentAmount
+                    on:selected={onSetIndentation}
+                />
+            </div>
         </div>
     </div>
 </div>
 
 <style>
-    .editor {
-        margin-top: 2em;
-    }
-
-    :global(.cm-editor) {
-        border-radius: var(--border-radius) var(--border-radius) 0 0;
-    }
-
-    :global(.cm-gutters) {
-        border-radius: var(--border-radius) 0 0 0;
+    .hidden {
+        display: none;
     }
 
     :global(.cm-editor:focus),

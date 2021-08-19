@@ -5,7 +5,7 @@
     --color-cod-gray-light: #1c1c1c;
     --color-mineshaft: #222222;
     --color-boulder: #777777;
-    --color-white: #ffffff;
+    --color-white: #cccccc;
 
     --color-main: #ee720d;
     --color-accent: #1eaedb;
@@ -51,4 +51,8 @@ a {
 
 a:hover {
     color: var(--color-accent);
+}
+
+ion-icon {
+    display: block;
 }

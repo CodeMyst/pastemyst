@@ -99,6 +99,7 @@ import { onMount, tick } from "svelte";
         flex-direction: row;
         border-radius: var(--border-radius) var(--border-radius) 0 0;
         align-items: center;
+        flex-wrap: wrap;
     }
 
     .tabs .tab {

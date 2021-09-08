@@ -17,7 +17,7 @@
         margin-bottom: 2em;
     }
 
-    :global(.tabbed-editor) {
+    :global(.tabs) {
         margin-top: 2em;
     }
 </style>

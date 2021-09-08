@@ -38,6 +38,9 @@
         cursor: pointer;
         border-bottom: 1px solid var(--color-cod-gray-light);
         user-select: none;
+        white-space: nowrap;
+        justify-content: space-between;
+        flex-grow: 0.25;
     }
 
     .tab.active {

@@ -101,6 +101,7 @@
         flex-direction: row;
         border-radius: var(--border-radius) var(--border-radius) 0 0;
         align-items: center;
+        justify-content: space-between;
     }
 
     .tabs .tablist {
@@ -112,6 +113,8 @@
     .tabs .add-icon {
         margin-left: 0.5em;
         margin-right: 0.5em;
+        margin-top: 0.35em;
+        align-self: flex-start;
         cursor: pointer;
         padding: 0.25em;
         border-radius: var(--border-radius);

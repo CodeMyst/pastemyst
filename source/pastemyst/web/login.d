@@ -176,8 +176,7 @@ public class LoginWeb
         session.userId = user.get().id;
         startSession(req, res, session);
 
-        // FIXME: issue#55
-        redirect("/#reload");
+        redirect("/");
     }
 
     /++

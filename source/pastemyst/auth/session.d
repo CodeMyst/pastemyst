@@ -43,7 +43,7 @@ public struct Session
         {
             return User.init;
         }
-        
+
         return res.get();
     }
 }
@@ -81,7 +81,7 @@ public void startSession(ref HTTPServerRequest req, ref HTTPServerResponse res, 
     auto cookie = new Cookie();
     cookie.expires = expiresAt;
     cookie.httpOnly = true;
-    cookie.sameSite(Cookie.SameSite.strict);
+    cookie.sameSite(Cookie.SameSite.lax);
     cookie.value = id;
     cookie.path = "/";
 

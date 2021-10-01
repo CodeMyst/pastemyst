@@ -34,13 +34,13 @@ block body
                 include components/pastyEditor
 
         include components/addEditorButton
-        
+
         .paste-options-bottom
             .paste-buttons
                 a#create-paste create paste
 
                 #encrypt-options.hidden
-                    input(type="text", id="encrypt-password", placeholder="password", style="text-security:disc;-webkit-text-security:disc;", aria-label="password")
+                    input(type="password", id="encrypt-password", placeholder="password", aria-label="password")
                     p make sure to use a strong password!
                     p it's impossible to get your paste back if you forget the password! unless you have a lot of time (and can keep the universe alive while you do it)
 

@@ -41,6 +41,11 @@ public struct Config
      + mongodb connection string
      +/
     public string mongoConnection;
+
+    /++
+     + html code that will get added to every page in the head tag
+     +/
+    public string headHTML = "";
 }
 
 /++
@@ -156,5 +161,10 @@ static this()
         enforce(cfg.containsKey("mongo_connection"), format!"%s: missing mongo_connection"(configName));
 
         _config.mongoConnection = cfg["mongo_connection"].as!string();
+
+        if (cfg.containsKey("head_html"))
+        {
+            _config.headHTML = cfg["head_html"].as!string();
+        }
     }
 }

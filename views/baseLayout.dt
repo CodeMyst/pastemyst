@@ -40,6 +40,10 @@ html(lang="en", class="myst")
 
         script(type="module", src="/static/scripts/main.js?v=#{getVersion()}")
 
+        - import pastemyst.data : config;
+
+        |!= config.headHTML
+
         block head
 
     body

@@ -2,6 +2,19 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.7.0] - 2021-10-02
+
+### added
+
+- showing some stats about a paste in the meta section (line count, word count, byte size)
+- ability to add html to the head tag of all pages through the config file (useful for adding analytics scripts)
+
+### fixed
+
+- typo in time api endpoint documentation (thanks to billyeatcookies)
+- fixed a login bug, no need to refresh the page an additional time through js after logging in (cookie was set to strict)
+- password field for encrypting/decrypting a paste wasn't a proper password field
+
 ## [2.6.0] - 2021-07-15
 
 ### added

@@ -1,14 +1,40 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount } from "svelte";
+    import { createEventDispatcher, tick } from "svelte";
 
     export let id: String;
     export let active: boolean = false;
-    export let title: String = "untitled";
+    export let title: string = "untitled";
+    export let renameState: boolean = false;
 
     let dispatch = createEventDispatcher();
 
+    let inputField: HTMLInputElement;
+
     const onClick = (event: MouseEvent) => {
         dispatch("click", { event: event });
+    };
+
+    const onDoubleClick = async () => {
+        renameState = true;
+
+        await tick();
+
+        inputField.focus();
+        onInput();
+    };
+
+    const onInputBlur = () => {
+        renameState = false;
+    };
+
+    // when renaming a tab, set its width based on the content
+    const onInput = () => {
+        inputField.style.width = inputField.value.length + "ch";
+    };
+
+    // if enter or escape is pressed, exit from rename state
+    const onInputKeyPress = (event: KeyboardEvent) => {
+        if (event.key === "Enter" || event.key === "Escape") onInputBlur();
     };
 
     const onClose = () => {
@@ -19,10 +45,24 @@
 <div
     class="tab"
     class:active
+    class:rename-state={renameState}
     on:click={onClick}
+    on:dblclick={onDoubleClick}
     data-id={id}
 >
-    <span class="title">{title}</span>
+    {#if renameState}
+        <input
+            type="text"
+            bind:value={title}
+            bind:this={inputField}
+            on:blur={onInputBlur}
+            on:input={onInput}
+            on:keyup={onInputKeyPress}
+        />
+    {:else}
+        <span class="title">{title}</span>
+    {/if}
+
     <span class="close-icon" on:click={onClose}>
         <ion-icon name="close" />
     </span>
@@ -47,6 +87,10 @@
         border-color: var(--color-main);
     }
 
+    .tab.rename-state {
+        border-color: var(--color-accent);
+    }
+
     .tab:hover {
         background-color: var(--color-mineshaft);
     }
@@ -68,5 +112,16 @@
 
     .tab .close-icon:hover {
         background-color: var(--color-cod-gray);
+    }
+
+    .tab input {
+        background-color: transparent;
+        border-radius: var(--border-radius);
+        color: var(--color-accent);
+        border: none;
+        outline: none;
+        width: auto;
+        padding: 0;
+        margin-right: 0.75em;
     }
 </style>

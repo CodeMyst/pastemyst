@@ -6,10 +6,11 @@
 
     class STab {
         id: String;
-        title: String;
+        title: string;
+        renameState: boolean;
         editor: Editor;
 
-        constructor(id: String, title: String, editor: Editor) {
+        constructor(id: String, title: string, editor: Editor) {
             this.id = id;
             this.title = title;
             this.editor = editor;
@@ -23,7 +24,7 @@
 
     let tablist: HTMLElement;
 
-    // todo: this can be removed once this is complete
+    // used to give every tab its own unique id number
     let tabCounter: number = 0;
 
     onMount(async () => {
@@ -47,9 +48,10 @@
     const onTabAdd = async () => {
         let newTab = new STab(
             tabCounter.toString(),
-            `tab ${tabs.length}`,
+            "untitled",
             new Editor({ target: editorTarget })
         );
+        // add tab to array
         tabs = [...tabs, newTab];
         await setActiveTab(tabs[tabs.length - 1].id);
 
@@ -61,8 +63,10 @@
         // can't close if its the last tab
         if (tabs.length === 1) return;
 
+        // destroy the editor in the DOM
         tabs[index].editor.$destroy();
 
+        // remove the tab from the tabs array
         tabs = [...tabs.slice(0, index), ...tabs.slice(index + 1, tabs.length)];
 
         // set the previous tab as active
@@ -77,8 +81,12 @@
     // when a tab is clicked
     const onTabClick = async (index: number, event: CustomEvent<any>) => {
         let target = event.detail.event.target as HTMLElement;
+
         // ignore if close icon is pressed
         if (target.nodeName === "ION-ICON") return;
+
+        // ignore if double click, so the tab rename field doesn't unfocus
+        if (event.detail.event.detail > 1) return;
 
         await setActiveTab(tabs[index].id);
     };
@@ -89,12 +97,18 @@
 
         updateTabEditorVisibility();
 
+        // requires 2 DOM ticks for some reason because of the editor visibility
         await tick();
         await tick();
 
-        tabs.find((t) => t.id === activeTabId).editor.focus();
+        let tab = tabs.find((t) => t.id === activeTabId);
+
+        if (!tab.renameState) {
+            tab.editor.focus();
+        }
     };
 
+    // goes through all the editors in the DOM and sets the hidden property based if the tab is active or not
     const updateTabEditorVisibility = () => {
         for (let i = 0; i < tabs.length; i++) {
             tabs[i].editor.$set({ hidden: !(tabs[i].id === activeTabId) });
@@ -108,8 +122,9 @@
             <Tab
                 on:close={() => onTabClose(i)}
                 on:click={(event) => onTabClick(i, event)}
+                bind:renameState={tab.renameState}
+                bind:title={tab.title}
                 id={tab.id}
-                title={tab.title}
                 active={activeTabId === tab.id}
             />
         {/each}

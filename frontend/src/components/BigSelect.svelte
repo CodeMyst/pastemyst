@@ -149,12 +149,12 @@
     const optionMouseDownHandler = (v: [String, String]) => {
         mouseDown = true;
         selectedValue = v;
-        dispatch("selected");
     };
 
     const optionMouseUpHandler = () => {
         mouseDown = false;
         open = false;
+        dispatch("selected");
     };
 
     // finds the index of a tuple in a tuple array

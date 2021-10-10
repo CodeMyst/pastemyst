@@ -1,15 +1,25 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onMount, tick } from "svelte";
     import { EditorState, basicSetup } from "@codemirror/basic-setup";
     import { EditorView, keymap } from "@codemirror/view";
     import { Compartment } from "@codemirror/state";
     import { indentWithTab } from "@codemirror/commands";
-    import { indentUnit } from "@codemirror/language";
+    import {
+        indentUnit,
+        LanguageDescription,
+        LanguageSupport
+    } from "@codemirror/language";
     import { myst } from "../cm-themes/myst";
     import BigSelect from "./BigSelect.svelte";
     import IndentSelect from "./IndentSelect.svelte";
+    import { getLanguage, getLanguageNames } from "../langs";
+    import { languages as codemirrorLangs } from "@codemirror/language-data";
 
-    let langsPromise = loadLangs();
+    type Unit = "spaces" | "tabs";
+
+    export let hidden: boolean = false;
+
+    let langsPromise = getLanguageNames();
 
     let editorElement: HTMLElement;
 
@@ -20,24 +30,23 @@
 
     let indentation = new Compartment();
     let tabSize = new Compartment();
+    let language = new Compartment();
 
     let selectedIndentUnit: [String, String];
     let selectedIndentAmount: [String, String];
 
-    $: {
-        if (editorView !== undefined) {
-            setIndentation(selectedIndentUnit[1] as Unit, Number(selectedIndentAmount[1]));
-        }
-    }
+    let selectedLanguage: [String, String];
 
-    onMount(() => {
-        let updateListener = EditorView.updateListener.of((update) => {
+    onMount(async () => {
+        let updateListener = EditorView.updateListener.of(update => {
             let cmLine = update.state.doc.lineAt(
                 update.state.selection.main.head
             );
             line = cmLine.number;
             pos = update.state.selection.main.head - cmLine.from;
         });
+
+        await tick();
 
         editorView = new EditorView({
             state: EditorState.create({
@@ -48,117 +57,127 @@
                     updateListener,
                     indentation.of(indentUnit.of("\t")),
                     tabSize.of(EditorState.tabSize.of(4)),
-                ],
+                    language.of([])
+                ]
             }),
-            parent: editorElement,
+            parent: editorElement
         });
 
         line = editorView.state.selection.main.head;
         pos = editorView.state.selection.main.from;
+
+        onSetIndentation();
     });
 
-    type Unit = "spaces" | "tabs";
+    export const focus = () => { editorView.focus() };
 
     /**
      * Sets the indentation units and amount for the editor.
      */
-    function setIndentation(unit: Unit, amount: number) {
+    const onSetIndentation = () => {
+        const unit = selectedIndentUnit[1] as Unit;
+        const amount = Number(selectedIndentAmount[1]);
+
         if (unit == "tabs") {
             editorView.dispatch({
                 effects: [
                     indentation.reconfigure(indentUnit.of("\t")),
-                    tabSize.reconfigure(EditorState.tabSize.of(amount)),
-                ],
+                    tabSize.reconfigure(EditorState.tabSize.of(amount))
+                ]
             });
         } else if (unit == "spaces") {
             editorView.dispatch({
                 effects: indentation.reconfigure(
                     indentUnit.of(" ".repeat(amount))
-                ),
+                )
             });
         }
-    }
+    };
 
     /**
-     * Loading all the languages from the API.
-     */
-    async function loadLangs(): Promise<[String, String][]> {
-        // TODO: turn the host into a var
-        let res = await fetch("http://localhost:5001/api/v3/data/langs", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+     * Sets the proper language of the editor.
+    */
+    const onLangSelected = async () => {
+        const fullLang = await getLanguage(selectedLanguage[1] as string);
+        const langName = selectedLanguage[1].toLowerCase();
 
-        let json: JSON = await res.json();
+        let fullLangAliases: string[] = new Array();
 
-        let langs: [String, String][] = new Array<[String, String]>();
+        if (fullLang.aliases !== null)
+            fullLangAliases = fullLang.aliases.map(a => a.toLowerCase());
+        // add the codemirrorMode to the aliases
+        if (fullLang.codemirrorMode !== null)
+            fullLangAliases.push(fullLang.codemirrorMode.toLowerCase());
 
-        for (let lang in json) {
-            langs.push([lang, lang]);
+        let langDescription: LanguageDescription = undefined;
+
+        for (let cmLang of codemirrorLangs) {
+            // check if the name matches
+            if (langName === cmLang.name.toLowerCase()) {
+                langDescription = cmLang;
+                break;
+            }
+            // check if one of the lang aliases matches the codemirror name
+            else if (fullLangAliases.includes(cmLang.name.toLowerCase())) {
+                langDescription = cmLang;
+                break;
+            }
+            // check if one of the lang aliases matches one of the codemirror aliases
+            else if (
+                fullLangAliases.filter(a => cmLang.alias.includes(a)).length > 0
+            ) {
+                langDescription = cmLang;
+                break;
+            }
         }
 
-        return langs;
-    }
+        let langSupport: LanguageSupport = undefined;
+
+        if (langDescription !== undefined)
+            langSupport = await langDescription.load();
+
+        editorView.dispatch({
+            effects: language.reconfigure(langSupport)
+        });
+    };
 </script>
 
-<div class="editor" bind:this={editorElement} />
+<div class:hidden>
+    <div class="editor" bind:this={editorElement} />
 
-<div class="toolbar">
-    <div class="left">
-        {#await langsPromise}
-            <p>loading...</p>
-        {:then langs}
-            <BigSelect
-                id="language"
-                label="lang:"
-                placeholder="select a language..."
-                options={langs}
-            />
-        {/await}
-    </div>
-    <div class="right">
-        <div class="pos">
-            ln {line} pos {pos}
+    <div class="toolbar">
+        <div class="left">
+            {#await langsPromise}
+                <p>loading...</p>
+            {:then langs}
+                <BigSelect
+                    id="language"
+                    label="lang:"
+                    placeholder="select a language..."
+                    options={langs}
+                    on:selected={onLangSelected}
+                    bind:selectedValue={selectedLanguage}
+                />
+            {/await}
         </div>
-        <div class="indent">
-            <IndentSelect
-                bind:selectedIndentUnit={selectedIndentUnit}
-                bind:selectedIndentAmount={selectedIndentAmount}
-            />
+        <div class="right">
+            <div class="pos">
+                ln {line} pos {pos}
+            </div>
+            <div class="indent">
+                <IndentSelect
+                    bind:selectedIndentUnit
+                    bind:selectedIndentAmount
+                    on:selected={onSetIndentation}
+                />
+            </div>
         </div>
     </div>
 </div>
 
 <style>
-    .editor {
-        margin-top: 2em;
-    }
-
-    :global(.cm-editor) {
-        border-radius: var(--border-radius) var(--border-radius) 0 0;
-    }
-
-    :global(.cm-gutters) {
-        border-radius: var(--border-radius) 0 0 0;
-    }
-
-    :global(.cm-editor:focus),
-    :global(.cm-focused) {
-        outline: none !important;
-    }
-
-    :global(.cm-content),
-    :global(.cm-gutter) {
-        height: 500px;
-    }
-
-    :global(.cm-scroller) {
-        overflow: auto;
-    }
-
-    :global(.cm-wrap) {
-        height: 500px;
+    .hidden {
+        display: none;
     }
 
     .toolbar {
@@ -184,5 +203,9 @@
     .toolbar .indent {
         display: flex;
         align-items: center;
+    }
+
+    .editor {
+        height: 50vh;
     }
 </style>

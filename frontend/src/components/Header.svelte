@@ -1,7 +1,4 @@
 <script lang="ts">
-    import Fa from "svelte-fa";
-    import { faBars } from "@fortawesome/free-solid-svg-icons";
-
     let showNavbar: boolean = false;
 </script>
 
@@ -12,7 +9,7 @@
         <span class="version">v3.0.0<span class="beta">b</span></span>
 
         <span class="navbar-toggle" on:click={() => (showNavbar = !showNavbar)}>
-            <Fa icon={faBars} />
+            <ion-icon name="menu" size="large"></ion-icon>
         </span>
     </div>
 

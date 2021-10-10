@@ -263,7 +263,7 @@
     .select {
         display: inline-block;
         position: relative;
-        color: #ffffff;
+        color: var(--color-white);
         width: 200px;
     }
 

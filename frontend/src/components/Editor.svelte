@@ -4,15 +4,22 @@
     import { EditorView, keymap } from "@codemirror/view";
     import { Compartment } from "@codemirror/state";
     import { indentWithTab } from "@codemirror/commands";
-    import { indentUnit } from "@codemirror/language";
+    import {
+        indentUnit,
+        LanguageDescription,
+        LanguageSupport
+    } from "@codemirror/language";
     import { myst } from "../cm-themes/myst";
     import BigSelect from "./BigSelect.svelte";
     import IndentSelect from "./IndentSelect.svelte";
-    import { loadLangs } from "../langs";
+    import { getLanguage, getLanguageNames } from "../langs";
+    import { languages as codemirrorLangs } from "@codemirror/language-data";
+
+    type Unit = "spaces" | "tabs";
 
     export let hidden: boolean = false;
 
-    let langsPromise = loadLangs();
+    let langsPromise = getLanguageNames();
 
     let editorElement: HTMLElement;
 
@@ -23,12 +30,15 @@
 
     let indentation = new Compartment();
     let tabSize = new Compartment();
+    let language = new Compartment();
 
     let selectedIndentUnit: [String, String];
     let selectedIndentAmount: [String, String];
 
+    let selectedLanguage: [String, String];
+
     onMount(async () => {
-        let updateListener = EditorView.updateListener.of((update) => {
+        let updateListener = EditorView.updateListener.of(update => {
             let cmLine = update.state.doc.lineAt(
                 update.state.selection.main.head
             );
@@ -47,9 +57,10 @@
                     updateListener,
                     indentation.of(indentUnit.of("\t")),
                     tabSize.of(EditorState.tabSize.of(4)),
-                ],
+                    language.of([])
+                ]
             }),
-            parent: editorElement,
+            parent: editorElement
         });
 
         line = editorView.state.selection.main.head;
@@ -58,16 +69,12 @@
         onSetIndentation();
     });
 
-    export function focus() {
-        editorView.focus();
-    }
-
-    type Unit = "spaces" | "tabs";
+    export const focus = () => { editorView.focus() };
 
     /**
      * Sets the indentation units and amount for the editor.
      */
-    function onSetIndentation() {
+    const onSetIndentation = () => {
         const unit = selectedIndentUnit[1] as Unit;
         const amount = Number(selectedIndentAmount[1]);
 
@@ -75,20 +82,67 @@
             editorView.dispatch({
                 effects: [
                     indentation.reconfigure(indentUnit.of("\t")),
-                    tabSize.reconfigure(EditorState.tabSize.of(amount)),
-                ],
+                    tabSize.reconfigure(EditorState.tabSize.of(amount))
+                ]
             });
         } else if (unit == "spaces") {
             editorView.dispatch({
                 effects: indentation.reconfigure(
                     indentUnit.of(" ".repeat(amount))
-                ),
+                )
             });
         }
-    }
+    };
+
+    /**
+     * Sets the proper language of the editor.
+    */
+    const onLangSelected = async () => {
+        const fullLang = await getLanguage(selectedLanguage[1] as string);
+        const langName = selectedLanguage[1].toLowerCase();
+
+        let fullLangAliases: string[] = new Array();
+
+        if (fullLang.aliases !== null)
+            fullLangAliases = fullLang.aliases.map(a => a.toLowerCase());
+        // add the codemirrorMode to the aliases
+        if (fullLang.codemirrorMode !== null)
+            fullLangAliases.push(fullLang.codemirrorMode.toLowerCase());
+
+        let langDescription: LanguageDescription = undefined;
+
+        for (let cmLang of codemirrorLangs) {
+            // check if the name matches
+            if (langName === cmLang.name.toLowerCase()) {
+                langDescription = cmLang;
+                break;
+            }
+            // check if one of the lang aliases matches the codemirror name
+            else if (fullLangAliases.includes(cmLang.name.toLowerCase())) {
+                langDescription = cmLang;
+                break;
+            }
+            // check if one of the lang aliases matches one of the codemirror aliases
+            else if (
+                fullLangAliases.filter(a => cmLang.alias.includes(a)).length > 0
+            ) {
+                langDescription = cmLang;
+                break;
+            }
+        }
+
+        let langSupport: LanguageSupport = undefined;
+
+        if (langDescription !== undefined)
+            langSupport = await langDescription.load();
+
+        editorView.dispatch({
+            effects: language.reconfigure(langSupport)
+        });
+    };
 </script>
 
-<div class:hidden={hidden}>
+<div class:hidden>
     <div class="editor" bind:this={editorElement} />
 
     <div class="toolbar">
@@ -101,6 +155,8 @@
                     label="lang:"
                     placeholder="select a language..."
                     options={langs}
+                    on:selected={onLangSelected}
+                    bind:selectedValue={selectedLanguage}
                 />
             {/await}
         </div>

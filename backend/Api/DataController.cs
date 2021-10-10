@@ -12,7 +12,7 @@ namespace PasteMyst.Api
     public class DataController : ControllerBase
     {
         private readonly Dictionary<string, Language> _langs;
-        
+
         public DataController(Dictionary<string, Language> langs)
         {
             _langs = langs;

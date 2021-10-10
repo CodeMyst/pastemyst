@@ -180,24 +180,6 @@
         display: none;
     }
 
-    :global(.cm-editor:focus),
-    :global(.cm-focused) {
-        outline: none !important;
-    }
-
-    :global(.cm-content),
-    :global(.cm-gutter) {
-        height: 500px;
-    }
-
-    :global(.cm-scroller) {
-        overflow: auto;
-    }
-
-    :global(.cm-wrap) {
-        height: 500px;
-    }
-
     .toolbar {
         background-color: var(--color-mineshaft);
         border-radius: 0 0 var(--border-radius) var(--border-radius);
@@ -221,5 +203,9 @@
     .toolbar .indent {
         display: flex;
         align-items: center;
+    }
+
+    .editor {
+        height: 50vh;
     }
 </style>

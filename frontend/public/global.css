@@ -56,3 +56,12 @@ a:hover {
 ion-icon {
     display: block;
 }
+
+.cm-editor:focus,
+.cm-focused {
+    outline: none !important;
+}
+
+.cm-editor { height: 100%; }
+.cm-wrap { height: 100%; }
+.cm-scroller { overflow: auto; }

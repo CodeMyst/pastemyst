@@ -25,6 +25,8 @@
             <span class="delimiter" />
             <a href="/legal">legal</a>
             <span class="delimiter" />
+            <a href="https://github.com/codemyst/pastemyst">github</a>
+            <span class="delimiter" />
             <a href="/donate" class="donate">donate</a>
         </nav>
 

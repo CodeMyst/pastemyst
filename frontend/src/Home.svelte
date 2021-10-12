@@ -2,6 +2,7 @@
     import Header from "./components/Header.svelte";
     import TextInput from "./components/TextInput.svelte";
     import TabbedEditor from "./components/TabbedEditor.svelte";
+    import PasteOptions from "./components/PasteOptions.svelte";
 </script>
 
 <main>
@@ -10,6 +11,8 @@
     <TextInput placeholder="title..." />
 
     <TabbedEditor />
+
+    <PasteOptions />
 </main>
 
 <style>
@@ -18,6 +21,10 @@
     }
 
     :global(.tabs) {
+        margin-top: 2em;
+    }
+
+    :global(.paste-options) {
         margin-top: 2em;
     }
 </style>

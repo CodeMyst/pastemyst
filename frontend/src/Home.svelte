@@ -3,6 +3,7 @@
     import TextInput from "./components/TextInput.svelte";
     import TabbedEditor from "./components/TabbedEditor.svelte";
     import PasteOptions from "./components/PasteOptions.svelte";
+    import Footer from "./components/Footer.svelte";
 </script>
 
 <main>
@@ -15,6 +16,8 @@
     <PasteOptions />
 </main>
 
+<Footer />
+
 <style>
     :global(.header) {
         margin-bottom: 2em;
@@ -25,6 +28,10 @@
     }
 
     :global(.paste-options) {
+        margin-top: 2em;
+    }
+
+    :global(footer) {
         margin-top: 2em;
     }
 </style>

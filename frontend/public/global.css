@@ -25,6 +25,11 @@
     box-sizing: border-box;
 }
 
+html,
+body {
+    height: 100%;
+}
+
 body {
     font-size: var(--fontsize-normal);
     font-family: var(--fontstack);
@@ -32,12 +37,15 @@ body {
     color: var(--color-white);
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 main {
     max-width: 90%;
     width: 1280px;
     margin: 0 auto;
+    flex: 1 0 auto;
 }
 
 h1 {

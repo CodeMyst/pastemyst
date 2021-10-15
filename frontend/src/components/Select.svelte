@@ -2,27 +2,27 @@
     import { tick } from "svelte";
 
     export let id: string;
-    export let label: String;
-    export let options: [String, String][];
+    export let label: string;
+    export let options: [string, string][];
 
     // provided options filtered by a search string
-    let filteredOptions: [String, String][] = options;
+    let filteredOptions: [string, string][] = options;
 
-    let open: boolean = false;
+    let open = false;
 
     // did the search find any options?
-    let found: boolean = true;
-    let search: string = "";
+    let found = true;
+    let search = "";
 
     let selectElement: HTMLElement;
     let searchElement: HTMLInputElement;
     let dropdownElement: HTMLElement;
 
-    export let selectedValue: [String, String] = options[0];
+    export let selectedValue: [string, string] = options[0];
     let selectedElement: HTMLElement;
 
     // set to true when an option is pressed
-    let mouseDown: boolean = false;
+    let mouseDown = false;
 
     // filters options by a search string
     // both the key and value are compared
@@ -111,10 +111,7 @@
                 {
                     e.preventDefault();
                     const index = tupleIndexOf(filteredOptions, selectedValue);
-                    selectedValue =
-                        index > 0
-                            ? filteredOptions[index - 1]
-                            : filteredOptions[0];
+                    selectedValue = index > 0 ? filteredOptions[index - 1] : filteredOptions[0];
                     await tick();
                     scrollSelectedIntoView();
                 }
@@ -136,11 +133,10 @@
     };
 
     const scrollSelectedIntoView = () => {
-        dropdownElement.scrollTop =
-            selectedElement.offsetTop - dropdownElement.offsetTop;
+        dropdownElement.scrollTop = selectedElement.offsetTop - dropdownElement.offsetTop;
     };
 
-    const optionMouseDownHandler = (v: [String, String]) => {
+    const optionMouseDownHandler = (v: [string, string]) => {
         mouseDown = true;
         selectedValue = v;
     };
@@ -152,17 +148,14 @@
 
     // finds the index of a tuple in a tuple array
     // this is needed because tuples are objects, and .indexOf would compare references
-    const tupleIndexOf = (
-        a: [String, String][],
-        b: [String, String]
-    ): number => {
+    const tupleIndexOf = (a: [string, string][], b: [string, string]): number => {
         for (let i = 0; i < a.length; i++) {
             if (tupleEquals(a[i], b)) return i;
         }
     };
 
     // compares 2 tuples by the contents instead of reference
-    const tupleEquals = (a: [String, String], b: [String, String]): boolean => {
+    const tupleEquals = (a: [string, string], b: [string, string]): boolean => {
         return a[0] === b[0] && a[1] === b[1];
     };
 </script>
@@ -219,8 +212,7 @@
                         class="option selected"
                         aria-selected="true"
                         role="option"
-                        on:mousedown={() =>
-                            optionMouseDownHandler([key, value])}
+                        on:mousedown={() => optionMouseDownHandler([key, value])}
                         on:mouseup={optionMouseUpHandler}
                         bind:this={selectedElement}
                     >
@@ -231,8 +223,7 @@
                         class="option"
                         aria-selected="false"
                         role="option"
-                        on:mousedown={() =>
-                            optionMouseDownHandler([key, value])}
+                        on:mousedown={() => optionMouseDownHandler([key, value])}
                         on:mouseup={optionMouseUpHandler}
                     >
                         {value}

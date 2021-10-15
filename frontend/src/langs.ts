@@ -1,5 +1,5 @@
 let langsCache: Map<string, Language>;
-let langNamesCache: [String, String][];
+let langNamesCache: [string, string][];
 
 class Language {
     type: string;
@@ -17,20 +17,20 @@ class Language {
  */
 const loadLanguages = async () => {
     // TODO: turn the host into a var
-    let res = await fetch("http://localhost:5001/api/v3/data/langs", {
+    const res = await fetch("http://localhost:5001/api/v3/data/langs", {
         headers: {
-            "Content-Type": "application/json",
-        },
+            "Content-Type": "application/json"
+        }
     });
 
-    let langs = new Map<string, Language>();
+    const langs = new Map<string, Language>();
 
-    let json: JSON = await res.json();
+    const json: JSON = await res.json();
 
-    for (let langName in json) {
-        let langJson = json[langName];
+    for (const langName in json) {
+        const langJson = json[langName];
 
-        let lang = new Language();
+        const lang = new Language();
         lang.type = langJson["type"];
         lang.aliases = langJson["aliases"];
         lang.codemirrorMode = langJson["codemirrorMode"];
@@ -49,7 +49,7 @@ const loadLanguages = async () => {
 /**
  * @returns All of the languages.
  */
-export const getLanguages = async () => {
+export const getLanguages = async (): Promise<Map<string, Language>> => {
     if (langsCache === undefined) await loadLanguages();
 
     return langsCache;
@@ -60,12 +60,12 @@ export const getLanguages = async () => {
  *
  * Used for showing in dropdowns.
  */
-export const getLanguageNames = async () => {
+export const getLanguageNames = async (): Promise<[string, string][]> => {
     if (langNamesCache !== undefined) return langNamesCache;
 
-    let names = new Array<[String, String]>();
+    const names = new Array<[string, string]>();
 
-    for (let [k, v] of await getLanguages()) {
+    for (const [k, v] of await getLanguages()) {
         let val = "";
         if (v.aliases !== null) val = v.aliases.join(", ");
         names.push([val, k]);
@@ -79,8 +79,8 @@ export const getLanguageNames = async () => {
 /**
  * Returns a language by its name.
  */
-export const getLanguage = async (lang: string) => {
-    let langs = await getLanguages();
+export const getLanguage = async (lang: string): Promise<Language> => {
+    const langs = await getLanguages();
 
     return langs.get(lang);
 };

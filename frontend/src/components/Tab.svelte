@@ -1,10 +1,10 @@
 <script lang="ts">
     import { createEventDispatcher, tick } from "svelte";
 
-    export let id: String;
-    export let active: boolean = false;
-    export let title: string = "untitled";
-    export let renameState: boolean = false;
+    export let id: string;
+    export let active = false;
+    export let title = "untitled";
+    export let renameState = false;
 
     let dispatch = createEventDispatcher();
 

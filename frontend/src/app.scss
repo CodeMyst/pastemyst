@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 :root {
     --color-cod-gray: #141414;
@@ -70,7 +70,8 @@ ion-icon {
     visibility: visible;
 }
 
-.cm-editor:focus, .cm-focused {
+.cm-editor:focus,
+.cm-focused {
     outline: none !important;
 }
 
@@ -94,7 +95,8 @@ ion-icon {
     display: block;
 }
 
-[data-tooltip]:before, [data-tooltip]:after {
+[data-tooltip]:before,
+[data-tooltip]:after {
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
@@ -121,7 +123,7 @@ ion-icon {
     text-align: center;
     font-size: var(--fontsize-small);
     line-height: 1.2;
-    transition: .05s ease-out;
+    transition: 0.05s ease-out;
 }
 
 [data-tooltip]:after {
@@ -137,21 +139,23 @@ ion-icon {
     line-height: 0;
 }
 
-[data-tooltip]:hover:before, [data-tooltip]:hover:after {
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
     visibility: visible;
     opacity: 1;
     transform: translate(-50%, 0);
 }
 
-[data-tooltip=false]:hover:before, [data-tooltip=false]:hover:after {
+[data-tooltip="false"]:hover:before,
+[data-tooltip="false"]:hover:after {
     visibility: hidden;
     opacity: 0;
 }
 
 /* ******* */
 
-input[type=text],
-input[type=password] {
+input[type="text"],
+input[type="password"] {
     background-color: var(--color-cod-gray-light);
     border: none;
     outline: none;
@@ -196,4 +200,3 @@ input[type=password] {
     border-top: 2px solid var(--color-main);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-

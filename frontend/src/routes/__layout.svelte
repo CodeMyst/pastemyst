@@ -1,15 +1,15 @@
 <script lang="ts" context="module">
-	import "../app.scss";
-	import "../styles/normalize.css";
+    import "../app.scss";
+    import "../styles/normalize.css";
 
-	import Footer from "../components/Footer.svelte";
-	import Header from "../components/Header.svelte";
+    import Footer from "../components/Footer.svelte";
+    import Header from "../components/Header.svelte";
 </script>
 
 <main>
-	<Header />
+    <Header />
 
-	<slot />
+    <slot />
 </main>
 
 <Footer />

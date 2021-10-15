@@ -1,7 +1,7 @@
 <script lang="ts">
     import Select from "./Select.svelte";
 
-    const expiresValues: [String, String][] = [
+    const expiresValues: [string, string][] = [
         ["never", "never"],
         ["1h", "1 hour"],
         ["2h", "2 hours"],
@@ -10,10 +10,10 @@
         ["2d", "2 days"],
         ["1w", "1 week"],
         ["1m", "1 month"],
-        ["1y", "1 year"],
+        ["1y", "1 year"]
     ];
 
-    let selectedExpires: [String, String] = expiresValues[0];
+    let selectedExpires: [string, string] = expiresValues[0];
 </script>
 
 <div class="text-input">

@@ -1,5 +1,5 @@
 <script lang="ts">
-    let showNavbar: boolean = false;
+    let showNavbar = false;
 </script>
 
 <div id="header" class={$$props.class}>
@@ -9,7 +9,7 @@
         <span class="version">v3.0.0<span class="beta">b</span></span>
 
         <span class="navbar-toggle" on:click={() => (showNavbar = !showNavbar)}>
-            <ion-icon name="menu" size="large"></ion-icon>
+            <ion-icon name="menu" size="large" />
         </span>
     </div>
 

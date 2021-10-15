@@ -15,90 +15,93 @@ const bg = "#1c1c1c",
     blue = "#81a2be",
     purple = "#b294bb";
 
-export const mystTheme = EditorView.theme({
-    "*": {
-        fontFamily: "\"Ubuntu Mono\", monospace"
-    },
+export const mystTheme = EditorView.theme(
+    {
+        "*": {
+            fontFamily: '"Ubuntu Mono", monospace'
+        },
 
-    "&": {
-        color: fg,
-        backgroundColor: bg,
-    },
+        "&": {
+            color: fg,
+            backgroundColor: bg
+        },
 
-    ".cm-content": {
-        caretColor: orange
-    },
+        ".cm-content": {
+            caretColor: orange
+        },
 
-    "&.cm-focused .cm-cursor": {
-        borderLeftColor: orange
-    },
+        "&.cm-focused .cm-cursor": {
+            borderLeftColor: orange
+        },
 
-    "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, ::selection": {
-        backgroundColor: sel
-    },
+        "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, ::selection": {
+            backgroundColor: sel
+        },
 
-    ".cm-panels": {
-        backgroundColor: bg,
-        color: fg
-    },
-
-    ".cm-panels.cm-panels-top": {
-        borderBottom: "2px solid black"
-    },
-
-    ".cm-panels.cm-panels-bottom": {
-        borderTop: "2px solid black"
-    },
-
-    ".cm-searchMatch": {
-        backgroundColor: "#72a1ff59",
-        outline: "1px solid #457dff"
-    },
-
-    ".cm-searchMatch.cm-searchMatch-selected": {
-        backgroundColor: "#6199ff2f"
-    },
-
-    ".cm-activeLine": {
-        backgroundColor: cl
-    },
-
-    ".cm-selectionMatch": {
-        backgroundColor: "#aafe661a"
-    },
-
-    ".cm-matchingBracket, .cm-nonmatchingBracket": {
-        backgroundColor: "#bad0f847",
-        outline: "1px solid #515a6b"
-    },
-
-    ".cm-gutters": {
-        backgroundColor: bg,
-        color: com,
-        border: "none"
-    },
-
-    ".cm-activeLineGutter": {
-        backgroundColor: bg
-    },
-
-    ".cm-foldPlaceholder": {
-        backgroundColor: "transparent",
-        border: "none",
-        color: "#ddd"
-    },
-
-    ".cm-tooltip": {
-        border: "1px solid #181a1f",
-        backgroundColor: bg
-    },
-    ".cm-tooltip-autocomplete": {
-        "& > ul > li[aria-selected]": {
+        ".cm-panels": {
             backgroundColor: bg,
             color: fg
+        },
+
+        ".cm-panels.cm-panels-top": {
+            borderBottom: "2px solid black"
+        },
+
+        ".cm-panels.cm-panels-bottom": {
+            borderTop: "2px solid black"
+        },
+
+        ".cm-searchMatch": {
+            backgroundColor: "#72a1ff59",
+            outline: "1px solid #457dff"
+        },
+
+        ".cm-searchMatch.cm-searchMatch-selected": {
+            backgroundColor: "#6199ff2f"
+        },
+
+        ".cm-activeLine": {
+            backgroundColor: cl
+        },
+
+        ".cm-selectionMatch": {
+            backgroundColor: "#aafe661a"
+        },
+
+        ".cm-matchingBracket, .cm-nonmatchingBracket": {
+            backgroundColor: "#bad0f847",
+            outline: "1px solid #515a6b"
+        },
+
+        ".cm-gutters": {
+            backgroundColor: bg,
+            color: com,
+            border: "none"
+        },
+
+        ".cm-activeLineGutter": {
+            backgroundColor: bg
+        },
+
+        ".cm-foldPlaceholder": {
+            backgroundColor: "transparent",
+            border: "none",
+            color: "#ddd"
+        },
+
+        ".cm-tooltip": {
+            border: "1px solid #181a1f",
+            backgroundColor: bg
+        },
+        ".cm-tooltip-autocomplete": {
+            "& > ul > li[aria-selected]": {
+                backgroundColor: bg,
+                color: fg
+            }
         }
-    }
-}, {dark: true});
+    },
+    { dark: true }
+);
 
 export const mystHighlightStyle = HighlightStyle.define([
     {
@@ -127,12 +130,29 @@ export const mystHighlightStyle = HighlightStyle.define([
     },
 
     {
-        tag: [t.typeName, t.className, t.number, t.changed, t.annotation, t.modifier, t.self, t.namespace],
+        tag: [
+            t.typeName,
+            t.className,
+            t.number,
+            t.changed,
+            t.annotation,
+            t.modifier,
+            t.self,
+            t.namespace
+        ],
         color: orange
     },
 
     {
-        tag: [t.operator, t.operatorKeyword, t.url, t.escape, t.regexp, t.link, t.special(t.string)],
+        tag: [
+            t.operator,
+            t.operatorKeyword,
+            t.url,
+            t.escape,
+            t.regexp,
+            t.link,
+            t.special(t.string)
+        ],
         color: aqua
     },
 
@@ -181,7 +201,7 @@ export const mystHighlightStyle = HighlightStyle.define([
     {
         tag: t.invalid,
         color: "#ffffff"
-    },
+    }
 ]);
 
-export const myst: Extension = [mystTheme, mystHighlightStyle]
+export const myst: Extension = [mystTheme, mystHighlightStyle];

@@ -3,9 +3,7 @@
         © <a href="https://myst.rs/">codemyst</a> 2021
     </div>
 
-    <div class="paste-count">
-        0 currently active pastes
-    </div>
+    <div class="paste-count">0 currently active pastes</div>
 </footer>
 
 <style>

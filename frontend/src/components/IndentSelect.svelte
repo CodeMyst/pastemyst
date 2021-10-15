@@ -7,12 +7,12 @@
 
     let indentSelect: BigSelect;
 
-    const indentUnits: [String, String][] = [
+    const indentUnits: [string, string][] = [
         ["tabs", "tabs"],
-        ["spaces", "spaces"],
+        ["spaces", "spaces"]
     ];
 
-    const indentAmounts: [String, String][] = [
+    const indentAmounts: [string, string][] = [
         ["1", "1"],
         ["2", "2"],
         ["3", "3"],
@@ -20,7 +20,7 @@
         ["5", "5"],
         ["6", "6"],
         ["7", "7"],
-        ["8", "8"],
+        ["8", "8"]
     ];
 
     export let selectedIndentUnit = indentUnits[1];

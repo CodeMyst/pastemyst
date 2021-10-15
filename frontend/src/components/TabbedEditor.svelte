@@ -5,12 +5,12 @@
     import { onMount, tick } from "svelte";
 
     class STab {
-        id: String;
         title: string;
+        id: string;
         renameState: boolean;
         editor: Editor;
 
-        constructor(id: String, title: string, editor: Editor) {
+        constructor(id: string, title: string, editor: Editor) {
             this.id = id;
             this.title = title;
             this.editor = editor;
@@ -38,7 +38,7 @@
                 tabs.splice(event.oldIndex, 1);
                 tabs.splice(event.newIndex, 0, tab);
                 tabs = tabs;
-            },
+            }
         });
 
         await onTabAdd();

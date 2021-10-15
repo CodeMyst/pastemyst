@@ -4,11 +4,7 @@
     import { EditorView, keymap } from "@codemirror/view";
     import { Compartment } from "@codemirror/state";
     import { indentWithTab } from "@codemirror/commands";
-    import {
-        indentUnit,
-        LanguageDescription,
-        LanguageSupport
-    } from "@codemirror/language";
+    import { indentUnit, LanguageDescription, LanguageSupport } from "@codemirror/language";
     import { myst } from "../cm-themes/myst";
     import BigSelect from "./BigSelect.svelte";
     import IndentSelect from "./IndentSelect.svelte";
@@ -17,7 +13,7 @@
 
     type Unit = "spaces" | "tabs";
 
-    export let hidden: boolean = false;
+    export let hidden = false;
 
     let langsPromise = getLanguageNames();
 
@@ -25,23 +21,21 @@
 
     let editorView: EditorView;
 
-    let line: number = 0;
-    let pos: number = 0;
+    let line = 0;
+    let pos = 0;
 
     let indentation = new Compartment();
     let tabSize = new Compartment();
     let language = new Compartment();
 
-    let selectedIndentUnit: [String, String];
-    let selectedIndentAmount: [String, String];
+    let selectedIndentUnit: [string, string];
+    let selectedIndentAmount: [string, string];
 
-    let selectedLanguage: [String, String];
+    let selectedLanguage: [string, string];
 
     onMount(async () => {
-        let updateListener = EditorView.updateListener.of(update => {
-            let cmLine = update.state.doc.lineAt(
-                update.state.selection.main.head
-            );
+        let updateListener = EditorView.updateListener.of((update) => {
+            let cmLine = update.state.doc.lineAt(update.state.selection.main.head);
             line = cmLine.number;
             pos = update.state.selection.main.head - cmLine.from;
         });
@@ -69,7 +63,9 @@
         onSetIndentation();
     });
 
-    export const focus = () => { editorView.focus() };
+    export const focus = (): void => {
+        editorView.focus();
+    };
 
     /**
      * Sets the indentation units and amount for the editor.
@@ -87,24 +83,22 @@
             });
         } else if (unit == "spaces") {
             editorView.dispatch({
-                effects: indentation.reconfigure(
-                    indentUnit.of(" ".repeat(amount))
-                )
+                effects: indentation.reconfigure(indentUnit.of(" ".repeat(amount)))
             });
         }
     };
 
     /**
      * Sets the proper language of the editor.
-    */
+     */
     const onLangSelected = async () => {
         const fullLang = await getLanguage(selectedLanguage[1] as string);
         const langName = selectedLanguage[1].toLowerCase();
 
-        let fullLangAliases: string[] = new Array();
+        let fullLangAliases: string[] = [];
 
         if (fullLang.aliases !== null)
-            fullLangAliases = fullLang.aliases.map(a => a.toLowerCase());
+            fullLangAliases = fullLang.aliases.map((a) => a.toLowerCase());
         // add the codemirrorMode to the aliases
         if (fullLang.codemirrorMode !== null)
             fullLangAliases.push(fullLang.codemirrorMode.toLowerCase());
@@ -123,9 +117,7 @@
                 break;
             }
             // check if one of the lang aliases matches one of the codemirror aliases
-            else if (
-                fullLangAliases.filter(a => cmLang.alias.includes(a)).length > 0
-            ) {
+            else if (fullLangAliases.filter((a) => cmLang.alias.includes(a)).length > 0) {
                 langDescription = cmLang;
                 break;
             }
@@ -133,8 +125,7 @@
 
         let langSupport: LanguageSupport = undefined;
 
-        if (langDescription !== undefined)
-            langSupport = await langDescription.load();
+        if (langDescription !== undefined) langSupport = await langDescription.load();
 
         editorView.dispatch({
             effects: language.reconfigure(langSupport)

@@ -9,7 +9,9 @@
         if (t.checked) {
             let group = `input[type=checkbox][name='${t.name}']`;
 
-            document.querySelectorAll(group).forEach(e => { (e as HTMLInputElement).checked = false} );
+            document.querySelectorAll(group).forEach((e) => {
+                (e as HTMLInputElement).checked = false;
+            });
             t.checked = true;
         } else {
             t.checked = false;
@@ -31,7 +33,10 @@
             <input type="checkbox" name="visibility" on:click={onRadioPress} />
             <ion-icon name="person" />
         </label>
-        <label data-tooltip="anonymous - the paste won't be associated with your account" class="option">
+        <label
+            data-tooltip="anonymous - the paste won't be associated with your account"
+            class="option"
+        >
             <input type="checkbox" name="visibility" on:click={onRadioPress} />
             <ion-icon name="finger-print" />
         </label>
@@ -40,7 +45,7 @@
     <div class="create-paste">
         {#if encrypt}
             <div class="password">
-                <input type="password" placeholder="password...">
+                <input type="password" placeholder="password..." />
             </div>
         {/if}
 

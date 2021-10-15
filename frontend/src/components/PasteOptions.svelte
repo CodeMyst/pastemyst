@@ -57,6 +57,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        margin-top: 2em;
     }
 
     .create-paste a {

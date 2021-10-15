@@ -41,6 +41,7 @@
 <style>
     #header {
         margin-top: 1em;
+        margin-bottom: 2em;
     }
 
     .logo {

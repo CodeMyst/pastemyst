@@ -167,14 +167,4 @@
     .tabs .add-icon:hover {
         background-color: var(--color-cod-gray);
     }
-
-    .tabs .tablist :global(.sortable-drag) {
-        display: none;
-    }
-
-    .tabs .tablist :global(.sortable-chosen) {
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        z-index: 10;
-        background-color: var(--color-mineshaft);
-    }
 </style>

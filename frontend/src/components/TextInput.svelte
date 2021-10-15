@@ -33,6 +33,7 @@
     .text-input {
         display: flex;
         flex-direction: column;
+        margin-bottom: 2em;
     }
 
     input {
@@ -50,28 +51,6 @@
         background-color: var(--color-cod-gray-light);
         border-radius: 0 0 var(--border-radius) var(--border-radius);
         padding-left: 1em;
-    }
-
-    .select :global(.select) {
-        width: 150px !important;
-        text-transform: lowercase;
-    }
-
-    .select :global(input) {
-        text-transform: lowercase;
-    }
-
-    .select :global(.value) {
-        background-color: var(--color-cod-gray-light) !important;
-    }
-
-    .select :global(.container) {
-        justify-content: space-between;
-    }
-
-    .select :global(.dropdown) {
-        background-color: var(--color-cod-gray-light) !important;
-        border-top: 2px solid var(--color-main);
     }
 
     @media screen and (min-width: 720px) {

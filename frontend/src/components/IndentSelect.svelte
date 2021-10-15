@@ -55,6 +55,3 @@
     bind:selectedValue={selectedIndentAmount}
     on:selected={onAmountSelected}
 />
-
-<style>
-</style>

@@ -30,7 +30,8 @@ body {
     height: 100%;
 }
 
-body {
+body,
+#svelte {
     font-size: var(--fontsize-normal);
     font-family: var(--fontstack);
     background-color: var(--color-cod-gray);
@@ -39,6 +40,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
+    height: 100%;
 }
 
 main {
@@ -154,4 +156,43 @@ input[type=password] {
     border-radius: var(--border-radius);
     padding: 0.5em 1em;
     color: var(--color-white);
+}
+
+
+/* tablist sorting */
+
+.tabs .tablist .sortable-drag {
+    display: none;
+}
+
+.tabs .tablist .sortable-chosen {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    z-index: 10;
+    background-color: var(--color-mineshaft);
+}
+
+/* select */
+
+
+.text-input .select .select {
+    width: 150px !important;
+    text-transform: lowercase;
+}
+
+.text-input .select input {
+    text-transform: lowercase;
+}
+
+.text-input .select .value {
+    background-color: var(--color-cod-gray-light) !important;
+}
+
+.text-input .select .container {
+    justify-content: space-between;
+}
+
+.text-input .select .dropdown {
+    background-color: var(--color-cod-gray-light) !important;
+    border-top: 2px solid var(--color-main);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }

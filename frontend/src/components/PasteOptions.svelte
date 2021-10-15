@@ -9,8 +9,7 @@
         if (t.checked) {
             let group = `input[type=checkbox][name='${t.name}']`;
 
-            let groupE = document.querySelectorAll(group);
-            for (let e of groupE) (e as HTMLInputElement).checked = false;
+            document.querySelectorAll(group).forEach(e => { (e as HTMLInputElement).checked = false} );
             t.checked = true;
         } else {
             t.checked = false;
@@ -26,7 +25,7 @@
         </label>
         <label data-tooltip="private - only you can view the paste" class="option">
             <input type="checkbox" name="visibility" on:click={onRadioPress} />
-            <ion-icon name="lock" />
+            <ion-icon name="lock-closed" />
         </label>
         <label data-tooltip="public - will be displayed on your profile" class="option">
             <input type="checkbox" name="visibility" on:click={onRadioPress} />

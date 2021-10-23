@@ -1,139 +1,162 @@
 <script lang="ts">
+    import Popup from "./Popup.svelte";
+
     let showNavbar = false;
+    let navElement: HTMLElement;
 </script>
 
 <div id="header" class={$$props.class}>
-    <div class="logo">
+    <div class="left">
         <img src="/images/pastemyst.svg" alt="pastemyst logo" />
         <h1><a href="/">pastemyst</a></h1>
-        <span class="version">v3.0.0<span class="beta">b</span></span>
-
-        <span class="navbar-toggle" on:click={() => (showNavbar = !showNavbar)}>
-            <ion-icon name="menu" size="large" />
-        </span>
     </div>
 
-    <div class={`nav ${showNavbar ? "active" : ""}`}>
-        <nav>
-            <a href="/api-docs">api</a>
-            <span class="delimiter" />
-            <a href="/pastry">cli</a>
-            <span class="delimiter" />
-            <a href="/changelog">changelog</a>
-            <span class="delimiter" />
-            <a href="/contact">contact</a>
-            <span class="delimiter" />
-            <a href="/legal">legal</a>
-            <span class="delimiter" />
-            <a href="https://github.com/codemyst/pastemyst">github</a>
-            <span class="delimiter" />
-            <a href="/donate" class="donate">donate</a>
-        </nav>
+    <div class="right">
+        <div class="profile">
+            <ion-icon name="person-circle" />
+        </div>
 
-        <nav class="login">
-            <a href="/login">login</a>
-            <span class="delimiter" />
-            <a href="/register">register</a>
-        </nav>
+        <div class="navbar-toggle" on:click={() => (showNavbar = !showNavbar)}>
+            <ion-icon name="menu" />
+        </div>
     </div>
 </div>
 
-<style>
+<Popup bind:visible={showNavbar}>
+    <nav class:active={showNavbar} bind:this={navElement}>
+        <div class="title">
+            <span>menu</span>
+
+            <div class="navbar-toggle" on:click={() => (showNavbar = false)}>
+                <ion-icon name="close" />
+            </div>
+        </div>
+
+        <div class="item">
+            <a href="/api-docs">api</a>
+            <span class="description">documentation for pastemyst's free api</span>
+        </div>
+
+        <div class="item">
+            <a href="/changelog">changelog</a>
+            <span class="description">see all of the versions and their changes</span>
+        </div>
+
+        <div class="item">
+            <a href="/pastry">cli</a>
+            <span class="description">quickly make pastes straight from a terminal</span>
+        </div>
+
+        <div class="item">
+            <a href="/contact">contact</a>
+            <span class="description">have a question or request? contact us here</span>
+        </div>
+
+        <div class="item">
+            <a href="/legal">legal</a>
+            <span class="description">terms of service and the privacy policy</span>
+        </div>
+
+        <div class="item">
+            <a href="https://github.com/codemyst/pastemyst">github</a>
+            <span class="description"
+                >submit an issue, a pr, or just look at the code, it's open source</span
+            >
+        </div>
+
+        <div class="item">
+            <a href="/donate">donate</a>
+            <span class="description">donations help keep the site running</span>
+        </div>
+    </nav>
+</Popup>
+
+<style lang="scss">
+    @import "../mixins.scss";
+
     #header {
         margin-top: 1em;
         margin-bottom: 2em;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
     }
 
-    .logo {
+    h1 {
+        margin-top: -3px;
+        font-size: var(--fontsize-large);
+    }
+
+    img {
+        width: 40px;
+        margin-right: 1em;
+    }
+
+    .left,
+    .right {
         display: flex;
         flex-direction: row;
         align-items: center;
     }
 
-    img {
-        width: 50px;
+    .navbar-toggle,
+    .profile {
+        cursor: pointer;
+        color: var(--color-boulder);
+        font-size: 1.5em;
+        @include transition();
+
+        &:hover {
+            color: var(--color-accent);
+        }
+    }
+
+    .profile {
         margin-right: 1em;
     }
 
-    .version {
-        align-self: flex-end;
-        margin-left: 0.5em;
-        color: var(--color-boulder);
-    }
-
-    .beta {
-        color: var(--color-accent);
-    }
-
-    .nav {
+    nav {
+        background-color: var(--color-cod-gray-light);
+        border-radius: var(--border-radius);
         display: none;
         flex-direction: column;
-    }
+        padding: 0.5em 1em;
 
-    .nav.active {
-        display: flex;
-    }
-
-    .nav nav {
-        display: flex;
-        flex-direction: column;
-        margin-top: 1em;
-        margin-left: 1em;
-    }
-
-    nav a {
-        margin-top: 0.25em;
-        font-size: var(--fontsize-medium);
-    }
-
-    .navbar-toggle {
-        margin-left: auto;
-        font-size: 1.5em;
-        cursor: pointer;
-        color: var(--color-boulder);
-    }
-
-    .donate {
-        font-weight: bold;
-        color: var(--color-accent);
-    }
-
-    @media screen and (min-width: 1100px) {
-        #header {
+        &.active {
             display: flex;
-            flex-direction: row;
         }
 
-        .navbar-toggle {
-            display: none;
-        }
-
-        .nav {
+        .title {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
+            margin-bottom: 1em;
+            font-size: var(--fontsize-medium);
+
+            ion-icon {
+                margin-right: -5px;
+            }
         }
 
-        .nav nav {
-            flex-direction: row;
-            align-items: center;
-            margin-top: 0;
-        }
+        .item {
+            margin-bottom: 2em;
+            display: flex;
+            flex-direction: column;
 
-        nav a {
-            margin-top: 0;
-        }
+            &:last-child {
+                margin-bottom: 1em;
+            }
 
-        nav .delimiter {
-            margin-top: 3px;
-        }
+            a {
+                font-size: var(--fontsize-medium);
+            }
 
-        nav .delimiter::before {
-            content: "-";
-            margin-left: 0.5em;
-            margin-right: 0.5em;
+            .description {
+                margin-top: 0.5em;
+                color: var(--color-boulder);
+            }
         }
     }
 </style>

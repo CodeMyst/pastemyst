@@ -1,6 +1,7 @@
 <!-- TODO: this is just a copy paste from Select.svele with different styling and a different scrollSelectedIntoView function -->
 <script lang="ts">
     import { tick, createEventDispatcher } from "svelte";
+    import Popup from "./Popup.svelte";
 
     export let id: string;
     export let label: string;
@@ -139,7 +140,7 @@
     };
 
     const scrollSelectedIntoView = () => {
-        dropdownElement.scrollTop = selectedElement.offsetTop - dropdownElement.offsetTop - 13;
+        dropdownElement.scrollTop = selectedElement.offsetTop - dropdownElement.offsetTop - 34;
     };
 
     const optionMouseDownHandler = (v: [string, string]) => {
@@ -197,57 +198,53 @@
             {selectedValue[1]}{displayAppend}
         </span>
 
-        <div class="dropdown" role="listbox" bind:this={dropdownElement}>
-            <input
-                type="text"
-                autocomplete="off"
-                {placeholder}
-                bind:this={searchElement}
-                bind:value={search}
-                on:input={filterOptions}
-                on:keydown={keyDownHandler}
-                on:blur={searchBlurHandler}
-            />
+        <Popup bind:visible={open}>
+            <div class="dropdown" role="listbox" bind:this={dropdownElement}>
+                <input
+                    type="text"
+                    autocomplete="off"
+                    {placeholder}
+                    bind:this={searchElement}
+                    bind:value={search}
+                    on:input={filterOptions}
+                    on:keydown={keyDownHandler}
+                    on:blur={searchBlurHandler}
+                />
 
-            {#if !found}
-                <p class="not-found">No items found</p>
-            {/if}
-
-            {#each filteredOptions as [key, value]}
-                {#if tupleEquals(selectedValue, [key, value])}
-                    <div
-                        class="option selected"
-                        aria-selected="true"
-                        role="option"
-                        on:mousedown={() => optionMouseDownHandler([key, value])}
-                        on:mouseup={optionMouseUpHandler}
-                        bind:this={selectedElement}
-                    >
-                        {value}
-                    </div>
-                {:else}
-                    <div
-                        class="option"
-                        aria-selected="false"
-                        role="option"
-                        on:mousedown={() => optionMouseDownHandler([key, value])}
-                        on:mouseup={optionMouseUpHandler}
-                    >
-                        {value}
-                    </div>
+                {#if !found}
+                    <p class="not-found">No items found</p>
                 {/if}
-            {/each}
-        </div>
+
+                {#each filteredOptions as [key, value]}
+                    {#if tupleEquals(selectedValue, [key, value])}
+                        <div
+                            class="option selected"
+                            aria-selected="true"
+                            role="option"
+                            on:mousedown={() => optionMouseDownHandler([key, value])}
+                            on:mouseup={optionMouseUpHandler}
+                            bind:this={selectedElement}
+                        >
+                            {value}
+                        </div>
+                    {:else}
+                        <div
+                            class="option"
+                            aria-selected="false"
+                            role="option"
+                            on:mousedown={() => optionMouseDownHandler([key, value])}
+                            on:mouseup={optionMouseUpHandler}
+                        >
+                            {value}
+                        </div>
+                    {/if}
+                {/each}
+            </div>
+        </Popup>
     </div>
 </div>
 
 <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-
     .container {
         display: flex;
         justify-content: space-between;
@@ -321,18 +318,9 @@
     .dropdown {
         display: none;
         flex-direction: column;
-        z-index: 999;
         max-height: 275px;
         overflow-y: auto;
         background-color: var(--color-mineshaft);
-        position: fixed;
-        top: 20px;
-        left: 0;
-        right: 0;
-        max-width: 90%;
-        width: 1280px;
-        margin: 0 auto;
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         border-radius: var(--border-radius);
     }
 

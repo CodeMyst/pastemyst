@@ -3,6 +3,10 @@
         © <a href="https://myst.rs/">codemyst</a> 2021
     </div>
 
+    <div class="version">
+        v3.0.0-alpha
+    </div>
+
     <div class="paste-count">0 currently active pastes</div>
 </footer>
 

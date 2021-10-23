@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import "mixins.scss";
 
 :root {
     --color-cod-gray: #141414;
@@ -58,7 +59,7 @@ h1 {
 a {
     color: var(--color-main);
     text-decoration: none;
-    transition: 0.1s ease-in-out;
+    @include transition();
 }
 
 a:hover {
@@ -68,6 +69,7 @@ a:hover {
 ion-icon {
     display: block;
     visibility: visible;
+    pointer-events: none;
 }
 
 .cm-editor:focus,
@@ -87,6 +89,16 @@ ion-icon {
     overflow: auto;
 }
 
+input[type="text"],
+input[type="password"] {
+    background-color: var(--color-cod-gray-light);
+    border: none;
+    outline: none;
+    border-radius: var(--border-radius);
+    padding: 0.5em 1em;
+    color: var(--color-white);
+}
+
 /* tooltips */
 
 [data-tooltip] {
@@ -100,7 +112,7 @@ ion-icon {
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
-    transition: 0.05s ease-out;
+    @include transition();
     transform: translate(-50%, 5px);
 }
 
@@ -123,7 +135,7 @@ ion-icon {
     text-align: center;
     font-size: var(--fontsize-small);
     line-height: 1.2;
-    transition: 0.05s ease-out;
+    @include transition();
 }
 
 [data-tooltip]:after {
@@ -150,18 +162,6 @@ ion-icon {
 [data-tooltip="false"]:hover:after {
     visibility: hidden;
     opacity: 0;
-}
-
-/* ******* */
-
-input[type="text"],
-input[type="password"] {
-    background-color: var(--color-cod-gray-light);
-    border: none;
-    outline: none;
-    border-radius: var(--border-radius);
-    padding: 0.5em 1em;
-    color: var(--color-white);
 }
 
 /* tablist sorting */

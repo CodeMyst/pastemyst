@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using PasteMyst.Model;
+using PasteMyst.Models;
 
 namespace PasteMyst.Api
 {
     [ApiController]
     [Produces("application/json")]
     [ApiVersion("3")]
-    // ReSharper disable once RouteTemplates.RouteParameterConstraintNotResolved
     [Route("api/v{version:apiVersion}/[controller]")]
     public class DataController : ControllerBase
     {

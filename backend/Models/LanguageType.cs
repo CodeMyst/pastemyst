@@ -1,4 +1,4 @@
-namespace PasteMyst.Model
+namespace PasteMyst.Models
 {
     public enum LanguageType
     {

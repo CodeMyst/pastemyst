@@ -1,6 +1,6 @@
 using YamlDotNet.Serialization;
 
-namespace PasteMyst.Model
+namespace PasteMyst.Models
 {
     public class Language
     {

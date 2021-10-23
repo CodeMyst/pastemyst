@@ -3,9 +3,12 @@ using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PasteMyst.Model;
+using Microsoft.Extensions.Options;
+using PasteMyst.Models;
+using PasteMyst.Services;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -15,9 +18,21 @@ namespace PasteMyst
     {
         private Dictionary<string, Language> _langs = new();
 
+        private IConfiguration _config;
+
+        public Startup(IConfiguration config)
+        {
+            _config = config;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             LoadLangs();
+
+            services.Configure<DatabaseSettings>(_config.GetSection(nameof(DatabaseSettings)));
+            services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+
+            services.AddSingleton<PasteService>();
 
             // TODO: this is only temporary, later cors should be defined per endpoints
             services.AddCors(options =>

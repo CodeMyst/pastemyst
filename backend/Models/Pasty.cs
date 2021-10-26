@@ -1,4 +1,3 @@
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace PasteMyst.Models
@@ -17,7 +16,7 @@ namespace PasteMyst.Models
         /// <summary>
         /// Pasty's title.
         /// </summary>
-        public string Title { get; set; }
+        public string Title { get; set; } = "";
 
         /// <summary>
         /// Pasty's language name.
@@ -27,6 +26,6 @@ namespace PasteMyst.Models
         /// <summary>
         /// Pasty's contents.
         /// </summary>
-        public string Contents { get; set; }
+        public string Content { get; set; }
     }
 }

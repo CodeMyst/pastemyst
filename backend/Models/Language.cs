@@ -6,7 +6,7 @@ namespace PasteMyst.Models
     {
         /// <summary>
         /// Type of language. Either data, programming, markup, prose or nil.
-        /// <seealso cref="PasteMyst.Model.LanguageType"/>
+        /// <seealso cref="PasteMyst.Models.LanguageType"/>
         /// </summary>
         public LanguageType Type { get; set; }
 

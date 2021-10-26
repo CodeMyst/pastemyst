@@ -18,7 +18,7 @@ namespace PasteMyst
     {
         private Dictionary<string, Language> _langs = new();
 
-        private IConfiguration _config;
+        private readonly IConfiguration _config;
 
         public Startup(IConfiguration config)
         {
@@ -32,7 +32,9 @@ namespace PasteMyst
             services.Configure<DatabaseSettings>(_config.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
+            services.AddSingleton<LanguageService>();
             services.AddSingleton<PasteService>();
+            services.AddSingleton(_langs);
 
             // TODO: this is only temporary, later cors should be defined per endpoints
             services.AddCors(options =>
@@ -44,9 +46,9 @@ namespace PasteMyst
                 });
             });
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
+
             services.AddApiVersioning();
-            services.AddSingleton(_langs);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -76,9 +78,9 @@ namespace PasteMyst
         /// </summary>
         private void LoadLangs()
         {
-            var yaml = File.ReadAllText("Data/languages.yml");
+            string yaml = File.ReadAllText("Data/languages.yml");
 
-            var deserializer = new DeserializerBuilder()
+            IDeserializer deserializer = new DeserializerBuilder()
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
                 .IgnoreUnmatchedProperties()
                 .Build();

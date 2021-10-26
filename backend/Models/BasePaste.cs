@@ -1,5 +1,7 @@
-using MongoDB.Bson;
+using System;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
+using PasteMyst.Serialization;
 
 namespace PasteMyst.Models
 {
@@ -15,19 +17,21 @@ namespace PasteMyst.Models
         public string Id { get; set; }
 
         /// <summary>
-        /// When the paste is created, unix time.
+        /// When the paste is created.
         /// </summary>
-        public ulong CreatedAt { get; set; }
+        [JsonConverter(typeof(UnixTimestampConverter))]
+        public DateTime CreatedAt { get; set; }
+
+        /// <summary>
+        /// When the paste will get deleted, if ExpiresIn is set to Never, this value is set to null.
+        /// </summary>
+        [JsonConverter(typeof(UnixTimestampConverter))]
+        public DateTime? DeletesAt { get; set; }
 
         /// <summary>
         /// When the paste expires.
         /// </summary>
         public ExpiresIn ExpiresIn { get; set; }
-
-        /// <summary>
-        /// When the paste will get deleted, if ExpiresIn is set to Never, this value is set to 0.
-        /// </summary>
-        public ulong DeletesAt { get; set; }
 
         /// <summary>
         /// Owner's ID of the paste. If no owner then this value is null.

@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
-    export async function load({ page, fetch, session, stuff }) {
-        const url = `/${page.params.paste}.json`;
+    export const load = async ({ page, fetch }) => {
+        const url = `/internal/${page.params.paste}.json`;
         const res = await fetch(url);
         const json = await res.json();
 
@@ -16,7 +16,7 @@
             status: res.status,
             error: new Error(`could not load ${url}`)
         };
-    }
+    };
 </script>
 
 <script lang="ts">

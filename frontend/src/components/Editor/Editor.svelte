@@ -8,14 +8,16 @@
     import { myst } from "../../cm-themes/myst";
     import BigSelect from "../Input/PopupSelect.svelte";
     import IndentSelect from "../Input/IndentSelect.svelte";
-    import { getLanguage, getLanguageNames } from "../../langs";
     import { languages as codemirrorLangs } from "@codemirror/language-data";
+    import type { Language } from "src/models/Language";
 
     type Unit = "spaces" | "tabs";
 
     export let hidden = false;
-
-    let langsPromise = getLanguageNames();
+    export let langs: Map<string, Language>;
+    export let langNames: [string, string][] = new Array<[string, string]>();
+    // dont enable the lang select until the langs map has been converted to a proper structure
+    let enableLangSelect: boolean = false;
 
     let editorElement: HTMLElement;
 
@@ -34,6 +36,16 @@
     let selectedLanguage: [string, string];
 
     onMount(async () => {
+        for (const [k, v] of langs) {
+            let val = "";
+            if (v.aliases !== null) val = v.aliases.join(", ");
+            langNames.push([val, k]);
+        }
+
+        selectedLanguage = langNames[0];
+
+        enableLangSelect = true;
+
         let updateListener = EditorView.updateListener.of((update) => {
             let cmLine = update.state.doc.lineAt(update.state.selection.main.head);
             line = cmLine.number;
@@ -92,13 +104,13 @@
      * Sets the proper language of the editor.
      */
     const onLangSelected = async () => {
-        const fullLang = await getLanguage(selectedLanguage[1] as string);
+        const fullLang = langs.get(selectedLanguage[1] as string);
         const langName = selectedLanguage[1].toLowerCase();
 
         let fullLangAliases: string[] = [];
 
         if (fullLang.aliases !== null)
-            fullLangAliases = fullLang.aliases.map((a) => a.toLowerCase());
+            fullLangAliases = fullLang.aliases.map((a: string) => a.toLowerCase());
         // add the codemirrorMode to the aliases
         if (fullLang.codemirrorMode !== null)
             fullLangAliases.push(fullLang.codemirrorMode.toLowerCase());
@@ -138,18 +150,16 @@
 
     <div class="toolbar">
         <div class="left">
-            {#await langsPromise}
-                <p>loading...</p>
-            {:then langs}
+            {#if enableLangSelect}
                 <BigSelect
                     id="language"
                     label="lang:"
                     placeholder="select a language..."
-                    options={langs}
+                    options={langNames}
                     on:selected={onLangSelected}
                     bind:selectedValue={selectedLanguage}
                 />
-            {/await}
+            {/if}
         </div>
         <div class="right">
             <div class="pos">

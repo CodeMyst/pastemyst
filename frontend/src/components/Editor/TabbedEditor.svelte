@@ -3,6 +3,7 @@
     import Sortable from "sortablejs";
     import Editor from "./Editor.svelte";
     import { onMount, tick } from "svelte";
+    import type { Language } from "src/models/Language";
 
     class STab {
         title: string;
@@ -16,6 +17,8 @@
             this.editor = editor;
         }
     }
+
+    export let langs: Map<string, Language>;
 
     let editorTarget: HTMLElement;
 
@@ -51,6 +54,9 @@
             "untitled",
             new Editor({ target: editorTarget })
         );
+
+        newTab.editor.$set({ langs: langs });
+
         // add tab to array
         tabs = [...tabs, newTab];
         await setActiveTab(tabs[tabs.length - 1].id);

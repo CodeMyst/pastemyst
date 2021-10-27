@@ -34,7 +34,7 @@
             <ion-icon name="person" />
         </label>
         <label
-            data-tooltip="anonymous - the paste won't be associated with your account"
+            data-tooltip="detached - the paste won't be associated with your account"
             class="option"
         >
             <input type="checkbox" name="visibility" on:click={onRadioPress} />

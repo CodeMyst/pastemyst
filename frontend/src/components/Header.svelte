@@ -103,7 +103,6 @@
     .navbar-toggle,
     .profile {
         cursor: pointer;
-        color: var(--color-boulder);
         font-size: 1.5em;
         @include transition();
 

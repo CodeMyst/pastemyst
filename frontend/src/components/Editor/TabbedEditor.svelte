@@ -57,6 +57,8 @@
 
         newTab.editor.$set({ langs: langs });
 
+        await tick();
+
         // add tab to array
         tabs = [...tabs, newTab];
         await setActiveTab(tabs[tabs.length - 1].id);

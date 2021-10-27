@@ -36,6 +36,8 @@
     let selectedLanguage: [string, string];
 
     onMount(async () => {
+        await tick();
+
         for (const [k, v] of langs) {
             let val = "";
             if (v.aliases !== null) val = v.aliases.join(", ");

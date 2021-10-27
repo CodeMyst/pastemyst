@@ -1,5 +1,6 @@
 import type { EndpointOutput } from "@sveltejs/kit";
 import type { JSONString } from "@sveltejs/kit/types/helper";
+import { API_BASE } from "../../constants";
 
 let langsCache: JSONString;
 
@@ -13,8 +14,7 @@ export const get = async (): Promise<EndpointOutput> => {
  *  Loading all of the languages, cached.
  */
 const loadLanguages = async (): Promise<JSONString> => {
-    // TODO: turn the host into a var
-    const res = await fetch("http://localhost:5001/api/v3/data/langs", {
+    const res = await fetch(`${API_BASE}/data/langs`, {
         headers: {
             "Content-Type": "application/json"
         }

@@ -7,12 +7,12 @@ using PasteMyst.Utils;
 namespace PasteMyst.Services
 {
     /// <summary>
-    /// CRUD Service for pastes.
+    ///     CRUD Service for pastes.
     /// </summary>
     public class PasteService
     {
-        private readonly IMongoCollection<Paste> _pastes;
         private readonly LanguageService _langService;
+        private readonly IMongoCollection<Paste> _pastes;
 
         public PasteService(IDatabaseSettings settings, LanguageService langService)
         {
@@ -37,15 +37,11 @@ namespace PasteMyst.Services
 
         public async Task<Paste> Create(PasteSkeleton skeleton)
         {
-            if (skeleton.IsPublic || skeleton.IsPrivate || (skeleton.Tags is not null && skeleton.Tags.Length > 0))
-            {
+            if (skeleton.IsPublic || skeleton.IsPrivate || skeleton.Tags is not null && skeleton.Tags.Length > 0)
                 throw new NotImplementedException("account pastes not yet implemented.");
-            }
 
             if (skeleton.Pasties is null || skeleton.Pasties.Length == 0)
-            {
                 throw new ArgumentException("pasties array has to have at least one pasty.");
-            }
 
             foreach (Pasty pasty in skeleton.Pasties)
             {
@@ -65,7 +61,7 @@ namespace PasteMyst.Services
             // TODO: user pastes
             // TODO: encrypted pastes
 
-            var res = new Paste()
+            var res = new Paste
             {
                 Id = await RandomPasteId(),
                 CreatedAt = DateTime.Now,
@@ -77,7 +73,7 @@ namespace PasteMyst.Services
                 IsPublic = false,
                 IsEncrypted = false,
                 Tags = Array.Empty<string>(),
-                Edits = Array.Empty<Edit>(),
+                Edits = Array.Empty<Edit>()
             };
 
             foreach (Pasty pasty in skeleton.Pasties)
@@ -96,13 +92,17 @@ namespace PasteMyst.Services
             return res;
         }
 
-        private async Task<string> RandomPasteId() => await IdUtils.RandomIdPred(async (id) => await Exists(id));
+        private async Task<string> RandomPasteId()
+        {
+            return await IdUtils.RandomIdPred(async id => await Exists(id));
+        }
 
         private async Task<string> RandomPastyId(Paste p)
         {
             if (p.Pasties is null) return IdUtils.RandomId();
 
-            return await IdUtils.RandomIdPred((id) => Task.FromResult(Array.Exists(p.Pasties, p => p.Id.Equals(id))));
+            return await IdUtils.RandomIdPred(id =>
+                Task.FromResult(Array.Exists(p.Pasties, pasty => pasty.Id.Equals(id))));
         }
     }
 }

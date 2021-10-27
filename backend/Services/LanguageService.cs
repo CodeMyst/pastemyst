@@ -14,7 +14,7 @@ namespace PasteMyst.Services
         }
 
         /// <summary>
-        /// Finds the language based on the provided name, alias or extension.
+        ///     Finds the language based on the provided name, alias or extension.
         /// </summary>
         /// <returns>The proper language name. Returns null if the language isn't found.</returns>
         public string GetLanguage(string lang)
@@ -26,21 +26,13 @@ namespace PasteMyst.Services
 
                 // by alias
                 if (value.Aliases is not null && value.Aliases.Length > 0)
-                {
                     if (value.Aliases.Any(alias => alias.ToLower().Equals(lang.ToLower())))
-                    {
                         return key;
-                    }
-                }
 
                 // by extension
                 if (value.Extensions is not null && value.Extensions.Length > 0)
-                {
                     if (value.Extensions.Any(ext => ext.TrimStart('.').ToLower().Equals(lang.ToLower())))
-                    {
                         return key;
-                    }
-                }
             }
 
             return null;

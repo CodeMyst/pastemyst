@@ -16,9 +16,8 @@ namespace PasteMyst
 {
     public class Startup
     {
-        private Dictionary<string, Language> _langs = new();
-
         private readonly IConfiguration _config;
+        private Dictionary<string, Language> _langs = new();
 
         public Startup(IConfiguration config)
         {
@@ -42,7 +41,7 @@ namespace PasteMyst
                 options.AddDefaultPolicy(builder =>
                 {
                     builder.WithOrigins("*")
-                           .AllowAnyHeader();
+                        .AllowAnyHeader();
                 });
             });
 
@@ -53,10 +52,7 @@ namespace PasteMyst
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseRouting();
 
@@ -66,15 +62,12 @@ namespace PasteMyst
             {
                 endpoints.MapControllers();
 
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Hello World!"); });
             });
         }
 
         /// <summary>
-        /// Loads languages.yml and deserializes them into a dictionary. Available through DI.
+        ///     Loads languages.yml and deserializes them into a dictionary. Available through DI.
         /// </summary>
         private void LoadLangs()
         {

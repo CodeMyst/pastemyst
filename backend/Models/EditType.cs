@@ -3,7 +3,7 @@ namespace PasteMyst.Models
     // TODO: Add all the types.
 
     /// <summary>
-    /// Type of paste edits.
+    ///     Type of paste edits.
     /// </summary>
     public enum EditType
     {
@@ -12,6 +12,6 @@ namespace PasteMyst.Models
         PastyLanguage,
         PastyContent,
         PastyAdded,
-        PastyRemoved,
+        PastyRemoved
     }
 }

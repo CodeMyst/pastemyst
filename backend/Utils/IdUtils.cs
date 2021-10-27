@@ -9,10 +9,10 @@ namespace PasteMyst.Utils
     {
         private const string Base36Chars = "0123456789abcdefghijklmnopqrstuvwxyz";
 
-        private static readonly Random Rnd = new Random();
+        private static readonly Random Rnd = new();
 
         /// <summary>
-        /// Encodes a long value to a base36 string.
+        ///     Encodes a long value to a base36 string.
         /// </summary>
         public static string EncodeBase36(long value)
         {
@@ -20,7 +20,7 @@ namespace PasteMyst.Utils
             long temp = value;
             while (temp != 0)
             {
-                sb.Append(Base36Chars[(int)(temp % 36)]);
+                sb.Append(Base36Chars[(int) (temp % 36)]);
                 temp /= 36;
             }
 
@@ -28,7 +28,7 @@ namespace PasteMyst.Utils
         }
 
         /// <summary>
-        /// Generates a random 8 character ID.
+        ///     Generates a random 8 character ID.
         /// </summary>
         public static string RandomId()
         {
@@ -45,16 +45,16 @@ namespace PasteMyst.Utils
             {
                 var buf = new byte[8];
                 Rnd.NextBytes(buf);
-                ulongRand = (ulong)BitConverter.ToInt64(buf, 0);
+                ulongRand = (ulong) BitConverter.ToInt64(buf, 0);
             } while (ulongRand > ulong.MaxValue - (ulong.MaxValue % range + 1) % range);
 
-            long rand = (long)(ulongRand % range) + min;
+            long rand = (long) (ulongRand % range) + min;
 
             return EncodeBase36(rand);
         }
 
         /// <summary>
-        /// Generates a random 8 character ID as long as the predicate is true.
+        ///     Generates a random 8 character ID as long as the predicate is true.
         /// </summary>
         public static async Task<string> RandomIdPred(Func<string, Task<bool>> p)
         {

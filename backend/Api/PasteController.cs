@@ -8,7 +8,7 @@ using PasteMyst.Services;
 namespace PasteMyst.Api
 {
     /// <summary>
-    /// Endpoint for fetching and creating pastes.
+    ///     Endpoint for fetching and creating pastes.
     /// </summary>
     [ApiController]
     [Produces("application/json")]
@@ -24,7 +24,7 @@ namespace PasteMyst.Api
         }
 
         /// <summary>
-        /// Get a paste by its ID.
+        ///     Get a paste by its ID.
         /// </summary>
         [HttpGet("{id}")]
         public async Task<ActionResult<Paste>> Get(string id)
@@ -37,7 +37,7 @@ namespace PasteMyst.Api
         }
 
         /// <summary>
-        /// Create a paste.
+        ///     Create a paste.
         /// </summary>
         [HttpPost]
         public async Task<ActionResult<Paste>> Create(PasteSkeleton skeleton)
@@ -46,16 +46,16 @@ namespace PasteMyst.Api
             {
                 Paste paste = await _pasteService.Create(skeleton);
 
-                return CreatedAtAction(nameof(Get), new { id = paste.Id }, paste);
+                return CreatedAtAction(nameof(Get), new {id = paste.Id}, paste);
             }
             catch (NotImplementedException ex)
             {
                 // TODO: should be removed once everything is implemented
-                return StatusCode(StatusCodes.Status501NotImplemented, new { message = ex.Message });
+                return StatusCode(StatusCodes.Status501NotImplemented, new {message = ex.Message});
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new {message = ex.Message});
             }
         }
     }

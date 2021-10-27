@@ -6,6 +6,6 @@ namespace PasteMyst.Models
         Programming,
         Markup,
         Prose,
-        Nil,
+        Nil
     }
 }

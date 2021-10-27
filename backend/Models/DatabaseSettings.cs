@@ -1,7 +1,7 @@
 namespace PasteMyst.Models
 {
     /// <summary>
-    /// Settings for connecting to the MongoDB.
+    ///     Settings for connecting to the MongoDB.
     /// </summary>
     public class DatabaseSettings : IDatabaseSettings
     {

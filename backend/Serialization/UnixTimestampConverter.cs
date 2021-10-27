@@ -9,17 +9,23 @@ namespace PasteMyst.Serialization
         public static long ToUnixTimestamp(DateTime value)
         {
             double seconds = (value - DateTime.UnixEpoch).TotalSeconds;
-            return (long)seconds;
+            return (long) seconds;
         }
 
         public static long ToUnixTimestamp(DateTimeOffset value)
-            => ToUnixTimestamp(value.UtcDateTime);
+        {
+            return ToUnixTimestamp(value.UtcDateTime);
+        }
 
         public static DateTime ToDateTime(long value)
-            => DateTime.UnixEpoch.AddSeconds(value);
+        {
+            return DateTime.UnixEpoch.AddSeconds(value);
+        }
 
         public static DateTimeOffset ToDateTimeOffset(long value)
-            => DateTimeOffset.UnixEpoch.AddSeconds(value);
+        {
+            return DateTimeOffset.UnixEpoch.AddSeconds(value);
+        }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -31,13 +37,14 @@ namespace PasteMyst.Serialization
                 writer.WriteValue(ToUnixTimestamp(dto));
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+            JsonSerializer serializer)
         {
             if (reader.Value == null)
                 return null;
             if (objectType == typeof(DateTimeOffset) || objectType == typeof(DateTimeOffset?))
-                return ToDateTimeOffset((long)reader.Value);
-            return ToDateTime((long)reader.Value);
+                return ToDateTimeOffset((long) reader.Value);
+            return ToDateTime((long) reader.Value);
         }
     }
 }

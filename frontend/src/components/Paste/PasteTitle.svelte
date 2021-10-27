@@ -31,6 +31,11 @@
     </div>
 </div>
 
+<div class="lang-stats">
+    <div class="lang d" data-tooltip="D 50%" />
+    <div class="lang java" data-tooltip="Java 50%" />
+</div>
+
 <style lang="scss">
     @import "../../mixins.scss";
 
@@ -80,6 +85,34 @@
                     margin-right: 0.25em;
                 }
             }
+        }
+    }
+
+    .lang-stats {
+        display: flex;
+        height: 5px;
+
+        .lang {
+            border-right: 2px solid var(--color-cod-gray-light);
+
+            &:first-child {
+                border-bottom-left-radius: var(--border-radius);
+            }
+
+            &:last-child {
+                border-bottom-right-radius: var(--border-radius);
+                border-right: none;
+            }
+        }
+
+        .d {
+            width: 50%;
+            background-color: #ba595e;
+        }
+
+        .java {
+            width: 50%;
+            background-color: #b07219;
         }
     }
 

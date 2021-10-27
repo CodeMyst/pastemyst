@@ -63,6 +63,8 @@
                 background-color: var(--color-cod-gray);
                 border-radius: var(--border-radius);
                 margin-right: 0.5em;
+                align-items: center;
+                display: flex;
 
                 &:hover {
                     color: var(--color-accent);

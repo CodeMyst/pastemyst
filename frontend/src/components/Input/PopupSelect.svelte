@@ -1,7 +1,7 @@
 <!-- TODO: this is just a copy paste from Select.svele with different styling and a different scrollSelectedIntoView function -->
 <script lang="ts">
     import { tick, createEventDispatcher } from "svelte";
-    import Popup from "./Popup.svelte";
+    import Popup from "../Popup.svelte";
 
     export let id: string;
     export let label: string;

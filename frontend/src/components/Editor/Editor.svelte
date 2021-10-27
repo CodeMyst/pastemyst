@@ -5,10 +5,10 @@
     import { Compartment } from "@codemirror/state";
     import { indentWithTab } from "@codemirror/commands";
     import { indentUnit, LanguageDescription, LanguageSupport } from "@codemirror/language";
-    import { myst } from "../cm-themes/myst";
-    import BigSelect from "./BigSelect.svelte";
-    import IndentSelect from "./IndentSelect.svelte";
-    import { getLanguage, getLanguageNames } from "../langs";
+    import { myst } from "../../cm-themes/myst";
+    import BigSelect from "../Input/PopupSelect.svelte";
+    import IndentSelect from "../Input/IndentSelect.svelte";
+    import { getLanguage, getLanguageNames } from "../../langs";
     import { languages as codemirrorLangs } from "@codemirror/language-data";
 
     type Unit = "spaces" | "tabs";

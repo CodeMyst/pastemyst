@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Tab from "./Tab.svelte";
+    import Tab from "../Tab.svelte";
     import Sortable from "sortablejs";
     import Editor from "./Editor.svelte";
     import { onMount, tick } from "svelte";

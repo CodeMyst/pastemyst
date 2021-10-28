@@ -5,6 +5,7 @@
     export let active = false;
     export let title = "untitled";
     export let renameState = false;
+    export let readonly = false;
 
     let dispatch = createEventDispatcher();
 
@@ -15,6 +16,8 @@
     };
 
     const onDoubleClick = async () => {
+        if (readonly) return;
+
         renameState = true;
 
         await tick();
@@ -63,9 +66,11 @@
         <span class="title">{title}</span>
     {/if}
 
-    <span class="close-icon" on:click={onClose}>
-        <ion-icon name="close" />
-    </span>
+    {#if !readonly}
+        <span class="close-icon" on:click={onClose}>
+            <ion-icon name="close" />
+        </span>
+    {/if}
 </div>
 
 <style>

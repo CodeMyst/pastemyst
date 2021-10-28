@@ -7,7 +7,8 @@
         if (res.ok) {
             return {
                 props: {
-                    paste: json
+                    paste: json.paste,
+                    highlightedContent: json.highlightedContent
                 }
             };
         }
@@ -21,9 +22,13 @@
 
 <script lang="ts">
     import PasteTitle from "../components/Paste/PasteTitle.svelte";
+    import PasteViewer from "../components/Paste/PasteViewer.svelte";
     import type { Paste } from "src/models/Paste";
 
     export let paste: Paste;
+    export let highlightedContent: Array<string>;
 </script>
 
 <PasteTitle title={paste.title} />
+
+<PasteViewer pasties={paste.pasties} {highlightedContent} />

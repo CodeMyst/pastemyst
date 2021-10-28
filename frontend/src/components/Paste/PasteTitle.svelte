@@ -2,47 +2,53 @@
     export let title: string;
 </script>
 
-<div class="paste-title">
-    <p class="title">{title}</p>
+<div class="block">
+    <div class="paste-title">
+        <p class="title">{title}</p>
 
-    <div class="right">
-        <div class="buttons">
-            <div class="btn star" data-tooltip="star">
-                <ion-icon name="star" />
-                <span class="amount">54</span>
-            </div>
+        <div class="right">
+            <div class="buttons">
+                <div class="btn star" data-tooltip="star">
+                    <ion-icon name="star" />
+                    <span class="amount">54</span>
+                </div>
 
-            <div class="btn" data-tooltip="edit">
-                <ion-icon name="create" />
-            </div>
+                <div class="btn" data-tooltip="edit">
+                    <ion-icon name="create" />
+                </div>
 
-            <div class="btn" data-tooltip="copy the link">
-                <ion-icon name="link" />
-            </div>
+                <div class="btn" data-tooltip="copy the link">
+                    <ion-icon name="link" />
+                </div>
 
-            <div class="btn" data-tooltip="clone">
-                <ion-icon name="duplicate" />
-            </div>
+                <div class="btn" data-tooltip="clone">
+                    <ion-icon name="duplicate" />
+                </div>
 
-            <div class="btn" data-tooltip="more options">
-                <ion-icon name="ellipsis-horizontal" />
+                <div class="btn" data-tooltip="more options">
+                    <ion-icon name="ellipsis-horizontal" />
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="lang-stats">
-    <div class="lang d" data-tooltip="D 50%" />
-    <div class="lang java" data-tooltip="Java 50%" />
+    <div class="lang-stats">
+        <div class="lang d" data-tooltip="D 50%" />
+        <div class="lang java" data-tooltip="Java 50%" />
+    </div>
 </div>
 
 <style lang="scss">
     @import "../../mixins.scss";
 
+    .block {
+        margin-bottom: 2em;
+    }
+
     .paste-title {
         background-color: var(--color-cod-gray-light);
         padding: 0.5em 1em;
-        border-radius: var(--border-radius);
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
         display: flex;
         flex-direction: column-reverse;
 

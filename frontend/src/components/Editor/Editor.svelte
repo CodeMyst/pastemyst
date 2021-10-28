@@ -5,7 +5,7 @@
     import { Compartment } from "@codemirror/state";
     import { indentWithTab } from "@codemirror/commands";
     import { indentUnit, LanguageDescription, LanguageSupport } from "@codemirror/language";
-    import { myst } from "../../cm-themes/myst";
+    import { myst } from "../../themes/myst";
     import BigSelect from "../Input/PopupSelect.svelte";
     import IndentSelect from "../Input/IndentSelect.svelte";
     import { languages as codemirrorLangs } from "@codemirror/language-data";

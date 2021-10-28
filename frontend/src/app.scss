@@ -200,3 +200,30 @@ input[type="password"] {
     border-top: 2px solid var(--color-main);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
+/* shiki */
+
+.shiki {
+    margin: 0;
+    padding: 0.5em 1em;
+    line-height: 1.5;
+    font-size: var(--fontsize-normal);
+    overflow-x: auto;
+    font-family: var(--fontstack);
+
+    code {
+        counter-reset: step;
+        counter-increment: step 0;
+        font-family: var(--fontstack);
+
+        .line::before {
+            content: counter(step);
+            counter-increment: step;
+            width: 1em;
+            margin-right: 1em;
+            display: inline-block;
+            text-align: right;
+            color: #777777;
+        }
+    }
+}

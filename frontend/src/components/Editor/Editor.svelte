@@ -44,8 +44,12 @@
             langNames.push([val, k]);
         }
 
-        selectedLanguage = langNames[0];
+        // move plain text to the first position in the select
+        let textIndex = langNames.findIndex((t) => t[1] === "Text");
+        let textLang = langNames.splice(textIndex, 1)[0];
+        langNames.unshift(textLang);
 
+        // enable the lang select now that the langs map has been converted properly
         enableLangSelect = true;
 
         let updateListener = EditorView.updateListener.of((update) => {
@@ -119,21 +123,31 @@
 
         let langDescription: LanguageDescription = undefined;
 
+        // check if the name matches
         for (let cmLang of codemirrorLangs) {
-            // check if the name matches
             if (langName === cmLang.name.toLowerCase()) {
                 langDescription = cmLang;
                 break;
             }
-            // check if one of the lang aliases matches the codemirror name
-            else if (fullLangAliases.includes(cmLang.name.toLowerCase())) {
-                langDescription = cmLang;
-                break;
+        }
+
+        // check if one of the lang aliases matches the codemirror name
+        if (langDescription === undefined) {
+            for (let cmLang of codemirrorLangs) {
+                if (fullLangAliases.includes(cmLang.name.toLowerCase())) {
+                    langDescription = cmLang;
+                    break;
+                }
             }
-            // check if one of the lang aliases matches one of the codemirror aliases
-            else if (fullLangAliases.filter((a) => cmLang.alias.includes(a)).length > 0) {
-                langDescription = cmLang;
-                break;
+        }
+
+        // check if one of the lang aliases matches one of the codemirror aliases
+        if (langDescription === undefined) {
+            for (let cmLang of codemirrorLangs) {
+                if (fullLangAliases.filter((a) => cmLang.alias.includes(a)).length > 0) {
+                    langDescription = cmLang;
+                    break;
+                }
             }
         }
 

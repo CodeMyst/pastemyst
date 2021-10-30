@@ -1,0 +1,1 @@
+{"name":"Jison Lex Injection","scopeName":"source.jisonlex-injection","patterns":[{"name":"variable.language.jisonlex","match":"\\byy(?:l(?:eng|ineno|loc)|text)\\b"}]}

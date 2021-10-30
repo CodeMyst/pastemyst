@@ -1,0 +1,1 @@
+{"scopeName":"markdown.hxml.codeblock","patterns":[{"include":"#hxml-code-block"}],"repository":{"hxml-code-block":{"begin":"hxml(\\s+[^`~]*)?$","end":"(^|\\G)(?=\\s*[`~]{3,}\\s*$)","patterns":[{"contentName":"meta.embedded.block.hxml","begin":"(^|\\G)(\\s*)(.*)","while":"(^|\\G)(?!\\s*([`~]{3,})\\s*$)","patterns":[{"include":"source.hxml"}]}]}}}

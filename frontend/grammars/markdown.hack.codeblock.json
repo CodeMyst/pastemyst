@@ -1,0 +1,1 @@
+{"scopeName":"markdown.hack.codeblock","patterns":[{"include":"#hack-code-block"}],"repository":{"hack-code-block":{"contentName":"meta.embedded.block.hack","begin":"hack","end":"(^|\\G)(?=\\s*[`~]{3,}\\s*$)","patterns":[{"include":"source.hack"}]}}}

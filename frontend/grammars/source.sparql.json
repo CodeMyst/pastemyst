@@ -1,0 +1,1 @@
+{"name":"SPARQL","scopeName":"source.sparql","patterns":[{"include":"source.turtle#sparqlKeywords"},{"include":"source.turtle#sparqlFilterFns"},{"include":"source.turtle#sparqlLangConsts"},{"include":"source.turtle"}]}

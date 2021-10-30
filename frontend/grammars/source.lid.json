@@ -1,0 +1,1 @@
+{"name":"Lid File","scopeName":"source.lid","patterns":[{"name":"meta.header.mail","begin":"([\\x{21}-\\x{39}\\x{3B}-\\x{7E}]+)(:)\\s*","end":"^(?![ \\t\\v])","beginCaptures":{"1":{"name":"keyword.other.mail"},"2":{"name":"punctuation.separator.key-value.mail"}}}]}

@@ -1,0 +1,1 @@
+{"name":"Elm Documentation","scopeName":"text.html.mediawiki.elm-documentation","patterns":[{"name":"markup.raw.block.elm-documentation","contentName":"markup.raw.block.elm-documentation","begin":"\\x{FEFF}","end":"\\x{FEFF}","patterns":[{"include":"source.elm"}]}]}

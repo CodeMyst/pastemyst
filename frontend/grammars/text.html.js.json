@@ -1,0 +1,1 @@
+{"name":"JavaScript Template","scopeName":"text.html.js","patterns":[{"name":"source.js.embedded.html","begin":"\u003c%=?","end":"%\u003e","patterns":[{"include":"source.js"}],"captures":{"0":{"name":"punctuation.section.embedded.js"}}},{"include":"text.html.basic"}]}

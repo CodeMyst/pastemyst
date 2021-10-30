@@ -1,0 +1,1 @@
+{"name":"ObjectScript CSP","scopeName":"source.objectscript_csp","patterns":[{"include":"#inline-html"}],"repository":{"inline-html":{"name":"meta.embedded.inline.html","patterns":[{"include":"text.html.basic"}]}}}

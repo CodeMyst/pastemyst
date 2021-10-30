@@ -1,0 +1,1 @@
+{"scopeName":"markdown.haxe.codeblock","patterns":[{"include":"#haxe-code-block"}],"repository":{"haxe-code-block":{"begin":"haxe(\\s+[^`~]*)?$","end":"(^|\\G)(?=\\s*[`~]{3,}\\s*$)","patterns":[{"contentName":"meta.embedded.block.haxe","begin":"(^|\\G)(\\s*)(.*)","while":"(^|\\G)(?!\\s*([`~]{3,})\\s*$)","patterns":[{"include":"source.hx"}]}]}}}

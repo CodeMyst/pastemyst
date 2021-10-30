@@ -1,0 +1,1 @@
+{"name":"Gemfile","scopeName":"source.ruby.gemfile","patterns":[{"include":"source.ruby"},{"name":"meta.declaration.ruby.gemfile","begin":"\\b(?\u003c!\\.|::)(gem|git|group|platforms|ruby|source)\\b(?![?!])","end":"$|(?=#|})","patterns":[{"include":"$self"}],"captures":{"1":{"name":"keyword.other.special-method.ruby.gemfile"}}}]}

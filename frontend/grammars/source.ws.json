@@ -1,0 +1,1 @@
+{"name":"WhiteSpace Esolang","scopeName":"source.ws","patterns":[{"name":"markup.ignored.space.ws","match":" "},{"name":"invalid.illegal.tab.ws","match":"\\t"},{"name":"carriage-return.ws","match":"\\r"}]}

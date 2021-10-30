@@ -1,0 +1,1 @@
+{"name":".hgignore","scopeName":"source.hgignore","patterns":[{"include":"#main"}],"repository":{"main":{"patterns":[{"include":"source.regexp"},{"name":"keyword.operator.logical.not.negation.hgignore","match":"^!"},{"match":"[^\\s$^]+","captures":{"0":{"patterns":[{"include":"source.gitignore#patternInnards"}]}}}]}}}

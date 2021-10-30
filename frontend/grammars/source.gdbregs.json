@@ -1,0 +1,1 @@
+{"name":"GDB Registers","scopeName":"source.gdbregs","patterns":[{"name":"keyword.gdbregs","match":"\\b.+:"},{"name":"constant.other.gdbregs","match":"\\b[-$]*[0-9a-fx]+"}]}

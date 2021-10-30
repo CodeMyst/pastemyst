@@ -1,0 +1,1 @@
+{"name":"Blade (Markdown)","scopeName":"source.gfm.blade","patterns":[{"include":"text.html.php.blade#blade"},{"include":"text.html.basic"},{"include":"source.gfm"}]}

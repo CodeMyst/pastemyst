@@ -1,0 +1,1 @@
+{"scopeName":"markdown.plantuml.codeblock","patterns":[{"include":"#plantuml-code-block"}],"repository":{"plantuml-code-block":{"begin":"plantuml(\\s+[^`~]*)?$","end":"(^|\\G)(?=\\s*[`~]{3,}\\s*$)","patterns":[{"contentName":"meta.embedded.block.plantuml","begin":"(^|\\G)(\\s*)(.*)","while":"(^|\\G)(?!\\s*([`~]{3,})\\s*$)","patterns":[{"include":"source.wsd"}]}]}}}

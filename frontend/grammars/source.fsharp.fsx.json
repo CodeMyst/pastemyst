@@ -1,0 +1,1 @@
+{"name":"fsharp.fsx","scopeName":"source.fsharp.fsx","patterns":[{"include":"source.fsharp"},{"name":"preprocessor.source.fsharp.fsx","match":"^#(load|r|I|time)"}]}

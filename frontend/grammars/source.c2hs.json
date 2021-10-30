@@ -1,0 +1,1 @@
+{"name":"C2Hs","scopeName":"source.c2hs","patterns":[{"name":"meta.preprocessor.c2hs","begin":"\\{#","end":"#\\}","beginCaptures":{"0":{"name":"punctuation.definition.preprocessor.begin.c2hs"}},"endCaptures":{"0":{"name":"punctuation.definition.preprocessor.end.c2hs"}}},{"include":"source.haskell"}]}

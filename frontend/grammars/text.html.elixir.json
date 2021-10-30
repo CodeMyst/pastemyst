@@ -1,0 +1,1 @@
+{"name":"HTML (EEx)","scopeName":"text.html.elixir","patterns":[{"include":"text.elixir"},{"include":"text.html.basic"}],"injections":{"R:text.html.elixir meta.tag meta.attribute string.quoted":{"patterns":[{"include":"text.elixir"}]}}}

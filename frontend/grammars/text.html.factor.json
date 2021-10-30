@@ -1,0 +1,1 @@
+{"name":"HTML (Factor)","scopeName":"text.html.factor","patterns":[{"name":"source.factor.embedded.html","begin":"\u003c%\\s","end":"(?\u003c=\\s)%\u003e","patterns":[{"include":"source.factor"}]},{"include":"text.html.basic"}]}

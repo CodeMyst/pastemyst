@@ -1,0 +1,1 @@
+{"name":"Show EOL characters","scopeName":"text.plain","patterns":[{"name":"crlf","match":"(?:\\r\\n)"},{"name":"lf","match":"(?:\\n)"},{"name":"cr","match":"\\r"}]}

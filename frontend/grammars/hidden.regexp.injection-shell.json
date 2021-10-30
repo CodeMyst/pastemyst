@@ -1,0 +1,1 @@
+{"scopeName":"hidden.regexp.injection-shell","patterns":[{"begin":"\\s+(=~)\\s+(?=[^'\"\\s])(?!\\]\\])","end":"[ \\t]","patterns":[{"match":"\\G((?:[^\\\\\\s]|\\\\.)++)","captures":{"1":{"patterns":[{"include":"source.regexp"}]}}}],"beginCaptures":{"1":{"name":"keyword.operator.logical.shell"}}}]}

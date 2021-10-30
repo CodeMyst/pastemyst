@@ -1,0 +1,1 @@
+{"name":"Literate Clean","scopeName":"text.restructuredtext.clean","patterns":[{"name":"meta.embedded.clean","begin":"^(\u003e\u003e?)","end":"$","patterns":[{"include":"source.clean"}],"captures":{"1":{"name":"punctuation.separator.literate.clean"}}},{"include":"text.restructuredtext"}]}

@@ -1,0 +1,1 @@
+{"scopeName":"documentation.markdown.injection.haxe","patterns":[{"include":"#markdown-comment"}],"repository":{"markdown-comment":{"begin":"(?\u003c=/\\*\\*)([^*]|\\*(?!/))*$","while":"(^|\\G)\\s*(?:\\*(?![*\\w]))?(?!\\/)(?=([^*]|[*](?!\\/))*$)","patterns":[{},{},{"include":"source.hx#javadoc-tags"},{}]}}}

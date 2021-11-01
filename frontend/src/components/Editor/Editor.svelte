@@ -45,6 +45,9 @@
         }
     }
 
+    // if the lang highlighting is supported in codemirror
+    let langSupported = false;
+
     onMount(async () => {
         await tick();
 
@@ -61,6 +64,10 @@
 
         // enable the lang select now that the langs map has been converted properly
         enableLangSelect = true;
+
+        // set the editor language
+        selectedLanguage = langNames[0];
+        onLangSelected();
 
         let updateListener = EditorView.updateListener.of((update) => {
             let cmLine = update.state.doc.lineAt(update.state.selection.main.head);
@@ -120,16 +127,20 @@
      * Sets the proper language of the editor.
      */
     const onLangSelected = async () => {
-        const fullLang = langs.get(selectedLanguage[1] as string);
         const langName = selectedLanguage[1].toLowerCase();
+
+        if (langName === "text") {
+            langSupported = true;
+            return;
+        }
 
         let fullLangAliases: string[] = [];
 
-        if (fullLang.aliases !== null)
-            fullLangAliases = fullLang.aliases.map((a: string) => a.toLowerCase());
+        if (selectedFullLanguage.aliases !== null)
+            fullLangAliases = selectedFullLanguage.aliases.map((a: string) => a.toLowerCase());
         // add the codemirrorMode to the aliases
-        if (fullLang.codemirrorMode !== null)
-            fullLangAliases.push(fullLang.codemirrorMode.toLowerCase());
+        if (selectedFullLanguage.codemirrorMode !== null)
+            fullLangAliases.push(selectedFullLanguage.codemirrorMode.toLowerCase());
 
         let langDescription: LanguageDescription = undefined;
 
@@ -165,6 +176,8 @@
 
         if (langDescription !== undefined) langSupport = await langDescription.load();
 
+        langSupported = langSupport !== undefined;
+
         editorView.dispatch({
             effects: language.reconfigure(langSupport)
         });
@@ -196,7 +209,15 @@
 </script>
 
 <div class:hidden>
-    <div class="editor" bind:this={editorElement} class:hidden={previewActive} />
+    <div class="editor" bind:this={editorElement} class:hidden={previewActive}>
+        <div class="not-supported-notice" class:hidden={langSupported}>
+            <p>
+                the language doesn't have highlighting in the editor, but will have
+                it once the paste is created. use the preview button to see the final result.
+            </p>
+        </div>
+    </div>
+
     <div class="preview" class:hidden={!previewActive} bind:this={previewElement} />
 
     <div class="toolbar">
@@ -245,6 +266,25 @@
 
     .editor {
         height: 50vh;
+        position: relative;
+
+        .not-supported-notice {
+            position: absolute;
+            bottom: 0;
+            z-index: 100;
+            width: 100%;
+            padding: 0.5em;
+            user-select: none;
+            font-size: var(--fontsize-small);
+
+            p {
+                background-color: var(--color-accent);
+                color: var(--color-cod-gray);
+                border-radius: var(--border-radius);
+                padding: 0.5em 1em;
+                margin: 0;
+            }
+        }
     }
 
     .preview {

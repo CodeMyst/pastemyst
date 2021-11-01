@@ -227,3 +227,23 @@ input[type="password"] {
         }
     }
 }
+
+/* scrollbars */
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-boulder) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--color-boulder);
+    border-radius: var(--border-radius);
+}

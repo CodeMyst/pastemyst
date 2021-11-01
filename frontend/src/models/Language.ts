@@ -7,4 +7,5 @@ export class Language {
     filenames: string[];
     color: string;
     group: string;
+    tmScope: string;
 }

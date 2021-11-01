@@ -23,6 +23,9 @@
 
     let editorView: EditorView;
 
+    let previewActive = false;
+    let previewElement: HTMLElement;
+
     let line = 0;
     let pos = 0;
 
@@ -34,6 +37,13 @@
     let selectedIndentAmount: [string, string];
 
     let selectedLanguage: [string, string];
+    let selectedFullLanguage: Language;
+
+    $: {
+        if (selectedLanguage !== undefined) {
+            selectedFullLanguage = langs.get(selectedLanguage[1]);
+        }
+    }
 
     onMount(async () => {
         await tick();
@@ -159,10 +169,35 @@
             effects: language.reconfigure(langSupport)
         });
     };
+
+    const onPreviewClick = async () => {
+        previewActive = !previewActive;
+
+        if (previewActive) {
+            const data = {
+                content: editorView.state.doc.toString(),
+                languageName: selectedLanguage[1],
+                languageScope: selectedFullLanguage.tmScope
+            };
+
+            const res = await fetch("/internal/highlight.json", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            const html = (await res.json()).res;
+
+            previewElement.innerHTML = html;
+        }
+    };
 </script>
 
 <div class:hidden>
-    <div class="editor" bind:this={editorElement} />
+    <div class="editor" bind:this={editorElement} class:hidden={previewActive} />
+    <div class="preview" class:hidden={!previewActive} bind:this={previewElement} />
 
     <div class="toolbar">
         <div class="left">
@@ -178,10 +213,21 @@
             {/if}
         </div>
         <div class="right">
-            <div class="pos">
+            {#if selectedFullLanguage?.tmScope !== "none"}
+                <div
+                    class="preview-button toolbar-element"
+                    class:active={previewActive}
+                    on:click={onPreviewClick}
+                >
+                    preview
+                </div>
+            {/if}
+
+            <div class="pos toolbar-element">
                 ln {line} pos {pos}
             </div>
-            <div class="indent">
+
+            <div class="indent toolbar-element">
                 <IndentSelect
                     bind:selectedIndentUnit
                     bind:selectedIndentAmount
@@ -192,9 +238,19 @@
     </div>
 </div>
 
-<style>
+<style lang="scss">
     .hidden {
         display: none;
+    }
+
+    .editor {
+        height: 50vh;
+    }
+
+    .preview {
+        height: 50vh;
+        overflow: auto;
+        background-color: var(--color-cod-gray-light);
     }
 
     .toolbar {
@@ -205,24 +261,43 @@
         justify-content: space-between;
         padding: 0em 1em;
         align-items: center;
-    }
 
-    .toolbar .right {
-        display: flex;
-        flex-direction: row;
-    }
+        .right {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
 
-    .toolbar .right .pos {
-        margin-right: 1em;
-        align-self: center;
-    }
+        .toolbar-element {
+            margin-right: 1em;
+            padding: 0.25em 0.5em;
 
-    .toolbar .indent {
-        display: flex;
-        align-items: center;
-    }
+            &:last-child {
+                margin-right: 0;
+            }
+        }
 
-    .editor {
-        height: 50vh;
+        .preview-button {
+            cursor: pointer;
+            user-select: none;
+
+            &:hover {
+                background-color: var(--color-cod-gray);
+            }
+
+            &.active {
+                background-color: var(--color-accent);
+                color: var(--color-cod-gray);
+            }
+        }
+
+        .pos {
+            align-self: center;
+        }
+
+        .indent {
+            display: flex;
+            align-items: center;
+        }
     }
 </style>

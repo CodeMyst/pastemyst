@@ -205,11 +205,11 @@ input[type="password"] {
 
 .shiki {
     margin: 0;
-    padding: 0.5em 1em;
-    line-height: 1.5;
+    line-height: 1.4;
     font-size: var(--fontsize-normal);
-    overflow-x: auto;
     font-family: var(--fontstack);
+    padding-left: 0.3em;
+    padding-top: 0.25em;
 
     code {
         counter-reset: step;
@@ -220,7 +220,7 @@ input[type="password"] {
             content: counter(step);
             counter-increment: step;
             width: 1em;
-            margin-right: 1em;
+            margin-right: 1.18em;
             display: inline-block;
             text-align: right;
             color: #777777;

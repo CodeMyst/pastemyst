@@ -21,6 +21,7 @@
             lang.filenames = langJson["filenames"];
             lang.color = langJson["color"];
             lang.group = langJson["gruop"];
+            lang.tmScope = langJson["tmScope"];
 
             langs.set(langName, lang);
         }

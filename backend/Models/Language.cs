@@ -46,5 +46,11 @@ namespace PasteMyst.Models
         ///     Name of the parent language. Languages in a group are counted in the stats as the parent language.
         /// </summary>
         public string Group { get; set; }
+
+        /// <summary>
+        ///     The TextMate scope that represents this programming language.
+        /// </summary>
+        [YamlMember(Alias = "tm_scope")]
+        public string TmScope { get; set; }
     }
 }

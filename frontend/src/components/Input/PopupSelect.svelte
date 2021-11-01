@@ -261,7 +261,7 @@
 
     label {
         display: inline-block;
-        margin-right: 0;
+        margin-right: 0.5em;
         align-self: center;
     }
 
@@ -270,9 +270,10 @@
         position: relative;
         color: #ffffff;
         text-transform: lowercase;
-        padding: 0.25em 0.5em;
         min-width: 50px;
-        margin-left: 5px;
+        height: 100%;
+        padding: 0.25em 0.5em;
+        margin: -0.25em -0.5em;
     }
 
     .select .value {

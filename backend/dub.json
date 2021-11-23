@@ -1,0 +1,18 @@
+{
+	"authors": [
+		"CodeMyst"
+	],
+	"copyright": "Copyright © 2021, CodeMyst",
+	"dependencies": {
+		"dyaml": "~>0.8.4",
+		"poodinis": "~>8.1.1",
+		"vibe-d": "~>0.9.4",
+		"yamlserialized": {
+			"path": "libs/yamlserialized",
+			"version": ">=0.0.0"
+		}
+	},
+	"description": "Backend for PasteMyst.",
+	"license": "MPL-2.0",
+	"name": "pastemyst-backend"
+}

@@ -1,3 +1,6 @@
 [submodule "linguist"]
 	path = linguist
 	url = https://github.com/github/linguist.git
+[submodule "backend/libs/yamlserialized"]
+	path = backend/libs/yamlserialized
+	url = https://github.com/CodeMyst/yamlserialized.git

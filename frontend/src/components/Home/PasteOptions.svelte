@@ -1,5 +1,12 @@
 <script lang="ts">
-    let encrypt: boolean;
+    import { createEventDispatcher } from "svelte";
+
+    let isEncrypted: boolean = false;
+    let isPrivate: HTMLInputElement;
+    let isShownOnprofile: HTMLInputElement;
+    let isDetached: HTMLInputElement;
+
+    const dispatcher = createEventDispatcher();
 
     // simulates the behaviour of radio buttons for checkboxes
     // this is because radio buttons can't be unselected
@@ -17,43 +24,71 @@
             t.checked = false;
         }
     };
+
+    const onCreateClick = () => {
+        dispatcher("createPaste", {
+            isEncrypted: isEncrypted,
+            // TODO: account pastes
+            // isPrivate: isPrivate.checked,
+            // isShownOnprofile: isShownOnprofile.checked,
+            // isDetached: isDetached.checked
+        });
+    };
 </script>
 
 <div class="paste-options">
     <div class="options">
         <label data-tooltip="encrypts the paste with a password" class="option">
-            <input type="checkbox" bind:checked={encrypt} />
+            <input type="checkbox" bind:checked={isEncrypted} />
             <ion-icon name="key" />
         </label>
-        <label data-tooltip="private - only you can view the paste" class="option">
-            <input type="checkbox" name="visibility" on:click={onRadioPress} />
+        <!-- TODO: account pastes -->
+        <!-- <label data-tooltip="only you can view the paste" class="option">
+            <input
+                type="checkbox"
+                name="visibility"
+                on:click={onRadioPress}
+                bind:this={isPrivate}
+            />
             <ion-icon name="lock-closed" />
         </label>
-        <label data-tooltip="public - will be displayed on your profile" class="option">
-            <input type="checkbox" name="visibility" on:click={onRadioPress} />
+        <label data-tooltip="will be displayed on your profile" class="option">
+            <input
+                type="checkbox"
+                name="visibility"
+                on:click={onRadioPress}
+                bind:this={isShownOnprofile}
+            />
             <ion-icon name="person" />
         </label>
         <label
             data-tooltip="detached - the paste won't be associated with your account"
             class="option"
         >
-            <input type="checkbox" name="visibility" on:click={onRadioPress} />
+            <input
+                type="checkbox"
+                name="visibility"
+                on:click={onRadioPress}
+                bind:this={isDetached}
+            />
             <ion-icon name="finger-print" />
-        </label>
+        </label> -->
     </div>
 
     <div class="create-paste">
-        {#if encrypt}
+        {#if isEncrypted}
             <div class="password">
                 <input type="password" placeholder="password..." />
             </div>
         {/if}
 
-        <a href="/">create paste</a>
+        <button on:click={onCreateClick}>create paste</button>
     </div>
 </div>
 
-<style>
+<style lang="scss">
+    @import "../../mixins.scss";
+
     .paste-options {
         background-color: var(--color-cod-gray-light);
         padding: 1em;
@@ -64,7 +99,8 @@
         margin-top: 2em;
     }
 
-    .create-paste a {
+    .create-paste button {
+        @include transition();
         background-color: var(--color-main);
         color: var(--color-cod-gray);
         padding: 0.5em 1em;
@@ -72,9 +108,12 @@
         display: inline-block;
         width: 15em;
         text-align: center;
+        border: none;
+        outline: none;
+        cursor: pointer;
     }
 
-    .create-paste a:hover {
+    .create-paste button:hover {
         background-color: var(--color-accent);
     }
 

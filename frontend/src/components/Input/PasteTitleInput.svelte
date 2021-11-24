@@ -1,6 +1,7 @@
 <script lang="ts">
     import Select from "./Select.svelte";
 
+    // TODO: maybe get these values from the API?
     const expiresValues: [string, string][] = [
         ["never", "never"],
         ["1h", "1 hour"],
@@ -13,18 +14,20 @@
         ["1y", "1 year"]
     ];
 
-    let selectedExpires: [string, string] = expiresValues[0];
+    export let placeholder: string = "";
+    export let title: string = "";
+    export let expiresIn: [string, string] = expiresValues[0];
 </script>
 
 <div class="text-input">
-    <input type="text" placeholder={$$props.placeholder} autocomplete="false" />
+    <input type="text" placeholder={placeholder} autocomplete="false" bind:value={title} />
 
     <div class="select">
         <Select
             id="expires-in"
             label="expires in:"
             options={expiresValues}
-            bind:selectedValue={selectedExpires}
+            bind:selectedValue={expiresIn}
         />
     </div>
 </div>

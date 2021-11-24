@@ -105,6 +105,14 @@
         editorView.focus();
     };
 
+    export const getContent = (): string => {
+        return editorView.state.doc.toString();
+    };
+
+    export const getLanguage = () => {
+        return selectedLanguage[1];
+    };
+
     /**
      * Sets the indentation units and amount for the editor.
      */

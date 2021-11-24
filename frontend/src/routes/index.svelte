@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-    export const load = async ({ page, fetch }) => {
+    export const load = async ({ fetch }) => {
         // load langs
         const url = "/internal/langs.json";
         const res = await fetch(url);
@@ -46,12 +46,44 @@
     import TabbedEditor from "../components/Editor/TabbedEditor.svelte";
     import PasteOptions from "../components/Home/PasteOptions.svelte";
     import { Language } from "../models/Language";
+    import { PasteSkeleton, Visibility } from "../models/PasteSkeleton";
+    import type { ExpiresIn } from "../models/Expires";
+    import { API_BASE } from "../constants";
+    import { goto } from "$app/navigation";
 
     export let langs: Map<string, Language>;
+
+    let title: string;
+    let expiresIn: [string, string];
+    let tabbedEditor: TabbedEditor;
+
+    const onCreatePaste = async () => {
+        // TODO: account pastes
+
+        let skeleton: PasteSkeleton = new PasteSkeleton();
+        skeleton.title = title;
+        skeleton.expiresIn = expiresIn[0] as ExpiresIn;
+        skeleton.visibility = Visibility.Pub;
+        skeleton.tags = [];
+        skeleton.pasties = tabbedEditor.getPasties();
+
+        const res = await fetch(`${API_BASE}/paste/`, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(skeleton)
+        });
+
+        const json = await res.json();
+
+        // TODO: error handling
+        goto(`/${json["_id"]}`);
+    };
 </script>
 
-<TextInput placeholder="title..." />
+<TextInput placeholder="title..." bind:title bind:expiresIn />
 
-<TabbedEditor {langs} />
+<TabbedEditor {langs} bind:this={tabbedEditor} />
 
-<PasteOptions />
+<PasteOptions on:createPaste={onCreatePaste} />

@@ -3,7 +3,8 @@
     import Sortable from "sortablejs";
     import Editor from "./Editor.svelte";
     import { onMount, tick } from "svelte";
-    import type { Language } from "src/models/Language";
+    import type { Language } from "../../models/Language";
+    import { Pasty } from "../..//models/Pasty";
 
     class STab {
         title: string;
@@ -29,6 +30,21 @@
 
     // used to give every tab its own unique id number
     let tabCounter: number = 0;
+
+    export const getPasties = (): Pasty[] => {
+        const pasties: Pasty[] = [];
+
+        for (let tab of tabs) {
+            let p = new Pasty();
+            p.title = tab.title;
+            p.content = tab.editor.getContent();
+            p.language = tab.editor.getLanguage();
+
+            pasties.push(p);
+        }
+
+        return pasties;
+    };
 
     onMount(async () => {
         Sortable.create(tablist, {

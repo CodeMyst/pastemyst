@@ -11,3 +11,4 @@ public import model.language_type;
 public import model.paste;
 public import model.paste_skeleton;
 public import model.pasty;
+public import model.visibility;

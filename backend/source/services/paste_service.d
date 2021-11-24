@@ -37,7 +37,7 @@ public class PasteService
 
     public Paste create(PasteSkeleton skeleton)
     {
-        if (skeleton.isShowOnProfile || skeleton.isPrivate || skeleton.tags.length != 0)
+        if (skeleton.visibility != Visibility.pub || skeleton.tags.length != 0)
         {
             throw new Exception("account pastes not yet implemented.");
         }
@@ -70,8 +70,7 @@ public class PasteService
         res.deletesAt = deletesAt;
         res.title = skeleton.title;
         res.ownerId = "";
-        res.isPrivate = false;
-        res.isShowOnProfile = false;
+        res.visibility = Visibility.pub;
         res.isEncrypted = false;
 
         foreach (pasty; skeleton.pasties)

@@ -37,14 +37,9 @@ public class BasePaste
     public string ownerId;
 
     /** 
-     * If the paste is private only the owner can open it.
+     * Visibility of the paste.
      */
-    public bool isPrivate;
-
-    /** 
-     * Whether the paste will get shown on the owner's profile.
-     */
-    public bool isShowOnProfile;
+    public Visibility visibility;
 
     /** 
      * Tags of the paste, only if it's an owned paste.

@@ -20,17 +20,11 @@ public class PasteSkeleton
     @optional
     public ExpiresIn expiresIn = ExpiresIn.never;
 
-    /**
-     * If the paste is private only the owner can open it.
+    /** 
+     * Visibility of the paste.
      */
     @optional
-    public bool isPrivate = false;
-
-    /**
-     * If the paste is public, it will get shown on the owner's profile.
-     */
-    @optional
-    public bool isShowOnProfile = false;
+    public Visibility visibility = Visibility.pub;
 
     /**
      * Tags of the paste, only if it's an owned paste.

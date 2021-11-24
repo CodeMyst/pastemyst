@@ -2,7 +2,7 @@
     "name": "pastemyst-frontend",
     "version": "3.0.0",
     "scripts": {
-        "dev": "svelte-kit dev -p 5000",
+        "dev": "svelte-kit dev -p 5001",
         "build": "svelte-kit build",
         "preview": "svelte-kit preview",
         "check": "svelte-check --tsconfig ./tsconfig.json",

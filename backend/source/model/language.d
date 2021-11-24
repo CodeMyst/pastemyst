@@ -1,5 +1,6 @@
 module model.language;
 
+import yamlserialized;
 import model;
 
 public class Language
@@ -17,11 +18,13 @@ public class Language
     /**
      * String name of the CodeMirror mode used for the editor.
      */
+    @YamlField("codemirror_mode")
     public string codemirrorMode;
 
     /**
      * String name of the file mime type used for the CodeMirror editor.
      */
+    @YamlField("codemirror_mime_type")
     public string codemirrorMimeType;
 
     /**
@@ -47,5 +50,6 @@ public class Language
     /**
      * The TextMate scope that represents this programming language.
      */
+    @YamlField("tm_scope")
     public string tmScope;
 }

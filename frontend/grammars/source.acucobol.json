@@ -1,1 +1,0 @@
-{"name":"ACUCOBOL","scopeName":"source.acucobol","patterns":[{"name":"invalid.illegal.cobol","match":"(^......[ a-zA-Z0-9\\-]...................................................................*$)"},{"include":"source.cobol"}]}

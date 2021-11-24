@@ -1,28 +1,37 @@
 import type { EndpointOutput } from "@sveltejs/kit";
 import type {ServerRequest} from "@sveltejs/kit/types/hooks";
-import { getHighlighter, loadTheme } from "shiki";
+import { getHighlighter, ILanguageRegistration, loadTheme } from "shiki";
 
 // highlights the provided code using shiki
 
 export const post = async (request: ServerRequest): Promise<EndpointOutput> => {
     const content = request.body["content"];
-    const languageName = request.body["languageName"];
+    let languageName = request.body["languageName"];
     const languageScope = request.body["languageScope"];
 
     // todo: themes
     const theme = "darcula";
 
-    console.log(request.body);
+    const langPath = `../../grammars/${languageScope}.json`;
+
+    const langs: ILanguageRegistration[] = [];
+
+    // TODO: for now there is only one grammar file for testing
+    if (languageName === "D") {
+        const shikiLang: ILanguageRegistration = {
+            id: languageName,
+            scopeName: languageScope,
+            path: langPath
+        };
+        langs.push(shikiLang);
+    } else {
+        languageName = null;
+    }
 
     // todo: caching
     const shikiTheme = await loadTheme(`../../src/themes/${theme}.json`);
-    const shikiLang = {
-        id: languageName,
-        scopeName: languageScope,
-        path: `../../grammars/${languageScope}.json`
-    };
 
-    const highligher = await getHighlighter({ theme: shikiTheme, langs: [shikiLang] });
+    const highligher = await getHighlighter({ theme: shikiTheme, langs: langs });
 
     const res = highligher.codeToHtml(content, languageName);
 

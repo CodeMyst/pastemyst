@@ -1,1 +1,0 @@
-{"name":"BrightAuthor Project File","scopeName":"source.brightauthorproject","patterns":[{"include":"text.xml"},{"name":"keyword.control.untitled","match":"\\b(if|while|for|return)\\b"},{"name":"string.quoted.double.untitled","begin":"\"","end":"\"","patterns":[{"name":"constant.character.escape.untitled","match":"\\."}]}]}

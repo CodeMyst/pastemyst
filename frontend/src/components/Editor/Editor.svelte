@@ -193,8 +193,6 @@
                 languageScope: selectedFullLanguage.tmScope
             };
 
-            console.log(selectedFullLanguage);
-
             const res = await fetch("/internal/highlight.json", {
                 method: "POST",
                 headers: {

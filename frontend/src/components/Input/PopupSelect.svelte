@@ -268,7 +268,7 @@
     .select {
         display: inline-block;
         position: relative;
-        color: #ffffff;
+        color: var(--color-white);
         text-transform: lowercase;
         min-width: 50px;
         height: 100%;
@@ -330,7 +330,7 @@
     }
 
     .select input {
-        color: #ffffff;
+        color: var(--color-white);
         border: none;
         padding: 0.5em 1em;
         position: sticky;
@@ -348,12 +348,12 @@
     }
 
     .option:hover {
-        color: orange;
-        background-color: #1c1c1c;
+        color: var(--color-main);
+        background-color: var(--color-cod-gray-light);
     }
 
     .option.selected {
-        background-color: orange;
-        color: #1c1c1c;
+        background-color: var(--color-main);
+        color: var(--color-cod-gray-light);
     }
 </style>

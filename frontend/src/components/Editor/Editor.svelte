@@ -57,6 +57,9 @@
             langNames.push([val, k]);
         }
 
+        // sort langs
+        langNames.sort();
+
         // move plain text to the first position in the select
         let textIndex = langNames.findIndex((t) => t[1] === "Text");
         let textLang = langNames.splice(textIndex, 1)[0];

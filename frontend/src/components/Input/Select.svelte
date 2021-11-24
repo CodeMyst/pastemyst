@@ -262,7 +262,7 @@
         cursor: pointer;
         padding: 0.5em 1em;
         padding-right: 2em;
-        background-color: #141414;
+        background-color: var(--color-cod-gray);
         outline: none;
         border-radius: 0.2em;
         display: block;
@@ -298,7 +298,7 @@
         display: none;
         flex-direction: column;
         width: 100%;
-        background: #141414;
+        background: var(--color-cod-gray);
         z-index: 999;
         max-height: 275px;
         overflow-y: auto;
@@ -310,8 +310,8 @@
     }
 
     .select input {
-        background-color: #1c1c1c;
-        color: #ffffff;
+        background-color: var(--color-cod-gray-light);
+        color: var(--color-white);
         border: none;
         padding: 0.5em 1em;
         position: sticky;
@@ -326,12 +326,12 @@
     }
 
     .option:hover {
-        color: orange;
-        background-color: #1c1c1c;
+        color: var(--color-main);
+        background-color: var(--color-cod-gray-light);
     }
 
     .option.selected {
-        background-color: orange;
-        color: #1c1c1c;
+        background-color: var(--color-main);
+        color: var(--color-cod-gray-light);
     }
 </style>

@@ -20,5 +20,6 @@ jobs:
 
     - name: 'Build & Test'
       run: |
+        cd backend
         dub build
         dub test

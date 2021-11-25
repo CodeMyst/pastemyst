@@ -1,4 +1,5 @@
 import type { ExpiresIn } from "./Expires";
+import type {Visibility} from "./PasteSkeleton";
 
 export class BasePaste {
     id: string;
@@ -6,8 +7,7 @@ export class BasePaste {
     deletesAt: Date | null;
     expiresIn: ExpiresIn;
     ownerId: string;
-    isPublic: boolean;
-    isPrivate: boolean;
+    visibility: Visibility;
     tags: string[];
     stars: number;
     isEncrypted: boolean;

@@ -12,6 +12,28 @@ export const getLangs = async (): Promise<Map<string, Language>> => {
     return langsCache;
 };
 
+export const getLangNames = async (): Promise<[string, string][]> => {
+    const langs = await getLangs();
+
+    const res: [string, string][] = [];
+
+    for (const [k, v] of langs) {
+        let val = "";
+        if (v.aliases !== null) val = v.aliases.join(", ");
+        res.push([val, k]);
+    }
+
+    // sort langs
+    res.sort();
+
+    // move plain text to the first position
+    const textIndex = res.findIndex((t) => t[1] === "Text");
+    const textLang = res.splice(textIndex, 1)[0];
+    res.unshift(textLang);
+
+    return res;
+};
+
 /**
  * Loads all the languages from the API, stores the result in a cache,
  * so it only needs to get called once.

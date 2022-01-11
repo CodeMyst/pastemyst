@@ -8,7 +8,7 @@ import services;
 public interface IDataController
 {
     @path("langs")
-    const(Language[string]) getLanguages() @safe;   
+    const(Language[string]) getLanguages() @safe;
 }
 
 public class DataController : IDataController

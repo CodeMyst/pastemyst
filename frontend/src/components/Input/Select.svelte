@@ -4,6 +4,7 @@
     export let id: string;
     export let label: string;
     export let options: [string, string][];
+    export let filterEnabled: boolean = true;
 
     // provided options filtered by a search string
     let filteredOptions: [string, string][] = options;
@@ -14,7 +15,6 @@
     let found = true;
     let search = "";
 
-    let selectElement: HTMLElement;
     let searchElement: HTMLInputElement;
     let dropdownElement: HTMLElement;
 
@@ -165,13 +165,7 @@
         {label}
     </label>
 
-    <div
-        id="{id}-select"
-        class="select"
-        aria-labelledby="{id}-label"
-        bind:this={selectElement}
-        class:open
-    >
+    <div id="{id}-select" class="select" aria-labelledby="{id}-label" class:open>
         <span
             class="value"
             tabindex="0"
@@ -191,16 +185,18 @@
         </span>
 
         <div class="dropdown" role="listbox" bind:this={dropdownElement}>
-            <input
-                type="text"
-                autocomplete="off"
-                placeholder="Filter..."
-                bind:this={searchElement}
-                bind:value={search}
-                on:input={filterOptions}
-                on:keydown={keyDownHandler}
-                on:blur={searchBlurHandler}
-            />
+            {#if filterEnabled}
+                <input
+                    type="text"
+                    autocomplete="off"
+                    placeholder="Filter..."
+                    bind:this={searchElement}
+                    bind:value={search}
+                    on:input={filterOptions}
+                    on:keydown={keyDownHandler}
+                    on:blur={searchBlurHandler}
+                />
+            {/if}
 
             {#if !found}
                 <p class="not-found">No items found</p>
@@ -234,7 +230,7 @@
     </div>
 </div>
 
-<style>
+<style lang="scss">
     * {
         box-sizing: border-box;
         margin: 0;

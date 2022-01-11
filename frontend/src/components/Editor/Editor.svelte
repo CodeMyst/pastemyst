@@ -9,15 +9,15 @@
     import BigSelect from "../Input/PopupSelect.svelte";
     import IndentSelect from "../Input/IndentSelect.svelte";
     import { languages as codemirrorLangs } from "@codemirror/language-data";
-    import type { Language } from "src/models/Language";
+    import type { Language } from "../../models/Language";
+    import { getLangNames } from "../../services/langs";
 
     type Unit = "spaces" | "tabs";
 
     export let hidden = false;
     export let langs: Map<string, Language>;
-    export let langNames: [string, string][] = new Array<[string, string]>();
-    // dont enable the lang select until the langs map has been converted to a proper structure
-    let enableLangSelect: boolean = false;
+
+    let langsPromise: Promise<[string, string][]> = getLangNames();
 
     let editorElement: HTMLElement;
 
@@ -49,27 +49,8 @@
     let langSupported = false;
 
     onMount(async () => {
-        await tick();
-
-        for (const [k, v] of langs) {
-            let val = "";
-            if (v.aliases !== null) val = v.aliases.join(", ");
-            langNames.push([val, k]);
-        }
-
-        // sort langs
-        langNames.sort();
-
-        // move plain text to the first position in the select
-        let textIndex = langNames.findIndex((t) => t[1] === "Text");
-        let textLang = langNames.splice(textIndex, 1)[0];
-        langNames.unshift(textLang);
-
-        // enable the lang select now that the langs map has been converted properly
-        enableLangSelect = true;
-
         // set the editor language
-        selectedLanguage = langNames[0];
+        selectedLanguage = (await langsPromise)[0];
         onLangSelected();
 
         let updateListener = EditorView.updateListener.of((update) => {
@@ -233,7 +214,7 @@
 
     <div class="toolbar">
         <div class="left">
-            {#if enableLangSelect}
+            {#await langsPromise then langNames}
                 <BigSelect
                     id="language"
                     label="lang:"
@@ -242,7 +223,7 @@
                     on:selected={onLangSelected}
                     bind:selectedValue={selectedLanguage}
                 />
-            {/if}
+            {/await}
         </div>
         <div class="right">
             {#if selectedFullLanguage?.tmScope !== "none"}

@@ -1,8 +1,16 @@
 <script lang="ts">
     import Popup from "./Popup.svelte";
+    import Select from "./Input/Select.svelte";
+    import { INDENT_AMOUNTS, INDENT_UNITS } from "../constants";
+    import { getGlobalSettings } from "../settings";
+    import { getLangNames } from "../services/langs";
 
     let showNavbar = false;
-    let navElement: HTMLElement;
+    let showSettings = false;
+
+    let globalSettings = getGlobalSettings();
+
+    let defLangsPromise = getLangNames();
 </script>
 
 <div id="header" class={$$props.class}>
@@ -12,22 +20,26 @@
     </div>
 
     <div class="right">
-        <div class="profile">
+        <div class="header-button profile">
             <ion-icon name="person-circle" />
         </div>
 
-        <div class="navbar-toggle" on:click={() => (showNavbar = !showNavbar)}>
+        <div class="header-button settings-toggle" on:click={() => (showSettings = true)}>
+            <ion-icon name="settings" />
+        </div>
+
+        <div class="header-button navbar-toggle" on:click={() => (showNavbar = true)}>
             <ion-icon name="menu" />
         </div>
     </div>
 </div>
 
 <Popup bind:visible={showNavbar}>
-    <nav class:active={showNavbar} bind:this={navElement}>
+    <nav class="popup-content">
         <div class="title">
             <span>menu</span>
 
-            <div class="navbar-toggle" on:click={() => (showNavbar = false)}>
+            <div class="header-button navbar-toggle" on:click={() => (showNavbar = false)}>
                 <ion-icon name="close" />
             </div>
         </div>
@@ -71,6 +83,85 @@
     </nav>
 </Popup>
 
+<Popup bind:visible={showSettings}>
+    <div class="popup-content settings">
+        <div class="title">
+            <span>settings</span>
+
+            <div class="header-button settings-toggle" on:click={() => (showSettings = false)}>
+                <ion-icon name="close" />
+            </div>
+        </div>
+
+        <div class="description">
+            global website settings. if you login these settings will get saved to your account.
+        </div>
+
+        <div class="items">
+            <div class="item">
+                <span class="name">default indentation</span>
+                <span class="description">editors will default to these indentation settings when creating a new paste.</span>
+
+                <div class="option">
+                    <Select
+                        id="indent-units"
+                        label="units"
+                        options={INDENT_UNITS}
+                        filterEnabled={false}
+                        bind:selectedValue={globalSettings.indentUnit}
+                    />
+                </div>
+
+                <div class="option">
+                    <Select
+                        id="indent-amount"
+                        label="amount"
+                        options={INDENT_AMOUNTS}
+                        filterEnabled={false}
+                        bind:selectedValue={globalSettings.indentAmount}
+                    />
+                </div>
+            </div>
+
+            <div class="item">
+                <label for="override-indentation" class="name">
+                    override indentation
+                    <input type="checkbox" name="override-indentation" id="override-indentation" bind:checked={globalSettings.overrideIndentation} />
+                    <div class="check">
+                        <ion-icon name="checkmark" />
+                    </div>
+                </label>
+                <span class="description">override indentation when viewing pastes with the default indentation setting.</span>
+            </div>
+
+            <div class="item">
+                <span class="name">default language</span>
+                <span class="description">default language for editors when creating a paste</span>
+
+                {#await defLangsPromise then langNames}
+                    <Select
+                        id="default-language"
+                        label="lang"
+                        options={langNames}
+                        bind:selectedValue={globalSettings.defaultLang}
+                    />
+                {/await}
+            </div>
+
+            <div class="item">
+                <label for="full-width" class="name">
+                    full width page
+                    <input type="checkbox" name="full-width" id="full-width" bind:checked={globalSettings.fullWidth} />
+                    <div class="check">
+                        <ion-icon name="checkmark" />
+                    </div>
+                </label>
+                <span class="description">the page content will take up more horizontal space.</span>
+            </div>
+        </div>
+    </div>
+</Popup>
+
 <style lang="scss">
     @import "../mixins.scss";
 
@@ -100,10 +191,10 @@
         align-items: center;
     }
 
-    .navbar-toggle,
-    .profile {
+    .header-button {
         cursor: pointer;
         font-size: 1.5em;
+        margin-left: 1rem;
         @include transition();
 
         &:hover {
@@ -111,20 +202,17 @@
         }
     }
 
-    .profile {
-        margin-right: 1em;
+    .profile,
+    .settings-toggle {
+        font-size: 1.25rem;
     }
 
-    nav {
+    .popup-content {
         background-color: var(--color-cod-gray-light);
         border-radius: var(--border-radius);
-        display: none;
+        display: flex;
         flex-direction: column;
         padding: 0.5em 1em;
-
-        &.active {
-            display: flex;
-        }
 
         .title {
             display: flex;
@@ -138,7 +226,9 @@
                 margin-right: -5px;
             }
         }
+    }
 
+    nav {
         .item {
             margin-bottom: 2em;
             display: flex;
@@ -155,6 +245,75 @@
             .description {
                 margin-top: 0.5em;
                 color: var(--color-boulder);
+            }
+        }
+    }
+
+    .settings {
+        .description {
+            color: var(--color-boulder);
+            font-size: var(--fontsize-small);
+        }
+
+        .items {
+            margin-top: 2rem;
+
+            .item {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 2rem;
+
+                .name {
+                    margin-bottom: 0.5rem;
+                }
+
+                .description {
+                    margin-bottom: 0.5rem;
+                }
+
+                .option {
+                    margin-bottom: 0.5rem;
+                }
+
+                :global(.container) {
+                    justify-content: space-between;
+                    text-transform: lowercase;
+                }
+
+                :global(.container input) {
+                    background-color: var(--color-cod-gray);
+                }
+            }
+        }
+
+        label {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+
+            ion-icon {
+                margin-right: 0;
+                @include transition();
+                display: none;
+            }
+
+            .check {
+                background-color: var(--color-cod-gray);
+                width: 20px;
+                height: 20px;
+                border-radius: var(--border-radius);
+                padding: 0.1rem;
+            }
+
+            input {
+                opacity: 0;
+                height: 0;
+                width: 0;
+
+                &:checked ~ .check ion-icon {
+                    color: var(--color-main);
+                    display: initial;
+                }
             }
         }
     }

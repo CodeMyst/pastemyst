@@ -1,30 +1,14 @@
 <script lang="ts">
+    import { INDENT_AMOUNTS, INDENT_UNITS } from "../../constants";
     import { createEventDispatcher } from "svelte";
-
     import BigSelect from "./PopupSelect.svelte";
 
     const dispatch = createEventDispatcher();
 
     let indentSelect: BigSelect;
 
-    const indentUnits: [string, string][] = [
-        ["tabs", "tabs"],
-        ["spaces", "spaces"]
-    ];
-
-    const indentAmounts: [string, string][] = [
-        ["1", "1"],
-        ["2", "2"],
-        ["3", "3"],
-        ["4", "4"],
-        ["5", "5"],
-        ["6", "6"],
-        ["7", "7"],
-        ["8", "8"]
-    ];
-
-    export let selectedIndentUnit = indentUnits[1];
-    export let selectedIndentAmount = indentAmounts[3];
+    export let selectedIndentUnit = INDENT_UNITS[1];
+    export let selectedIndentAmount = INDENT_AMOUNTS[3];
 
     async function onMethodSelected() {
         await indentSelect.setOpen(true);
@@ -39,7 +23,7 @@
     id="indent-method"
     label=""
     placeholder="select an indent unit"
-    options={indentUnits}
+    options={INDENT_UNITS}
     displayAppend=": {selectedIndentAmount[1].toString()}"
     bind:selectedValue={selectedIndentUnit}
     on:selected={onMethodSelected}
@@ -50,7 +34,7 @@
     bind:this={indentSelect}
     label=""
     placeholder="select an indent amount"
-    options={indentAmounts}
+    options={INDENT_AMOUNTS}
     hiddenLabel={true}
     bind:selectedValue={selectedIndentAmount}
     on:selected={onAmountSelected}

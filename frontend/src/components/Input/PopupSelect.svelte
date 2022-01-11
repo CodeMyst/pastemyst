@@ -21,7 +21,6 @@
     let found = true;
     let search = "";
 
-    let selectElement: HTMLElement;
     let searchElement: HTMLInputElement;
     let dropdownElement: HTMLElement;
 
@@ -177,7 +176,6 @@
         id="{id}-select"
         class="select"
         aria-labelledby="{id}-label"
-        bind:this={selectElement}
         class:open
     >
         <span

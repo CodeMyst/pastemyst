@@ -1,10 +1,12 @@
 <script lang="ts">
-    import { tick } from "svelte";
+    import { createEventDispatcher, tick } from "svelte";
 
     export let id: string;
     export let label: string;
     export let options: [string, string][];
     export let filterEnabled: boolean = true;
+
+    const dispatch = createEventDispatcher();
 
     // provided options filtered by a search string
     let filteredOptions: [string, string][] = options;
@@ -86,6 +88,7 @@
             case "Enter":
                 {
                     open = false;
+                    dispatch("selected");
                 }
                 break;
 
@@ -146,6 +149,7 @@
     const optionMouseUpHandler = () => {
         mouseDown = false;
         open = false;
+        dispatch("selected");
     };
 
     // finds the index of a tuple in a tuple array

@@ -2,15 +2,26 @@
     import Popup from "./Popup.svelte";
     import Select from "./Input/Select.svelte";
     import { INDENT_AMOUNTS, INDENT_UNITS } from "../constants";
-    import { getGlobalSettings } from "../settings";
+    import { getGlobalSettings, GlobalSettings, saveGlobalSettings } from "../settings";
     import { getLangNames } from "../services/langs";
+    import { onMount } from "svelte";
 
     let showNavbar = false;
     let showSettings = false;
 
-    let globalSettings = getGlobalSettings();
+    let globalSettings: GlobalSettings;
+    let loadedSettings = false;
 
     let defLangsPromise = getLangNames();
+
+    onMount(async () => {
+        globalSettings = await getGlobalSettings();
+        loadedSettings = true;
+    });
+
+    const saveSettings = () => {
+        saveGlobalSettings(globalSettings);
+    };
 </script>
 
 <div id="header" class={$$props.class}>
@@ -98,66 +109,71 @@
         </div>
 
         <div class="items">
-            <div class="item">
-                <span class="name">default indentation</span>
-                <span class="description">editors will default to these indentation settings when creating a new paste.</span>
+            {#if loadedSettings}
+                <div class="item">
+                    <span class="name">default indentation</span>
+                    <span class="description">editors will default to these indentation settings when creating a new paste.</span>
 
-                <div class="option">
-                    <Select
-                        id="indent-units"
-                        label="units"
-                        options={INDENT_UNITS}
-                        filterEnabled={false}
-                        bind:selectedValue={globalSettings.indentUnit}
-                    />
+                    <div class="option">
+                        <Select
+                            id="indent-units"
+                            label="units"
+                            options={INDENT_UNITS}
+                            filterEnabled={false}
+                            bind:selectedValue={globalSettings.indentUnit}
+                            on:selected={saveSettings}
+                        />
+                    </div>
+
+                    <div class="option">
+                        <Select
+                            id="indent-amount"
+                            label="amount"
+                            options={INDENT_AMOUNTS}
+                            filterEnabled={false}
+                            bind:selectedValue={globalSettings.indentAmount}
+                            on:selected={saveSettings}
+                        />
+                    </div>
                 </div>
 
-                <div class="option">
-                    <Select
-                        id="indent-amount"
-                        label="amount"
-                        options={INDENT_AMOUNTS}
-                        filterEnabled={false}
-                        bind:selectedValue={globalSettings.indentAmount}
-                    />
+                <div class="item">
+                    <label for="override-indentation" class="name">
+                        override indentation
+                        <input type="checkbox" name="override-indentation" id="override-indentation" bind:checked={globalSettings.overrideIndent} on:change={saveSettings} />
+                        <div class="check">
+                            <ion-icon name="checkmark" />
+                        </div>
+                    </label>
+                    <span class="description">override indentation when viewing pastes with the default indentation setting.</span>
                 </div>
-            </div>
 
-            <div class="item">
-                <label for="override-indentation" class="name">
-                    override indentation
-                    <input type="checkbox" name="override-indentation" id="override-indentation" bind:checked={globalSettings.overrideIndentation} />
-                    <div class="check">
-                        <ion-icon name="checkmark" />
-                    </div>
-                </label>
-                <span class="description">override indentation when viewing pastes with the default indentation setting.</span>
-            </div>
+                <div class="item">
+                    <span class="name">default language</span>
+                    <span class="description">default language for editors when creating a paste</span>
 
-            <div class="item">
-                <span class="name">default language</span>
-                <span class="description">default language for editors when creating a paste</span>
+                    {#await defLangsPromise then langNames}
+                        <Select
+                            id="default-language"
+                            label="lang"
+                            options={langNames}
+                            bind:selectedValue={globalSettings.defaultLang}
+                            on:selected={saveSettings}
+                        />
+                    {/await}
+                </div>
 
-                {#await defLangsPromise then langNames}
-                    <Select
-                        id="default-language"
-                        label="lang"
-                        options={langNames}
-                        bind:selectedValue={globalSettings.defaultLang}
-                    />
-                {/await}
-            </div>
-
-            <div class="item">
-                <label for="full-width" class="name">
-                    full width page
-                    <input type="checkbox" name="full-width" id="full-width" bind:checked={globalSettings.fullWidth} />
-                    <div class="check">
-                        <ion-icon name="checkmark" />
-                    </div>
-                </label>
-                <span class="description">the page content will take up more horizontal space.</span>
-            </div>
+                <div class="item">
+                    <label for="full-width" class="name">
+                        full width page
+                        <input type="checkbox" name="full-width" id="full-width" bind:checked={globalSettings.fullWidth} on:change={saveSettings} />
+                        <div class="check">
+                            <ion-icon name="checkmark" />
+                        </div>
+                    </label>
+                    <span class="description">the page content will take up more horizontal space.</span>
+                </div>
+            {/if}
         </div>
     </div>
 </Popup>

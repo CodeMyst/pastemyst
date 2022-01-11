@@ -61,7 +61,9 @@
         if (open) {
             await tick();
 
-            searchElement.focus();
+            if (filterEnabled) {
+                searchElement.focus();
+            }
             search = "";
             filteredOptions = options;
             scrollSelectedIntoView();

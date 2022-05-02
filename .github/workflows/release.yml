@@ -37,7 +37,8 @@ jobs:
           key: ${{ secrets.SSH_SECRET }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            rm pastemyst/pastemyst
-            mv builds/bin/pastemyst pastemyst/pastemyst
-            cd pastemyst
+            rm services/pastemyst/bin/pastemyst
+            mv builds/bin/pastemyst services/pastemyst/bin/pastemyst
+            cd services/pastemyst
             git pull origin main
+            git fetch

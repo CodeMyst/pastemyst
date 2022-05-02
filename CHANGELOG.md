@@ -2,6 +2,12 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.7.1] - 2022-05-02
+
+### added
+
+- added new theme - catppuccin
+
 ## [2.7.0] - 2021-10-02
 
 ### added

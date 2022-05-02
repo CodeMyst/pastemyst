@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - name: install D
         uses: dlang-community/setup-dlang@v1
         with:
@@ -16,10 +18,6 @@ jobs:
         run: |
           sudo apt-get install libscrypt0
           sudo apt-get install libscrypt-dev
-      - name: Checkout submodules
-        uses: srt32/git-actions@v0.0.3
-        with:
-          args: git submodule update --init --recursive
       - name: build
         run: dub build -b release
       - name: upload to server

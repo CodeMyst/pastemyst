@@ -33,7 +33,7 @@
  .cm-s-myst .CodeMirror-gutters { border-right: none; }
  .cm-s-myst .CodeMirror-guttermarker { color: #FFEE80; }
  .cm-s-myst .CodeMirror-guttermarker-subtle { color: #D0D0D0; }
- .cm-s-myst .CodeMirrir-linenumber { color: #606366; }
+ .cm-s-myst .CodeMirror-linenumber { color: #606366; }
  .cm-s-myst .CodeMirror-matchingbracket { background-color: #3B514D; color: #FFEF28 !important; font-weight: bold; }
  
  .cm-s-myst div.CodeMirror-selected { background: #214283; }

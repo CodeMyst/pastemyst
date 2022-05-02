@@ -1,0 +1,24 @@
+html.catppuccin
+{
+    --color-nano: #1E1E2E;
+    --color-nanonotsolight: #1A1826;
+    --color-nanolight: #302D41;
+    --color-nanolightlight: #575268;
+    --color-white: #D9E0EE;
+    --color-mystge: #F8BD96;
+    --color-mystlue: #96CDFB;
+    --color-mysted: #F28FAD;
+    --color-mysteen: #ABE9B3;
+
+    --font-size-code: 1rem;
+    --font-size-small: 1rem;
+    --font-size-normal: 1.2rem;
+    --font-size-medium: 1.5rem;
+    --font-size-big: 3rem;
+
+    --border-radius: 0.3rem;
+
+    --break-small: 640px;
+
+    --font-stack: 'UbuntuMono', monospace;
+}

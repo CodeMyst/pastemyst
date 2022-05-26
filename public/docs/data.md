@@ -39,3 +39,13 @@ get the language information for a specific language found by the extension, ret
 returns the same object as getting the language by name.
 
 [comment]: <> (TODO: how to get all possible language values? and should they use the name, mode or mime?)
+
+### get the number of currently active pastes
+
+<p class="method">GET</p> <code>/data/numPastes</code>
+
+returns the number of currently active pastes.
+
+| field     | type  |
+| ----------|-------|
+| numPastes | ulong |

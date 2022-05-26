@@ -25,6 +25,14 @@ public interface IAPIData
     @path("/data/languageExt")
     @queryParam("extension", "extension")
     Json getLanguageExt(string extension) @safe;
+
+    /++
+     + GET `/data/numPastes`
+     +
+     + Returns the number of currently active pastes.
+     +/
+    @path("/data/numPastes")
+    Json getNumberOfPastes() @safe;
 }
 
 /++
@@ -78,5 +86,18 @@ public class APIData : IAPIData
         }
 
         throw new HTTPStatusException(HTTPStatus.notFound, "language not found.");
+    }
+
+    /++
+     + GET `/data/numPastes`
+     +
+     + Returns the number of currently active pastes.
+     +/
+    public Json getNumberOfPastes() @safe
+    {
+        import pastemyst.db : getCollectionCount;
+        import pastemyst.data : Paste;
+
+        return Json(["numPastes": Json(getCollectionCount!Paste())]);
     }
 }

@@ -8,8 +8,6 @@ all notable changes to this project will be documented in this file.
 
 - added API endpoint `data/numPastes` for getting the currently active number of pastes
 
-returns the same object as getting the language by name.s
-
 ## [2.7.1] - 2022-05-02
 
 ### added

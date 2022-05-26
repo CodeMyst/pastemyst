@@ -2,6 +2,14 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.8.0] - 2022-05-27
+
+### added
+
+- added API endpoint `data/numPastes` for getting the currently active number of pasteget the language information for a specific language found by the extension, returns a `404` status if the language couldn't be found.
+
+returns the same object as getting the language by name.s
+
 ## [2.7.1] - 2022-05-02
 
 ### added

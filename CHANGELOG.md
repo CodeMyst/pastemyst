@@ -2,6 +2,12 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.8.1] - 2023-11-28
+
+### fixed
+
+- removed vultr from the donation page
+
 ## [2.8.0] - 2022-05-27
 
 ### added

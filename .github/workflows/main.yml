@@ -25,7 +25,7 @@ jobs:
       - name: Install D
         uses: dlang-community/setup-dlang@v1
         with:
-          compiler: dmd-2.098.0
+          compiler: dmd-2.096.1
       - name: Build
         run: dub build
       - name: Style checks

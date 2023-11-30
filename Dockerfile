@@ -6,12 +6,12 @@ RUN apk add git && \
 WORKDIR /src
 RUN go build -o /usr/bin/pastemyst-autodetect .
 
-FROM dlang2/dmd-ubuntu:2.093.1
+FROM dlang2/dmd-ubuntu:2.096.1
 
 COPY --from=build /usr/bin/pastemyst-autodetect /usr/bin/
 
 RUN apt-get update && \
-    apt-get install -y libssl-dev libscrypt-dev patch
+    apt-get install -y libssl-dev libscrypt-dev patch git
 
 WORKDIR /app
 

@@ -1,6 +1,5 @@
 version: "3.8"
 services:
-
   db:
     image: mongo:4.4.1
     volumes:
@@ -20,6 +19,5 @@ services:
       - db:db.docker.local
     ports:
       - 5000:5000
-    user: ${CURRENT_UID}
     volumes:
       - .:/app

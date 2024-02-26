@@ -10,6 +10,7 @@ services:
     restart: unless-stopped
 
   app:
+    pull_policy: build
     build:
       context: ./
     restart: unless-stopped

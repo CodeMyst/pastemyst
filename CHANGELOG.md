@@ -2,16 +2,26 @@
 
 all notable changes to this project will be documented in this file.
 
-## [2.8.2] - 2024-04-28
+## [2.8.3] - 2024-04-28
 
 ### added
 
 - deprecated v1 api
+- added PasteMyst.jl to docs (thanks to lines-of-codes)
 
 ### fixed
 
-- dockerfile and docker-compose.yml
 - navigation styling on brave
+
+## [2.8.2] - 2024-02-26
+
+### added
+
+- added `pull-policy: build` to docker-compose.yml
+
+### fixed
+
+- added the `/app` dir to the git safe dirs in the `Dockerfile` so that the pastemyst version could be fetched properly from git inside the docker container
 
 ## [2.8.1] - 2023-11-28
 

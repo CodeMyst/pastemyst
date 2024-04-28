@@ -2,6 +2,17 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.8.2] - 2024-04-28
+
+### added
+
+- deprecated v1 api
+
+### fixed
+
+- dockerfile and docker-compose.yml
+- navigation styling on brave
+
 ## [2.8.1] - 2023-11-28
 
 ### fixed

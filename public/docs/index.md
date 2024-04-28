@@ -41,6 +41,7 @@ here are some api libraries that are developed by other people. they are not dir
 | [pastemyst-d](https://github.com/CodeMyst/pastemyst-d)              | d          | codemyst        | yes         |
 | [pastemyst-py](https://github.com/Dmunch04/pastemyst-py)            | python     | munchii         | yes         |
 | [PasteMystNet](https://github.com/dentolos19/PasteMystNet)          | c#         | dentolos19      | yes         |
+| [PasteMyst.jl](https://github.com/lines-of-codes/PasteMyst.jl)      | Julia      | lines-of-codes  | yes         |
 | [PasteMyst-JS](https://github.com/FleshMobProductions/PasteMyst-JS) | js         | fmproductions   | no          |
 
 

@@ -59,12 +59,6 @@ nav ul li:first-child::before
     content: "";
 }
 
-nav ul li.no-delimiter::after
-{
-    content: "\A";
-    white-space: pre;
-}
-
 @media only screen and (max-width: 720px)
 {
     nav ul

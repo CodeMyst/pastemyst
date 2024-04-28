@@ -15,13 +15,13 @@ nav
             a(href="/pastry") cli-tool
         li
             a(href="/changelog") changelog
-        li.no-delimiter
+        li
             a(href="/legal") legal
 
     a.tooltip.wordwrap
         i.fas.fa-exchange-alt
         span.tooltip-text toggle editor word wrap
-    
+
     a.tooltip.fullwidth
         i.fas.fa-expand
         span.tooltip-text toggle full width page

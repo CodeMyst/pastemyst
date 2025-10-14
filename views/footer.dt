@@ -5,8 +5,7 @@ footer
     - import pastemyst.data : Paste;
     - string year = Clock.currTime().year.to!string();
     .copyright
-        p copyright &copy; #[a(href="https://github.com/codemyst", target="_blank") codemyst] #{year}
-        p contact: code at myst.rs
+        p code at #[a(href="https://github.com/codemyst", target="_blank") myst.rs]
     .theme
         label(for="theme") theme:
         select(name="theme", id="theme-picker")
@@ -17,4 +16,8 @@ footer
             option(value="dracula") dracula
             option(value="monokai") monokai
             option(value="solarized") solarized
+            //- Adding the theme I like
+            option(value="bit-fury") bit-fury
+            option(value="fury") fury
+            //- Adding the theme I like
     .paste-amount #{getCollectionCount!Paste()} currently active pastes 

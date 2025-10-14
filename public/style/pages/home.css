@@ -9,7 +9,8 @@
     padding: 1rem;
     z-index: 100;
     justify-content: space-between;
-    margin-top: 20px;
+    align-items: center;
+    margin-top: 25px;
     -webkit-transition: all 250ms ease-in-out;
     -moz-transition: all 250ms ease-in-out;
     -ms-transition: all 250ms ease-in-out;
@@ -30,7 +31,7 @@
     color: var(--color-nano);
     border-radius: var(--border-radius);
     padding: 0.5rem 1rem;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     width: 30%;
     text-align: center;
 }
@@ -51,14 +52,13 @@
     color: var(--color-nanolightlight);
 }
 
-#home .paste-options-bottom-sticky
-{
+#home .paste-options-bottom-sticky {
     -webkit-box-shadow: 0px -4px 13px 1px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px -4px 13px 1px rgba(0,0,0,0.75);
-    box-shadow: 0px -4px 13px 1px rgba(0,0,0,0.75);
-    border-bottom: none;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    box-shadow: 0px 0px 20px 5px rgb(93 93 93 / 50%);
+    bottom: 20px;
+    border: #91b9e0 3px solid;
+    border-radius: 15px;
 }
 
 #home .paste-options-bottom-1px
@@ -97,6 +97,7 @@
     border-radius: var(--border-radius);
     font-size: var(--font-size-normal);
     width: 30%;
+    margin-top: 20px;
 }
 
 #home #drop-area

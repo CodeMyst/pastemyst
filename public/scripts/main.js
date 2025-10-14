@@ -1,7 +1,8 @@
 import { getWordwrap, getFullwidth } from "./helpers/options.js";
 
     if (localStorage.getItem("theme") === null)
-    {
+    {   
+        // Here to change default
         localStorage.setItem("theme", "myst");
     }
     else

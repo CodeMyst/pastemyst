@@ -31,3 +31,33 @@
     font-style: italic;
     font-display: swap;
 }
+
+@font-face {
+    font-family: fusion-pixel;
+    src: url('../assets/fonts/fusion-pixel-10px-monospaced-zh_hant.woff2');
+    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: fusion-pixel;
+    src: url('../assets/fonts/fusion-pixel-10px-monospaced-zh_hant-bold.woff2');
+    font-weight: bold;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: fusion-pixel;
+    src: url('../assets/fonts/fusion-pixel-10px-monospaced-zh_hant-italic.woff2');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: fusion-pixel;
+    src: url('../assets/fonts/fusion-pixel-10px-monospaced-zh_hant-bold-italic.woff2');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}

@@ -1610,6 +1610,22 @@
             "mode": "twig",
             "name": "Twig"
         },
+        {   
+            "alias": [
+                "wasm",
+                "wast",
+                "wat"
+            ],
+            "ext": [
+                "wat",
+                "wast"
+            ],
+            "mimes": [
+                "text\/webassembly"
+            ],
+            "mode": "wast",
+            "name": "WebAssembly"
+        },
         {
             "ext": [
                 "webidl"

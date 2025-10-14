@@ -21,5 +21,8 @@ development_instance: true
 host_ip: 0.0.0.0
 host_port: 5000
 
+# Guesslang service URL
+guesslangUrl: http://ip:port/guess
+
 # mongo connection string
 mongo_connection: root:root@db.docker.local

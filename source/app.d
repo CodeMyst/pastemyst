@@ -39,6 +39,9 @@ public void main()
 	import pastemyst.paste : deleteExpiredPastes;
     import pastemyst.auth : deleteExpiredSessions;
     import pastemyst.data : config;
+    import vibe.core.log : setLogLevel, LogLevel;
+
+    setLogLevel(LogLevel.info);
 
 	URLRouter router = new URLRouter();
 

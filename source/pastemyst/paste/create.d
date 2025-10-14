@@ -179,6 +179,10 @@ private string autodetectLanguage(string pasteId, Pasty pasty) @safe
     import std.process : execute;
     import std.string : strip;
     import pastemyst.data : languages;
+    import vibe.http.client : requestHTTP, HTTPMethod;
+    import vibe.data.json : Json, parseJsonString;
+    import std.conv : to;
+    import vibe.core.log : logInfo, logError;
 
     // check if the language can be gotten from the extension
     auto ext = extension(pasty.title);
@@ -207,10 +211,57 @@ private string autodetectLanguage(string pasteId, Pasty pasty) @safe
         {
             lang = res.output.strip();
         }
+
+        // Create API request
+        Json requestData = Json.emptyObject;
+        requestData["text"] = pasty.code;
+        requestData["verbose"] = false;
+        requestData["fineTune"] = false;
+        requestData["expectedRelativeConfidence"] = 0.2;
+
+        // Set the guesslang API link
+        import pastemyst.data : config;
+        string endpoint = config.languageDetectionUrl.length ? config.languageDetectionUrl : "https://guesslang.waterwater.moe/guess";
+
+        // call guesslang API
+        requestHTTP(endpoint,
+            (scope req) {
+                req.method = HTTPMethod.POST;
+                req.headers["Content-Type"] = "application/json";
+                req.writeJsonBody(requestData);
+            },
+            (scope res) {
+                if (res.statusCode == 200)
+                {
+                    auto responseJson = res.readJson();
+                    if ("languageId" in responseJson)
+                    {
+                        string langId = responseJson["languageId"].get!string;
+                        
+                        // try to map languageId to full name
+                        auto fullLangName = getLanguageName(langId);
+                        if (fullLangName !is null)
+                        {
+                            lang = fullLangName;
+                        }
+                        else
+                        {
+                            lang = langId;
+                        }
+                    }
+                }
+            }
+        );
     }
-    catch(Exception) {}
+    catch(Exception e)
+    {
+        // if API call fails, set language as Plain Text
+        logError("Language detection API failed: %s", e.msg);
+        lang = "Plain Text";
+    }
 
-    remove(filename);
-
+    // Logging to console
+    logInfo("Autodetected language for paste %s: %s", pasteId, lang);
+    
     return lang;
 }

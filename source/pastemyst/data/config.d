@@ -46,6 +46,11 @@ public struct Config
      + html code that will get added to every page in the head tag
      +/
     public string headHTML = "";
+
+    /++
+     + optional guess-lang detection API URL
+     +/
+    public string languageDetectionUrl = "";
 }
 
 /++
@@ -165,6 +170,15 @@ static this()
         if (cfg.containsKey("head_html"))
         {
             _config.headHTML = cfg["head_html"].as!string();
+        }
+
+        if (cfg.containsKey("language_detection_url"))
+        {
+            _config.languageDetectionUrl = cfg["language_detection_url"].as!string();
+        }
+        else if (cfg.containsKey("guesslangUrl"))
+        {
+            _config.languageDetectionUrl = cfg["guesslangUrl"].as!string();
         }
     }
 }

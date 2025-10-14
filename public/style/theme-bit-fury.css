@@ -1,0 +1,20 @@
+html.bit-fury
+{
+    --color-nano: #18283d;
+    --color-nanonotsolight: #2d3439;
+    --color-nanolight: #222e37;
+    --color-nanolightlight: #afafaf;
+    --color-white: #6d7f91;
+    --color-mystge: #527fab;
+    --color-mystlue: #2d688d;
+    --color-mysted: #4b97ed;
+    --color-mysteen: #2ec933;
+    --font-size-code: 1rem;
+    --font-size-small: 1rem;
+    --font-size-normal: 1.2rem;
+    --font-size-medium: 1.5rem;
+    --font-size-big: 3rem;
+    --border-radius: 0.3rem;
+    --break-small: 640px;
+    --font-stack: 'fusion-pixel', monospace;
+}

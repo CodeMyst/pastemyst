@@ -2,6 +2,12 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.8.4] - 2025-10-14
+
+### added
+
+- wasm support (thanks to [Whitedragon115](https://github.com/Whitedragon115))
+
 ## [2.8.3] - 2024-04-28
 
 ### added

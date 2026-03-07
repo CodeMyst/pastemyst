@@ -19,7 +19,7 @@ services:
     links:
       - db:db.docker.local
     ports:
-      - 5000:5000
+      - 5000
     volumes:
       - .:/app
 

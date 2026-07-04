@@ -1,6 +1,6 @@
 module pastemyst.db.db;
 
-import vibe.d : MongoDatabase, connectMongoDB, MongoCollection, MongoCursor, count, Json, serializeToJson;
+import vibe.d : MongoDatabase, connectMongoDB, MongoCollection, MongoCursor, count, Bson, Json, serializeToJson;
 
 import std.typecons;
 import pastemyst.data;
@@ -108,7 +108,7 @@ public ulong getCollectionCount(T)()
 {
     MongoCollection collection = mongo[getCollectionName!T()];
 
-    return collection.find().count();
+    return collection.count(Bson.emptyObject);
 }
 
 /++

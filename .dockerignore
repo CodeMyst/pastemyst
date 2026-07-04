@@ -1,2 +1,18 @@
 # database data
 /db-data/
+
+# build artifacts (recompiled inside the image)
+/.dub/
+/bin/
+/lib/
+
+# secrets (mounted at runtime, must not be baked into the image)
+/config.yaml
+/config.yml
+
+# runtime state / logs
+/log
+/logs/
+/tmp/
+/public/zips/*
+/public/assets/avatars/*

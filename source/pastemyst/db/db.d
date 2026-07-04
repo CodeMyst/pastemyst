@@ -23,7 +23,7 @@ private MongoDatabase mongo;
  +/
 public void connect()
 {
-    import pastemyst.data : User, config;
+    import pastemyst.data : User, Paste, config;
 
     version(unittest)
     {
@@ -35,6 +35,8 @@ public void connect()
     }
 
     mongo[getCollectionName!User].createIndex(["username": "text"]);
+    // used by deleteExpiredPastes (runs every 15s), avoids a full collection scan
+    mongo[getCollectionName!Paste].createIndex(["expiresIn": 1, "deletesAt": 1]);
 }
 
 /++

@@ -1,24 +1,53 @@
-FROM golang:alpine3.12 AS build
+# build the language autodetect helper
+FROM golang:alpine3.12 AS autodetect
 
-RUN apk add git && \
+RUN apk add --no-cache git && \
     git clone https://github.com/CodeMyst/pastemyst-autodetect.git /src
 
 WORKDIR /src
-RUN go build -o /usr/bin/pastemyst-autodetect .
+RUN go build -o /pastemyst-autodetect .
 
-FROM dlang2/dmd-ubuntu:2.096.1
-
-COPY --from=build /usr/bin/pastemyst-autodetect /usr/bin/
+# compile pastemyst
+FROM dlang2/dmd-ubuntu:2.096.1 AS build
 
 RUN apt-get update && \
-    apt-get install -y libssl-dev libscrypt-dev patch git
+    apt-get install -y libssl-dev libscrypt-dev patch git && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-RUN apt-get clean autoclean && \
-    apt-get autoremove --yes && \
-    rm -rf /var/lib/{apt,dpkg,cache,log}/
+COPY . .
 
-RUN git config --global --add safe.directory /app
+# the git describe result is baked into a VERSION file so the runtime image
+# doesn't need git or the .git directory
+RUN git config --global --add safe.directory /app && \
+    git describe --tags > VERSION
 
-ENTRYPOINT dub run
+# release build; produces bin/pastemyst
+RUN dub build -b release
+
+# runtime image: only the compiled binary + the files it needs at runtime
+FROM ubuntu:20.04
+
+# runtime deps: openssl + libscrypt (linked), diffutils + patch (paste diff/history
+# are computed by shelling out to `diff`/`patch` at runtime, see util/diff.d)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        libssl1.1 libscrypt-dev diffutils patch ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY --from=autodetect /pastemyst-autodetect /usr/bin/pastemyst-autodetect
+COPY --from=build /app/bin/pastemyst /app/bin/pastemyst
+COPY --from=build /app/VERSION /app/VERSION
+COPY --from=build /app/data /app/data
+COPY --from=build /app/public /app/public
+
+# runtime-writable dirs (contents are gitignored, so they aren't in the build
+# context): transient download zips, persisted avatars mountpoint, error logs
+RUN mkdir -p /app/public/zips /app/public/assets/avatars /app/logs
+
+EXPOSE 5000
+
+ENTRYPOINT ["/app/bin/pastemyst"]

@@ -10,7 +10,6 @@ services:
     restart: unless-stopped
 
   app:
-    pull_policy: build
     build:
       context: ./
     restart: unless-stopped
@@ -21,4 +20,6 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - .:/app
+      - ./config.yaml:/app/config.yaml:ro
+      - ./public/assets/avatars:/app/public/assets/avatars
+      - ./logs:/app/logs

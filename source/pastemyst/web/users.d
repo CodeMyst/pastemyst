@@ -13,22 +13,22 @@ public class UsersWeb
     @path("/:username")
     public void getUser(HTTPServerRequest req, string _username, string search = "")
     {
-        import pastemyst.db : getAll, find, findOneById;
+        import pastemyst.db : findOne, find, findOneById;
         import std.algorithm : canFind;
-        import std.typecons : Nullable;
+        import std.array : replace;
         import std.uni : toLower;
 
-        auto userRes = getAll!User();
+        // case-insensitive exact match on the username, anchored so it can't
+        // match a substring. `.` is escaped since it's a regex metacharacter
+        // (usernames only allow alphanumerics and `-_.`).
+        const usernameRegex = "^" ~ _username.replace(".", "\\.") ~ "$";
 
-        Nullable!User userTemp;
-        foreach (u; userRes)
-        {
-            if (u.username.toLower() == _username.toLower())
-            {
-                userTemp = u;
-                break;
-            }
-        }
+        auto userTemp = findOne!User([
+            "username": Bson([
+                "$regex": Bson(usernameRegex),
+                "$options": Bson("i")
+            ])
+        ]);
 
         if (userTemp.isNull())
         {

@@ -25,7 +25,7 @@ void displayError(HTTPServerRequest req, HTTPServerResponse res, HTTPServerError
     {
         auto time = Clock.currTime();
         string msg = "[" ~ time.toSimpleString() ~ "]\n" ~ errorDebug ~ "\n\n";
-        append("log", msg);
+        append("logs/error.log", msg);
     }
 
     res.render!("error.dt", error, errorDebug, session);

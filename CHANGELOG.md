@@ -2,6 +2,14 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.8.5] - 2026-07-04
+
+### fixed
+
+- improved performance - paste count no longer pulls entire paste collection
+- improved db indexes for other collections
+- improved docker setup
+
 ## [2.8.4] - 2025-10-14
 
 ### added

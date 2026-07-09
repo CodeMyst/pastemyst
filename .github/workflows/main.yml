@@ -14,10 +14,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-      - name: Install libscrypt
+      - name: Install native deps
         run: |
           sudo apt-get update
-          sudo apt-get install -y libscrypt0 libscrypt-dev
+          sudo apt-get install -y libssl-dev libscrypt0 libscrypt-dev
       - name: Lint JavaScript
         run: |
           sudo npm install -g jshint

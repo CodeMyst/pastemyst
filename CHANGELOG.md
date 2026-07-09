@@ -2,6 +2,12 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.8.7] - 2027-07-09
+
+### fixed
+
+- specified compiler in Dockerfile
+
 ## [2.8.6] - 2027-07-09
 
 ### fixed

@@ -23,8 +23,8 @@ COPY . .
 RUN git config --global --add safe.directory /app && \
     git describe --tags > VERSION
 
-# release build; produces bin/pastemyst
-RUN dub build -b release
+# release build; produces bin/pastemyst.
+RUN DC=dmd dub build -b release
 
 # runtime image: only the compiled binary + the files it needs at runtime
 FROM ubuntu:20.04

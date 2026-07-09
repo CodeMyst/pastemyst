@@ -5,9 +5,9 @@ on: workflow_dispatch
 jobs:
   deploy:
     name: Deploy to server
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: install D
@@ -16,8 +16,8 @@ jobs:
           compiler: dmd-latest
       - name: Install libscrypt
         run: |
-          sudo apt-get install libscrypt0
-          sudo apt-get install libscrypt-dev
+          sudo apt-get update
+          sudo apt-get install -y libscrypt0 libscrypt-dev
       - name: build
         run: dub build -b release
       - name: upload to server

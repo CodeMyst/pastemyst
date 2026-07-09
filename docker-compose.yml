@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   db:
-    image: mongo:4.4.1
+    image: mongo:4.4
     volumes:
       - ./db-data:/data/db
     environment:

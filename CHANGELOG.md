@@ -2,6 +2,18 @@
 
 all notable changes to this project will be documented in this file.
 
+## [2.8.6] - 2027-07-09
+
+### fixed
+
+- fixed the missing changelog, cli-tool, legal and donate pages
+- updated github workflows to use the latest ubuntu version
+
+### changed
+
+- updated vibe-d version
+- updated mongo version
+
 ## [2.8.5] - 2026-07-04
 
 ### fixed

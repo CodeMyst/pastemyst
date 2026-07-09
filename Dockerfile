@@ -44,6 +44,12 @@ COPY --from=build /app/VERSION /app/VERSION
 COPY --from=build /app/data /app/data
 COPY --from=build /app/public /app/public
 
+# markdown pages rendered at runtime from cwd (/app)
+COPY --from=build /app/CHANGELOG.md /app/CHANGELOG.md
+COPY --from=build /app/LEGAL.md /app/LEGAL.md
+COPY --from=build /app/pastry.md /app/pastry.md
+COPY --from=build /app/DONATE.md /app/DONATE.md
+
 # runtime-writable dirs (contents are gitignored, so they aren't in the build
 # context): transient download zips, persisted avatars mountpoint, error logs
 RUN mkdir -p /app/public/zips /app/public/assets/avatars /app/logs
